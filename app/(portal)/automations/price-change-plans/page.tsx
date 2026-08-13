@@ -41,6 +41,7 @@ import {
 } from "@/lib/actions/price-change-plans";
 import { analyzeBulkPriceImport, type DetectedPriceImportSheet } from "@/lib/actions/price-plan-import";
 import type { MarketplaceCode, SkuDetail, PricingResult } from "@/lib/amazon/sp-api";
+import { MARKETPLACES, marketplacesByRegion, formatMoney } from "@/lib/amazon/marketplaces";
 
 const inputClass =
   "w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring";
@@ -54,8 +55,15 @@ function priceTypeLabel(type: PriceTypeOption) {
   return type === "sale_price" ? "Sale Price" : "Your Price";
 }
 
-function formatPrice(amount: number | null) {
-  return amount === null ? "—" : `$${amount.toFixed(2)}`;
+/**
+ * Prices belong to a marketplace, so the currency has to come with them —
+ * this previously hardcoded "$" and rendered a £19.99 plan as $19.99. The
+ * marketplace-less overload stays for the few spots that show a bare delta.
+ */
+function formatPrice(amount: number | null, code?: MarketplaceCode) {
+  if (amount === null) return "—";
+  if (code) return formatMoney(amount, code);
+  return amount.toFixed(2);
 }
 
 function formatDate(iso: string) {
@@ -145,7 +153,7 @@ export default function PriceChangePlansPage() {
       }
       setError(null);
       setNotice(
-        `${plan.sku} updated to ${formatPrice(data!.newPrice)}` +
+        `${plan.sku} updated to ${formatPrice(data!.newPrice, plan.marketplace)}` +
           (data!.completed ? " — target reached, plan complete." : ".")
       );
       reloadPlans();
@@ -282,14 +290,21 @@ export default function PriceChangePlansPage() {
                 {priceTypeLabel(stepPlan.price_type)}
               </p>
               <p className="text-base font-semibold">
-                {formatPrice(stepPlan.current_price)} → {formatPrice(nextStepPrice(stepPlan))}
+                {formatPrice(stepPlan.current_price, stepPlan.marketplace)} → {formatPrice(nextStepPrice(stepPlan), stepPlan.marketplace)}
               </p>
 
               {stepPlan.manual_steps_today > 0 && (
                 <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-destructive">
                   You already updated this plan {stepPlan.manual_steps_today}{" "}
                   {stepPlan.manual_steps_today === 1 ? "time" : "times"} today, moving it{" "}
-                  {formatPrice(stepPlan.manual_steps_today * stepPlan.increment)}.
+                  {formatPrice(stepPlan.manual_steps_today * stepPlan.increment, stepPlan.marketplace)}.
+                </p>
+              )}
+
+              {!MARKETPLACES[stepPlan.marketplace].live && (
+                <p className="rounded-md border border-border bg-muted/50 px-3 py-2 text-muted-foreground">
+                  {stepPlan.marketplace} is in testing — the new price is calculated and recorded
+                  in the report, but <strong>nothing is sent to Amazon</strong>.
                 </p>
               )}
 
@@ -417,8 +432,7 @@ function PlansList({
             className="h-8 w-full rounded-md border border-input bg-background px-2.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-ring sm:w-auto"
           >
             <option value="ALL">All Marketplaces</option>
-            <option value="US">US</option>
-            <option value="CA">Canada</option>
+            <MarketplaceOptions />
           </select>
         </div>
       </div>
@@ -478,6 +492,38 @@ function PlansList({
   );
 }
 
+/**
+ * Every marketplace, grouped by SP-API region. Driven off the registry so a
+ * marketplace added there appears in all three pickers at once -- previously
+ * these were three hardcoded US/CA lists that had to be kept in sync by hand.
+ */
+function MarketplaceOptions() {
+  return (
+    <>
+      {marketplacesByRegion().map((group) => (
+        <optgroup key={group.region} label={group.label}>
+          {group.codes.map((code) => (
+            <option key={code} value={code}>
+              {code} — {MARKETPLACES[code].label}
+              {MARKETPLACES[code].live ? "" : " (testing)"}
+            </option>
+          ))}
+        </optgroup>
+      ))}
+    </>
+  );
+}
+
+/** Marketplaces not yet switched to live never write a real price to Amazon. */
+function TestingBadge({ code }: { code: MarketplaceCode }) {
+  if (MARKETPLACES[code].live) return null;
+  return (
+    <Badge variant="outline" title="Simulated — price changes are not sent to Amazon">
+      Testing
+    </Badge>
+  );
+}
+
 function MarketplaceBadge({ code }: { code: MarketplaceCode }) {
   return (
     <Badge variant="secondary" className="font-mono">
@@ -522,9 +568,9 @@ function HistoryTable({ plans, emptyText }: { plans: PricePlan[]; emptyText: str
                 <MarketplaceBadge code={p.marketplace} />
               </td>
               <td className="px-3 py-2.5">
-                {formatPrice(p.start_price)}
+                {formatPrice(p.start_price, p.marketplace)}
                 <span className="text-muted-foreground"> → </span>
-                {formatPrice(p.target_price)}
+                {formatPrice(p.target_price, p.marketplace)}
               </td>
               <td className="px-3 py-2.5 text-muted-foreground">{formatDate(p.created_at)}</td>
             </tr>
@@ -562,6 +608,7 @@ function PlanCard({
           <Checkbox checked={selected} onCheckedChange={onToggleSelect} disabled={disabled} aria-label="Select plan" />
           <span className="font-mono text-sm font-medium">{p.sku}</span>
           <MarketplaceBadge code={p.marketplace} />
+          <TestingBadge code={p.marketplace} />
           <Badge variant="outline">{priceTypeLabel(p.price_type)}</Badge>
           <DirectionBadge direction={p.direction} />
         </div>
@@ -602,11 +649,11 @@ function PlanCard({
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">Current</p>
-          <p className="text-lg font-semibold">{formatPrice(p.current_price)}</p>
+          <p className="text-lg font-semibold">{formatPrice(p.current_price, p.marketplace)}</p>
         </div>
         <div>
           <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">Target</p>
-          <p className="text-lg font-semibold">{formatPrice(p.target_price)}</p>
+          <p className="text-lg font-semibold">{formatPrice(p.target_price, p.marketplace)}</p>
         </div>
         <div>
           <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">Complete</p>
@@ -616,7 +663,7 @@ function PlanCard({
       </div>
 
       <div className="mt-3 flex items-center gap-3">
-        <span className="w-14 shrink-0 text-xs text-muted-foreground">{formatPrice(p.start_price)}</span>
+        <span className="w-16 shrink-0 text-xs text-muted-foreground">{formatPrice(p.start_price, p.marketplace)}</span>
         <div className="relative h-1.5 flex-1 rounded-full bg-muted">
           <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
           <div
@@ -624,11 +671,11 @@ function PlanCard({
             style={{ left: `${pct}%`, transform: "translate(-50%, -50%)" }}
           />
         </div>
-        <span className="w-14 shrink-0 text-right text-xs text-muted-foreground">{formatPrice(p.target_price)}</span>
+        <span className="w-16 shrink-0 text-right text-xs text-muted-foreground">{formatPrice(p.target_price, p.marketplace)}</span>
       </div>
 
       <p className="mt-2 text-xs text-muted-foreground/70">
-        {formatPrice(p.increment)} per step · started {formatDate(p.created_at)}
+        {formatPrice(p.increment, p.marketplace)} per step · started {formatDate(p.created_at)}
       </p>
     </div>
   );
@@ -883,8 +930,7 @@ function NewPricePlanSheet({
               onChange={(e) => setMarketplace(e.target.value as MarketplaceCode)}
               className={inputClass}
             >
-              <option value="US">US</option>
-              <option value="CA">Canada</option>
+              <MarketplaceOptions />
             </select>
           </div>
 
@@ -1164,8 +1210,7 @@ function NewBulkPricePlanSheet({
                   onChange={(e) => setMarketplace(e.target.value as MarketplaceCode)}
                   className={inputClass}
                 >
-                  <option value="US">US</option>
-                  <option value="CA">Canada</option>
+                  <MarketplaceOptions />
                 </select>
               </div>
 

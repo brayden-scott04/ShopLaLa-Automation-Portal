@@ -53,9 +53,11 @@ import {
 } from "@/lib/actions/sku-list";
 import { fetchSkuDetail } from "@/lib/actions/pricing-update";
 import type { MarketplaceCode, SkuDetail } from "@/lib/amazon/sp-api";
+import { MARKETPLACES, marketplacesByRegion, formatMoney } from "@/lib/amazon/marketplaces";
 
-function formatPrice(amount: number | null): string {
-  return amount === null ? "—" : "$" + amount.toFixed(2);
+/** Prices carry their marketplace's currency — this used to hardcode "$". */
+function formatPrice(amount: number | null, code: MarketplaceCode): string {
+  return amount === null ? "—" : formatMoney(amount, code);
 }
 
 const inputClass =
@@ -619,19 +621,21 @@ function SkuDetailDialog({
         </AlertDialogHeader>
 
         <div className="max-h-[60vh] space-y-4 overflow-y-auto">
-          <div className="inline-flex rounded-md border border-input p-0.5">
-            {(["US", "CA"] as const).map((m) => (
-              <button
-                key={m}
-                onClick={() => setMarketplace(m)}
-                className={`rounded px-3 py-1 text-sm font-medium transition-colors ${
-                  marketplace === m ? "bg-primary text-primary-foreground" : "hover:bg-accent"
-                }`}
-              >
-                {m}
-              </button>
+          <select
+            value={marketplace}
+            onChange={(e) => setMarketplace(e.target.value as MarketplaceCode)}
+            className="rounded-md border border-input bg-background px-2.5 py-1.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            {marketplacesByRegion().map((group) => (
+              <optgroup key={group.region} label={group.label}>
+                {group.codes.map((code) => (
+                  <option key={code} value={code}>
+                    {code} — {MARKETPLACES[code].label}
+                  </option>
+                ))}
+              </optgroup>
             ))}
-          </div>
+          </select>
 
           {isPending ? (
             <div className="space-y-2">
@@ -675,7 +679,7 @@ function SkuDetailDialog({
                       {row.label}
                     </dt>
                     <dd className="font-medium">
-                      {row.value === null && row.nullLabel ? row.nullLabel : formatPrice(row.value)}
+                      {row.value === null && row.nullLabel ? row.nullLabel : formatPrice(row.value, marketplace)}
                     </dd>
                   </div>
                 ))}

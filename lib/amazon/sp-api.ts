@@ -1,15 +1,18 @@
+import {
+  MARKETPLACE_IDS,
+  REGION_HOSTS,
+  marketplace,
+  type MarketplaceCode,
+  type Region,
+} from "./marketplaces";
+
 const LWA_TOKEN_URL = "https://api.amazon.com/auth/o2/token";
-const SP_API_HOST = "https://sellingpartnerapi-na.amazon.com";
 const CHUNK_SIZE = 20;
 const CHUNK_DELAY_MS = 1100;
 const RETRYABLE_STATUSES = new Set([429, 500, 502, 503]);
 
-export const MARKETPLACE_IDS = {
-  US: "ATVPDKIKX0DER",
-  CA: "A2EUQ1WTGCTBG2",
-} as const;
-
-export type MarketplaceCode = keyof typeof MARKETPLACE_IDS;
+export { MARKETPLACE_IDS };
+export type { MarketplaceCode };
 
 export interface PricingResult {
   sku: string;
@@ -45,35 +48,87 @@ export interface SkuDetail {
   error?: string;
 }
 
-let tokenCache: { accessToken: string; expiresAt: number } | null = null;
-let refreshInFlight: Promise<string> | null = null;
+/**
+ * Per-region credentials.
+ *
+ * NA reads the original unsuffixed variables, so US and CA resolve to exactly
+ * the values they used before regions existed. EU and FE REQUIRE their own
+ * suffixed variables and never fall back to NA's -- falling back would send a
+ * North America token to a European host, which is the same class of bug as the
+ * shared token cache below, just relocated.
+ */
+function credentialsFor(region: Region) {
+  const suffix = region === "NA" ? "" : `_${region}`;
+  const read = (name: string) => {
+    const key = `${name}${suffix}`;
+    const value = process.env[key];
+    if (!value) {
+      // Name the variable. An unset credential previously surfaced as an opaque
+      // upstream 401, which is genuinely hard to trace back to config.
+      throw new Error(`Amazon SP-API not configured for ${region}: ${key} is not set`);
+    }
+    return value;
+  };
+  return {
+    refreshToken: read("REFRESH_TOKEN"),
+    sellerId: read("SELLER_ID"),
+    // One LWA application serves all three regions.
+    clientId: read2("CLIENT_ID"),
+    clientSecret: read2("CLIENT_SECRET"),
+  };
+}
 
-async function getAccessToken(): Promise<string> {
-  const now = Date.now();
-  if (tokenCache && tokenCache.expiresAt - 60_000 > now) return tokenCache.accessToken;
-  if (refreshInFlight) return refreshInFlight;
+function read2(name: string): string {
+  const value = process.env[name];
+  if (!value) throw new Error(`Amazon SP-API not configured: ${name} is not set`);
+  return value;
+}
 
-  refreshInFlight = (async () => {
+/**
+ * Access tokens are region-scoped: one issued for NA is rejected by the EU
+ * host. Both maps are therefore keyed by region -- a single shared slot would
+ * hand whichever region warmed the cache first to every other region for the
+ * next hour, failing in an order- and time-dependent way.
+ */
+const tokenCache = new Map<Region, { accessToken: string; expiresAt: number }>();
+const refreshInFlight = new Map<Region, Promise<string>>();
+
+async function getAccessToken(region: Region): Promise<string> {
+  const cached = tokenCache.get(region);
+  if (cached && cached.expiresAt - 60_000 > Date.now()) return cached.accessToken;
+
+  // Coalesce concurrent refreshes, but only within the same region.
+  const existing = refreshInFlight.get(region);
+  if (existing) return existing;
+
+  const promise = (async () => {
+    const { refreshToken, clientId, clientSecret } = credentialsFor(region);
     const res = await fetch(LWA_TOKEN_URL, {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
         grant_type: "refresh_token",
-        refresh_token: process.env.REFRESH_TOKEN!,
-        client_id: process.env.CLIENT_ID!,
-        client_secret: process.env.CLIENT_SECRET!,
+        refresh_token: refreshToken,
+        client_id: clientId,
+        client_secret: clientSecret,
       }),
     });
-    if (!res.ok) throw new Error(`LWA token refresh failed (${res.status})`);
+    if (!res.ok) throw new Error(`LWA token refresh failed for ${region} (${res.status})`);
     const json = await res.json();
-    tokenCache = { accessToken: json.access_token, expiresAt: Date.now() + json.expires_in * 1000 };
-    return tokenCache.accessToken;
+    tokenCache.set(region, {
+      accessToken: json.access_token,
+      expiresAt: Date.now() + json.expires_in * 1000,
+    });
+    return json.access_token as string;
   })();
 
+  refreshInFlight.set(region, promise);
   try {
-    return await refreshInFlight;
+    return await promise;
   } finally {
-    refreshInFlight = null;
+    // Only this region's entry -- clearing the whole map would drop another
+    // region's in-flight refresh.
+    refreshInFlight.delete(region);
   }
 }
 
@@ -108,9 +163,14 @@ interface PricingApiResponse {
   payload: PricingApiItem[];
 }
 
-async function callSpApiJson<T>(path: string, params: Record<string, string>): Promise<T> {
-  const accessToken = await getAccessToken();
-  const url = `${SP_API_HOST}${path}?${new URLSearchParams(params).toString()}`;
+async function callSpApiJson<T>(
+  path: string,
+  params: Record<string, string>,
+  region: Region
+): Promise<T> {
+  const accessToken = await getAccessToken(region);
+  // Host and token must come from the same region or Amazon rejects the call.
+  const url = `${REGION_HOSTS[region]}${path}?${new URLSearchParams(params).toString()}`;
 
   let lastError: Error = new Error("SP-API call failed");
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -124,8 +184,12 @@ async function callSpApiJson<T>(path: string, params: Record<string, string>): P
   throw lastError;
 }
 
-function callSpApi(path: string, params: Record<string, string>): Promise<PricingApiResponse> {
-  return callSpApiJson<PricingApiResponse>(path, params);
+function callSpApi(
+  path: string,
+  params: Record<string, string>,
+  region: Region
+): Promise<PricingApiResponse> {
+  return callSpApiJson<PricingApiResponse>(path, params, region);
 }
 
 /**
@@ -178,13 +242,16 @@ const LISTINGS_BATCH_DELAY_MS = 500;
  */
 async function getListingsOfferPrices(
   sku: string,
-  marketplaceId: string
+  code: MarketplaceCode
 ): Promise<{ ourPrice: number | null; discountedPrice: number | null }> {
   try {
-    const sellerId = process.env.SELLER_ID!;
+    const { id: marketplaceId, region } = marketplace(code);
+    // Seller id is per region -- EU and FE are separate seller accounts.
+    const { sellerId } = credentialsFor(region);
     const listing = await callSpApiJson<ListingsItemResponse>(
       `/listings/2021-08-01/items/${sellerId}/${encodeURIComponent(sku)}`,
-      { marketplaceIds: marketplaceId, includedData: "attributes" }
+      { marketplaceIds: marketplaceId, includedData: "attributes" },
+      region
     );
     return {
       ourPrice: extractOfferPrice(listing.attributes, "our_price"),
@@ -195,7 +262,8 @@ async function getListingsOfferPrices(
   }
 }
 
-export async function getSkuPricing(skus: string[], marketplaceId: string): Promise<PricingResult[]> {
+export async function getSkuPricing(skus: string[], code: MarketplaceCode): Promise<PricingResult[]> {
+  const { id: marketplaceId, region } = marketplace(code);
   const cleaned = [...new Set(skus.map((s) => s.trim()).filter(Boolean))];
   const results = new Map<string, PricingResult>(
     cleaned.map((sku) => [
@@ -219,7 +287,7 @@ export async function getSkuPricing(skus: string[], marketplaceId: string): Prom
     const params = { MarketplaceId: marketplaceId, Skus: batch.join(","), ItemType: "Sku" };
 
     try {
-      const pricing = await callSpApi("/products/pricing/v0/price", params);
+      const pricing = await callSpApi("/products/pricing/v0/price", params, region);
       extractOwnPricing(pricing.payload, results);
     } catch (e) {
       const message = e instanceof Error ? e.message : "Pricing lookup failed";
@@ -229,7 +297,7 @@ export async function getSkuPricing(skus: string[], marketplaceId: string): Prom
     await sleep(CHUNK_DELAY_MS);
 
     try {
-      const competitive = await callSpApi("/products/pricing/v0/competitivePrice", params);
+      const competitive = await callSpApi("/products/pricing/v0/competitivePrice", params, region);
       extractFeaturedPricing(competitive.payload, results);
     } catch {
       // Featured price is best-effort — a failure here shouldn't blank out the sales/list price already fetched.
@@ -248,7 +316,7 @@ export async function getSkuPricing(skus: string[], marketplaceId: string): Prom
   const listingsChunks = chunk(cleaned, LISTINGS_CONCURRENCY);
   for (let i = 0; i < listingsChunks.length; i++) {
     const batch = listingsChunks[i];
-    const offerPrices = await Promise.all(batch.map((sku) => getListingsOfferPrices(sku, marketplaceId)));
+    const offerPrices = await Promise.all(batch.map((sku) => getListingsOfferPrices(sku, code)));
     batch.forEach((sku, idx) => {
       const result = results.get(sku)!;
       result.ourPrice = offerPrices[idx].ourPrice;
@@ -319,8 +387,9 @@ function extractStringAttr(attributes: Record<string, unknown[]> | undefined, ke
  * (product name/description + seller-allowed min/max prices) for a single SKU. The listings
  * lookup is best-effort — a failure there leaves those fields null but keeps the prices.
  */
-export async function getSkuDetail(sku: string, marketplaceId: string): Promise<SkuDetail> {
-  const [pricing] = await getSkuPricing([sku], marketplaceId);
+export async function getSkuDetail(sku: string, code: MarketplaceCode): Promise<SkuDetail> {
+  const { id: marketplaceId, region } = marketplace(code);
+  const [pricing] = await getSkuPricing([sku], code);
 
   const detail: SkuDetail = {
     sku,
@@ -340,10 +409,11 @@ export async function getSkuDetail(sku: string, marketplaceId: string): Promise<
   };
 
   try {
-    const sellerId = process.env.SELLER_ID!;
+    const { sellerId } = credentialsFor(region);
     const listing = await callSpApiJson<ListingsItemResponse>(
       `/listings/2021-08-01/items/${sellerId}/${encodeURIComponent(sku)}`,
-      { marketplaceIds: marketplaceId, includedData: "summaries,attributes" }
+      { marketplaceIds: marketplaceId, includedData: "summaries,attributes" },
+      region
     );
 
     const attrs = listing.attributes;

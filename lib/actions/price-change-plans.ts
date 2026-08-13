@@ -5,7 +5,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { isAllowed } from "@/lib/roles";
-import { getSkuDetail, getSkuPricing, MARKETPLACE_IDS, type MarketplaceCode } from "@/lib/amazon/sp-api";
+import { getSkuDetail, getSkuPricing, type MarketplaceCode } from "@/lib/amazon/sp-api";
 
 export type PriceType = "your_price" | "sale_price";
 
@@ -186,7 +186,7 @@ export async function createPricePlan(input: {
 
   let detail;
   try {
-    detail = await getSkuDetail(sku, MARKETPLACE_IDS[marketplace]);
+    detail = await getSkuDetail(sku, marketplace);
   } catch (e) {
     return { data: null, error: e instanceof Error ? e.message : "Failed to look up SKU on Amazon" };
   }
@@ -278,7 +278,7 @@ export async function createBulkPricePlans(input: {
   }
 
   const skuList = skus.map((s) => s.sku);
-  const pricing = await getSkuPricing(skuList, MARKETPLACE_IDS[marketplace]);
+  const pricing = await getSkuPricing(skuList, marketplace);
   const pricingBySku = new Map(pricing.map((p) => [p.sku, p]));
 
   const service = createServiceClient();

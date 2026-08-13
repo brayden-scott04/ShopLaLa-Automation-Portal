@@ -23,6 +23,51 @@ async function requireStaff() {
   return { session, error: null };
 }
 
+/**
+ * PostgREST caps a response at 1000 rows and says nothing about it -- the
+ * request just returns short. The schedule holds 144 slots per country, so
+ * anything past ~7 countries silently loses whichever ones sort last. That is
+ * how US came to render as a full grid of zeros while its real 94-slot,
+ * $161/day schedule sat untouched in the table.
+ */
+const PAGE_SIZE = 1000;
+
+async function fetchAllScheduleRows(
+  client: Awaited<ReturnType<typeof createClient>>
+): Promise<{ rows: ScheduleRow[] | null; error: string | null }> {
+  const rows: ScheduleRow[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await client
+      .from("ppc_topup_schedule")
+      .select("country_code, slot_time, amount")
+      .order("country_code", { ascending: true })
+      .order("slot_time", { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) return { rows: null, error: error.message };
+    rows.push(...((data ?? []) as ScheduleRow[]));
+    if ((data?.length ?? 0) < PAGE_SIZE) return { rows, error: null };
+  }
+}
+
+/**
+ * Every country must have all 144 slots or we refuse to return anything.
+ *
+ * A short read is indistinguishable from a schedule of zeros once it reaches
+ * the grid, and staff would then be typing over live amounts they cannot see.
+ * Failing loudly is the only safe option. Same guard as getAcosTopupConfig().
+ */
+function findIncompleteCountries(countries: CountryConfig[], rows: ScheduleRow[]): string[] {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    counts.set(row.country_code, (counts.get(row.country_code) ?? 0) + 1);
+  }
+  return countries
+    .map((c) => ({ code: c.country_code, got: counts.get(c.country_code) ?? 0 }))
+    .filter((c) => c.got !== CANONICAL_SLOTS.length)
+    .map((c) => `${c.code} (${c.got}/${CANONICAL_SLOTS.length})`);
+}
+
 export async function getDailyCapConfig(): Promise<{
   data: { countries: CountryConfig[]; schedule: ScheduleRow[] } | null;
   error: string | null;
@@ -32,24 +77,34 @@ export async function getDailyCapConfig(): Promise<{
 
   const client = await createClient();
 
-  const [{ data: countries, error: countriesError }, { data: schedule, error: scheduleError }] =
+  const [{ data: countries, error: countriesError }, { rows: schedule, error: scheduleError }] =
     await Promise.all([
       client
         .from("ppc_topup_countries")
         .select("country_code, enabled, reset_time")
         .order("country_code", { ascending: true }),
-      client
-        .from("ppc_topup_schedule")
-        .select("country_code, slot_time, amount")
-        .order("country_code", { ascending: true })
-        .order("slot_time", { ascending: true }),
+      fetchAllScheduleRows(client),
     ]);
 
   if (countriesError || scheduleError) {
-    return { data: null, error: (countriesError ?? scheduleError)!.message };
+    return { data: null, error: countriesError?.message ?? scheduleError };
   }
 
-  return { data: { countries: countries ?? [], schedule: schedule ?? [] }, error: null };
+  const countryList = countries ?? [];
+  const rows = schedule ?? [];
+
+  const incomplete = findIncompleteCountries(countryList, rows);
+  if (incomplete.length > 0) {
+    return {
+      data: null,
+      error:
+        `Incomplete schedule for ${incomplete.join(", ")}. ` +
+        `Refusing to show a partial grid — editing it would overwrite amounts you can't see. ` +
+        `The ppc_topup_schedule table needs seeding for those marketplaces.`,
+    };
+  }
+
+  return { data: { countries: countryList, schedule: rows }, error: null };
 }
 
 export async function getStaffId(username: string): Promise<string | null> {
