@@ -56,7 +56,7 @@ automation-portal/
 - Cookie is valid for **7 days**, secure in production, `sameSite=lax`
 - `middleware.ts` runs on every request, redirects to `/login` if no valid session
 - Staff accounts are stored in the Supabase `staff` table, identified by **username** (no email); passwords are bcrypt-hashed (cost 10)
-- Roles: `"admin"` or `"user"` — only admins can access `/admin/*`. There are exactly two admins today (Travis, Dobie); every other account is `"user"`
+- Roles: `"admin"` or `"user"` — only admins can access `/admin/*`. There are exactly two admins today (Brayden, Dobie); every other account is `"user"`
 - There is no self-service signup or email/invite flow — admins create every account directly from `/admin/users`
 - **Admins can only create `"user"` accounts.** Granting `"admin"` (whether creating a new account or promoting an existing one) is blocked in `createStaffMember`/`updateStaffMember` and must be done directly in the Supabase `staff` table — this is intentional, not a bug. The UI only ever offers demoting an admin to user, never the reverse
 
