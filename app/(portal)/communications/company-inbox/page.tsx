@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Forward, Inbox, Mail, RefreshCw, Reply, ReplyAll } from "lucide-react";
+import { CircleCheck, Forward, Inbox, Mail, RefreshCw, Reply, ReplyAll } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,12 +9,13 @@ import { cn } from "@/lib/utils";
 import { companyInbox } from "@/lib/communications";
 import {
   listTitanEmails,
-  getTitanEmail,
+  getTitanThread,
   type MailComposeMode,
   type MailListItem,
-  type MailDetail,
+  type ThreadItem,
 } from "@/lib/actions/mail";
 import { ComposeDialog } from "./compose-dialog";
+import { ThreadView } from "./thread-view";
 
 function formatDate(iso: string): string {
   const date = new Date(iso);
@@ -31,12 +32,14 @@ export default function CompanyInboxPage() {
   const [listError, setListError] = useState<string | null>(null);
 
   const [selectedUid, setSelectedUid] = useState<number | null>(null);
-  const [detail, setDetail] = useState<MailDetail | null>(null);
+  const [thread, setThread] = useState<ThreadItem[] | null>(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
 
   const [composeMode, setComposeMode] = useState<MailComposeMode | null>(null);
   const [sentNotice, setSentNotice] = useState<string | null>(null);
+
+  const anchor = thread?.find((item) => item.isAnchor) ?? null;
 
   function loadMessages() {
     setIsLoading(true);
@@ -52,13 +55,12 @@ export default function CompanyInboxPage() {
 
   function openMessage(uid: number) {
     setSelectedUid(uid);
-    setDetail(null);
+    setThread(null);
     setDetailError(null);
-    setSentNotice(null);
     setIsDetailLoading(true);
-    getTitanEmail(uid).then(({ data, error }) => {
+    getTitanThread(uid).then(({ data, error }) => {
       if (error) setDetailError(error);
-      else setDetail(data);
+      else setThread(data?.items ?? null);
       setIsDetailLoading(false);
     });
   }
@@ -66,6 +68,10 @@ export default function CompanyInboxPage() {
   function handleSent({ warning }: { savedToSent: boolean; warning: string | null }) {
     setSentNotice(warning ?? "Message sent.");
     setTimeout(() => setSentNotice(null), 6000);
+    // Pull the just-appended Sent copy into the thread and refresh the list's
+    // "replied" badge, instead of waiting for a manual Refresh click.
+    if (selectedUid !== null) openMessage(selectedUid);
+    loadMessages();
   }
 
   return (
@@ -134,7 +140,12 @@ export default function CompanyInboxPage() {
                           <span className="truncate text-sm text-foreground">
                             {msg.from}
                           </span>
-                          <span className="shrink-0 text-xs text-muted-foreground">
+                          <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+                            {msg.replied && (
+                              <span title="Replied">
+                                <CircleCheck className="size-3.5 text-primary" />
+                              </span>
+                            )}
                             {formatDate(msg.date)}
                           </span>
                         </span>
@@ -166,25 +177,25 @@ export default function CompanyInboxPage() {
                 <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
                   {detailError}
                 </div>
-              ) : detail ? (
+              ) : anchor && thread ? (
                 <div className="flex flex-col gap-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <h2 className="text-base font-semibold text-foreground">
-                        {detail.subject}
+                        {anchor.subject}
                       </h2>
                       <p className="mt-1 text-sm text-muted-foreground">
-                        {detail.from}
-                        {detail.fromAddress && ` <${detail.fromAddress}>`}
+                        {anchor.from}
+                        {anchor.fromAddress && ` <${anchor.fromAddress}>`}
                         {" · "}
-                        {new Date(detail.date).toLocaleString()}
+                        {new Date(anchor.date).toLocaleString()}
                       </p>
                     </div>
                     <div className="flex shrink-0 gap-2">
                       <Button
                         variant="outline"
                         size="sm"
-                        disabled={!detail.fromAddress}
+                        disabled={!anchor.fromAddress}
                         onClick={() => setComposeMode("reply")}
                       >
                         <Reply className="size-4" />
@@ -193,7 +204,7 @@ export default function CompanyInboxPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        disabled={!detail.fromAddress}
+                        disabled={!anchor.fromAddress}
                         onClick={() => setComposeMode("replyAll")}
                       >
                         <ReplyAll className="size-4" />
@@ -216,9 +227,7 @@ export default function CompanyInboxPage() {
                     </div>
                   )}
 
-                  <p className="whitespace-pre-wrap text-sm text-foreground">
-                    {detail.text || "(no content)"}
-                  </p>
+                  <ThreadView items={thread} anchorUid={selectedUid} />
                 </div>
               ) : null}
             </div>
@@ -228,7 +237,7 @@ export default function CompanyInboxPage() {
 
       <ComposeDialog
         mode={composeMode}
-        detail={detail}
+        detail={anchor}
         onClose={() => setComposeMode(null)}
         onSent={handleSent}
       />

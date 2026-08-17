@@ -1,7 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
-import { ImapFlow } from "imapflow";
+import { ImapFlow, type FetchMessageObject } from "imapflow";
 import { simpleParser, type AddressObject, type ParsedMail } from "mailparser";
 import nodemailer from "nodemailer";
 import { getSession } from "@/lib/session";
@@ -12,6 +12,10 @@ const TITAN_SMTP_HOST = "smtpout.secureserver.net";
 const TITAN_SMTP_PORT = 465;
 const LIST_LIMIT = 30;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Bounds how far back thread correlation (Message-ID/In-Reply-To matching) and
+// the "replied" badge scan look, in each of INBOX/Sent. Envelope-only, so cheap.
+const THREAD_SCAN_LIMIT = 200;
+const MAX_THREAD_ITEMS = 100;
 
 export interface MailListItem {
   uid: number;
@@ -20,6 +24,8 @@ export interface MailListItem {
   subject: string;
   date: string;
   seen: boolean;
+  /** True if a direct reply to this message was found in the Sent folder. */
+  replied: boolean;
 }
 
 export interface MailAddress {
@@ -51,6 +57,24 @@ export interface SendMailInput {
   to?: string[];
   /** Forward only, optional. */
   cc?: string[];
+}
+
+/**
+ * One message in a reconstructed conversation. A superset of MailDetail so a
+ * ThreadItem can be passed anywhere a MailDetail is expected (e.g. ComposeDialog).
+ */
+export interface ThreadItem extends MailDetail {
+  folder: "inbox" | "sent";
+  outgoing: boolean;
+  isAnchor: boolean;
+}
+
+interface ThreadNode {
+  uid: number;
+  folder: "inbox" | "sent";
+  messageId: string | null;
+  inReplyTo: string | null;
+  date: string;
 }
 
 /**
@@ -116,6 +140,23 @@ async function fetchAndParseTitanMessage(client: ImapFlow, uid: number): Promise
   const message = await client.fetchOne(String(uid), { source: true }, { uid: true });
   if (!message || !message.source) return null;
   return simpleParser(message.source);
+}
+
+/**
+ * Envelope-only fetch of the most recent `limit` messages in whichever mailbox
+ * is currently locked/selected on `client`. Used for thread correlation and the
+ * "replied" badge scan — cheap (no bodies), bounded, never fetches full messages.
+ */
+async function scanRecentEnvelopes(client: ImapFlow, limit: number): Promise<FetchMessageObject[]> {
+  const total = client.mailbox && typeof client.mailbox !== "boolean" ? client.mailbox.exists : 0;
+  if (total === 0) return [];
+
+  const start = Math.max(1, total - limit + 1);
+  const out: FetchMessageObject[] = [];
+  for await (const msg of client.fetch(`${start}:${total}`, { envelope: true })) {
+    out.push(msg);
+  }
+  return out;
 }
 
 async function findSentMailbox(client: ImapFlow): Promise<string | null> {
@@ -198,34 +239,68 @@ export async function listTitanEmails(): Promise<{
 
   try {
     await client.connect();
+
+    const items: MailListItem[] = [];
+    const messageIdToUid = new Map<string, number>();
+
     const lock = await client.getMailboxLock("INBOX");
     try {
       const total = client.mailbox && typeof client.mailbox !== "boolean" ? client.mailbox.exists : 0;
-      if (total === 0) return { data: [], error: null };
+      if (total > 0) {
+        const start = Math.max(1, total - LIST_LIMIT + 1);
 
-      const start = Math.max(1, total - LIST_LIMIT + 1);
-      const items: MailListItem[] = [];
+        for await (const msg of client.fetch(`${start}:${total}`, {
+          envelope: true,
+          flags: true,
+        })) {
+          const from = msg.envelope?.from?.[0];
+          items.push({
+            uid: msg.uid,
+            from: from?.name || from?.address || "Unknown",
+            fromAddress: from?.address ?? "",
+            subject: msg.envelope?.subject || "(no subject)",
+            date: (msg.envelope?.date ?? new Date()).toISOString(),
+            seen: msg.flags?.has("\\Seen") ?? false,
+            replied: false,
+          });
+          if (msg.envelope?.messageId) messageIdToUid.set(msg.envelope.messageId, msg.uid);
+        }
 
-      for await (const msg of client.fetch(`${start}:${total}`, {
-        envelope: true,
-        flags: true,
-      })) {
-        const from = msg.envelope?.from?.[0];
-        items.push({
-          uid: msg.uid,
-          from: from?.name || from?.address || "Unknown",
-          fromAddress: from?.address ?? "",
-          subject: msg.envelope?.subject || "(no subject)",
-          date: (msg.envelope?.date ?? new Date()).toISOString(),
-          seen: msg.flags?.has("\\Seen") ?? false,
-        });
+        items.reverse();
       }
-
-      items.reverse();
-      return { data: items, error: null };
     } finally {
       lock.release();
     }
+
+    // Best-effort "replied" badge: scan Sent for direct replies to the messages
+    // above. A failure here must never affect the list itself.
+    if (items.length > 0) {
+      try {
+        const sentPath = await findSentMailbox(client);
+        if (sentPath) {
+          const sentLock = await client.getMailboxLock(sentPath);
+          try {
+            const sentMessages = await scanRecentEnvelopes(client, THREAD_SCAN_LIMIT);
+            const repliedUids = new Set<number>();
+            for (const msg of sentMessages) {
+              const inReplyTo = msg.envelope?.inReplyTo;
+              if (!inReplyTo) continue;
+              const uid = messageIdToUid.get(inReplyTo);
+              if (uid !== undefined) repliedUids.add(uid);
+            }
+            for (const item of items) {
+              if (repliedUids.has(item.uid)) item.replied = true;
+            }
+          } finally {
+            sentLock.release();
+          }
+        }
+      } catch {
+        // Non-fatal — list still renders, just without the "replied" badge.
+      }
+    }
+
+    return { data: items, error: null };
   } catch (err) {
     return {
       data: null,
@@ -275,6 +350,172 @@ export async function getTitanEmail(uid: number): Promise<{
       },
       error: null,
     };
+  } catch (err) {
+    return {
+      data: null,
+      error: err instanceof Error ? err.message : "Failed to load message",
+    };
+  } finally {
+    await client.logout().catch(() => {});
+  }
+}
+
+/**
+ * Reconstructs the conversation containing `uid` by correlating Message-ID /
+ * In-Reply-To across INBOX and Sent (bounded, envelope-only scan — see
+ * THREAD_SCAN_LIMIT), then fetches full bodies only for the resolved members.
+ * The originally-requested message is always included and marked `isAnchor`,
+ * regardless of whether it falls inside the scan window.
+ */
+export async function getTitanThread(uid: number): Promise<{
+  data: { items: ThreadItem[] } | null;
+  error: string | null;
+}> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  const auth = titanAuth();
+  if (!auth) return { data: null, error: "Titan email is not configured" };
+
+  const client = titanClient();
+  if (!client) return { data: null, error: "Titan email is not configured" };
+
+  try {
+    await client.connect();
+
+    const nodes = new Map<string, ThreadNode>();
+    let sentPath: string | null = null;
+
+    function addNode(msg: FetchMessageObject, folder: "inbox" | "sent"): string {
+      const key = `${folder}:${msg.uid}`;
+      if (!nodes.has(key)) {
+        nodes.set(key, {
+          uid: msg.uid,
+          folder,
+          messageId: msg.envelope?.messageId ?? null,
+          inReplyTo: msg.envelope?.inReplyTo ?? null,
+          date: (msg.envelope?.date ?? new Date()).toISOString(),
+        });
+      }
+      return key;
+    }
+
+    // Phase 1 — INBOX: the anchor (unconditionally, regardless of scan window)
+    // plus a bounded envelope scan for correlation candidates.
+    const inboxLock = await client.getMailboxLock("INBOX");
+    let anchorKey: string;
+    try {
+      const anchorMsg = await client.fetchOne(String(uid), { envelope: true }, { uid: true });
+      if (!anchorMsg) return { data: null, error: "Message not found" };
+      anchorKey = addNode(anchorMsg, "inbox");
+
+      for (const msg of await scanRecentEnvelopes(client, THREAD_SCAN_LIMIT)) {
+        addNode(msg, "inbox");
+      }
+    } finally {
+      inboxLock.release();
+    }
+
+    // Phase 2 — Sent, best-effort. A failure here degrades to INBOX-only
+    // correlation rather than failing the whole request.
+    try {
+      sentPath = await findSentMailbox(client);
+      if (sentPath) {
+        const sentLock = await client.getMailboxLock(sentPath);
+        try {
+          for (const msg of await scanRecentEnvelopes(client, THREAD_SCAN_LIMIT)) {
+            addNode(msg, "sent");
+          }
+        } finally {
+          sentLock.release();
+        }
+      }
+    } catch {
+      sentPath = null;
+    }
+
+    // Phase 3 — transitive closure over Message-ID / In-Reply-To (pure in-memory).
+    const visited = new Set<string>([anchorKey]);
+    let changed = true;
+    while (changed && visited.size < MAX_THREAD_ITEMS) {
+      changed = false;
+      for (const [key, node] of nodes) {
+        if (visited.has(key)) continue;
+        const linksToVisited = [...visited].some((vKey) => {
+          const vNode = nodes.get(vKey);
+          if (!vNode) return false;
+          return (
+            (node.inReplyTo && vNode.messageId === node.inReplyTo) ||
+            (node.messageId && vNode.inReplyTo === node.messageId)
+          );
+        });
+        if (linksToVisited) {
+          visited.add(key);
+          changed = true;
+        }
+      }
+    }
+
+    // Phase 4 — fetch full bodies, but only for resolved members.
+    const parsedByKey = new Map<string, ParsedMail>();
+
+    const inboxUids = [...visited].map((k) => nodes.get(k)!).filter((n) => n.folder === "inbox");
+    if (inboxUids.length > 0) {
+      const lock = await client.getMailboxLock("INBOX");
+      try {
+        for (const node of inboxUids) {
+          const parsed = await fetchAndParseTitanMessage(client, node.uid);
+          if (parsed) parsedByKey.set(`inbox:${node.uid}`, parsed);
+        }
+      } finally {
+        lock.release();
+      }
+    }
+
+    const sentUids = [...visited].map((k) => nodes.get(k)!).filter((n) => n.folder === "sent");
+    if (sentUids.length > 0 && sentPath) {
+      const lock = await client.getMailboxLock(sentPath);
+      try {
+        for (const node of sentUids) {
+          const parsed = await fetchAndParseTitanMessage(client, node.uid);
+          if (parsed) parsedByKey.set(`sent:${node.uid}`, parsed);
+        }
+      } finally {
+        lock.release();
+      }
+    }
+
+    // Phase 5 — assemble ThreadItems for whichever members actually parsed.
+    const items: ThreadItem[] = [];
+    for (const key of visited) {
+      const node = nodes.get(key);
+      const parsed = parsedByKey.get(key);
+      if (!node || !parsed) continue;
+
+      const from = parsed.from?.value?.[0];
+      items.push({
+        uid: node.uid,
+        from: from?.name || from?.address || "Unknown",
+        fromAddress: from?.address ?? "",
+        to: flattenAddresses(parsed.to),
+        cc: flattenAddresses(parsed.cc),
+        subject: parsed.subject || "(no subject)",
+        date: (parsed.date ?? new Date()).toISOString(),
+        text: extractText(parsed),
+        messageId: parsed.messageId ?? null,
+        inReplyTo: parsed.inReplyTo ?? null,
+        references: referencesOf(parsed),
+        folder: node.folder,
+        outgoing: node.folder === "sent",
+        isAnchor: key === anchorKey,
+      });
+    }
+
+    if (items.length === 0) return { data: null, error: "Message not found" };
+
+    items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    return { data: { items }, error: null };
   } catch (err) {
     return {
       data: null,
