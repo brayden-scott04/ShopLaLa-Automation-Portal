@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Inbox, Mail, RefreshCw } from "lucide-react";
+import { Forward, Inbox, Mail, RefreshCw, Reply, ReplyAll } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,9 +10,11 @@ import { companyInbox } from "@/lib/communications";
 import {
   listTitanEmails,
   getTitanEmail,
+  type MailComposeMode,
   type MailListItem,
   type MailDetail,
 } from "@/lib/actions/mail";
+import { ComposeDialog } from "./compose-dialog";
 
 function formatDate(iso: string): string {
   const date = new Date(iso);
@@ -33,6 +35,9 @@ export default function CompanyInboxPage() {
   const [isDetailLoading, setIsDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
 
+  const [composeMode, setComposeMode] = useState<MailComposeMode | null>(null);
+  const [sentNotice, setSentNotice] = useState<string | null>(null);
+
   function loadMessages() {
     setIsLoading(true);
     setListError(null);
@@ -49,12 +54,18 @@ export default function CompanyInboxPage() {
     setSelectedUid(uid);
     setDetail(null);
     setDetailError(null);
+    setSentNotice(null);
     setIsDetailLoading(true);
     getTitanEmail(uid).then(({ data, error }) => {
       if (error) setDetailError(error);
       else setDetail(data);
       setIsDetailLoading(false);
     });
+  }
+
+  function handleSent({ warning }: { savedToSent: boolean; warning: string | null }) {
+    setSentNotice(warning ?? "Message sent.");
+    setTimeout(() => setSentNotice(null), 6000);
   }
 
   return (
@@ -157,17 +168,54 @@ export default function CompanyInboxPage() {
                 </div>
               ) : detail ? (
                 <div className="flex flex-col gap-4">
-                  <div>
-                    <h2 className="text-base font-semibold text-foreground">
-                      {detail.subject}
-                    </h2>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {detail.from}
-                      {detail.fromAddress && ` <${detail.fromAddress}>`}
-                      {" · "}
-                      {new Date(detail.date).toLocaleString()}
-                    </p>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="text-base font-semibold text-foreground">
+                        {detail.subject}
+                      </h2>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {detail.from}
+                        {detail.fromAddress && ` <${detail.fromAddress}>`}
+                        {" · "}
+                        {new Date(detail.date).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={!detail.fromAddress}
+                        onClick={() => setComposeMode("reply")}
+                      >
+                        <Reply className="size-4" />
+                        Reply
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={!detail.fromAddress}
+                        onClick={() => setComposeMode("replyAll")}
+                      >
+                        <ReplyAll className="size-4" />
+                        Reply All
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setComposeMode("forward")}
+                      >
+                        <Forward className="size-4" />
+                        Forward
+                      </Button>
+                    </div>
                   </div>
+
+                  {sentNotice && (
+                    <div className="rounded-md border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary">
+                      {sentNotice}
+                    </div>
+                  )}
+
                   <p className="whitespace-pre-wrap text-sm text-foreground">
                     {detail.text || "(no content)"}
                   </p>
@@ -177,6 +225,13 @@ export default function CompanyInboxPage() {
           </div>
         )}
       </div>
+
+      <ComposeDialog
+        mode={composeMode}
+        detail={detail}
+        onClose={() => setComposeMode(null)}
+        onSent={handleSent}
+      />
     </>
   );
 }
