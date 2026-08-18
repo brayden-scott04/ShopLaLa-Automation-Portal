@@ -5,17 +5,37 @@ import { CircleCheck, Forward, Inbox, Mail, RefreshCw, Reply, ReplyAll } from "l
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import { cn } from "@/lib/utils";
 import { companyInbox } from "@/lib/communications";
 import {
   listTitanEmails,
   getTitanThread,
+  sendTitanEmail,
+  listYahooEmails,
+  getYahooThread,
+  sendYahooEmail,
+  listMailAccounts,
+  type MailAccountId,
+  type MailAccountOption,
   type MailComposeMode,
   type MailListItem,
   type ThreadItem,
 } from "@/lib/actions/mail";
 import { ComposeDialog } from "./compose-dialog";
 import { ThreadView } from "./thread-view";
+
+const MAIL_ACTIONS: Record<
+  MailAccountId,
+  {
+    list: typeof listTitanEmails;
+    thread: typeof getTitanThread;
+    send: typeof sendTitanEmail;
+  }
+> = {
+  titan: { list: listTitanEmails, thread: getTitanThread, send: sendTitanEmail },
+  yahoo: { list: listYahooEmails, thread: getYahooThread, send: sendYahooEmail },
+};
 
 function formatDate(iso: string): string {
   const date = new Date(iso);
@@ -27,6 +47,9 @@ function formatDate(iso: string): string {
 }
 
 export default function CompanyInboxPage() {
+  const [accounts, setAccounts] = useState<MailAccountOption[]>([]);
+  const [activeAccount, setActiveAccount] = useState<MailAccountId>("titan");
+
   const [messages, setMessages] = useState<MailListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [listError, setListError] = useState<string | null>(null);
@@ -40,29 +63,49 @@ export default function CompanyInboxPage() {
   const [sentNotice, setSentNotice] = useState<string | null>(null);
 
   const anchor = thread?.find((item) => item.isAnchor) ?? null;
+  const activeLabel = accounts.find((a) => a.id === activeAccount)?.label ?? "mailbox";
+
+  useEffect(() => {
+    listMailAccounts().then(({ data }) => {
+      if (data) setAccounts(data);
+    });
+  }, []);
 
   function loadMessages() {
     setIsLoading(true);
     setListError(null);
-    listTitanEmails().then(({ data, error }) => {
+    MAIL_ACTIONS[activeAccount].list().then(({ data, error }) => {
       if (error) setListError(error);
       else setMessages(data ?? []);
       setIsLoading(false);
     });
   }
 
-  useEffect(loadMessages, []);
+  useEffect(loadMessages, [activeAccount]);
 
   function openMessage(uid: number) {
     setSelectedUid(uid);
     setThread(null);
     setDetailError(null);
     setIsDetailLoading(true);
-    getTitanThread(uid).then(({ data, error }) => {
+    MAIL_ACTIONS[activeAccount].thread(uid).then(({ data, error }) => {
       if (error) setDetailError(error);
       else setThread(data?.items ?? null);
       setIsDetailLoading(false);
     });
+  }
+
+  function handleAccountChange(id: MailAccountId) {
+    if (id === activeAccount) return;
+    setActiveAccount(id);
+    setMessages([]);
+    setListError(null);
+    setSelectedUid(null);
+    setThread(null);
+    setDetailError(null);
+    setIsDetailLoading(false);
+    setComposeMode(null);
+    setSentNotice(null);
   }
 
   function handleSent({ warning }: { savedToSent: boolean; warning: string | null }) {
@@ -83,7 +126,14 @@ export default function CompanyInboxPage() {
       />
 
       <div className="flex flex-col gap-4 p-6 md:p-8">
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-between gap-4">
+          {accounts.length > 0 && (
+            <SegmentedControl
+              value={activeAccount}
+              onValueChange={handleAccountChange}
+              options={accounts.map((a) => ({ value: a.id, label: a.label }))}
+            />
+          )}
           <Button
             variant="outline"
             size="sm"
@@ -120,7 +170,7 @@ export default function CompanyInboxPage() {
                     No messages
                   </p>
                   <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                    Nothing in the Titan inbox right now.
+                    Nothing in the {activeLabel} inbox right now.
                   </p>
                 </div>
               ) : (
@@ -236,6 +286,7 @@ export default function CompanyInboxPage() {
       </div>
 
       <ComposeDialog
+        send={MAIL_ACTIONS[activeAccount].send}
         mode={composeMode}
         detail={anchor}
         onClose={() => setComposeMode(null)}

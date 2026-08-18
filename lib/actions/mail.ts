@@ -17,6 +17,49 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const THREAD_SCAN_LIMIT = 200;
 const MAX_THREAD_ITEMS = 100;
 
+export type MailAccountId = "titan" | "yahoo";
+
+interface MailAccountConfig {
+  id: MailAccountId;
+  /** Short name for error text — preserves the Titan path's existing exact wording. */
+  name: string;
+  /** Full email address — shown in the UI account toggle. */
+  label: string;
+  imapHost: string;
+  imapPort: number;
+  smtpHost: string;
+  smtpPort: number;
+  userEnvVar: string;
+  passEnvVar: string;
+}
+
+const MAIL_ACCOUNTS: Record<MailAccountId, MailAccountConfig> = {
+  titan: {
+    id: "titan",
+    name: "Titan",
+    label: "info@lalagreen.com",
+    imapHost: TITAN_HOST,
+    imapPort: TITAN_PORT,
+    smtpHost: TITAN_SMTP_HOST,
+    smtpPort: TITAN_SMTP_PORT,
+    userEnvVar: "TITAN_IMAP_USER",
+    passEnvVar: "TITAN_IMAP_PASSWORD",
+  },
+  yahoo: {
+    id: "yahoo",
+    name: "Yahoo",
+    label: "cs_shoplala@yahoo.com",
+    imapHost: "imap.mail.yahoo.com",
+    imapPort: 993,
+    smtpHost: "smtp.mail.yahoo.com",
+    smtpPort: 465,
+    userEnvVar: "YAHOO_IMAP_USER",
+    passEnvVar: "YAHOO_IMAP_PASSWORD",
+  },
+};
+
+const MAIL_ACCOUNT_ORDER: MailAccountId[] = ["titan", "yahoo"];
+
 export interface MailListItem {
   uid: number;
   from: string;
@@ -142,6 +185,35 @@ async function fetchAndParseTitanMessage(client: ImapFlow, uid: number): Promise
   return simpleParser(message.source);
 }
 
+/** Account-generic version of the Titan-only helpers above — used by the multi-account impl. */
+function mailAuthFor(accountId: MailAccountId): { user: string; pass: string } | null {
+  const config = MAIL_ACCOUNTS[accountId];
+  const user = process.env[config.userEnvVar];
+  const pass = process.env[config.passEnvVar];
+  if (!user || !pass) return null;
+  return { user, pass };
+}
+
+function mailClientFor(accountId: MailAccountId): ImapFlow | null {
+  const auth = mailAuthFor(accountId);
+  if (!auth) return null;
+
+  const config = MAIL_ACCOUNTS[accountId];
+  return new ImapFlow({
+    host: config.imapHost,
+    port: config.imapPort,
+    secure: true,
+    auth,
+    logger: false,
+  });
+}
+
+async function fetchAndParseMessage(client: ImapFlow, uid: number): Promise<ParsedMail | null> {
+  const message = await client.fetchOne(String(uid), { source: true }, { uid: true });
+  if (!message || !message.source) return null;
+  return simpleParser(message.source);
+}
+
 /**
  * Envelope-only fetch of the most recent `limit` messages in whichever mailbox
  * is currently locked/selected on `client`. Used for thread correlation and the
@@ -227,15 +299,16 @@ function parseAddressList(raw: string[] | undefined): string[] {
   return (raw ?? []).map((a) => a.trim()).filter(Boolean);
 }
 
-export async function listTitanEmails(): Promise<{
+async function listMailEmailsImpl(accountId: MailAccountId): Promise<{
   data: MailListItem[] | null;
   error: string | null;
 }> {
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized" };
 
-  const client = titanClient();
-  if (!client) return { data: null, error: "Titan email is not configured" };
+  const config = MAIL_ACCOUNTS[accountId];
+  const client = mailClientFor(accountId);
+  if (!client) return { data: null, error: `${config.name} email is not configured` };
 
   try {
     await client.connect();
@@ -304,11 +377,19 @@ export async function listTitanEmails(): Promise<{
   } catch (err) {
     return {
       data: null,
-      error: err instanceof Error ? err.message : "Failed to connect to Titan mailbox",
+      error: err instanceof Error ? err.message : `Failed to connect to ${config.name} mailbox`,
     };
   } finally {
     await client.logout().catch(() => {});
   }
+}
+
+export async function listTitanEmails() {
+  return listMailEmailsImpl("titan");
+}
+
+export async function listYahooEmails() {
+  return listMailEmailsImpl("yahoo");
 }
 
 export async function getTitanEmail(uid: number): Promise<{
@@ -367,18 +448,19 @@ export async function getTitanEmail(uid: number): Promise<{
  * The originally-requested message is always included and marked `isAnchor`,
  * regardless of whether it falls inside the scan window.
  */
-export async function getTitanThread(uid: number): Promise<{
+async function getMailThreadImpl(accountId: MailAccountId, uid: number): Promise<{
   data: { items: ThreadItem[] } | null;
   error: string | null;
 }> {
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized" };
 
-  const auth = titanAuth();
-  if (!auth) return { data: null, error: "Titan email is not configured" };
+  const config = MAIL_ACCOUNTS[accountId];
+  const auth = mailAuthFor(accountId);
+  if (!auth) return { data: null, error: `${config.name} email is not configured` };
 
-  const client = titanClient();
-  if (!client) return { data: null, error: "Titan email is not configured" };
+  const client = mailClientFor(accountId);
+  if (!client) return { data: null, error: `${config.name} email is not configured` };
 
   try {
     await client.connect();
@@ -464,7 +546,7 @@ export async function getTitanThread(uid: number): Promise<{
       const lock = await client.getMailboxLock("INBOX");
       try {
         for (const node of inboxUids) {
-          const parsed = await fetchAndParseTitanMessage(client, node.uid);
+          const parsed = await fetchAndParseMessage(client, node.uid);
           if (parsed) parsedByKey.set(`inbox:${node.uid}`, parsed);
         }
       } finally {
@@ -477,7 +559,7 @@ export async function getTitanThread(uid: number): Promise<{
       const lock = await client.getMailboxLock(sentPath);
       try {
         for (const node of sentUids) {
-          const parsed = await fetchAndParseTitanMessage(client, node.uid);
+          const parsed = await fetchAndParseMessage(client, node.uid);
           if (parsed) parsedByKey.set(`sent:${node.uid}`, parsed);
         }
       } finally {
@@ -526,7 +608,15 @@ export async function getTitanThread(uid: number): Promise<{
   }
 }
 
-export async function sendTitanEmail(input: SendMailInput): Promise<{
+export async function getTitanThread(uid: number) {
+  return getMailThreadImpl("titan", uid);
+}
+
+export async function getYahooThread(uid: number) {
+  return getMailThreadImpl("yahoo", uid);
+}
+
+async function sendMailReplyImpl(accountId: MailAccountId, input: SendMailInput): Promise<{
   data: { ok: true; savedToSent: boolean } | null;
   error: string | null;
   warning: string | null;
@@ -534,8 +624,9 @@ export async function sendTitanEmail(input: SendMailInput): Promise<{
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized", warning: null };
 
-  const auth = titanAuth();
-  if (!auth) return { data: null, error: "Titan email is not configured", warning: null };
+  const config = MAIL_ACCOUNTS[accountId];
+  const auth = mailAuthFor(accountId);
+  if (!auth) return { data: null, error: `${config.name} email is not configured`, warning: null };
 
   const body = input.body.trim();
   if (!body) return { data: null, error: "Message body cannot be empty", warning: null };
@@ -558,8 +649,8 @@ export async function sendTitanEmail(input: SendMailInput): Promise<{
     forwardCc = parseAddressList(input.cc).filter((a) => EMAIL_RE.test(a));
   }
 
-  const client = titanClient();
-  if (!client) return { data: null, error: "Titan email is not configured", warning: null };
+  const client = mailClientFor(accountId);
+  if (!client) return { data: null, error: `${config.name} email is not configured`, warning: null };
 
   try {
     await client.connect();
@@ -567,7 +658,7 @@ export async function sendTitanEmail(input: SendMailInput): Promise<{
     const lock = await client.getMailboxLock("INBOX");
     let parsed: ParsedMail | null;
     try {
-      parsed = await fetchAndParseTitanMessage(client, input.uid);
+      parsed = await fetchAndParseMessage(client, input.uid);
     } finally {
       lock.release();
     }
@@ -630,7 +721,8 @@ export async function sendTitanEmail(input: SendMailInput): Promise<{
           );
 
     const text = `${body}\n\n${quoted}`;
-    const messageId = `<${randomUUID()}@lalagreen.com>`;
+    const messageIdDomain = auth.user.split("@")[1] || "lalagreen.com";
+    const messageId = `<${randomUUID()}@${messageIdDomain}>`;
 
     // Forwards start a new thread by convention — no In-Reply-To/References.
     // Never fabricate a Message-ID when the original lacks one.
@@ -640,8 +732,8 @@ export async function sendTitanEmail(input: SendMailInput): Promise<{
         : { inReplyTo: undefined, references: undefined };
 
     const transporter = nodemailer.createTransport({
-      host: TITAN_SMTP_HOST,
-      port: TITAN_SMTP_PORT,
+      host: config.smtpHost,
+      port: config.smtpPort,
       secure: true,
       auth,
     });
@@ -701,4 +793,30 @@ export async function sendTitanEmail(input: SendMailInput): Promise<{
   } finally {
     await client.logout().catch(() => {});
   }
+}
+
+export async function sendTitanEmail(input: SendMailInput) {
+  return sendMailReplyImpl("titan", input);
+}
+
+export async function sendYahooEmail(input: SendMailInput) {
+  return sendMailReplyImpl("yahoo", input);
+}
+
+export interface MailAccountOption {
+  id: MailAccountId;
+  label: string;
+}
+
+export async function listMailAccounts(): Promise<{
+  data: MailAccountOption[] | null;
+  error: string | null;
+}> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  return {
+    data: MAIL_ACCOUNT_ORDER.map((id) => ({ id, label: MAIL_ACCOUNTS[id].label })),
+    error: null,
+  };
 }

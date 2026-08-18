@@ -14,7 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { sendTitanEmail, type MailComposeMode, type MailDetail } from "@/lib/actions/mail";
+import type { MailComposeMode, MailDetail, SendMailInput } from "@/lib/actions/mail";
+
+type SendResult = {
+  data: { ok: true; savedToSent: boolean } | null;
+  error: string | null;
+  warning: string | null;
+};
 
 const MODE_LABEL: Record<MailComposeMode, string> = {
   reply: "Reply",
@@ -32,13 +38,14 @@ function splitAddresses(raw: string): string[] {
 }
 
 interface ComposeDialogProps {
+  send: (input: SendMailInput) => Promise<SendResult>;
   mode: MailComposeMode | null;
   detail: MailDetail | null;
   onClose: () => void;
   onSent: (result: { savedToSent: boolean; warning: string | null }) => void;
 }
 
-export function ComposeDialog({ mode, detail, onClose, onSent }: ComposeDialogProps) {
+export function ComposeDialog({ send, mode, detail, onClose, onSent }: ComposeDialogProps) {
   // Kept separate from the `mode`/`detail` props so dialog content stays populated
   // during the base-ui close transition instead of blanking out mid-animation.
   const [activeMode, setActiveMode] = useState<MailComposeMode>("reply");
@@ -93,7 +100,7 @@ export function ComposeDialog({ mode, detail, onClose, onSent }: ComposeDialogPr
     if (!activeDetail) return;
     setError(null);
     startTransition(async () => {
-      const { data, error, warning } = await sendTitanEmail({
+      const { data, error, warning } = await send({
         uid: activeDetail.uid,
         mode: activeMode,
         body,
