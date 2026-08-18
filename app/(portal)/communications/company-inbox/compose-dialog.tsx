@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import {
   Dialog,
   DialogContent,
@@ -60,6 +60,10 @@ export function ComposeDialog({ send, mode, detail, onClose, onSent }: ComposeDi
   const [cc, setCc] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Guards against a duplicate send — checked/set synchronously, unlike
+  // isPending (which lags a render cycle), so it also blocks a fast double
+  // click/double-fire that lands before the button visually disables.
+  const isSendingRef = useRef(false);
 
   const open = mode !== null && detail !== null;
 
@@ -97,22 +101,27 @@ export function ComposeDialog({ send, mode, detail, onClose, onSent }: ComposeDi
     activeMode === "replyAll" && activeDetail ? activeDetail.cc.map((a) => a.address).join(", ") : "";
 
   function handleSend() {
-    if (!activeDetail) return;
+    if (!activeDetail || isSendingRef.current) return;
+    isSendingRef.current = true;
     setError(null);
     startTransition(async () => {
-      const { data, error, warning } = await send({
-        uid: activeDetail.uid,
-        mode: activeMode,
-        body,
-        to: isForward ? toAddresses : undefined,
-        cc: isForward && ccAddresses.length ? ccAddresses : undefined,
-      });
-      if (error || !data) {
-        setError(error ?? "Failed to send message");
-        return;
+      try {
+        const { data, error, warning } = await send({
+          uid: activeDetail.uid,
+          mode: activeMode,
+          body,
+          to: isForward ? toAddresses : undefined,
+          cc: isForward && ccAddresses.length ? ccAddresses : undefined,
+        });
+        if (error || !data) {
+          setError(error ?? "Failed to send message");
+          return;
+        }
+        onSent({ savedToSent: data.savedToSent, warning });
+        onClose();
+      } finally {
+        isSendingRef.current = false;
       }
-      onSent({ savedToSent: data.savedToSent, warning });
-      onClose();
     });
   }
 

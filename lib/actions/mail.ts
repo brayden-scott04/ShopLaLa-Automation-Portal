@@ -339,7 +339,10 @@ async function listMailEmailsImpl(accountId: MailAccountId): Promise<{
           if (msg.envelope?.messageId) messageIdToUid.set(msg.envelope.messageId, msg.uid);
         }
 
-        items.reverse();
+        // Don't rely on the server returning FETCH results in ascending sequence
+        // order — IMAP doesn't guarantee that, and some servers (Yahoo observed)
+        // don't reliably honor it. Sort explicitly by date, newest first.
+        items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       }
     } finally {
       lock.release();
