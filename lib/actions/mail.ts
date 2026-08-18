@@ -31,6 +31,14 @@ interface MailAccountConfig {
   smtpPort: number;
   userEnvVar: string;
   passEnvVar: string;
+  /**
+   * True if this provider's SMTP server itself saves a copy of outgoing mail to
+   * Sent (as Yahoo's does, being tied to its own webmail — any authenticated
+   * send gets auto-saved server-side, regardless of client). When true, we must
+   * NOT also append our own copy, or the same reply ends up duplicated in Sent
+   * (and therefore duplicated in the reconstructed thread).
+   */
+  autoSavesSent: boolean;
 }
 
 const MAIL_ACCOUNTS: Record<MailAccountId, MailAccountConfig> = {
@@ -44,6 +52,7 @@ const MAIL_ACCOUNTS: Record<MailAccountId, MailAccountConfig> = {
     smtpPort: TITAN_SMTP_PORT,
     userEnvVar: "TITAN_IMAP_USER",
     passEnvVar: "TITAN_IMAP_PASSWORD",
+    autoSavesSent: false,
   },
   yahoo: {
     id: "yahoo",
@@ -55,6 +64,7 @@ const MAIL_ACCOUNTS: Record<MailAccountId, MailAccountConfig> = {
     smtpPort: 465,
     userEnvVar: "YAHOO_IMAP_USER",
     passEnvVar: "YAHOO_IMAP_PASSWORD",
+    autoSavesSent: true,
   },
 };
 
@@ -761,29 +771,34 @@ async function sendMailReplyImpl(accountId: MailAccountId, input: SendMailInput)
     }
 
     // Best-effort — the send already succeeded, so a failure here is a
-    // warning, not an error: the message went out regardless.
-    let savedToSent = false;
+    // warning, not an error: the message went out regardless. Skipped
+    // entirely for providers that already auto-save a Sent copy themselves
+    // (see autoSavesSent) — appending our own copy on top of that would
+    // duplicate the message in Sent and therefore in the reconstructed thread.
+    let savedToSent = config.autoSavesSent;
     let warning: string | null = null;
-    try {
-      const sentPath = await findSentMailbox(client);
-      if (!sentPath) {
-        warning = "Message sent, but no Sent folder was found to save a copy in";
-      } else {
-        const raw = buildRawMessage({
-          from: auth.user,
-          to,
-          cc,
-          subject,
-          text,
-          messageId,
-          inReplyTo: threading.inReplyTo,
-          references: threading.references,
-        });
-        await client.append(sentPath, raw, ["\\Seen"]);
-        savedToSent = true;
+    if (!config.autoSavesSent) {
+      try {
+        const sentPath = await findSentMailbox(client);
+        if (!sentPath) {
+          warning = "Message sent, but no Sent folder was found to save a copy in";
+        } else {
+          const raw = buildRawMessage({
+            from: auth.user,
+            to,
+            cc,
+            subject,
+            text,
+            messageId,
+            inReplyTo: threading.inReplyTo,
+            references: threading.references,
+          });
+          await client.append(sentPath, raw, ["\\Seen"]);
+          savedToSent = true;
+        }
+      } catch {
+        warning = "Message sent, but saving a copy to Sent failed";
       }
-    } catch {
-      warning = "Message sent, but saving a copy to Sent failed";
     }
 
     return { data: { ok: true, savedToSent }, error: null, warning };
