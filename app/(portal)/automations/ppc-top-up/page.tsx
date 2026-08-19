@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from "recharts";
-import { Settings, Sparkles } from "lucide-react";
+import { Download, Settings, Sparkles } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
@@ -132,6 +132,7 @@ export default function PpcTopUpPage() {
   const [isPending, startTransition] = useTransition();
   const [, startManualTransition] = useTransition();
   const [showAiImport, setShowAiImport] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   function reload() {
     startTransition(async () => {
@@ -263,6 +264,33 @@ export default function PpcTopUpPage() {
     });
   }
 
+  async function downloadScheduleExcel(countryCode: string) {
+    setIsDownloading(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        `/api/ppc-top-up/daily-cap-export?country=${encodeURIComponent(countryCode)}`
+      );
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error ?? "Download failed");
+      }
+      const blob = await res.blob();
+      const disposition = res.headers.get("Content-Disposition") ?? "";
+      const match = disposition.match(/filename="([^"]+)"/);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = match?.[1] ?? `Daily_Budget_Cap_${countryCode}.xlsx`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Download failed");
+    } finally {
+      setIsDownloading(false);
+    }
+  }
+
   const country = countries.find((c) => c.country_code === selectedCountry);
 
   return (
@@ -365,6 +393,14 @@ export default function PpcTopUpPage() {
                         >
                           <Sparkles className="size-3.5" />
                           Upload Excel
+                        </button>
+                        <button
+                          onClick={() => downloadScheduleExcel(country.country_code)}
+                          disabled={isPending || isDownloading}
+                          className="flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background"
+                        >
+                          <Download className="size-3.5" />
+                          {isDownloading ? "Downloading…" : "Download Excel"}
                         </button>
                         <select
                           value={country.reset_time}
