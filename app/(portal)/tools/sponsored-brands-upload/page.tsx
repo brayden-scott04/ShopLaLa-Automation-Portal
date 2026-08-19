@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction }
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -38,6 +39,7 @@ import {
   createVideoAsset,
   updateVideoAsset,
   deleteVideoAsset,
+  deleteVideoAssets,
   listKeywordThemes,
   createKeywordTheme,
   updateKeywordTheme,
@@ -399,6 +401,37 @@ function AssetsSection({
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<VideoAsset | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [pendingBulkDelete, setPendingBulkDelete] = useState<{
+    ids: string[];
+    mode: "selected" | "all";
+  } | null>(null);
+
+  // Drop any selected id that no longer exists (e.g. its brand was deleted,
+  // cascading its assets away) so a stale id can't linger in a bulk delete.
+  // Adjusted during render rather than in an effect, matching this file's
+  // existing prop-change pattern elsewhere.
+  const [prevAssets, setPrevAssets] = useState(assets);
+  if (assets !== prevAssets) {
+    setPrevAssets(assets);
+    setSelected((prev) => {
+      const next = new Set([...prev].filter((id) => assets.some((a) => a.id === id)));
+      return next.size === prev.size ? prev : next;
+    });
+  }
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    setSelected((prev) => (prev.size === assets.length ? new Set() : new Set(assets.map((a) => a.id))));
+  }
 
   function openAdd() {
     setEditing(null);
@@ -436,6 +469,18 @@ function AssetsSection({
 
   async function handleDelete(a: VideoAsset) {
     await deleteVideoAsset(a.id);
+    setSelected((prev) => {
+      if (!prev.has(a.id)) return prev;
+      const next = new Set(prev);
+      next.delete(a.id);
+      return next;
+    });
+    onChanged();
+  }
+
+  async function handleBulkDelete(ids: string[]) {
+    await deleteVideoAssets(ids);
+    setSelected(new Set());
     onChanged();
   }
 
@@ -448,7 +493,26 @@ function AssetsSection({
       <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
         <CardTitle>Video Assets</CardTitle>
         <CardDescription>Amazon creative asset IDs, per brand</CardDescription>
-        <CardAction>
+        <CardAction className="flex items-center gap-2">
+          {selected.size > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPendingBulkDelete({ ids: [...selected], mode: "selected" })}
+              className="text-destructive hover:text-destructive"
+            >
+              Delete Selected ({selected.size})
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPendingBulkDelete({ ids: assets.map((a) => a.id), mode: "all" })}
+            disabled={assets.length === 0}
+            className="text-destructive hover:text-destructive"
+          >
+            Delete All
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -465,12 +529,23 @@ function AssetsSection({
           <p className="text-sm text-muted-foreground">No video assets yet.</p>
         ) : (
           <div className="space-y-2">
+            <label className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
+              <Checkbox
+                checked={selected.size === assets.length}
+                onCheckedChange={toggleSelectAll}
+              />
+              Select all
+            </label>
             {assets.map((a) => (
               <div
                 key={a.id}
                 className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm"
               >
                 <div className="flex min-w-0 items-center gap-2">
+                  <Checkbox
+                    checked={selected.has(a.id)}
+                    onCheckedChange={() => toggleSelected(a.id)}
+                  />
                   <span className="truncate font-medium">{a.label}</span>
                   <Badge variant="outline">{brandName(a.brand_id)}</Badge>
                   <span className="truncate font-mono text-xs text-muted-foreground">{a.asset_id}</span>
@@ -544,6 +619,22 @@ function AssetsSection({
         describe={(a) => (
           <>
             This deletes the video asset <span className="font-medium text-foreground">{a.label}</span>.
+          </>
+        )}
+      />
+
+      <DeleteConfirm
+        item={pendingBulkDelete}
+        onCancel={() => setPendingBulkDelete(null)}
+        onConfirm={(pending) => handleBulkDelete(pending.ids)}
+        title={pendingBulkDelete?.mode === "all" ? "Delete all video assets?" : "Delete selected video assets?"}
+        describe={(pending) => (
+          <>
+            This deletes{" "}
+            <span className="font-medium text-foreground">
+              {pending.ids.length} video asset{pending.ids.length === 1 ? "" : "s"}
+            </span>
+            . This can&apos;t be undone.
           </>
         )}
       />

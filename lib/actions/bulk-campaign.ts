@@ -213,6 +213,19 @@ export async function deleteVideoAsset(id: string) {
   return { data: dbError ? null : { ok: true }, error: dbError?.message ?? null };
 }
 
+/** Bulk delete, used for both "Delete Selected" and "Delete All" — the caller passes every id it wants gone. */
+export async function deleteVideoAssets(ids: string[]) {
+  const { error } = await requireStaff();
+  if (error) return { data: null, error };
+
+  if (ids.length === 0) return { data: { ok: true, deleted: 0 }, error: null };
+
+  const service = createServiceClient();
+  const { error: dbError } = await service.from("bulk_campaign_video_assets").delete().in("id", ids);
+
+  return { data: dbError ? null : { ok: true, deleted: ids.length }, error: dbError?.message ?? null };
+}
+
 // --- Keyword themes ---
 
 export async function listKeywordThemes() {
