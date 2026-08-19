@@ -10,6 +10,7 @@ import {
   ACOS_METRIC_KEYS,
   EXPECTED_BAND_SETTINGS_ROWS,
   EXPECTED_SCHEDULE_ROWS,
+  MAX_ACOS_PERCENT,
   MAX_BAND_TOPUP_AMOUNT,
   MAX_CAMPAIGN_BUDGET,
   MAX_DAILY_TOPUP_TOTAL,
@@ -18,7 +19,7 @@ import {
 } from "@/lib/ppc-acos-topup-constants";
 
 const BAND_SETTINGS_COLUMNS =
-  "country_code, acos_metric, band_key, max_daily_topup_total, max_campaign_budget";
+  "country_code, acos_metric, band_key, max_daily_topup_total, max_campaign_budget, enabled, min_acos, max_acos";
 const SCHEDULE_COLUMNS = "country_code, acos_metric, slot_time, band_key, topup_amount";
 
 export interface AcosBandSettings {
@@ -29,6 +30,12 @@ export interface AcosBandSettings {
   max_daily_topup_total: number;
   /** Highest daily budget any single campaign in this (metric, band) may be raised to. */
   max_campaign_budget: number;
+  /** Off = this band is skipped entirely — no top-up for a campaign whose ACOS falls in its range, and neighbouring bands do not widen to cover it. */
+  enabled: boolean;
+  /** Half-open [min_acos, max_acos). Structurally pinned to 0 on the first band ("0-10"). */
+  min_acos: number;
+  /** null = unbounded above. Structurally only ever null on the last band ("30-plus"). */
+  max_acos: number | null;
 }
 
 export interface AcosScheduleRow {
@@ -117,7 +124,13 @@ export async function updateAcosBandSettings(
   countryCode: string,
   metric: AcosMetric,
   bandKey: AcosBandKey,
-  updates: { maxDailyTopupTotal?: number; maxCampaignBudget?: number }
+  updates: {
+    maxDailyTopupTotal?: number;
+    maxCampaignBudget?: number;
+    enabled?: boolean;
+    minAcos?: number;
+    maxAcos?: number | null;
+  }
 ): Promise<{ data: AcosBandSettings | null; error: string | null }> {
   const { error } = await requireStaff();
   if (error) return { data: null, error };
@@ -128,7 +141,13 @@ export async function updateAcosBandSettings(
   if (!ACOS_BAND_KEYS.includes(bandKey)) {
     return { data: null, error: `Invalid ACOS band: ${bandKey}` };
   }
-  if (updates.maxDailyTopupTotal === undefined && updates.maxCampaignBudget === undefined) {
+  if (
+    updates.maxDailyTopupTotal === undefined &&
+    updates.maxCampaignBudget === undefined &&
+    updates.enabled === undefined &&
+    updates.minAcos === undefined &&
+    updates.maxAcos === undefined
+  ) {
     return { data: null, error: "No changes provided" };
   }
   if (
@@ -150,6 +169,48 @@ export async function updateAcosBandSettings(
       error: `Invalid max individual campaign budget: ${updates.maxCampaignBudget}`,
     };
   }
+  if (updates.enabled !== undefined && typeof updates.enabled !== "boolean") {
+    return { data: null, error: "Invalid enabled flag" };
+  }
+
+  // minAcos/maxAcos are validated as a pair, never individually: checking
+  // min < max against a value already in the DB would mean a read before this
+  // write, and that read could race another save of the same band. Since the
+  // dialog always sends the whole form, requiring both together costs nothing.
+  const hasMin = updates.minAcos !== undefined;
+  const hasMax = updates.maxAcos !== undefined;
+  if (hasMin !== hasMax) {
+    return { data: null, error: "ACOS range must be saved as a min and max together" };
+  }
+  if (hasMin) {
+    const min = updates.minAcos as number;
+    const max = updates.maxAcos as number | null;
+    const bandIndex = ACOS_BAND_KEYS.indexOf(bandKey);
+    const isFirstBand = bandIndex === 0;
+    const isLastBand = bandIndex === ACOS_BAND_KEYS.length - 1;
+
+    if (!Number.isFinite(min) || min < 0 || min > MAX_ACOS_PERCENT) {
+      return { data: null, error: `Invalid minimum ACOS: ${min}` };
+    }
+    // The outer edges are structural, not staff preferences: without them a
+    // gap at 0% or above the top band would be permanently unreachable by
+    // any band, no matter how the interior ranges are configured.
+    if (isFirstBand && min !== 0) {
+      return { data: null, error: "The first band always starts at 0%" };
+    }
+    if (isLastBand) {
+      if (max !== null) {
+        return { data: null, error: "The last band is always unbounded above" };
+      }
+    } else {
+      if (max === null || !Number.isFinite(max) || max > MAX_ACOS_PERCENT) {
+        return { data: null, error: `Invalid maximum ACOS: ${max}` };
+      }
+      if (max <= min) {
+        return { data: null, error: `Maximum ACOS (${max}%) must be above minimum (${min}%)` };
+      }
+    }
+  }
 
   const existsError = await assertCountryExists(countryCode);
   if (existsError) return { data: null, error: existsError };
@@ -162,6 +223,17 @@ export async function updateAcosBandSettings(
   }
   if (updates.maxCampaignBudget !== undefined) {
     dbUpdates.max_campaign_budget = updates.maxCampaignBudget;
+  }
+  if (updates.enabled !== undefined) {
+    dbUpdates.enabled = updates.enabled;
+  }
+  if (updates.minAcos !== undefined) {
+    dbUpdates.min_acos = updates.minAcos;
+  }
+  // maxAcos is legitimately null (unbounded top band) — test presence, never
+  // truthiness, or a real "no upper limit" write would be silently dropped.
+  if (updates.maxAcos !== undefined) {
+    dbUpdates.max_acos = updates.maxAcos;
   }
 
   const { data: after, error: updateError } = await service

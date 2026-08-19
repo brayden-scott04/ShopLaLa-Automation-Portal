@@ -162,6 +162,24 @@ directly for this feature.
 > at their defaults — `enabled=false` for every country — when removed). `ppc_acos_topup_settings`
 > and `ppc_acos_topup_log` **tables still exist in the DB**, they just have no portal UI anymore.
 
+> **Band cut-offs and the per-band on/off toggle are staff-editable**, from that same gear icon,
+> per `(country_code, acos_metric, band_key)`. The four ranges are fully independent — gaps and
+> overlaps are legal; a gap means no top-up, an overlap resolves to the first band in fixed order
+> (`0-10` → `10-20` → `20-30` → `30-plus`). Band 1's min is pinned to 0 and band 4's max is pinned
+> to unbounded (`null`); only the interior edges of all four bands, and each band's `enabled` flag,
+> are editable. A disabled band's column greys out in the grid and its stored amounts are excluded
+> from both totals, but are kept (not zeroed) so re-enabling it restores them. `acos_band()` /
+> `bands_for_metric()` in `sp_account_budget.py` (PPC-Task repo) read these edges and the toggle
+> live every run — see `formatBandLabel()` in `lib/ppc-acos-topup-constants.ts` for how a band's
+> display label is derived from its bounds.
+
+> **The two ACOS grids show 48 half-hour rows (`HALF_HOUR_SLOTS`), not the 144 ten-minute rows of
+> `ppc_topup_schedule`'s daily-cap grid.** This is a portal-UI-only change — `ppc_acos_topup_schedule`
+> still holds all 144 ten-minute rows per `(country, metric, band)`, and the external process still
+> floors to a 10-minute slot every run (`current_slot()`, unchanged). Saving a half-hour row writes
+> the entered amount into its `:00`/`:30` **head** sub-slot and `0` into the two 10-minute sub-slots
+> after it (`subSlotsFor()`), so the job's three ticks inside that half hour pay out exactly once.
+
 > **Backend status (2026-07-31): wired, running in testing mode.** The external process
 > (`LaLaGreen-PPC-Task`, sibling repo) now reads these tables live on every `/budget` run —
 > `classify_acos_bands()` in `sp_account_budget.py` looks up `ppc_acos_topup_schedule` at the
@@ -177,7 +195,8 @@ directly for this feature.
 >   `indiv_campaign_settings.py`. Don't reintroduce a dependency on that column without also
 >   restoring a UI for it.
 >
-> Requires `acos_topup_migration.sql` (in the PPC-Task repo) to have been applied.
+> Requires `acos_topup_migration.sql` **and** `acos_band_ranges_migration.sql` (both in the
+> PPC-Task repo's `sql/`) to have been applied.
 
 **`ppc_acos_topup_band_settings`** — one row per `(country_code, acos_metric, band_key)`, 4 rows
 per (country, metric), 8 per country:
@@ -189,12 +208,20 @@ per (country, metric), 8 per country:
 | `band_key` | `text` | `"0-10"` \| `"10-20"` \| `"20-30"` \| `"30-plus"` |
 | `max_daily_topup_total` | `numeric` | "Max budget" — total $ across **all** campaigns in this (metric, band), this marketplace, per day |
 | `max_campaign_budget` | `numeric` | "Max individual campaign budget" — highest daily budget one campaign in this (metric, band) may be raised to |
+| `enabled` | `bool` | Off = skipped entirely — no top-up for a campaign whose ACOS falls here, neighbouring bands don't widen to cover it. Default `true` |
+| `min_acos` | `numeric` | Half-open range start `[min_acos, max_acos)`. Pinned to `0` on `"0-10"` |
+| `max_acos` | `numeric \| null` | Half-open range end. `null` = unbounded above; only ever `null` on `"30-plus"` |
 | `updated_at` | `timestamptz` | Auto |
 
-**`ppc_acos_topup_schedule`** — the two staff-editable grids. 144 slots × 4 bands × 2 metrics =
-**1152 pre-seeded rows per `country_code`**, all seeded to `0`; only `topup_amount` is editable.
-Slots are the same 144 ten-minute labels as `ppc_topup_schedule` (`CANONICAL_SLOTS` in
-`lib/ppc-daily-cap-constants.ts`).
+Added by `acos_band_ranges_migration.sql` (PPC-Task repo, `sql/`) — backfilled to the original
+hardcoded `0/10/20/30` edges with `enabled = true`, so nothing changes until staff edit something.
+
+**`ppc_acos_topup_schedule`** — 144 slots × 4 bands × 2 metrics = **1152 pre-seeded rows per
+`country_code`**, all seeded to `0`; only `topup_amount` is editable. Slots are the same 144
+ten-minute labels as `ppc_topup_schedule` (`CANONICAL_SLOTS` in `lib/ppc-daily-cap-constants.ts`),
+and the table's row count and grain are unchanged. **The portal UI itself now edits only 48
+half-hour rows** (`HALF_HOUR_SLOTS`) — see the note above; a `topup_amount` you see on screen is
+always a slot's `:00`/`:30` head value, and its two 10-minute sub-slots are always `0`.
 
 | Column | Type | Notes |
 |---|---|---|

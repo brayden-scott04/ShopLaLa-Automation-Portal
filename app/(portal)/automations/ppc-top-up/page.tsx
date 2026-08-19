@@ -66,7 +66,12 @@ import {
 } from "@/lib/actions/ppc-acos-topup";
 import {
   ACOS_BANDS,
+  ACOS_BAND_KEYS,
   ACOS_METRICS,
+  HALF_HOUR_SLOTS,
+  currentHalfHourSlotSgt,
+  formatBandLabel,
+  subSlotsFor,
   type AcosBandKey,
   type AcosMetric,
 } from "@/lib/ppc-acos-topup-constants";
@@ -83,13 +88,6 @@ import {
 
 const chartConfig = {
   runningTotal: { label: "Cumulative cap ($)", color: "var(--color-chart-1)" },
-} satisfies ChartConfig;
-
-const acosBandChartConfig = {
-  "0-10": { label: "< 10%", color: "var(--color-chart-1)" },
-  "10-20": { label: "10% – 20%", color: "var(--color-chart-2)" },
-  "20-30": { label: "20% – 30%", color: "var(--color-chart-3)" },
-  "30-plus": { label: "30%+", color: "var(--color-chart-4)" },
 } satisfies ChartConfig;
 
 function nextUpcomingSlot(): string {
@@ -905,7 +903,13 @@ function AcosScheduleCard({
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const [settingsBand, setSettingsBand] = useState<AcosBandKey | null>(null);
-  const [bandForm, setBandForm] = useState({ maxDailyTopupTotal: "0", maxCampaignBudget: "0" });
+  const [bandForm, setBandForm] = useState({
+    maxDailyTopupTotal: "0",
+    maxCampaignBudget: "0",
+    minAcos: "0",
+    maxAcos: "",
+    enabled: true,
+  });
   const [bandError, setBandError] = useState<string | null>(null);
   const [bandPending, startBandTransition] = useTransition();
 
@@ -922,11 +926,27 @@ function AcosScheduleCard({
     });
   }
 
+  // Keyed lookup of this metric's band settings, and the position-aware label
+  // derived from each band's live DB bounds instead of a hardcoded string.
+  const bandByKey = useMemo(() => {
+    const map = {} as Record<AcosBandKey, AcosBandSettings | undefined>;
+    for (const b of bandSettings) map[b.band_key] = b;
+    return map;
+  }, [bandSettings]);
+
+  function bandLabel(bandKey: AcosBandKey): string {
+    const b = bandByKey[bandKey];
+    return b ? formatBandLabel(Number(b.min_acos), b.max_acos === null ? null : Number(b.max_acos)) : bandKey;
+  }
+
   function openBandSettings(bandKey: AcosBandKey) {
     const current = bandSettings.find((b) => b.band_key === bandKey);
     setBandForm({
       maxDailyTopupTotal: String(current?.max_daily_topup_total ?? 0),
       maxCampaignBudget: String(current?.max_campaign_budget ?? 0),
+      minAcos: String(current?.min_acos ?? 0),
+      maxAcos: current?.max_acos === null || current?.max_acos === undefined ? "" : String(current.max_acos),
+      enabled: current?.enabled ?? true,
     });
     setBandError(null);
     setSettingsBand(bandKey);
@@ -934,10 +954,22 @@ function AcosScheduleCard({
 
   function saveBandSettings() {
     if (!settingsBand) return;
+    const bandIndex = ACOS_BAND_KEYS.indexOf(settingsBand);
+    const isFirstBand = bandIndex === 0;
+    const isLastBand = bandIndex === ACOS_BAND_KEYS.length - 1;
+    const minAcos = isFirstBand ? 0 : toNumericAmount(bandForm.minAcos);
+    const maxAcos = isLastBand ? null : toNumericAmount(bandForm.maxAcos);
+    if (!isLastBand && maxAcos !== null && maxAcos <= minAcos) {
+      setBandError(`Maximum ACOS (${maxAcos}%) must be above minimum (${minAcos}%)`);
+      return;
+    }
     startBandTransition(async () => {
       const { error } = await updateAcosBandSettings(countryCode, metric, settingsBand, {
         maxDailyTopupTotal: toNumericAmount(bandForm.maxDailyTopupTotal),
         maxCampaignBudget: toNumericAmount(bandForm.maxCampaignBudget),
+        enabled: bandForm.enabled,
+        minAcos,
+        maxAcos,
       });
       if (error) {
         setBandError(error);
@@ -993,16 +1025,26 @@ function AcosScheduleCard({
       return;
     }
 
-    const previous = amounts[slot]?.[bandKey] ?? 0;
-    if (parsed === previous) {
+    // Each half-hour cell owns three 10-minute sub-slots: the head (what's
+    // displayed/edited) plus two tails that must stay 0 so the job's other
+    // two ticks in that half hour don't also pay out. If the head value is
+    // unchanged we'd normally skip the write entirely, but a stale non-zero
+    // tail is invisible on screen — the grid only ever shows the head — so
+    // retyping the same number must still fire the write to clean it up.
+    const sub = subSlotsFor(slot);
+    const previous = amounts[sub[0]]?.[bandKey] ?? 0;
+    const tailStale = sub.slice(1).some((s) => (amounts[s]?.[bandKey] ?? 0) !== 0);
+    if (parsed === previous && !tailStale) {
       clearCell(slot, bandKey);
       return;
     }
 
     startTransition(async () => {
-      const { error } = await updateAcosTopupSchedule(countryCode, metric, [
-        { slotTime: slot, bandKey, topupAmount: parsed },
-      ]);
+      const { error } = await updateAcosTopupSchedule(
+        countryCode,
+        metric,
+        sub.map((s, i) => ({ slotTime: s, bandKey, topupAmount: i === 0 ? parsed : 0 }))
+      );
       if (error) {
         setError(error);
       } else {
@@ -1013,10 +1055,15 @@ function AcosScheduleCard({
     });
   }
 
-  const dailyTotal = CANONICAL_SLOTS.reduce(
+  // Disabled bands are excluded from both totals: their stored amounts will
+  // never be paid out by the job, so folding them in would overstate the
+  // day's real exposure. The amounts themselves are left untouched, so
+  // re-enabling a band restores its totals immediately.
+  const dailyTotal = HALF_HOUR_SLOTS.reduce(
     (sum, slot) =>
       sum +
       ACOS_BANDS.reduce((bandSum, band) => {
+        if (!bandByKey[band.key]?.enabled) return bandSum;
         const raw = dirty[slot]?.[band.key];
         return bandSum + (raw !== undefined ? toNumericAmount(raw) : amounts[slot]?.[band.key] ?? 0);
       }, 0),
@@ -1025,16 +1072,27 @@ function AcosScheduleCard({
   const columnTotals = useMemo(() => {
     const totals: Record<string, number> = {};
     for (const band of ACOS_BANDS) {
-      totals[band.key] = CANONICAL_SLOTS.reduce((sum, slot) => {
+      totals[band.key] = HALF_HOUR_SLOTS.reduce((sum, slot) => {
         const raw = dirty[slot]?.[band.key];
         return sum + (raw !== undefined ? toNumericAmount(raw) : amounts[slot]?.[band.key] ?? 0);
       }, 0);
     }
     return totals;
   }, [amounts, dirty]);
+  const acosChartConfig = useMemo(
+    () =>
+      Object.fromEntries(
+        ACOS_BANDS.filter((band) => bandByKey[band.key]?.enabled).map((band) => [
+          band.key,
+          { label: bandLabel(band.key), color: band.chartColor },
+        ])
+      ) satisfies ChartConfig,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [bandByKey]
+  );
   const chartData = useMemo(
     () =>
-      CANONICAL_SLOTS.map((slot) => {
+      HALF_HOUR_SLOTS.map((slot) => {
         const point: Record<string, string | number> = { slot };
         for (const band of ACOS_BANDS) {
           const raw = dirty[slot]?.[band.key];
@@ -1045,6 +1103,26 @@ function AcosScheduleCard({
     [amounts, dirty]
   );
 
+  // Independent min/max means bands can legitimately leave a hole between
+  // them — a campaign there gets no top-up, silently, unless flagged here.
+  // Only enabled bands are checked: a disabled band is already a known,
+  // visible gap (the greyed column), not a mistake to warn about.
+  const gapWarnings = useMemo(() => {
+    const enabledBands = ACOS_BANDS.map((b) => bandByKey[b.key])
+      .filter((b): b is AcosBandSettings => !!b && b.enabled)
+      .map((b) => ({ min: Number(b.min_acos), max: b.max_acos === null ? null : Number(b.max_acos) }))
+      .sort((a, b) => a.min - b.min);
+    const warnings: string[] = [];
+    for (let i = 0; i < enabledBands.length - 1; i++) {
+      const current = enabledBands[i];
+      const next = enabledBands[i + 1];
+      if (current.max !== null && next.min > current.max) {
+        warnings.push(`${current.max}%–${next.min}%`);
+      }
+    }
+    return warnings;
+  }, [bandByKey]);
+
   return (
     <>
     <Card>
@@ -1052,7 +1130,7 @@ function AcosScheduleCard({
         <CardTitle>{label}</CardTitle>
         <CardDescription>
           Top-up applied to an out-of-budget campaign whose {label.toLowerCase()} falls in each band,
-          at each 10-minute slot.
+          at each 30-minute slot.
         </CardDescription>
       </CardHeader>
 
@@ -1060,6 +1138,12 @@ function AcosScheduleCard({
         {error && (
           <div className="mb-3 rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             {error}
+          </div>
+        )}
+
+        {!isLoading && gapWarnings.length > 0 && (
+          <div className="mb-3 rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400">
+            {gapWarnings.join(", ")} falls in no active band and will receive no top-up.
           </div>
         )}
 
@@ -1071,15 +1155,15 @@ function AcosScheduleCard({
           </div>
         ) : (
           <>
-          <ChartContainer config={acosBandChartConfig} className="mb-4 h-56 w-full">
+          <ChartContainer config={acosChartConfig} className="mb-4 h-56 w-full">
             <LineChart data={chartData}>
               <CartesianGrid vertical={false} />
-              <XAxis dataKey="slot" tickLine={false} axisLine={false} interval={11} />
+              <XAxis dataKey="slot" tickLine={false} axisLine={false} interval={3} />
               <YAxis tickLine={false} axisLine={false} width={36} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />
-              <ReferenceLine x={currentSlotSgt()} stroke="var(--color-destructive)" strokeDasharray="4 4" />
-              {ACOS_BANDS.map((band) => (
+              <ReferenceLine x={currentHalfHourSlotSgt()} stroke="var(--color-destructive)" strokeDasharray="4 4" />
+              {ACOS_BANDS.filter((band) => bandByKey[band.key]?.enabled).map((band) => (
                 <Line
                   key={band.key}
                   dataKey={band.key}
@@ -1096,40 +1180,59 @@ function AcosScheduleCard({
               <thead className="sticky top-0 bg-muted/80 backdrop-blur">
                 <tr className="border-b border-border">
                   <th className="px-3 py-2 text-left font-medium text-muted-foreground">Slot</th>
-                  {ACOS_BANDS.map((band) => (
-                    <th key={band.key} className="px-3 py-2 text-left font-medium text-muted-foreground">
+                  {ACOS_BANDS.map((band) => {
+                    const enabled = bandByKey[band.key]?.enabled ?? false;
+                    return (
+                    <th
+                      key={band.key}
+                      className={`px-3 py-2 text-left font-medium text-muted-foreground ${enabled ? "" : "bg-muted/40"}`}
+                    >
                       <div className="flex items-center gap-1">
-                        {band.label}
+                        {bandLabel(band.key)}
+                        {!enabled && (
+                          <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase text-muted-foreground">
+                            Off
+                          </span>
+                        )}
                         <button
                           onClick={() => openBandSettings(band.key)}
-                          title={`Edit ${band.label} caps`}
+                          title={`Edit ${bandLabel(band.key)} settings`}
                           className="rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
                         >
                           <Settings className="h-3.5 w-3.5" />
                         </button>
                       </div>
                       <div className="mt-1 text-xs font-normal text-muted-foreground">
-                        Total: <span className="text-foreground">${columnTotals[band.key].toFixed(2)}</span>
+                        {enabled ? (
+                          <>
+                            Total: <span className="text-foreground">${columnTotals[band.key].toFixed(2)}</span>
+                          </>
+                        ) : (
+                          "Disabled — no top-ups"
+                        )}
                       </div>
                     </th>
-                  ))}
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
-                {CANONICAL_SLOTS.map((slot, idx) => (
+                {HALF_HOUR_SLOTS.map((slot, idx) => (
                   <tr key={slot} className="border-b border-border last:border-0">
                     <td className="px-3 py-1.5 font-mono text-xs text-muted-foreground">{slot}</td>
                     {ACOS_BANDS.map((band) => {
+                      const enabled = bandByKey[band.key]?.enabled ?? false;
                       const rawDirty = dirty[slot]?.[band.key];
                       const isDirty = rawDirty !== undefined;
                       const displayValue = rawDirty ?? String(amounts[slot]?.[band.key] ?? 0);
                       const refKey = `${slot}:${band.key}`;
                       return (
-                        <td key={band.key} className="px-3 py-1.5">
+                        <td key={band.key} className={`px-3 py-1.5 ${enabled ? "" : "bg-muted/40"}`}>
                           <input
                             type="number"
                             min={0}
                             step="0.01"
+                            disabled={!enabled}
                             ref={(el) => {
                               inputRefs.current[refKey] = el;
                             }}
@@ -1143,7 +1246,7 @@ function AcosScheduleCard({
                               }
                               if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
                               e.preventDefault();
-                              const nextSlot = CANONICAL_SLOTS[e.key === "ArrowDown" ? idx + 1 : idx - 1];
+                              const nextSlot = HALF_HOUR_SLOTS[e.key === "ArrowDown" ? idx + 1 : idx - 1];
                               const nextInput = nextSlot
                                 ? inputRefs.current[`${nextSlot}:${band.key}`]
                                 : null;
@@ -1152,7 +1255,7 @@ function AcosScheduleCard({
                                 nextInput.select();
                               }
                             }}
-                            className={`w-24 rounded-md border bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring ${
+                            className={`w-24 rounded-md border bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-60 ${
                               isDirty ? "border-primary" : "border-input"
                             }`}
                           />
@@ -1187,11 +1290,10 @@ function AcosScheduleCard({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Edit {settingsBand ? ACOS_BANDS.find((b) => b.key === settingsBand)?.label : ""} caps ·{" "}
-            {label}
+            Edit {settingsBand ? bandLabel(settingsBand) : ""} · {label}
           </DialogTitle>
           <DialogDescription>
-            Caps apply only to campaigns that are out of budget and match this ACOS band.
+            Caps and range apply only to campaigns that are out of budget.
           </DialogDescription>
         </DialogHeader>
         <DialogBody className="space-y-4">
@@ -1200,6 +1302,88 @@ function AcosScheduleCard({
               {bandError}
             </div>
           )}
+
+          <label className="flex items-center justify-between gap-3 rounded-md border border-border px-3 py-2">
+            <span>
+              <span className="block text-sm font-medium">Band active</span>
+              <span className="block text-xs text-muted-foreground">
+                Off: this column is skipped entirely — campaigns in this ACOS range get no
+                top-up, and neighbouring bands do not widen to cover it.
+              </span>
+            </span>
+            <Switch
+              checked={bandForm.enabled}
+              onCheckedChange={(checked) => setBandForm((prev) => ({ ...prev, enabled: checked }))}
+            />
+          </label>
+
+          {settingsBand && (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                ACOS range
+              </label>
+              <div className="flex items-center gap-2">
+                {ACOS_BAND_KEYS.indexOf(settingsBand) === 0 ? (
+                  <>
+                    <span className="text-sm text-muted-foreground">Under</span>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.1"
+                      value={bandForm.maxAcos}
+                      onChange={(e) => setBandForm((prev) => ({ ...prev, maxAcos: e.target.value }))}
+                      className="w-24 rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                    <span className="text-sm text-muted-foreground">%</span>
+                  </>
+                ) : ACOS_BAND_KEYS.indexOf(settingsBand) === ACOS_BAND_KEYS.length - 1 ? (
+                  <>
+                    <span className="text-sm text-muted-foreground">Over</span>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.1"
+                      value={bandForm.minAcos}
+                      onChange={(e) => setBandForm((prev) => ({ ...prev, minAcos: e.target.value }))}
+                      className="w-24 rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                    <span className="text-sm text-muted-foreground">%</span>
+                  </>
+                ) : (
+                  <>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.1"
+                      value={bandForm.minAcos}
+                      onChange={(e) => setBandForm((prev) => ({ ...prev, minAcos: e.target.value }))}
+                      className="w-24 rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                    <span className="text-sm text-muted-foreground">% –</span>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.1"
+                      value={bandForm.maxAcos}
+                      onChange={(e) => setBandForm((prev) => ({ ...prev, maxAcos: e.target.value }))}
+                      className="w-24 rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                    <span className="text-sm text-muted-foreground">%</span>
+                  </>
+                )}
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Preview:{" "}
+                {formatBandLabel(
+                  ACOS_BAND_KEYS.indexOf(settingsBand) === 0 ? 0 : toNumericAmount(bandForm.minAcos),
+                  ACOS_BAND_KEYS.indexOf(settingsBand) === ACOS_BAND_KEYS.length - 1
+                    ? null
+                    : toNumericAmount(bandForm.maxAcos)
+                )}
+              </p>
+            </div>
+          )}
+
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
               Max budget ($)
