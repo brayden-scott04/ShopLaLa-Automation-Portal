@@ -6,11 +6,13 @@ import {
   deletePreset as deletePresetAction,
   saveProduct as saveProductAction,
   deleteProduct as deleteProductAction,
+  deleteProducts as deleteProductsAction,
   type CampaignProduct,
 } from "@/lib/actions/bulk-campaign";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -93,6 +95,35 @@ export default function GenerateForm({
   const [productError, setProductError] = useState<string | null>(null);
   const [pendingRemove, setPendingRemove] = useState<CampaignProduct | null>(null);
   const [removing, setRemoving] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [pendingBulkRemove, setPendingBulkRemove] = useState<{
+    ids: string[];
+    mode: "selected" | "all";
+  } | null>(null);
+  const [bulkRemoving, setBulkRemoving] = useState(false);
+
+  // Drop any selected id that no longer exists so a stale id can't linger in a bulk remove.
+  const [prevProducts, setPrevProducts] = useState(products);
+  if (products !== prevProducts) {
+    setPrevProducts(products);
+    setSelected((prev) => {
+      const next = new Set([...prev].filter((id) => products.some((p) => p.id === id)));
+      return next.size === prev.size ? prev : next;
+    });
+  }
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    setSelected((prev) => (prev.size === products.length ? new Set() : new Set(products.map((p) => p.id))));
+  }
 
   const blocks = products.map((p) => p.config as Block);
   const totalCampaigns = blocks.reduce((sum, b) => sum + campaignCountForBlock(b), 0);
@@ -148,6 +179,22 @@ export default function GenerateForm({
     await deleteProductAction(pendingRemove.id);
     setRemoving(false);
     setPendingRemove(null);
+    setSelected((prev) => {
+      if (!prev.has(pendingRemove.id)) return prev;
+      const next = new Set(prev);
+      next.delete(pendingRemove.id);
+      return next;
+    });
+    onProductsChanged();
+  }
+
+  async function confirmBulkRemove() {
+    if (!pendingBulkRemove) return;
+    setBulkRemoving(true);
+    await deleteProductsAction(pendingBulkRemove.ids);
+    setBulkRemoving(false);
+    setPendingBulkRemove(null);
+    setSelected(new Set());
     onProductsChanged();
   }
 
@@ -286,6 +333,10 @@ export default function GenerateForm({
       ) : (
         <>
           <div className="space-y-2">
+            <label className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
+              <Checkbox checked={selected.size === products.length} onCheckedChange={toggleSelectAll} />
+              Select all
+            </label>
             {products.map((p, i) => {
               const s = summarizeBlock(p.config as Block, brands, themes);
               const issues = blockIssues(p.config as Block, brands, assets, themes);
@@ -295,6 +346,7 @@ export default function GenerateForm({
                   className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5"
                 >
                   <div className="flex min-w-0 items-center gap-2">
+                    <Checkbox checked={selected.has(p.id)} onCheckedChange={() => toggleSelected(p.id)} />
                     <span className="shrink-0 font-medium">Ad {i + 1}</span>
                     <Badge variant="secondary">{s.formatLabel}</Badge>
                     <span className="truncate text-muted-foreground">
@@ -327,9 +379,27 @@ export default function GenerateForm({
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <Button variant="outline" onClick={openAdd}>
-              + Add ad
-            </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" onClick={openAdd}>
+                + Add ad
+              </Button>
+              {selected.size > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={() => setPendingBulkRemove({ ids: [...selected], mode: "selected" })}
+                  className="text-destructive hover:text-destructive"
+                >
+                  Remove Selected ({selected.size})
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                onClick={() => setPendingBulkRemove({ ids: products.map((p) => p.id), mode: "all" })}
+                className="text-destructive hover:text-destructive"
+              >
+                Remove All
+              </Button>
+            </div>
             <Button onClick={() => setShowGenerate(true)} disabled={!products.length}>
               Review &amp; generate →
             </Button>
@@ -529,6 +599,30 @@ export default function GenerateForm({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={confirmRemove} disabled={removing}>
               {removing ? "Removing…" : "Remove"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Bulk remove ads confirm */}
+      <AlertDialog
+        open={pendingBulkRemove !== null}
+        onOpenChange={(o) => !o && setPendingBulkRemove(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {pendingBulkRemove?.mode === "all" ? "Remove all ads?" : "Remove selected ads?"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This removes {pendingBulkRemove?.ids.length} ad{pendingBulkRemove?.ids.length === 1 ? "" : "s"} from
+              the bulk file. Saved SKU presets are not affected.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={confirmBulkRemove} disabled={bulkRemoving}>
+              {bulkRemoving ? "Removing…" : "Remove"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

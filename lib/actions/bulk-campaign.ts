@@ -453,3 +453,16 @@ export async function deleteProduct(id: string) {
 
   return { data: dbError ? null : { ok: true }, error: dbError?.message ?? null };
 }
+
+/** Bulk delete, used for both "Remove Selected" and "Remove All" — the caller passes every id it wants gone. */
+export async function deleteProducts(ids: string[]) {
+  const { error } = await requireStaff();
+  if (error) return { data: null, error };
+
+  if (ids.length === 0) return { data: { ok: true, deleted: 0 }, error: null };
+
+  const service = createServiceClient();
+  const { error: dbError } = await service.from("bulk_campaign_products").delete().in("id", ids);
+
+  return { data: dbError ? null : { ok: true, deleted: ids.length }, error: dbError?.message ?? null };
+}
