@@ -44,6 +44,7 @@ import {
   createKeywordTheme,
   updateKeywordTheme,
   deleteKeywordTheme,
+  deleteKeywordThemes,
   duplicateKeywordTheme,
   listPresets,
   listProducts,
@@ -660,6 +661,34 @@ function KeywordGarageSection({
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<KeywordTheme | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [pendingBulkDelete, setPendingBulkDelete] = useState<{
+    ids: string[];
+    mode: "selected" | "all";
+  } | null>(null);
+
+  // Drop any selected id that no longer exists so a stale id can't linger in a bulk delete.
+  const [prevThemes, setPrevThemes] = useState(themes);
+  if (themes !== prevThemes) {
+    setPrevThemes(themes);
+    setSelected((prev) => {
+      const next = new Set([...prev].filter((id) => themes.some((t) => t.id === id)));
+      return next.size === prev.size ? prev : next;
+    });
+  }
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    setSelected((prev) => (prev.size === themes.length ? new Set() : new Set(themes.map((t) => t.id))));
+  }
 
   function openAdd() {
     setEditing(null);
@@ -703,6 +732,18 @@ function KeywordGarageSection({
 
   async function handleDelete(t: KeywordTheme) {
     await deleteKeywordTheme(t.id);
+    setSelected((prev) => {
+      if (!prev.has(t.id)) return prev;
+      const next = new Set(prev);
+      next.delete(t.id);
+      return next;
+    });
+    onChanged();
+  }
+
+  async function handleBulkDelete(ids: string[]) {
+    await deleteKeywordThemes(ids);
+    setSelected(new Set());
     onChanged();
   }
 
@@ -721,7 +762,26 @@ function KeywordGarageSection({
       <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
         <CardTitle>Keyword Garage</CardTitle>
         <CardDescription>Reusable keyword and negative-keyword sets</CardDescription>
-        <CardAction>
+        <CardAction className="flex items-center gap-2">
+          {selected.size > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPendingBulkDelete({ ids: [...selected], mode: "selected" })}
+              className="text-destructive hover:text-destructive"
+            >
+              Delete Selected ({selected.size})
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPendingBulkDelete({ ids: themes.map((t) => t.id), mode: "all" })}
+            disabled={themes.length === 0}
+            className="text-destructive hover:text-destructive"
+          >
+            Delete All
+          </Button>
           <Button variant="outline" size="sm" onClick={openAdd}>
             + Add Theme
           </Button>
@@ -732,12 +792,17 @@ function KeywordGarageSection({
           <p className="text-sm text-muted-foreground">No keyword themes yet.</p>
         ) : (
           <div className="space-y-2">
+            <label className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
+              <Checkbox checked={selected.size === themes.length} onCheckedChange={toggleSelectAll} />
+              Select all
+            </label>
             {themes.map((t) => (
               <div
                 key={t.id}
                 className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm"
               >
                 <div className="flex min-w-0 items-center gap-2">
+                  <Checkbox checked={selected.has(t.id)} onCheckedChange={() => toggleSelected(t.id)} />
                   <span className="truncate font-medium">{t.name}</span>
                   <Badge variant="outline">{brandName(t.brand_id)}</Badge>
                 </div>
@@ -821,6 +886,22 @@ function KeywordGarageSection({
         describe={(t) => (
           <>
             This deletes the keyword theme <span className="font-medium text-foreground">{t.name}</span>.
+          </>
+        )}
+      />
+
+      <DeleteConfirm
+        item={pendingBulkDelete}
+        onCancel={() => setPendingBulkDelete(null)}
+        onConfirm={(pending) => handleBulkDelete(pending.ids)}
+        title={pendingBulkDelete?.mode === "all" ? "Delete all keyword themes?" : "Delete selected keyword themes?"}
+        describe={(pending) => (
+          <>
+            This deletes{" "}
+            <span className="font-medium text-foreground">
+              {pending.ids.length} keyword theme{pending.ids.length === 1 ? "" : "s"}
+            </span>
+            . This can&apos;t be undone.
           </>
         )}
       />
