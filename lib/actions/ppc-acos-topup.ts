@@ -13,7 +13,6 @@ import {
   MAX_ACOS_PERCENT,
   MAX_BAND_TOPUP_AMOUNT,
   MAX_CAMPAIGN_BUDGET,
-  MAX_DAILY_TOPUP_TOTAL,
   type AcosBandKey,
   type AcosMetric,
 } from "@/lib/ppc-acos-topup-constants";
@@ -150,14 +149,9 @@ export async function updateAcosBandSettings(
   ) {
     return { data: null, error: "No changes provided" };
   }
-  if (
-    updates.maxDailyTopupTotal !== undefined &&
-    (!Number.isFinite(updates.maxDailyTopupTotal) ||
-      updates.maxDailyTopupTotal < 0 ||
-      updates.maxDailyTopupTotal > MAX_DAILY_TOPUP_TOTAL)
-  ) {
-    return { data: null, error: `Invalid max top-up per day: ${updates.maxDailyTopupTotal}` };
-  }
+  // max_daily_topup_total is temporarily frozen (portal-side cap disabled) —
+  // ignored here regardless of what's passed in, so the field can't drift via
+  // this action even if a caller other than the (now-disabled) dialog sends one.
   if (
     updates.maxCampaignBudget !== undefined &&
     (!Number.isFinite(updates.maxCampaignBudget) ||
@@ -218,9 +212,7 @@ export async function updateAcosBandSettings(
   const service = createServiceClient();
 
   const dbUpdates: Record<string, unknown> = { updated_at: new Date().toISOString() };
-  if (updates.maxDailyTopupTotal !== undefined) {
-    dbUpdates.max_daily_topup_total = updates.maxDailyTopupTotal;
-  }
+  // max_daily_topup_total intentionally never written — see note above.
   if (updates.maxCampaignBudget !== undefined) {
     dbUpdates.max_campaign_budget = updates.maxCampaignBudget;
   }

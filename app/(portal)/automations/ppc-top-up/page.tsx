@@ -1393,10 +1393,8 @@ function AcosScheduleCard({
               min={0}
               step="0.01"
               value={bandForm.maxDailyTopupTotal}
-              onChange={(e) =>
-                setBandForm((prev) => ({ ...prev, maxDailyTopupTotal: e.target.value }))
-              }
-              className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              disabled
+              className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-60"
             />
           </div>
           <div>
