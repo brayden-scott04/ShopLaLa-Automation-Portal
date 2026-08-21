@@ -56,6 +56,12 @@ import {
   cancelManualTopUp,
   type ManualTopUp,
 } from "@/lib/actions/ppc-manual-topups";
+import {
+  listAcosManualTopUps,
+  createAcosManualTopUp,
+  cancelAcosManualTopUp,
+  type AcosManualTopUp,
+} from "@/lib/actions/ppc-acos-manual-topups";
 import { analyzeScheduleImport, type DetectedSheet } from "@/lib/actions/ppc-ai-import";
 import {
   getAcosTopupConfig,
@@ -107,9 +113,12 @@ function toNumericAmount(raw: string): number {
   return Number.isFinite(n) ? n : 0;
 }
 
-function statusBadgeClass(status: ManualTopUp["status"]): string {
+function statusBadgeClass(status: ManualTopUp["status"] | AcosManualTopUp["status"]): string {
   if (status === "pending") return "bg-primary/10 text-primary";
   if (status === "applied") return "bg-green-500/10 text-green-700 dark:text-green-400";
+  // "expired" means the slot passed and the top-up never paid — visually
+  // distinct from a deliberate cancel so it reads as "missed", not "undone".
+  if (status === "expired") return "bg-destructive/10 text-destructive";
   return "bg-muted text-muted-foreground";
 }
 
@@ -913,6 +922,19 @@ function AcosScheduleCard({
   const [bandError, setBandError] = useState<string | null>(null);
   const [bandPending, startBandTransition] = useTransition();
 
+  // Manual one-shot top-ups (ppc_acos_manual_topups) for this card's metric.
+  // Card-local, unlike the daily cap's page-level manualTopUps: nothing else
+  // on the page consumes these, and the card's remount-on-country `key`
+  // resets them for free.
+  const [manualTopUps, setManualTopUps] = useState<AcosManualTopUp[]>([]);
+  const [manualLoading, setManualLoading] = useState(true);
+  const [manualError, setManualError] = useState<string | null>(null);
+  const [manualBand, setManualBand] = useState<AcosBandKey | null>(null);
+  const [manualSlot, setManualSlot] = useState(nextUpcomingSlot);
+  const [manualDayOffset, setManualDayOffset] = useState(0);
+  const [manualAmount, setManualAmount] = useState("");
+  const [manualPending, startManualTransition] = useTransition();
+
   function reload() {
     startTransition(async () => {
       const { data, error } = await getAcosTopupConfig(countryCode);
@@ -923,6 +945,19 @@ function AcosScheduleCard({
         setError(null);
       }
       setIsLoading(false);
+    });
+  }
+
+  function reloadManualTopUps() {
+    startManualTransition(async () => {
+      setManualLoading(true);
+      const { data, error } = await listAcosManualTopUps(countryCode, metric);
+      if (error) setManualError(error);
+      else {
+        setManualTopUps(data ?? []);
+        setManualError(null);
+      }
+      setManualLoading(false);
     });
   }
 
@@ -984,8 +1019,86 @@ function AcosScheduleCard({
   // so this only has to fetch.
   useEffect(() => {
     reload();
+    reloadManualTopUps();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countryCode, metric]);
+
+  // --- Manual top-up widget derived state (mirrors LiveProjectionCard's) ---
+
+  const enabledBandOptions = ACOS_BANDS.filter((b) => bandByKey[b.key]?.enabled);
+  // Band settings load async, and a band can be disabled after selection —
+  // fall back to the first enabled band rather than holding a dead choice.
+  const selectedManualBand =
+    manualBand && enabledBandOptions.some((b) => b.key === manualBand)
+      ? manualBand
+      : enabledBandOptions[0]?.key ?? null;
+
+  const manualViewedDate = shiftDateSgt(todaySgt(), manualDayOffset);
+
+  const manualAvailableRows = useMemo(
+    () =>
+      // All 144 ten-minute slots, not HALF_HOUR_SLOTS: paying between the
+      // grid's half-hour head slots is the whole point of a manual top-up.
+      CANONICAL_SLOTS.map((slot) => ({ slot, date: manualViewedDate })).filter(
+        (r) => r.date > todaySgt() || (r.date === todaySgt() && r.slot > currentSlotSgt())
+      ),
+    [manualViewedDate]
+  );
+
+  const manualDayTopUps = useMemo(
+    () => manualTopUps.filter((t) => t.target_date === manualViewedDate),
+    [manualTopUps, manualViewedDate]
+  );
+
+  const [prevManualDayOffset, setPrevManualDayOffset] = useState(manualDayOffset);
+  if (prevManualDayOffset !== manualDayOffset) {
+    const movedBackward = manualDayOffset < prevManualDayOffset;
+    setPrevManualDayOffset(manualDayOffset);
+    const target = movedBackward
+      ? manualAvailableRows[manualAvailableRows.length - 1]
+      : manualAvailableRows[0];
+    if (target) setManualSlot(target.slot);
+  }
+
+  const manualSelectedIndex = Math.max(
+    manualAvailableRows.findIndex((r) => r.slot === manualSlot),
+    0
+  );
+
+  function handleManualCreate() {
+    if (!selectedManualBand) return;
+    const target = manualAvailableRows.find((r) => r.slot === manualSlot)?.date;
+    if (!target) {
+      setManualError("Pick a valid slot for this day.");
+      return;
+    }
+    const parsedAmount = Number(manualAmount);
+    startManualTransition(async () => {
+      const { error } = await createAcosManualTopUp(
+        countryCode,
+        metric,
+        selectedManualBand,
+        target,
+        manualSlot,
+        parsedAmount
+      );
+      if (error) {
+        setManualError(error);
+      } else {
+        setManualAmount("");
+        setManualError(null);
+        reloadManualTopUps();
+      }
+    });
+  }
+
+  function handleManualCancel(id: string) {
+    startManualTransition(async () => {
+      const { error } = await cancelAcosManualTopUp(id);
+      if (error) setManualError(error);
+      else reloadManualTopUps();
+    });
+  }
 
   const amounts = useMemo(() => {
     const map: Record<string, Record<string, number>> = {};
@@ -1269,6 +1382,174 @@ function AcosScheduleCard({
           </div>
           </>
         )}
+      </CardContent>
+
+      <CardContent className="space-y-4">
+        <h3 className="text-sm font-medium">Manual Top-Ups</h3>
+        <p className="text-xs text-muted-foreground">
+          One-shot extra top-up for out-of-budget campaigns whose {label.toLowerCase()} falls in
+          the chosen band, at one exact 10-minute slot — paid on top of the schedule above and
+          past the campaign-budget cap. If the slot passes with no matching campaign, it expires
+          without paying; it never carries forward.
+        </p>
+
+        {manualError && (
+          <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            {manualError}
+          </div>
+        )}
+
+        {manualAvailableRows.length === 0 ? (
+          <div className="rounded-md border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
+            This day is in the past — step to today or later to add a top-up.
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-end gap-3">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Band</label>
+              <select
+                value={selectedManualBand ?? ""}
+                onChange={(e) => setManualBand(e.target.value as AcosBandKey)}
+                disabled={enabledBandOptions.length === 0}
+                className="rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {enabledBandOptions.map((b) => (
+                  <option key={b.key} value={b.key}>
+                    {bandLabel(b.key)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Slot</label>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (manualSelectedIndex > 0) {
+                      setManualSlot(manualAvailableRows[manualSelectedIndex - 1].slot);
+                    } else if (manualDayOffset > 0) {
+                      setManualDayOffset((d) => d - 1);
+                    }
+                  }}
+                  disabled={manualSelectedIndex <= 0 && manualDayOffset <= 0}
+                  className="rounded-md px-2 py-1 text-xs font-medium hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+                  title="Previous slot"
+                >
+                  ←
+                </button>
+                <span className="min-w-28 rounded-md border border-input bg-background px-2 py-1.5 text-center text-sm">
+                  {manualAvailableRows[manualSelectedIndex]?.slot} ·{" "}
+                  {manualAvailableRows[manualSelectedIndex]?.date}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (manualSelectedIndex < manualAvailableRows.length - 1) {
+                      setManualSlot(manualAvailableRows[manualSelectedIndex + 1].slot);
+                    } else {
+                      setManualDayOffset((d) => Math.min(d + 1, 5));
+                    }
+                  }}
+                  disabled={
+                    manualSelectedIndex >= manualAvailableRows.length - 1 && manualDayOffset >= 5
+                  }
+                  className="rounded-md px-2 py-1 text-xs font-medium hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+                  title="Next slot"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                Amount ($)
+              </label>
+              <input
+                type="number"
+                min={0.01}
+                step="0.01"
+                value={manualAmount}
+                onChange={(e) => setManualAmount(e.target.value)}
+                className="w-28 rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <button
+              onClick={handleManualCreate}
+              disabled={manualPending || !manualAmount || !selectedManualBand}
+              className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Add Top-Up
+            </button>
+          </div>
+        )}
+
+        <div className="overflow-x-auto rounded-md border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Date</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Slot</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Band</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Amount</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">Status</th>
+                <th className="px-3 py-2 text-left font-medium text-muted-foreground">
+                  Created by
+                </th>
+                <th className="px-3 py-2 text-right font-medium text-muted-foreground">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {manualLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <tr key={i} className="border-b border-border last:border-0">
+                    <td className="px-3 py-2" colSpan={7}>
+                      <Skeleton className="h-4 w-full" />
+                    </td>
+                  </tr>
+                ))
+              ) : manualDayTopUps.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-3 py-6 text-center text-muted-foreground">
+                    No manual top-ups yet
+                  </td>
+                </tr>
+              ) : (
+                manualDayTopUps.map((t) => (
+                  <tr key={t.id} className="border-b border-border last:border-0">
+                    <td className="px-3 py-2 text-muted-foreground">{t.target_date}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-muted-foreground">
+                      {t.slot_time}
+                    </td>
+                    <td className="px-3 py-2 text-muted-foreground">{bandLabel(t.band_key)}</td>
+                    <td className="px-3 py-2">${Number(t.amount).toFixed(2)}</td>
+                    <td className="px-3 py-2">
+                      <span
+                        className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(
+                          t.status
+                        )}`}
+                      >
+                        {t.status}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-muted-foreground">{t.created_by_username}</td>
+                    <td className="px-3 py-2 text-right">
+                      {t.status === "pending" && isManualTopUpFuture(t) && (
+                        <button
+                          onClick={() => handleManualCancel(t.id)}
+                          disabled={manualPending}
+                          className="rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </CardContent>
 
       <CardFooter className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">

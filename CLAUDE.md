@@ -259,7 +259,89 @@ not just a record — it consumes that band's remaining daily budget. One row pe
 | `applied_at` | `timestamptz` | |
 | `marketplace_date` | `date` | Which marketplace day the cap counts this against. Written explicitly, **not** derived from `applied_at` — the US/CA day rolls over at 15:00 SGT, so grouping on `applied_at`'s calendar date would split one day in two and reset the cap early |
 | `is_test` | `bool` | `true` = simulated (`TESTING_MODE`), never sent to Amazon. Still counts toward the daily cap so the limit is exercised; purge before going live |
+| `is_manual` | `bool` | `true` = this payout came from a `ppc_acos_manual_topups` row, not the recurring grid |
+| `manual_topup_id` | `uuid` | The `ppc_acos_manual_topups` row that scheduled it; `null` for grid payouts |
 | `created_at` | `timestamptz` | Auto |
+
+**`ppc_acos_manual_topups`** — one-off staff top-ups for the ACOS section, the grids' analogue of
+the daily cap's `ppc_manual_topups`. Widget lives inside each `AcosScheduleCard` (a second
+`CardContent` between the grid and the footer, one per metric); server actions in
+`lib/actions/ppc-acos-manual-topups.ts` (`listAcosManualTopUps` / `createAcosManualTopUp` /
+`cancelAcosManualTopUp`, mirroring `ppc-manual-topups.ts` — RLS-client reads, service-client
+writes, cancel is a hard DELETE of pending+future rows). DDL:
+`LaLaGreen-PPC-Task/sql/acos_manual_topups_migration.sql`.
+
+Key semantics, different from the daily-cap widget:
+
+- A row is **(country, metric, band, target_date, slot_time, amount)** — the band picker offers
+  only **enabled** bands (create also re-checks server-side: a disabled band can never match, so
+  the row would just die), and the **slot picker offers all 144 ten-minute `CANONICAL_SLOTS`**,
+  not `HALF_HOUR_SLOTS` — paying between the grid's half-hour heads is the point of the feature.
+- **One shot, no carry-forward.** Only the backend run landing exactly on that 10-minute slot
+  (same marketplace day) consumes it, paying every OOB campaign in the band the full amount ON TOP
+  of the grid's payout and **bypassing `max_campaign_budget`**. Anything else — missed tick, no
+  matching campaign, band since disabled — and the backend flips it to **`expired`** (styled
+  destructive in `statusBadgeClass`, distinct from cancelled): "it never paid and never will".
+- Unique on `(country_code, acos_metric, band_key, target_date, slot_time)` — a duplicate insert
+  surfaces as "already scheduled for this band and slot".
+
+### Profit Analytics tables
+
+Backs `/automations/profit-analytics` (Phase 1: revenue / Amazon fees / gross margin per
+marketplace). **The portal only ever reads these** — every row is written by the sibling
+`LaLaGreen-Daily-Report` repo's `reportlib/profit_sync.py`, on its own ~2-hourly n8n schedule
+(`n8n/profit-sync.json` → `POST /sync-profit`), which is separate from that repo's unchanged
+once-daily 12:00 SGT Excel workbook job. DDL:
+`LaLaGreen-Daily-Report/Daily-Report/sql/profit_dashboard_migration.sql`.
+
+> **Settlement reports are the only source of Amazon's actual, final fees, and Amazon issues
+> them roughly every 1–2 weeks per marketplace** — not on a schedule the seller controls. The
+> 2-hourly cadence buys *latency* (a new settlement reaches the dashboard within ~2h of being
+> finalized), not freshness: most runs correctly find nothing new. There is deliberately no
+> "today's profit" figure in Phase 1 — the near-real-time estimate layer (orders-based revenue
+> with modeled fees, superseded once settlement data lands) is Phase 2.
+
+> **Amounts are stored exactly as Amazon reports them: revenue positive, fees negative.** So
+> `gross_margin = revenue + total_fees`, never a subtraction, and any "fees" number shown to
+> staff is negated at the display layer only. Gross margin is *before* product cost — there is
+> no COGS anywhere in this system yet (Phase 3), so this is explicitly **not** net profit.
+
+**`profit_daily_metrics`** — one row per `(metric_date, country_code, source, source_ref)`.
+
+| Column | Type | Notes |
+|---|---|---|
+| `metric_date` | `date` | **SGT** calendar date, not UTC — matches the rest of the portal's marketplace-day convention |
+| `country_code` | `text` | `US` \| `CA` \| `MX`. Never an `ALL` roll-up row — the Consolidated view sums across marketplaces at query time |
+| `source` | `text` | `settlement` (Phase 1) \| `estimate` (Phase 2) |
+| `source_ref` | `text` | The settlement `report_id`, or the literal `estimate`. Part of the unique key — see below |
+| `revenue` / `total_fees` / `fba_fees` / `referral_fees` / `other_fees` / `gross_margin` | `numeric` | `other_fees` is denormalized (`total_fees − fba − referral`) so the 3-way fee tile needs no join |
+| `units` / `orders` | `integer` | Gross units sold, before returns |
+
+> **`source_ref` is in the unique key because one date can legitimately receive money from two
+> different settlement reports.** Amazon can finalize concurrent settlements for the *same*
+> marketplace with overlapping periods (observed on this account: a $647.56 secondary cycle
+> sitting inside a $165,747 regular one). Keying on `(metric_date, country_code)` alone would
+> make the second report's upsert silently overwrite the first one's money. Each report instead
+> writes its own row per date and **readers SUM across `source_ref`** — additive across reports,
+> idempotent within one. Nothing may assume one row per `(date, country)`.
+
+**`profit_ingested_settlement_reports`** — `report_id` (PK) ledger, checked before any parsing
+so the ~84 no-op runs/week cost one indexed lookup. Also stores `reconciliation_delta` /
+`reconciled`: every settlement's rows must sum to its own `total-amount`, verified to the cent
+across all cached reports, so a non-zero delta means rows were dropped or misparsed and that
+period's figures are not trustworthy (surfaced as an amber banner on the page).
+
+**`profit_sync_runs`** — append-only run log (same shape as `ppc_acos_topup_log`); powers the
+"Synced Xh ago" badge. n8n alerts to Telegram **only on error/timeout** — a success ping every
+2 hours saying "0 new settlements" would be pure noise.
+
+> **Settlement date formats differ per marketplace and getting it wrong loses or misdates real
+> money.** CA reports use dotted day-first (`10.07.2026` = 10 July); US/MX use ISO
+> (`2025-07-24`). Parsing everything with pandas' default `dayfirst=False` drops `10.07.2026`
+> entirely (caught in development: 1,082 CA rows worth $4,219.84, 77% of that settlement) and,
+> worse, silently reads `05.07.2026` as **May 7** instead of 5 July. `profit_sync._parse_mixed_dates`
+> detects the format per row, the same way `settlement._parse_settlement_date` does for its own
+> dates. The reconciliation check above is what caught this — keep it.
 
 ### Supabase clients
 

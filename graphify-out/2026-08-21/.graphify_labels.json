@@ -43,17 +43,5 @@
   "41": "build.ts",
   "42": "sku-list.ts",
   "43": "tabs.tsx",
-  "44": "page-header.tsx",
-  "45": "mail.ts",
-  "46": "sku-list.ts",
-  "47": "getSession",
-  "48": "roles.ts",
-  "49": "page.tsx",
-  "50": "permissions.ts",
-  "51": "page.tsx",
-  "52": "communications.ts",
-  "53": "configuration.ts",
-  "54": "badge.tsx",
-  "55": "credentials.ts",
-  "56": "hash-password.ts"
+  "44": "page-header.tsx"
 }

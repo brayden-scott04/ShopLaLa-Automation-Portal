@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Tag, Wallet } from "lucide-react";
+import { ChartNoAxesCombined, Tag, Wallet } from "lucide-react";
 
 export interface AutomationProject {
   id: string;
@@ -48,4 +48,10 @@ export const priceChangePlans = defineProject({
   icon: Tag,
 });
 
-export const projects: AutomationProject[] = [ppcTopUp, priceChangePlans];
+export const profitAnalytics = defineProject({
+  name: "Profit Analytics",
+  description: "Revenue, Amazon fees and gross margin per marketplace, from settlement data",
+  icon: ChartNoAxesCombined,
+});
+
+export const projects: AutomationProject[] = [ppcTopUp, priceChangePlans, profitAnalytics];
