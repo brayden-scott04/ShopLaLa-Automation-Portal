@@ -23,12 +23,14 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { profitAnalytics } from "@/lib/projects";
-import {
-  getProfitOverview,
-  PROFIT_COUNTRIES,
-  type ProfitOverview,
-  type ProfitScope,
-} from "@/lib/actions/profit-analytics";
+import { getProfitOverview, type ProfitOverview } from "@/lib/actions/profit-analytics";
+// PROFIT_COUNTRIES and ProfitScope must come from the plain constants module,
+// not the "use server" actions file -- every export of a "use server" file is
+// rewritten into a server-action reference. That breaks a runtime constant
+// outright (renders as undefined client-side), and even re-exporting just the
+// *type* through that file tripped the same transform into referencing a
+// value that doesn't exist at runtime. Import both directly from here instead.
+import { PROFIT_COUNTRIES, type ProfitScope } from "@/lib/profit-analytics-constants";
 
 const RANGES = [
   { key: "30", label: "30 days", days: 30 },
@@ -43,9 +45,9 @@ const SCOPES: { key: ProfitScope; label: string }[] = [
 ];
 
 const chartConfig = {
-  revenue: { label: "Revenue", color: "var(--chart-1)" },
-  fees: { label: "Amazon fees", color: "var(--chart-2)" },
-  gross_margin: { label: "Gross margin", color: "var(--chart-3)" },
+  revenue: { label: "Revenue", color: "var(--color-chart-1)" },
+  fees: { label: "Amazon fees", color: "var(--color-chart-2)" },
+  gross_margin: { label: "Gross margin", color: "var(--color-chart-3)" },
 } satisfies ChartConfig;
 
 /**

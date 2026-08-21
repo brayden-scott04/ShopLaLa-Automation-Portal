@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getSession } from "@/lib/session";
+import { PROFIT_COUNTRIES, type ProfitCountry, type ProfitScope } from "@/lib/profit-analytics-constants";
 
 /**
  * Read side of the Profit Analytics dashboard. Everything here is populated by
@@ -11,13 +12,18 @@ import { getSession } from "@/lib/session";
  * Amounts are stored exactly as Amazon reports them in the settlement: revenue
  * positive, fees negative. So gross_margin is revenue + total_fees, and a "fees"
  * figure shown to staff is negated at the display layer, never in the data.
+ *
+ * PROFIT_COUNTRIES/ProfitCountry/ProfitScope live in lib/profit-analytics-constants.ts,
+ * not here, and are used below only as type annotations -- never re-exported
+ * from this file at all. Every export of a "use server" file is rewritten into
+ * a server-action reference by Turbopack's per-file transform, which works
+ * from syntax rather than full type information: a plain runtime constant
+ * exported here would silently become unusable client-side, and even
+ * `export type { X }` re-exporting a name that arrived via `import { type X }`
+ * (rather than being declared locally) tripped the same transform into
+ * emitting a reference to a value that doesn't exist at runtime ("X is not
+ * defined"). Importers should get these from the constants module directly.
  */
-
-export const PROFIT_COUNTRIES = ["US", "CA", "MX"] as const;
-export type ProfitCountry = (typeof PROFIT_COUNTRIES)[number];
-
-/** The marketplace selector's value: a single marketplace, or the consolidated roll-up. */
-export type ProfitScope = ProfitCountry | "ALL";
 
 export interface ProfitDailyPoint {
   metric_date: string;
