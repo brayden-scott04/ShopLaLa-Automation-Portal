@@ -5,6 +5,6 @@ export default async function ProfitAnalyticsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await assertItemAccess("automations", "profit-analytics");
+  await assertItemAccess("sales", "profit-analytics");
   return <>{children}</>;
 }

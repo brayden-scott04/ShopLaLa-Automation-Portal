@@ -51,6 +51,8 @@
   "49": "page.tsx",
   "50": "permissions.ts",
   "52": "communications.ts",
+  "53": "configuration.ts",
+  "54": "badge.tsx",
   "55": "credentials.ts",
   "56": "hash-password.ts"
 }

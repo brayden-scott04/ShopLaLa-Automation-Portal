@@ -287,12 +287,21 @@ Key semantics, different from the daily-cap widget:
 
 ### Profit Analytics tables
 
-Backs `/automations/profit-analytics` (Phase 1: revenue / Amazon fees / gross margin per
+Backs `/sales/profit-analytics` (Phase 1: revenue / Amazon fees / gross margin per
 marketplace). **The portal only ever reads these** — every row is written by the sibling
 `LaLaGreen-Daily-Report` repo's `reportlib/profit_sync.py`, on its own ~2-hourly n8n schedule
 (`n8n/profit-sync.json` → `POST /sync-profit`), which is separate from that repo's unchanged
 once-daily 12:00 SGT Excel workbook job. DDL:
 `LaLaGreen-Daily-Report/Daily-Report/sql/profit_dashboard_migration.sql`.
+
+> Editing `profit_sync.py` (or anything else under `LaLaGreen-Daily-Report`) does **not**
+> redeploy from a git push — that repo runs as a hand-uploaded Docker container on the VPS, out
+> of sync with git by design. See that repo's own `.claude/CLAUDE.md` → "Deployment (VPS)" for
+> the full upload/rebuild/verify procedure and the gotchas already hit doing it (partial
+> uploads leaving stale code, the container losing its n8n network attachment on every
+> recreate). If a session touches that repo's `.py` files, flag the redeploy need there, not
+> here — this portal's own deploy (`git push` → Vercel via GitHub Actions) is unrelated and
+> automatic.
 
 > **Settlement reports are the only source of Amazon's actual, final fees, and Amazon issues
 > them roughly every 1–2 weeks per marketplace** — not on a schedule the seller controls. The
@@ -335,6 +344,13 @@ period's figures are not trustworthy (surfaced as an amber banner on the page).
 "Synced Xh ago" badge. n8n alerts to Telegram **only on error/timeout** — a success ping every
 2 hours saying "0 new settlements" would be pure noise.
 
+> **Backend status (2026-08-22): Phase 1 live in production.** First sync (run by hand, before
+> the n8n schedule was activated) ingested all 20 settlement reports visible on the account —
+> US/CA/MX, spanning 2025-05-15 to 2026-08-21 — every one reconciled to the cent. A second
+> immediate re-run ingested 0 (idempotency confirmed: same report list, all already in the
+> ledger). Phase 1.5 (goals), Phase 2 (fee drill-down + orders-based estimate), and Phase 3
+> (COGS) are not built yet.
+
 > **Settlement date formats differ per marketplace and getting it wrong loses or misdates real
 > money.** CA reports use dotted day-first (`10.07.2026` = 10 July); US/MX use ISO
 > (`2025-07-24`). Parsing everything with pandas' default `dayfirst=False` drops `10.07.2026`
@@ -368,6 +384,22 @@ const { data, error } = await listStaff();
 ```
 
 Admin-only actions (`listStaff`, `createStaffMember`, `updateStaffMember`, `resetPassword`, `deleteStaffMember`) call `requireAdmin()` internally and return `{ data: null, error: "Unauthorized" }` if the session role isn't `"admin"`. `getStaffDirectory` (backs `/team`) and `getCurrentUser` only require a valid session — any authenticated staff member, not just admins.
+
+> **Never export a plain constant (or a re-exported type) from a `"use server"` file for a
+> client component to import.** Every export of a `"use server"` module is rewritten into a
+> server-action reference by Turbopack's per-file transform, which works from syntax, not full
+> type information. Hit this twice building Profit Analytics: exporting `PROFIT_COUNTRIES`
+> (a plain array) directly from `lib/actions/profit-analytics.ts` rendered as `undefined`
+> client-side (`.map is not a function`) — `tsc`/`eslint`/`next build` all passed anyway, since
+> nothing about this is a compile error, only a runtime one a browser actually evaluating the
+> bundle exposes. The fix (moving `PROFIT_COUNTRIES` to a plain sibling module,
+> `lib/profit-analytics-constants.ts`) then tripped a second variant: re-exporting an *imported*
+> type via `export type { X }` (as opposed to a type declared locally in the same file) produced
+> a `ReferenceError: X is not defined` inside the compiled server-actions module. Locally
+> declared types/interfaces (`export interface Foo {}`) are always safe to export from a
+> `"use server"` file — they emit no JS at all — but constants and re-exported imported types
+> are not. Put those in a separate, non-`"use server"` module and have every consumer (action
+> file included) import from there directly, never through the action file.
 
 ---
 
@@ -473,6 +505,14 @@ Create `app/(portal)/tools/label-printer/page.tsx` following the same `<PageHead
 
 ---
 
+## Adding a New Sales Item
+
+A third nav category, "Sales", sits **above** Automations in both the sidebar and dashboard, sourced from `lib/sales.ts`. Same pattern again: `SalesItem` / `defineSalesItem()` / `salesItems` array, route prefix `/sales/<id>`, guarded per-page via `assertItemAccess("sales", "<id>")` in that page's own `layout.tsx`. Currently holds only Profit Analytics (`app/(portal)/sales/profit-analytics/`). Follow the same two-step pattern as "Adding a New Tool" above, importing from `@/lib/sales` instead.
+
+Adding a category is bigger than adding an item within one: it also means a new entry in `Section` (`lib/roles.ts`), `PermissionSet`/`EMPTY_PERMISSIONS`/`toPermissionSet()` (`lib/roles.ts`), `ALL_ITEM_IDS`/`sanitizePermissions()` (`lib/permissions.ts`), the sidebar's per-section render block (`components/sidebar-content.tsx`), the dashboard's `accessGroups` array (`app/(portal)/dashboard/page.tsx`), and the admin permissions editor's `ACCESS_SECTIONS` (`app/(portal)/admin/users/page.tsx`) — all touched in lockstep when Sales was added. No DB migration is needed for a new section: `staff.permissions` is untyped jsonb and `toPermissionSet()` defaults any missing key to `[]`.
+
+---
+
 ## Page Header Component
 
 Every automation page uses `<PageHeader>` at the top:
@@ -511,6 +551,7 @@ Below `<PageHeader>`, each page is entirely custom — there are no shared layou
 |---|---|
 | `lib/projects.ts` | Add/edit automation projects |
 | `lib/tools.ts` | Add/edit tools (separate "Tools" nav section) |
+| `lib/sales.ts` | Add/edit sales items (separate "Sales" nav section, above Automations) |
 | `lib/session.ts` | JWT sign/verify/cookie helpers |
 | `lib/supabase/server.ts` | Supabase client for server-side code |
 | `lib/supabase/client.ts` | Supabase client for browser code |

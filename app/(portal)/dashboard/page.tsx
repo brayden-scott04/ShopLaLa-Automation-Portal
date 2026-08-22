@@ -3,6 +3,7 @@ import { ppcTopUp, projects } from "@/lib/projects";
 import { tools } from "@/lib/tools";
 import { configurationItems } from "@/lib/configuration";
 import { communicationItems } from "@/lib/communications";
+import { salesItems } from "@/lib/sales";
 import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { filterItems, isAllowed } from "@/lib/roles";
@@ -15,10 +16,11 @@ export default async function DashboardPage() {
   const { role, permissions } = await getMyPermissions();
 
   const accessGroups = [
-    { label: "Automations", items: filterItems("automations", projects, role, permissions) },
-    { label: "Tools", items: filterItems("tools", tools, role, permissions) },
-    { label: "Configuration", items: filterItems("configuration", configurationItems, role, permissions) },
-    { label: "Communications", items: filterItems("communications", communicationItems, role, permissions) },
+    { label: "Sales", group: "Sales", items: filterItems("sales", salesItems, role, permissions) },
+    { label: "Automations", group: "Automation", items: filterItems("automations", projects, role, permissions) },
+    { label: "Tools", group: "Tool", items: filterItems("tools", tools, role, permissions) },
+    { label: "Configuration", group: "Configuration", items: filterItems("configuration", configurationItems, role, permissions) },
+    { label: "Communications", group: "Communication", items: filterItems("communications", communicationItems, role, permissions) },
   ].filter((group) => group.items.length > 0);
 
   const hasAnyAccess = accessGroups.length > 0;
@@ -48,7 +50,7 @@ export default async function DashboardPage() {
         {hasAnyAccess ? (
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {accessGroups
-              .flatMap((g) => g.items.map((item) => ({ ...item, group: g.label.replace(/s$/, "") })))
+              .flatMap((g) => g.items.map((item) => ({ ...item, group: g.group })))
               .map((item) => {
                 const Icon = item.icon;
                 return (

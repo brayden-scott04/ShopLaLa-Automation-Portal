@@ -22,7 +22,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { profitAnalytics } from "@/lib/projects";
+import { profitAnalytics } from "@/lib/sales";
 import { getProfitOverview, type ProfitOverview } from "@/lib/actions/profit-analytics";
 // PROFIT_COUNTRIES and ProfitScope must come from the plain constants module,
 // not the "use server" actions file -- every export of a "use server" file is

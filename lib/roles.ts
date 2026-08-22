@@ -25,13 +25,14 @@ export const ROLE_LABELS: Record<Role, string> = {
 };
 
 /** The gated navigation sections. Keys match route prefixes and permission keys. */
-export type Section = "automations" | "tools" | "configuration" | "communications";
+export type Section = "automations" | "tools" | "configuration" | "communications" | "sales";
 
 export const SECTIONS: Section[] = [
   "automations",
   "tools",
   "configuration",
   "communications",
+  "sales",
 ];
 
 /** Per-account access grants: arrays of item slug ids per section. */
@@ -40,6 +41,7 @@ export interface PermissionSet {
   tools: string[];
   configuration: string[];
   communications: string[];
+  sales: string[];
 }
 
 export const EMPTY_PERMISSIONS: PermissionSet = {
@@ -47,6 +49,7 @@ export const EMPTY_PERMISSIONS: PermissionSet = {
   tools: [],
   configuration: [],
   communications: [],
+  sales: [],
 };
 
 /** Admins + moderators can create users and reset user passwords. */
@@ -97,5 +100,6 @@ export function toPermissionSet(value: unknown): PermissionSet {
     tools: pick("tools"),
     configuration: pick("configuration"),
     communications: pick("communications"),
+    sales: pick("sales"),
   };
 }

@@ -14,6 +14,7 @@ import { projects } from "@/lib/projects";
 import { tools } from "@/lib/tools";
 import { configurationItems } from "@/lib/configuration";
 import { communicationItems } from "@/lib/communications";
+import { salesItems } from "@/lib/sales";
 
 /** Every known item id per section — the universe an admin can grant from. */
 export const ALL_ITEM_IDS: Record<Section, string[]> = {
@@ -21,6 +22,7 @@ export const ALL_ITEM_IDS: Record<Section, string[]> = {
   tools: tools.map((t) => t.id),
   configuration: configurationItems.map((c) => c.id),
   communications: communicationItems.map((c) => c.id),
+  sales: salesItems.map((s) => s.id),
 };
 
 /**
@@ -38,6 +40,7 @@ export function sanitizePermissions(input: unknown): PermissionSet {
     communications: parsed.communications.filter((id) =>
       ALL_ITEM_IDS.communications.includes(id)
     ),
+    sales: parsed.sales.filter((id) => ALL_ITEM_IDS.sales.includes(id)),
   };
 }
 

@@ -14,6 +14,7 @@ import { projects } from "@/lib/projects";
 import { tools } from "@/lib/tools";
 import { configurationItems } from "@/lib/configuration";
 import { communicationItems } from "@/lib/communications";
+import { salesItems } from "@/lib/sales";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "@/components/user-menu";
 import { Separator } from "@/components/ui/separator";
@@ -39,6 +40,7 @@ export function SidebarContent({
 }) {
   const pathname = usePathname();
 
+  const allowedSales = filterItems("sales", salesItems, role, permissions);
   const allowedProjects = filterItems("automations", projects, role, permissions);
   const allowedTools = filterItems("tools", tools, role, permissions);
   const allowedConfiguration = filterItems(
@@ -131,6 +133,35 @@ export function SidebarContent({
           <Users2 className="size-4 shrink-0" />
           {!collapsed && "Team"}
         </Link>
+
+        {allowedSales.length > 0 &&
+          (collapsed ? (
+            <Separator className="my-2" />
+          ) : (
+            <p className="px-3 pt-4 pb-1 text-xs font-medium text-muted-foreground">
+              Sales
+            </p>
+          ))}
+
+        {allowedSales.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.id}
+              href={item.href}
+              title={collapsed ? item.name : undefined}
+              className={cn(
+                "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
+                collapsed && "justify-center px-2"
+              )}
+            >
+              <Icon className="size-4 shrink-0" />
+              {!collapsed && (
+                <span className="flex-1 truncate">{item.name}</span>
+              )}
+            </Link>
+          );
+        })}
 
         {allowedProjects.length > 0 &&
           (collapsed ? (
