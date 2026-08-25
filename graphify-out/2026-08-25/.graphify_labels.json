@@ -50,8 +50,10 @@
   "48": "roles.ts",
   "49": "page.tsx",
   "50": "permissions.ts",
+  "51": "button.tsx",
   "52": "communications.ts",
   "53": "communications.ts",
+  "54": "projects.ts",
   "55": "credentials.ts",
   "56": "hash-password.ts",
   "57": "sales.ts"

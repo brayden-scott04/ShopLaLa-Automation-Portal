@@ -610,7 +610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page",
-      "community": 42,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -630,7 +630,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_masterlistpage",
-      "community": 42,
+      "community": 8,
       "norm_label": "masterlistpage()"
     },
     {
@@ -640,7 +640,7 @@
       "source_location": "L215",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_sortableskurow",
-      "community": 42,
+      "community": 8,
       "norm_label": "sortableskurow()"
     },
     {
@@ -650,7 +650,7 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_addskussheet",
-      "community": 42,
+      "community": 8,
       "norm_label": "addskussheet()"
     },
     {
@@ -660,7 +660,7 @@
       "source_location": "L336",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_importskussheet",
-      "community": 42,
+      "community": 8,
       "norm_label": "importskussheet()"
     },
     {
@@ -700,7 +700,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_layout",
-      "community": 52,
+      "community": 9,
       "norm_label": "layout.tsx"
     },
     {
@@ -747,7 +747,7 @@
       "label": "RANGES",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L56",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_ranges",
       "community": 44,
@@ -757,7 +757,7 @@
       "label": "SCOPES",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L63",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_scopes",
       "community": 44,
@@ -767,7 +767,7 @@
       "label": "sgtDate()",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L79",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_sgtdate",
       "community": 44,
@@ -777,7 +777,7 @@
       "label": "money()",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L86",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_money",
       "community": 44,
@@ -787,7 +787,7 @@
       "label": "relativeTime()",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L94",
+      "source_location": "L95",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_relativetime",
       "community": 44,
@@ -797,7 +797,7 @@
       "label": "ProfitAnalyticsPage()",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L105",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "community": 44,
@@ -807,7 +807,7 @@
       "label": "StatTile()",
       "file_type": "code",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L557",
+      "source_location": "L558",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_stattile",
       "community": 44,
@@ -850,7 +850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_team_page",
-      "community": 48,
+      "community": 43,
       "norm_label": "page.tsx"
     },
     {
@@ -860,7 +860,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "app_portal_team_page_directoryentry",
-      "community": 48,
+      "community": 43,
       "norm_label": "directoryentry"
     },
     {
@@ -870,7 +870,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_portal_team_page_teampage",
-      "community": 48,
+      "community": 43,
       "norm_label": "teampage()"
     },
     {
@@ -1060,7 +1060,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page",
-      "community": 47,
+      "community": 42,
       "norm_label": "page.tsx"
     },
     {
@@ -1070,7 +1070,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_countries",
-      "community": 47,
+      "community": 42,
       "norm_label": "countries"
     },
     {
@@ -1080,7 +1080,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_wizardstep",
-      "community": 47,
+      "community": 42,
       "norm_label": "wizardstep"
     },
     {
@@ -1090,7 +1090,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_steps",
-      "community": 47,
+      "community": 42,
       "norm_label": "steps"
     },
     {
@@ -1100,7 +1100,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_bulkcampaignuploadpage",
-      "community": 47,
+      "community": 42,
       "norm_label": "bulkcampaignuploadpage()"
     },
     {
@@ -1110,7 +1110,7 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_brandssection",
-      "community": 47,
+      "community": 42,
       "norm_label": "brandssection()"
     },
     {
@@ -1120,7 +1120,7 @@
       "source_location": "L388",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_assetssection",
-      "community": 47,
+      "community": 42,
       "norm_label": "assetssection()"
     },
     {
@@ -1130,7 +1130,7 @@
       "source_location": "L646",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_keywordgaragesection",
-      "community": 47,
+      "community": 42,
       "norm_label": "keywordgaragesection()"
     },
     {
@@ -1140,7 +1140,7 @@
       "source_location": "L913",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_page_deleteconfirm",
-      "community": 47,
+      "community": 42,
       "norm_label": "deleteconfirm()"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route",
-      "community": 2,
+      "community": 52,
       "norm_label": "route.ts"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route_post",
-      "community": 2,
+      "community": 52,
       "norm_label": "post()"
     },
     {
@@ -1770,7 +1770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_login_form",
-      "community": 8,
+      "community": 51,
       "norm_label": "login-form.tsx"
     },
     {
@@ -1780,7 +1780,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_login_form_loginform",
-      "community": 8,
+      "community": 51,
       "norm_label": "loginform()"
     },
     {
@@ -1860,7 +1860,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_sidebar_sidebar",
-      "community": 52,
+      "community": 9,
       "norm_label": "sidebar()"
     },
     {
@@ -1870,7 +1870,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_topbar",
-      "community": 42,
+      "community": 9,
       "norm_label": "topbar.tsx"
     },
     {
@@ -1880,7 +1880,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_topbar_topbar",
-      "community": 52,
+      "community": 9,
       "norm_label": "topbar()"
     },
     {
@@ -1950,7 +1950,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogheader",
-      "community": 42,
+      "community": 47,
       "norm_label": "alertdialogheader()"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogtitle",
-      "community": 42,
+      "community": 8,
       "norm_label": "alertdialogtitle()"
     },
     {
@@ -2120,7 +2120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_button",
-      "community": 8,
+      "community": 51,
       "norm_label": "button.tsx"
     },
     {
@@ -2130,7 +2130,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_ui_button_buttonvariants",
-      "community": 8,
+      "community": 51,
       "norm_label": "buttonvariants"
     },
     {
@@ -2140,7 +2140,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "components_ui_button_button",
-      "community": 8,
+      "community": 51,
       "norm_label": "button()"
     },
     {
@@ -2660,7 +2660,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_input",
-      "community": 47,
+      "community": 51,
       "norm_label": "input.tsx"
     },
     {
@@ -2670,7 +2670,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_ui_input_input",
-      "community": 47,
+      "community": 51,
       "norm_label": "input()"
     },
     {
@@ -2680,7 +2680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_label",
-      "community": 8,
+      "community": 51,
       "norm_label": "label.tsx"
     },
     {
@@ -2690,7 +2690,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_label_label",
-      "community": 8,
+      "community": 51,
       "norm_label": "label()"
     },
     {
@@ -2730,7 +2730,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_separator",
-      "community": 9,
+      "community": 11,
       "norm_label": "separator.tsx"
     },
     {
@@ -2740,7 +2740,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_separator_separator",
-      "community": 9,
+      "community": 11,
       "norm_label": "separator()"
     },
     {
@@ -2780,7 +2780,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "components_ui_sheet_sheetclose",
-      "community": 42,
+      "community": 47,
       "norm_label": "sheetclose()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "components_ui_sheet_sheetoverlay",
-      "community": 42,
+      "community": 11,
       "norm_label": "sheetoverlay()"
     },
     {
@@ -2860,7 +2860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_skeleton",
-      "community": 48,
+      "community": 8,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -2870,7 +2870,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_ui_skeleton_skeleton",
-      "community": 48,
+      "community": 8,
       "norm_label": "skeleton()"
     },
     {
@@ -4280,7 +4280,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans",
-      "community": 24,
+      "community": 4,
       "norm_label": "price-change-plans.ts"
     },
     {
@@ -4290,7 +4290,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_pricetype",
-      "community": 24,
+      "community": 4,
       "norm_label": "pricetype"
     },
     {
@@ -4300,7 +4300,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_priceplan",
-      "community": 24,
+      "community": 0,
       "norm_label": "priceplan"
     },
     {
@@ -4310,7 +4310,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_requirestaff",
-      "community": 24,
+      "community": 4,
       "norm_label": "requirestaff()"
     },
     {
@@ -4320,7 +4320,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_requireplanaccess",
-      "community": 24,
+      "community": 4,
       "norm_label": "requireplanaccess()"
     },
     {
@@ -4330,7 +4330,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_listpriceplans",
-      "community": 24,
+      "community": 4,
       "norm_label": "listpriceplans()"
     },
     {
@@ -4340,7 +4340,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_applymanualstep",
-      "community": 24,
+      "community": 4,
       "norm_label": "applymanualstep()"
     },
     {
@@ -4350,7 +4350,7 @@
       "source_location": "L164",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_createpriceplan",
-      "community": 24,
+      "community": 4,
       "norm_label": "createpriceplan()"
     },
     {
@@ -4360,7 +4360,7 @@
       "source_location": "L258",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_createbulkpriceplans",
-      "community": 24,
+      "community": 4,
       "norm_label": "createbulkpriceplans()"
     },
     {
@@ -4370,7 +4370,7 @@
       "source_location": "L365",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_updatepriceplan",
-      "community": 24,
+      "community": 4,
       "norm_label": "updatepriceplan()"
     },
     {
@@ -4380,7 +4380,7 @@
       "source_location": "L409",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_cancelpriceplans",
-      "community": 24,
+      "community": 4,
       "norm_label": "cancelpriceplans()"
     },
     {
@@ -4724,10 +4724,30 @@
       "norm_label": "profit-goals.ts"
     },
     {
-      "label": "GOAL_SCOPES",
+      "label": "GoalMetric",
+      "file_type": "code",
+      "source_file": "lib/actions/profit-goals.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "lib_actions_profit_goals_goalmetric",
+      "community": 44,
+      "norm_label": "goalmetric"
+    },
+    {
+      "label": "GOAL_METRICS",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
       "source_location": "L21",
+      "_origin": "ast",
+      "id": "lib_actions_profit_goals_goal_metrics",
+      "community": 44,
+      "norm_label": "goal_metrics"
+    },
+    {
+      "label": "GOAL_SCOPES",
+      "file_type": "code",
+      "source_file": "lib/actions/profit-goals.ts",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_goal_scopes",
       "community": 44,
@@ -4737,7 +4757,7 @@
       "label": "ProfitGoal",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_profitgoal",
       "community": 44,
@@ -4747,7 +4767,7 @@
       "label": "GoalProgress",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_goalprogress",
       "community": 44,
@@ -4757,7 +4777,7 @@
       "label": "MetricSumRow",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_metricsumrow",
       "community": 44,
@@ -4767,7 +4787,7 @@
       "label": "requireStaff()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L54",
+      "source_location": "L55",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_requirestaff",
       "community": 44,
@@ -4777,7 +4797,7 @@
       "label": "num()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L60",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_num",
       "community": 44,
@@ -4787,7 +4807,7 @@
       "label": "isValidDate()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L65",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_isvaliddate",
       "community": 44,
@@ -4797,7 +4817,7 @@
       "label": "listGoals()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L69",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_listgoals",
       "community": 44,
@@ -4807,7 +4827,7 @@
       "label": "createGoal()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L89",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_creategoal",
       "community": 44,
@@ -4817,7 +4837,7 @@
       "label": "updateGoal()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L145",
+      "source_location": "L146",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_updategoal",
       "community": 44,
@@ -4827,7 +4847,7 @@
       "label": "deleteGoal()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L170",
+      "source_location": "L171",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_deletegoal",
       "community": 44,
@@ -4837,7 +4857,7 @@
       "label": "sumActualForMetric()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L196",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_sumactualformetric",
       "community": 44,
@@ -4847,7 +4867,7 @@
       "label": "getGoalProgress()",
       "file_type": "code",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L245",
+      "source_location": "L246",
       "_origin": "ast",
       "id": "lib_actions_profit_goals_getgoalprogress",
       "community": 44,
@@ -4860,7 +4880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_sku_list",
-      "community": 4,
+      "community": 46,
       "norm_label": "sku-list.ts"
     },
     {
@@ -4870,7 +4890,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_actions_sku_list_requirestaff",
-      "community": 4,
+      "community": 46,
       "norm_label": "requirestaff()"
     },
     {
@@ -4880,7 +4900,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "lib_actions_sku_list_sku",
-      "community": 42,
+      "community": 8,
       "norm_label": "sku"
     },
     {
@@ -4890,7 +4910,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_actions_sku_list_listskus",
-      "community": 4,
+      "community": 46,
       "norm_label": "listskus()"
     },
     {
@@ -4900,7 +4920,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "lib_actions_sku_list_addskus",
-      "community": 4,
+      "community": 46,
       "norm_label": "addskus()"
     },
     {
@@ -4910,7 +4930,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "lib_actions_sku_list_replaceskus",
-      "community": 4,
+      "community": 46,
       "norm_label": "replaceskus()"
     },
     {
@@ -4920,7 +4940,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "lib_actions_sku_list_reorderskus",
-      "community": 4,
+      "community": 46,
       "norm_label": "reorderskus()"
     },
     {
@@ -4930,7 +4950,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "lib_actions_sku_list_deletesku",
-      "community": 4,
+      "community": 46,
       "norm_label": "deletesku()"
     },
     {
@@ -4940,7 +4960,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "lib_actions_sku_list_sku_hints",
-      "community": 4,
+      "community": 46,
       "norm_label": "sku_hints"
     },
     {
@@ -4950,7 +4970,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "lib_actions_sku_list_status_hints",
-      "community": 4,
+      "community": 46,
       "norm_label": "status_hints"
     },
     {
@@ -4960,7 +4980,7 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "lib_actions_sku_list_inactive_keywords",
-      "community": 4,
+      "community": 46,
       "norm_label": "inactive_keywords"
     },
     {
@@ -4970,7 +4990,7 @@
       "source_location": "L186",
       "_origin": "ast",
       "id": "lib_actions_sku_list_normalizeheader",
-      "community": 4,
+      "community": 46,
       "norm_label": "normalizeheader()"
     },
     {
@@ -4980,7 +5000,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "lib_actions_sku_list_findcolumn",
-      "community": 4,
+      "community": 46,
       "norm_label": "findcolumn()"
     },
     {
@@ -4990,7 +5010,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "lib_actions_sku_list_isinactive",
-      "community": 4,
+      "community": 46,
       "norm_label": "isinactive()"
     },
     {
@@ -5000,7 +5020,7 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "lib_actions_sku_list_columnmapping",
-      "community": 4,
+      "community": 46,
       "norm_label": "columnmapping"
     },
     {
@@ -5010,7 +5030,7 @@
       "source_location": "L212",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectcolumnheuristically",
-      "community": 4,
+      "community": 46,
       "norm_label": "detectcolumnheuristically()"
     },
     {
@@ -5020,7 +5040,7 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectstatuscolumnheuristically",
-      "community": 4,
+      "community": 46,
       "norm_label": "detectstatuscolumnheuristically()"
     },
     {
@@ -5030,7 +5050,7 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "lib_actions_sku_list_columndetectschema",
-      "community": 4,
+      "community": 46,
       "norm_label": "columndetectschema"
     },
     {
@@ -5040,7 +5060,7 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectcolumnwithai",
-      "community": 4,
+      "community": 46,
       "norm_label": "detectcolumnwithai()"
     },
     {
@@ -5050,7 +5070,7 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectedskusheet",
-      "community": 4,
+      "community": 46,
       "norm_label": "detectedskusheet"
     },
     {
@@ -5060,7 +5080,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "lib_actions_sku_list_extractskusfromsheet",
-      "community": 4,
+      "community": 46,
       "norm_label": "extractskusfromsheet()"
     },
     {
@@ -5070,7 +5090,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "lib_actions_sku_list_parseskuexcel",
-      "community": 4,
+      "community": 46,
       "norm_label": "parseskuexcel()"
     },
     {
@@ -5180,7 +5200,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "lib_actions_staff_changeownpassword",
-      "community": 52,
+      "community": 49,
       "norm_label": "changeownpassword()"
     },
     {
@@ -5580,7 +5600,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplacecode",
-      "community": 24,
+      "community": 0,
       "norm_label": "marketplacecode"
     },
     {
@@ -5670,7 +5690,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "lib_amazon_sp_api_skudetail",
-      "community": 42,
+      "community": 8,
       "norm_label": "skudetail"
     },
     {
@@ -6070,7 +6090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_permissions",
-      "community": 9,
+      "community": 50,
       "norm_label": "permissions.ts"
     },
     {
@@ -6080,7 +6100,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_permissions_all_item_ids",
-      "community": 9,
+      "community": 50,
       "norm_label": "all_item_ids"
     },
     {
@@ -6090,7 +6110,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_permissions_sanitizepermissions",
-      "community": 49,
+      "community": 50,
       "norm_label": "sanitizepermissions()"
     },
     {
@@ -6404,43 +6424,13 @@
       "norm_label": "profitscope"
     },
     {
-      "label": "profit-goals-constants.ts",
-      "file_type": "code",
-      "source_file": "lib/profit-goals-constants.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_profit_goals_constants",
-      "community": 44,
-      "norm_label": "profit-goals-constants.ts"
-    },
-    {
-      "label": "GoalMetric",
-      "file_type": "code",
-      "source_file": "lib/profit-goals-constants.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "lib_profit_goals_constants_goalmetric",
-      "community": 44,
-      "norm_label": "goalmetric"
-    },
-    {
-      "label": "GOAL_METRICS",
-      "file_type": "code",
-      "source_file": "lib/profit-goals-constants.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "lib_profit_goals_constants_goal_metrics",
-      "community": 44,
-      "norm_label": "goal_metrics"
-    },
-    {
       "label": "projects.ts",
       "file_type": "code",
       "source_file": "lib/projects.ts",
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_projects",
-      "community": 43,
+      "community": 54,
       "norm_label": "projects.ts"
     },
     {
@@ -6450,7 +6440,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_projects_automationproject",
-      "community": 43,
+      "community": 54,
       "norm_label": "automationproject"
     },
     {
@@ -6460,7 +6450,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_projects_projectinput",
-      "community": 43,
+      "community": 54,
       "norm_label": "projectinput"
     },
     {
@@ -6470,7 +6460,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_projects_slugify",
-      "community": 43,
+      "community": 54,
       "norm_label": "slugify()"
     },
     {
@@ -6480,7 +6470,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_projects_defineproject",
-      "community": 43,
+      "community": 54,
       "norm_label": "defineproject()"
     },
     {
@@ -6500,7 +6490,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_projects_pricechangeplans",
-      "community": 43,
+      "community": 54,
       "norm_label": "pricechangeplans"
     },
     {
@@ -6510,7 +6500,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_projects_projects",
-      "community": 43,
+      "community": 54,
       "norm_label": "projects"
     },
     {
@@ -6550,7 +6540,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_roles_role_labels",
-      "community": 8,
+      "community": 43,
       "norm_label": "role_labels"
     },
     {
@@ -6640,7 +6630,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "lib_roles_filteritems",
-      "community": 52,
+      "community": 9,
       "norm_label": "filteritems()"
     },
     {
@@ -6650,7 +6640,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "lib_roles_topermissionset",
-      "community": 9,
+      "community": 50,
       "norm_label": "topermissionset()"
     },
     {
@@ -6870,7 +6860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_tools",
-      "community": 46,
+      "community": 43,
       "norm_label": "tools.ts"
     },
     {
@@ -6880,7 +6870,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_tools_automationtool",
-      "community": 46,
+      "community": 43,
       "norm_label": "automationtool"
     },
     {
@@ -6890,7 +6880,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_tools_toolinput",
-      "community": 46,
+      "community": 43,
       "norm_label": "toolinput"
     },
     {
@@ -6900,7 +6890,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_tools_slugify",
-      "community": 46,
+      "community": 43,
       "norm_label": "slugify()"
     },
     {
@@ -6910,7 +6900,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_tools_definetool",
-      "community": 46,
+      "community": 43,
       "norm_label": "definetool()"
     },
     {
@@ -6920,7 +6910,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_tools_bulkcampaignupload",
-      "community": 46,
+      "community": 43,
       "norm_label": "bulkcampaignupload"
     },
     {
@@ -6930,7 +6920,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_tools_tools",
-      "community": 46,
+      "community": 43,
       "norm_label": "tools"
     },
     {
@@ -7520,7 +7510,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "package_dependencies_xlsx",
-      "community": 4,
+      "community": 41,
       "norm_label": "xlsx"
     },
     {
@@ -13404,7 +13394,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L86",
+      "source_location": "L87",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_money",
@@ -13414,7 +13404,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L105",
+      "source_location": "L106",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_profitanalyticspage",
@@ -13424,7 +13414,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L56",
+      "source_location": "L57",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_ranges",
@@ -13434,7 +13424,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L94",
+      "source_location": "L95",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_relativetime",
@@ -13444,7 +13434,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L63",
+      "source_location": "L64",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_scopes",
@@ -13454,7 +13444,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_sgtdate",
@@ -13464,7 +13454,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L557",
+      "source_location": "L558",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "app_portal_sales_profit_analytics_page_stattile",
@@ -13896,6 +13886,28 @@
       "source_location": "L39",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
+      "target": "lib_actions_profit_goals_goal_metrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "app_portal_sales_profit_analytics_page",
+      "target": "lib_actions_profit_goals_goalmetric",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "app_portal_sales_profit_analytics_page",
       "target": "lib_actions_profit_goals_goalprogress",
       "confidence_score": 1.0
     },
@@ -13926,7 +13938,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "lib_profit_analytics_constants",
@@ -13937,7 +13949,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "lib_profit_analytics_constants_profit_countries",
@@ -13948,43 +13960,10 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page",
       "target": "lib_profit_analytics_constants_profitscope",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "app_portal_sales_profit_analytics_page",
-      "target": "lib_profit_goals_constants",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "app_portal_sales_profit_analytics_page",
-      "target": "lib_profit_goals_constants_goal_metrics",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "app_portal_sales_profit_analytics_page",
-      "target": "lib_profit_goals_constants_goalmetric",
       "confidence_score": 1.0
     },
     {
@@ -14037,7 +14016,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L114",
+      "source_location": "L115",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "app_portal_sales_profit_analytics_page_ranges"
@@ -14048,7 +14027,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L425",
+      "source_location": "L426",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "app_portal_sales_profit_analytics_page_scopes"
@@ -14058,7 +14037,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "app_portal_sales_profit_analytics_page_sgtdate",
@@ -14069,7 +14048,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L281",
+      "source_location": "L282",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "app_portal_sales_profit_analytics_page_money",
@@ -14080,7 +14059,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L373",
+      "source_location": "L374",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "app_portal_sales_profit_analytics_page_relativetime",
@@ -14092,7 +14071,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "lib_actions_profit_analytics_getprofitoverview"
@@ -14103,7 +14082,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L155",
+      "source_location": "L156",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "lib_actions_profit_goals_getgoalprogress"
@@ -14114,7 +14093,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/sales/profit-analytics/page.tsx",
-      "source_location": "L347",
+      "source_location": "L348",
       "weight": 1.0,
       "source": "app_portal_sales_profit_analytics_page_profitanalyticspage",
       "target": "lib_utils_cn"
@@ -25255,7 +25234,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L116",
+      "source_location": "L117",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_creategoal",
       "target": "lib_actions_ppc_daily_cap_getstaffid"
@@ -26902,7 +26881,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L89",
+      "source_location": "L90",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_creategoal",
@@ -26912,7 +26891,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L170",
+      "source_location": "L171",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_deletegoal",
@@ -26922,7 +26901,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L245",
+      "source_location": "L246",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_getgoalprogress",
@@ -26935,6 +26914,16 @@
       "source_location": "L21",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
+      "target": "lib_actions_profit_goals_goal_metrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/profit-goals.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_goal_scopes",
       "confidence_score": 1.0
     },
@@ -26942,7 +26931,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L35",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "lib_actions_profit_goals",
+      "target": "lib_actions_profit_goals_goalmetric",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/profit-goals.ts",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_goalprogress",
@@ -26952,7 +26951,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L65",
+      "source_location": "L66",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_isvaliddate",
@@ -26962,7 +26961,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L69",
+      "source_location": "L70",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_listgoals",
@@ -26972,7 +26971,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_metricsumrow",
@@ -26982,7 +26981,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_num",
@@ -26992,7 +26991,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_profitgoal",
@@ -27002,7 +27001,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_requirestaff",
@@ -27012,7 +27011,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L196",
+      "source_location": "L197",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_sumactualformetric",
@@ -27022,7 +27021,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L145",
+      "source_location": "L146",
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_actions_profit_goals_updategoal",
@@ -27081,39 +27080,6 @@
       "weight": 1.0,
       "source": "lib_actions_profit_goals",
       "target": "lib_profit_analytics_constants_profitscope",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "lib_actions_profit_goals",
-      "target": "lib_profit_goals_constants",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "lib_actions_profit_goals",
-      "target": "lib_profit_goals_constants_goal_metrics",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "lib_actions_profit_goals",
-      "target": "lib_profit_goals_constants_goalmetric",
       "confidence_score": 1.0
     },
     {
@@ -27188,7 +27154,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L99",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "lib_actions_profit_goals_creategoal",
+      "target": "lib_actions_profit_goals_goal_metrics"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/profit-goals.ts",
+      "source_location": "L100",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_creategoal",
       "target": "lib_actions_profit_goals_goal_scopes"
@@ -27199,7 +27176,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L251",
+      "source_location": "L252",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_getgoalprogress",
       "target": "lib_actions_profit_goals_goal_scopes"
@@ -27210,7 +27187,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L75",
+      "source_location": "L76",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_listgoals",
       "target": "lib_actions_profit_goals_goal_scopes"
@@ -27220,21 +27197,10 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L26",
-      "weight": 1.0,
-      "source": "lib_actions_profit_goals_profitgoal",
-      "target": "lib_profit_analytics_constants_profitscope",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "field",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/profit-goals.ts",
       "source_location": "L27",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_profitgoal",
-      "target": "lib_profit_goals_constants_goalmetric",
+      "target": "lib_profit_analytics_constants_profitscope",
       "confidence_score": 1.0
     },
     {
@@ -27242,7 +27208,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L96",
+      "source_location": "L97",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_creategoal",
       "target": "lib_actions_profit_goals_requirestaff",
@@ -27253,7 +27219,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L173",
+      "source_location": "L174",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_deletegoal",
       "target": "lib_actions_profit_goals_requirestaff",
@@ -27264,7 +27230,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L248",
+      "source_location": "L249",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_getgoalprogress",
       "target": "lib_actions_profit_goals_requirestaff",
@@ -27275,7 +27241,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_listgoals",
       "target": "lib_actions_profit_goals_requirestaff",
@@ -27286,7 +27252,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L55",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_requirestaff",
       "target": "lib_session_getsession",
@@ -27297,7 +27263,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L149",
+      "source_location": "L150",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_updategoal",
       "target": "lib_actions_profit_goals_requirestaff",
@@ -27308,7 +27274,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L239",
+      "source_location": "L240",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_sumactualformetric",
       "target": "lib_actions_profit_goals_num",
@@ -27319,7 +27285,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L105",
+      "source_location": "L106",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_creategoal",
       "target": "lib_actions_profit_goals_isvaliddate",
@@ -27331,21 +27297,10 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_listgoals",
       "target": "lib_supabase_server_createclient"
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L102",
-      "weight": 1.0,
-      "source": "lib_actions_profit_goals_creategoal",
-      "target": "lib_profit_goals_constants_goal_metrics"
     },
     {
       "relation": "calls",
@@ -27353,7 +27308,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L115",
+      "source_location": "L116",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_creategoal",
       "target": "lib_supabase_service_createserviceclient"
@@ -27364,7 +27319,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L156",
+      "source_location": "L157",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_updategoal",
       "target": "lib_supabase_service_createserviceclient"
@@ -27375,7 +27330,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L176",
+      "source_location": "L177",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_deletegoal",
       "target": "lib_supabase_service_createserviceclient"
@@ -27385,7 +27340,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L271",
+      "source_location": "L272",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_getgoalprogress",
       "target": "lib_actions_profit_goals_sumactualformetric",
@@ -27396,7 +27351,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L202",
+      "source_location": "L203",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_sumactualformetric",
       "target": "lib_supabase_server_createclient",
@@ -27408,7 +27363,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L255",
+      "source_location": "L256",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_getgoalprogress",
       "target": "lib_ppc_daily_cap_constants_todaysgt"
@@ -27419,7 +27374,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/profit-goals.ts",
-      "source_location": "L256",
+      "source_location": "L257",
       "weight": 1.0,
       "source": "lib_actions_profit_goals_getgoalprogress",
       "target": "lib_supabase_server_createclient"
@@ -30636,26 +30591,6 @@
       "weight": 1.0,
       "source": "lib_profit_analytics_constants",
       "target": "lib_profit_analytics_constants_profitscope",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/profit-goals-constants.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "source": "lib_profit_goals_constants",
-      "target": "lib_profit_goals_constants_goal_metrics",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/profit-goals-constants.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "lib_profit_goals_constants",
-      "target": "lib_profit_goals_constants_goalmetric",
       "confidence_score": 1.0
     },
     {

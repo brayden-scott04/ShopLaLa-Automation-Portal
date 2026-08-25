@@ -11,3 +11,4 @@ export * from "./pricing-update";
 export * from "./price-change-plans";
 export * from "./price-plan-import";
 export * from "./profit-analytics";
+export * from "./profit-goals";

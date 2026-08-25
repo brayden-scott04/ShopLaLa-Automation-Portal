@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { Settings } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import {
   Card,
@@ -15,6 +16,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -24,6 +36,15 @@ import {
 } from "@/components/ui/chart";
 import { profitAnalytics } from "@/lib/sales";
 import { getProfitOverview, type ProfitOverview } from "@/lib/actions/profit-analytics";
+import {
+  getGoalProgress,
+  listGoals,
+  createGoal,
+  deleteGoal,
+  type ProfitGoal,
+  type GoalProgress,
+} from "@/lib/actions/profit-goals";
+import { GOAL_METRICS, type GoalMetric } from "@/lib/profit-goals-constants";
 // PROFIT_COUNTRIES and ProfitScope must come from the plain constants module,
 // not the "use server" actions file -- every export of a "use server" file is
 // rewritten into a server-action reference. That breaks a runtime constant
@@ -114,6 +135,75 @@ export default function ProfitAnalyticsPage() {
       cancelled = true;
     };
   }, [scope, rangeKey]);
+
+  const [goalProgress, setGoalProgress] = useState<GoalProgress[]>([]);
+  const [goalsLoading, setGoalsLoading] = useState(true);
+  const [goalsDialogOpen, setGoalsDialogOpen] = useState(false);
+  const [goalsList, setGoalsList] = useState<ProfitGoal[]>([]);
+  const [goalForm, setGoalForm] = useState({
+    metric: "revenue" as GoalMetric,
+    periodStart: "",
+    periodEnd: "",
+    targetAmount: "",
+  });
+  const [goalError, setGoalError] = useState<string | null>(null);
+  const [goalPending, startGoalTransition] = useTransition();
+
+  useEffect(() => {
+    let cancelled = false;
+    setGoalsLoading(true);
+    getGoalProgress(scope).then(({ data, error: err }) => {
+      if (cancelled) return;
+      setGoalProgress(err ? [] : data ?? []);
+      setGoalsLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [scope]);
+
+  function refreshGoals() {
+    getGoalProgress(scope).then(({ data }) => setGoalProgress(data ?? []));
+    listGoals(scope).then(({ data }) => setGoalsList(data ?? []));
+  }
+
+  function openGoalsDialog() {
+    setGoalError(null);
+    setGoalForm({ metric: "revenue", periodStart: "", periodEnd: "", targetAmount: "" });
+    setGoalsDialogOpen(true);
+    listGoals(scope).then(({ data }) => setGoalsList(data ?? []));
+  }
+
+  function saveGoal() {
+    const targetAmount = parseFloat(goalForm.targetAmount);
+    startGoalTransition(async () => {
+      const { error: err } = await createGoal(
+        scope,
+        goalForm.metric,
+        goalForm.periodStart,
+        goalForm.periodEnd,
+        targetAmount
+      );
+      if (err) {
+        setGoalError(err);
+        return;
+      }
+      setGoalError(null);
+      setGoalForm({ metric: "revenue", periodStart: "", periodEnd: "", targetAmount: "" });
+      refreshGoals();
+    });
+  }
+
+  function removeGoal(id: string) {
+    startGoalTransition(async () => {
+      const { error: err } = await deleteGoal(id);
+      if (err) {
+        setGoalError(err);
+        return;
+      }
+      refreshGoals();
+    });
+  }
 
   const chartData = useMemo(
     () =>
@@ -217,6 +307,60 @@ export default function ProfitAnalyticsPage() {
 
         <Card>
           <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
+            <CardTitle>Goal vs Realtime</CardTitle>
+            <CardDescription>Manually-set targets for the current period</CardDescription>
+            <CardAction>
+              <button
+                onClick={openGoalsDialog}
+                title="Manage goals"
+                className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+              >
+                <Settings className="h-4 w-4" />
+              </button>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            {goalsLoading ? (
+              <Skeleton className="h-16 w-full" />
+            ) : goalProgress.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No goal set for the current period.{" "}
+                <button onClick={openGoalsDialog} className="text-primary underline">
+                  Set one
+                </button>
+                .
+              </p>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {goalProgress.map((gp) => (
+                  <div key={gp.goal.id} className="rounded-md border border-border p-3">
+                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      {gp.goal.metric === "revenue" ? "Revenue" : "Gross margin"} goal
+                    </p>
+                    <div className="mt-1 flex items-baseline justify-between">
+                      <span className="text-lg font-semibold tabular-nums">{money(gp.actual)}</span>
+                      <span className="text-xs text-muted-foreground">
+                        of {money(gp.goal.target_amount)}
+                      </span>
+                    </div>
+                    <p
+                      className={cn(
+                        "text-xs",
+                        gp.difference >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
+                      )}
+                    >
+                      {gp.difference >= 0 ? "+" : ""}
+                      {money(gp.difference)} vs target
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
             <CardTitle>Revenue, fees and margin</CardTitle>
             <CardDescription>
               From Amazon settlement reports, bucketed by SGT date
@@ -274,6 +418,138 @@ export default function ProfitAnalyticsPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={goalsDialogOpen} onOpenChange={setGoalsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Goals · {SCOPES.find((s) => s.key === scope)?.label}</DialogTitle>
+            <DialogDescription>
+              Manually-set revenue and gross margin targets for this marketplace.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogBody className="space-y-4">
+            {goalError && (
+              <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                {goalError}
+              </div>
+            )}
+
+            {goalsList.length > 0 && (
+              <div className="overflow-x-auto rounded-md border border-border">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted">
+                    <tr>
+                      <th className="px-3 py-2 text-left font-medium">Metric</th>
+                      <th className="px-3 py-2 text-left font-medium">Period</th>
+                      <th className="px-3 py-2 text-right font-medium">Target</th>
+                      <th className="px-3 py-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {goalsList.map((g) => (
+                      <tr key={g.id} className="border-t border-border">
+                        <td className="px-3 py-2">
+                          {g.metric === "revenue" ? "Revenue" : "Gross margin"}
+                        </td>
+                        <td className="px-3 py-2 text-muted-foreground">
+                          {g.period_start} → {g.period_end}
+                        </td>
+                        <td className="px-3 py-2 text-right tabular-nums">{money(g.target_amount)}</td>
+                        <td className="px-3 py-2 text-right">
+                          <button
+                            onClick={() => removeGoal(g.id)}
+                            disabled={goalPending}
+                            className="text-xs text-destructive hover:underline disabled:opacity-50"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            <div className="space-y-3 rounded-md border border-border p-3">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Add a goal
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">Metric</label>
+                  <select
+                    value={goalForm.metric}
+                    onChange={(e) =>
+                      setGoalForm((prev) => ({ ...prev, metric: e.target.value as GoalMetric }))
+                    }
+                    className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    {GOAL_METRICS.map((m) => (
+                      <option key={m} value={m}>
+                        {m === "revenue" ? "Revenue" : "Gross margin"}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                    Target ($)
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    value={goalForm.targetAmount}
+                    onChange={(e) =>
+                      setGoalForm((prev) => ({ ...prev, targetAmount: e.target.value }))
+                    }
+                    className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                    Period start
+                  </label>
+                  <input
+                    type="date"
+                    value={goalForm.periodStart}
+                    onChange={(e) =>
+                      setGoalForm((prev) => ({ ...prev, periodStart: e.target.value }))
+                    }
+                    className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                    Period end
+                  </label>
+                  <input
+                    type="date"
+                    value={goalForm.periodEnd}
+                    onChange={(e) =>
+                      setGoalForm((prev) => ({ ...prev, periodEnd: e.target.value }))
+                    }
+                    className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={saveGoal}
+                disabled={goalPending}
+                className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {goalPending ? "Saving…" : "Add goal"}
+              </button>
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <DialogClose className="rounded-md px-3 py-1.5 text-sm font-medium hover:bg-accent">
+              Done
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
