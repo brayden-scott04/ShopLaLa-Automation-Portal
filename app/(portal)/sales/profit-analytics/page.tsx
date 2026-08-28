@@ -91,6 +91,18 @@ function money(value: number): string {
   });
 }
 
+// "ALL" is already FX-converted to USD server-side (lib/actions/profit-analytics.ts) --
+// never a raw cross-currency sum -- so it formats as USD same as "US".
+const SCOPE_CURRENCY: Record<ProfitScope, string> = { ALL: "USD", US: "USD", CA: "CAD", MX: "MXN" };
+
+function moneyIn(value: number, currency: string): string {
+  return value.toLocaleString(undefined, {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  });
+}
+
 function relativeTime(iso: string | null): string {
   if (!iso) return "never";
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -219,6 +231,8 @@ export default function ProfitAnalyticsPage() {
   );
 
   const totals = overview?.totals;
+  const totalsUsd = overview?.totalsUsd ?? null;
+  const nativeCurrency = SCOPE_CURRENCY[scope];
   const marginPct =
     totals && totals.revenue > 0 ? (totals.gross_margin / totals.revenue) * 100 : null;
 
@@ -266,6 +280,14 @@ export default function ProfitAnalyticsPage() {
           </Tabs>
         </div>
 
+        {scope !== "US" && (
+          <p className="text-xs text-muted-foreground">
+            {scope === "ALL"
+              ? "Consolidated is converted to USD at today's exchange rate before summing across marketplaces — not a historically exact per-transaction rate."
+              : "USD figures below are converted at today's exchange rate — approximate, not the rate at the time of each transaction."}
+          </p>
+        )}
+
         {isLoading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -278,21 +300,28 @@ export default function ProfitAnalyticsPage() {
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatTile label="Revenue" value={money(totals?.revenue ?? 0)} />
+            <StatTile
+              label="Revenue"
+              value={moneyIn(totals?.revenue ?? 0, nativeCurrency)}
+              usdValue={totalsUsd ? money(totalsUsd.revenue) : undefined}
+            />
             <StatTile
               label="Amazon fees"
-              value={money(Math.abs(totals?.total_fees ?? 0))}
+              value={moneyIn(Math.abs(totals?.total_fees ?? 0), nativeCurrency)}
+              usdValue={totalsUsd ? money(Math.abs(totalsUsd.total_fees)) : undefined}
               sub={
                 totals
-                  ? `FBA ${money(Math.abs(totals.fba_fees))} · Referral ${money(
-                      Math.abs(totals.referral_fees)
-                    )} · Other ${money(Math.abs(totals.other_fees))}`
+                  ? `FBA ${moneyIn(Math.abs(totals.fba_fees), nativeCurrency)} · Referral ${moneyIn(
+                      Math.abs(totals.referral_fees),
+                      nativeCurrency
+                    )} · Other ${moneyIn(Math.abs(totals.other_fees), nativeCurrency)}`
                   : undefined
               }
             />
             <StatTile
               label="Gross margin"
-              value={money(totals?.gross_margin ?? 0)}
+              value={moneyIn(totals?.gross_margin ?? 0, nativeCurrency)}
+              usdValue={totalsUsd ? money(totalsUsd.gross_margin) : undefined}
               sub={marginPct !== null ? `${marginPct.toFixed(1)}% of revenue` : undefined}
             />
             <StatTile
@@ -558,10 +587,13 @@ function StatTile({
   label,
   value,
   sub,
+  usdValue,
 }: {
   label: string;
   value: string;
   sub?: string;
+  /** Secondary "(~$X USD)" line for a native-currency (CA/MX) figure. */
+  usdValue?: string;
 }) {
   return (
     <Card>
@@ -570,6 +602,7 @@ function StatTile({
           {label}
         </p>
         <p className="text-2xl font-semibold tabular-nums">{value}</p>
+        {usdValue && <p className="text-xs text-muted-foreground">(~{usdValue} USD)</p>}
         {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
       </CardContent>
     </Card>

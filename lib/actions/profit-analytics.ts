@@ -50,7 +50,21 @@ export interface ProfitTotals {
 
 export interface ProfitOverview {
   daily: ProfitDailyPoint[];
+  /**
+   * For "US": native currency (USD, so identical to totalsUsd). For "CA"/"MX": native
+   * currency (CAD/MXN) -- the primary figure staff see for that marketplace. For "ALL":
+   * already the properly FX-converted USD sum across all three marketplaces, never a raw
+   * cross-currency addition.
+   */
   totals: ProfitTotals;
+  /**
+   * USD-equivalent of `totals`, for display as a secondary "(~$X USD)" figure under a
+   * native-currency scope. Null for "US" (would be identical to totals) and "ALL" (totals
+   * is already USD -- a second copy would be redundant).
+   */
+  totalsUsd: ProfitTotals | null;
+  /** 1 unit of the scope's currency = fxRate USD. Set whenever totalsUsd is, null otherwise. */
+  fxRate: number | null;
   /** Marketplaces that actually have data in this range, for the selector's empty states. */
   countriesWithData: ProfitCountry[];
   lastSyncedAt: string | null;
@@ -108,15 +122,55 @@ function emptyTotals(): ProfitTotals {
   };
 }
 
-function addInto(target: ProfitTotals, row: MetricRow) {
-  target.revenue += num(row.revenue);
-  target.total_fees += num(row.total_fees);
-  target.fba_fees += num(row.fba_fees);
-  target.referral_fees += num(row.referral_fees);
-  target.other_fees += num(row.other_fees);
-  target.gross_margin += num(row.gross_margin);
+function addInto(target: ProfitTotals, row: MetricRow, rate = 1) {
+  target.revenue += num(row.revenue) * rate;
+  target.total_fees += num(row.total_fees) * rate;
+  target.fba_fees += num(row.fba_fees) * rate;
+  target.referral_fees += num(row.referral_fees) * rate;
+  target.other_fees += num(row.other_fees) * rate;
+  target.gross_margin += num(row.gross_margin) * rate;
+  // Counts, not money -- never scaled by a currency rate.
   target.units += row.units ?? 0;
   target.orders += row.orders ?? 0;
+}
+
+function scaleTotals(totals: ProfitTotals, rate: number): ProfitTotals {
+  return {
+    ...totals,
+    revenue: totals.revenue * rate,
+    total_fees: totals.total_fees * rate,
+    fba_fees: totals.fba_fees * rate,
+    referral_fees: totals.referral_fees * rate,
+    other_fees: totals.other_fees * rate,
+    gross_margin: totals.gross_margin * rate,
+  };
+}
+
+// Used only if the live rate fetch below fails -- approximate, kept as a resilience
+// fallback so the dashboard degrades to a stale-but-plausible number instead of erroring
+// or showing raw unconverted currency mixed into a "USD" figure.
+const FALLBACK_USD_RATE: Record<ProfitCountry, number> = { US: 1, CA: 0.73, MX: 0.055 };
+
+/**
+ * 1 unit of each marketplace's currency, in USD, as of now. Not historically accurate per
+ * transaction date -- this is a single current-rate approximation applied uniformly across
+ * whatever date range is requested, which is why every USD-converted figure in this file is
+ * presented as a secondary/approximate number, never the primary one for CA/MX.
+ */
+async function getUsdRates(): Promise<Record<ProfitCountry, number>> {
+  try {
+    const res = await fetch("https://open.er-api.com/v6/latest/USD", {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) throw new Error(`FX rate fetch failed: ${res.status}`);
+    const json = (await res.json()) as { rates?: Record<string, number> };
+    const cad = json.rates?.CAD;
+    const mxn = json.rates?.MXN;
+    if (!cad || !mxn) throw new Error("FX response missing CAD/MXN");
+    return { US: 1, CA: 1 / cad, MX: 1 / mxn };
+  } catch {
+    return FALLBACK_USD_RATE;
+  }
 }
 
 function round2(totals: ProfitTotals): ProfitTotals {
@@ -204,6 +258,8 @@ export async function getProfitOverview(
     else bucket.estimate.push(row);
   }
 
+  const usdRates = await getUsdRates();
+
   const perDate = new Map<string, ProfitTotals>();
   const totals = emptyTotals();
   const countriesWithData = new Set<ProfitCountry>();
@@ -220,15 +276,30 @@ export async function getProfitOverview(
 
     countriesWithData.add(countryCode as ProfitCountry);
 
+    // Consolidated must never add raw CAD/MXN numbers to a USD number -- convert each
+    // row to USD before summing when every marketplace is being combined. A single-
+    // marketplace scope stays in that marketplace's own native currency (rate 1).
+    const rate = scope === "ALL" ? (usdRates[countryCode as ProfitCountry] ?? 1) : 1;
+
     let day = perDate.get(metricDate);
     if (!day) {
       day = emptyTotals();
       perDate.set(metricDate, day);
     }
     for (const row of effective) {
-      addInto(day, row);
-      addInto(totals, row);
+      addInto(day, row, rate);
+      addInto(totals, row, rate);
     }
+  }
+
+  // For a single non-USD marketplace, offer a secondary "(~$X USD)" figure alongside the
+  // native-currency primary one. Not applicable to "US" (would just repeat totals) or
+  // "ALL" (totals is already the converted USD sum from the loop above).
+  let totalsUsd: ProfitTotals | null = null;
+  let fxRate: number | null = null;
+  if (scope === "CA" || scope === "MX") {
+    fxRate = usdRates[scope];
+    totalsUsd = round2(scaleTotals(totals, fxRate));
   }
 
   const daily: ProfitDailyPoint[] = [...perDate.entries()]
@@ -253,6 +324,8 @@ export async function getProfitOverview(
     data: {
       daily,
       totals: round2(totals),
+      totalsUsd,
+      fxRate,
       countriesWithData: PROFIT_COUNTRIES.filter((c) => countriesWithData.has(c)),
       lastSyncedAt: lastRun?.run_at ?? null,
       lastSyncStatus: lastRun?.status ?? null,
