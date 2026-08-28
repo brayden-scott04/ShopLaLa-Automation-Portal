@@ -1290,7 +1290,7 @@ function AcosScheduleCard({
           </ChartContainer>
           <div className="max-h-140 overflow-x-auto overflow-y-auto rounded-md border border-border">
             <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-muted">
+              <thead className="sticky top-0 z-10 isolate bg-muted">
                 <tr className="border-b border-border">
                   <th className="px-3 py-2 text-left font-medium text-muted-foreground">Slot</th>
                   {ACOS_BANDS.map((band) => {
