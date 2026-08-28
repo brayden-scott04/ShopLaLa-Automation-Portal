@@ -1298,7 +1298,7 @@ function AcosScheduleCard({
                     return (
                     <th
                       key={band.key}
-                      className={`px-3 py-2 text-left font-medium text-muted-foreground ${enabled ? "" : "bg-background/40"}`}
+                      className={`px-3 py-2 text-left font-medium text-muted-foreground ${enabled ? "" : "bg-background"}`}
                     >
                       <div className="flex items-center gap-1">
                         {bandLabel(band.key)}

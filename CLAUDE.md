@@ -351,6 +351,42 @@ period's figures are not trustworthy (surfaced as an amber banner on the page).
 > ledger). Phase 1.5 (goals), Phase 2 (fee drill-down + orders-based estimate), and Phase 3
 > (COGS) are not built yet.
 
+> **There is a ~13-month reporting void (June 2025 – June 2026) in `profit_daily_metrics`,
+> first found 2026-08-26 — recoverable, but not via the Settlement Reports path.** Amazon's
+> `getReports` operation (`settlement._list_settlement_reports()` in the sibling
+> `LaLaGreen-Daily-Report` repo, `reportlib/settlement.py`) hard-caps `createdSince` at 90
+> days — confirmed live by passing 730 days back and getting `SellingApiBadRequestException:
+> RequestedFromDate ... is more than 90 days old`. That filters on each report's own
+> *creation* time, not the data period it covers, and no `max_pages`/pagination reaches past
+> it — this part is a real, permanent ceiling on that one endpoint, not a bug.
+>
+> **However, a same-day follow-up test (2026-08-28, `test_finances_api.py` at the
+> Daily-Report repo root, standalone/read-only) proved the gap itself is not permanent**: the
+> Finances API v0's `listFinancialEventGroups` operation sees the same underlying
+> transactions on a completely different, non-90-day-capped path. A live call with a 360-day
+> lookback returned 100 groups (page-capped — more exist via `NextToken`), **76 of them
+> starting before 2026-06-01**, i.e. inside the supposed gap. First bug hit while testing:
+> `listFinancialEventGroups` takes `FinancialEventGroupStartedAfter` /
+> `FinancialEventGroupStartedBefore` — **not** `PostedAfter`/`PostedBefore` (those belong to
+> the sibling `listFinancialEvents` operation only). Passing the wrong names doesn't error,
+> it silently no-ops, which is why every first attempt failed with a content-free
+> `InvalidInput: Date range is not valid, startDate: null, endDate: null` regardless of what
+> values were actually sent — confirmed by cross-checking Amazon's own OpenAPI spec
+> (`amzn/selling-partner-api-models`, `financesV0.json`) rather than trusting memory a second
+> time. `listFinancialEventsByGroupId` (for pulling one group's line items) does take
+> `PostedAfter`/`PostedBefore`, but per a known upstream SDK issue
+> (amzn/selling-partner-api-models#2325) **ignores them and returns the group's full data
+> regardless** — treat any date filter on that call as decorative, not a guarantee.
+>
+> **Not yet built**: a real backfill/ingestion pipeline using this path. `test_finances_api.py`
+> is a throwaway feasibility script (no Supabase writes, no pagination beyond page 1) — a
+> production version needs `NextToken` pagination on `listFinancialEventGroups`, a decision on
+> whether to map `ShipmentEventList`/`ItemChargeList`/`ItemFeeList` into the *same*
+> `profit_daily_metrics` shape `feetypes.classify_fee()` already produces (so the two sources
+> are indistinguishable downstream) or a separate `source='finances_backfill'` value, and a
+> deliberate one-time-only trigger (this is filling a historical hole, not a recurring sync
+> path — don't wire it into the 2-hourly `run_sync()` job).
+
 > **Settlement date formats differ per marketplace and getting it wrong loses or misdates real
 > money.** CA reports use dotted day-first (`10.07.2026` = 10 July); US/MX use ISO
 > (`2025-07-24`). Parsing everything with pandas' default `dayfirst=False` drops `10.07.2026`
