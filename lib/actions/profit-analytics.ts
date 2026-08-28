@@ -183,19 +183,24 @@ export async function getProfitOverview(
     if (page.length < PAGE_SIZE) break;
   }
 
-  // Phase 1 only ever writes source='settlement'. Phase 2 adds 'estimate' rows,
-  // which must never be added on top of settled figures for the same day -- so
-  // fold per (date, country) and let settlement win outright where both exist,
-  // rather than summing everything indiscriminately.
-  const byDateCountry = new Map<string, { settlement: MetricRow[]; estimate: MetricRow[] }>();
+  // Three sources can exist for the same (date, country), never summed together --
+  // settlement (Amazon-reconciled) wins outright, then finances_backfill (the one-time
+  // Finances-API-derived fill for the June 2025-June 2026 gap that Reports API's 90-day
+  // createdSince ceiling can never reach), then estimate (Phase 2's near-real-time,
+  // modeled-fees rows) as the last resort.
+  const byDateCountry = new Map<
+    string,
+    { settlement: MetricRow[]; financesBackfill: MetricRow[]; estimate: MetricRow[] }
+  >();
   for (const row of rows) {
     const key = `${row.metric_date}|${row.country_code}`;
     let bucket = byDateCountry.get(key);
     if (!bucket) {
-      bucket = { settlement: [], estimate: [] };
+      bucket = { settlement: [], financesBackfill: [], estimate: [] };
       byDateCountry.set(key, bucket);
     }
     if (row.source === "settlement") bucket.settlement.push(row);
+    else if (row.source === "finances_backfill") bucket.financesBackfill.push(row);
     else bucket.estimate.push(row);
   }
 
@@ -205,7 +210,12 @@ export async function getProfitOverview(
 
   for (const [key, bucket] of byDateCountry) {
     const [metricDate, countryCode] = key.split("|");
-    const effective = bucket.settlement.length > 0 ? bucket.settlement : bucket.estimate;
+    const effective =
+      bucket.settlement.length > 0
+        ? bucket.settlement
+        : bucket.financesBackfill.length > 0
+          ? bucket.financesBackfill
+          : bucket.estimate;
     if (effective.length === 0) continue;
 
     countriesWithData.add(countryCode as ProfitCountry);
