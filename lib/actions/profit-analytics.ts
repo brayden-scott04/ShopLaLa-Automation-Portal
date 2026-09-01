@@ -2,7 +2,12 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getSession } from "@/lib/session";
-import { PROFIT_COUNTRIES, type ProfitCountry, type ProfitScope } from "@/lib/profit-analytics-constants";
+import {
+  PROFIT_COUNTRIES,
+  getUsdRates,
+  type ProfitCountry,
+  type ProfitScope,
+} from "@/lib/profit-analytics-constants";
 
 /**
  * Read side of the Profit Analytics dashboard. Everything here is populated by
@@ -146,33 +151,6 @@ function scaleTotals(totals: ProfitTotals, rate: number): ProfitTotals {
   };
 }
 
-// Used only if the live rate fetch below fails -- approximate, kept as a resilience
-// fallback so the dashboard degrades to a stale-but-plausible number instead of erroring
-// or showing raw unconverted currency mixed into a "USD" figure.
-const FALLBACK_USD_RATE: Record<ProfitCountry, number> = { US: 1, CA: 0.73, MX: 0.055 };
-
-/**
- * 1 unit of each marketplace's currency, in USD, as of now. Not historically accurate per
- * transaction date -- this is a single current-rate approximation applied uniformly across
- * whatever date range is requested, which is why every USD-converted figure in this file is
- * presented as a secondary/approximate number, never the primary one for CA/MX.
- */
-async function getUsdRates(): Promise<Record<ProfitCountry, number>> {
-  try {
-    const res = await fetch("https://open.er-api.com/v6/latest/USD", {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) throw new Error(`FX rate fetch failed: ${res.status}`);
-    const json = (await res.json()) as { rates?: Record<string, number> };
-    const cad = json.rates?.CAD;
-    const mxn = json.rates?.MXN;
-    if (!cad || !mxn) throw new Error("FX response missing CAD/MXN");
-    return { US: 1, CA: 1 / cad, MX: 1 / mxn };
-  } catch {
-    return FALLBACK_USD_RATE;
-  }
-}
-
 function round2(totals: ProfitTotals): ProfitTotals {
   return {
     ...totals,
@@ -306,9 +284,14 @@ export async function getProfitOverview(
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([metric_date, t]) => ({ metric_date, ...round2(t) }));
 
+  // profit_sync_runs is now shared with sales-traffic.ts's Sales sync (job='sales_traffic')
+  // -- excluded here so this badge keeps reflecting only the settlement sync it always has,
+  // not whichever job happened to run most recently. Existing settlement-sync rows predate
+  // the `job` column and are NULL, which is exactly what should match here.
   const { data: runRows, error: runError } = await client
     .from("profit_sync_runs")
     .select("run_at, status")
+    .is("job", null)
     .order("run_at", { ascending: false })
     .limit(1);
   if (runError) return { data: null, error: runError.message };

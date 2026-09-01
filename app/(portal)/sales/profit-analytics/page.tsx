@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/chart";
 import { profitAnalytics } from "@/lib/sales";
 import { getProfitOverview, type ProfitOverview } from "@/lib/actions/profit-analytics";
+import { getSalesOverview, type SalesOverview } from "@/lib/actions/sales-traffic";
 import {
   getGoalProgress,
   listGoals,
@@ -118,6 +119,7 @@ export default function ProfitAnalyticsPage() {
   const [scope, setScope] = useState<ProfitScope>("ALL");
   const [rangeKey, setRangeKey] = useState<(typeof RANGES)[number]["key"]>("90");
   const [overview, setOverview] = useState<ProfitOverview | null>(null);
+  const [salesOverview, setSalesOverview] = useState<SalesOverview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [, startTransition] = useTransition();
@@ -131,7 +133,10 @@ export default function ProfitAnalyticsPage() {
 
     startTransition(async () => {
       setIsLoading(true);
-      const { data, error: err } = await getProfitOverview(scope, sgtDate(-days), sgtDate());
+      const [{ data, error: err }, { data: salesData }] = await Promise.all([
+        getProfitOverview(scope, sgtDate(-days), sgtDate()),
+        getSalesOverview(scope, sgtDate(-days), sgtDate()),
+      ]);
       if (cancelled) return;
       if (err) {
         setError(err);
@@ -140,6 +145,7 @@ export default function ProfitAnalyticsPage() {
         setOverview(data);
         setError(null);
       }
+      setSalesOverview(salesData);
       setIsLoading(false);
     });
 
@@ -232,6 +238,8 @@ export default function ProfitAnalyticsPage() {
 
   const totals = overview?.totals;
   const totalsUsd = overview?.totalsUsd ?? null;
+  const salesTotals = salesOverview?.totals;
+  const salesTotalsUsd = salesOverview?.totalsUsd ?? null;
   const nativeCurrency = SCOPE_CURRENCY[scope];
   const marginPct =
     totals && totals.revenue > 0 ? (totals.gross_margin / totals.revenue) * 100 : null;
@@ -289,8 +297,8 @@ export default function ProfitAnalyticsPage() {
         )}
 
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {Array.from({ length: 5 }).map((_, i) => (
               <Card key={i}>
                 <CardContent>
                   <Skeleton className="h-16 w-full" />
@@ -299,11 +307,18 @@ export default function ProfitAnalyticsPage() {
             ))}
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <StatTile
+              label="Sales"
+              value={moneyIn(salesTotals?.ordered_product_sales ?? 0, nativeCurrency)}
+              usdValue={salesTotalsUsd ? money(salesTotalsUsd.ordered_product_sales) : undefined}
+              sub="Gross, counted the moment an order is placed"
+            />
             <StatTile
               label="Revenue"
               value={moneyIn(totals?.revenue ?? 0, nativeCurrency)}
               usdValue={totalsUsd ? money(totalsUsd.revenue) : undefined}
+              sub="Net of refunds, counted once Amazon settles payment"
             />
             <StatTile
               label="Amazon fees"

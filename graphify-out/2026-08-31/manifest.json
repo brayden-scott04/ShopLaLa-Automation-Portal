@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/automations/ppc-top-up/page.tsx": {
-    "mtime": 1787902387.5602653,
-    "ast_hash": "1dc18dff6e43e66ac1223b569059691e",
+    "mtime": 1787317697.7220318,
+    "ast_hash": "bef87651044bf6d02b591653188a121e",
     "semantic_hash": ""
   },
   "app/(portal)/dashboard/page.tsx": {
@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1787902106.7187371,
-    "ast_hash": "df82c94e308ce1145e592b5a7084dc16",
+    "mtime": 1787379371.356818,
+    "ast_hash": "d518006a21d78240c1d901905fa870da",
     "semantic_hash": ""
   },
   "README.md": {
@@ -550,13 +550,13 @@
     "semantic_hash": ""
   },
   "lib/actions/profit-analytics.ts": {
-    "mtime": 1788167665.1241398,
-    "ast_hash": "728211e1aaa0ff3a6cd470ca3c0c8ea2",
+    "mtime": 1787329370.5004728,
+    "ast_hash": "7d5eb8fd973bc8c8f55259b5a9c1995a",
     "semantic_hash": ""
   },
   "lib/profit-analytics-constants.ts": {
-    "mtime": 1788167178.4444828,
-    "ast_hash": "4459264a73138c48f6a6c00ebc027929",
+    "mtime": 1787329104.6881504,
+    "ast_hash": "d6898bb1c774da9a46d34459e47b5689",
     "semantic_hash": ""
   },
   "app/(portal)/sales/profit-analytics/layout.tsx": {
@@ -565,8 +565,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/sales/profit-analytics/page.tsx": {
-    "mtime": 1788167302.9209638,
-    "ast_hash": "41bfe8300741b8df08f158abf62742cf",
+    "mtime": 1787657203.1527536,
+    "ast_hash": "8f612e9eb78376ac17265c3e7d2718b1",
     "semantic_hash": ""
   },
   "lib/sales.ts": {
@@ -582,11 +582,6 @@
   "lib/profit-goals-constants.ts": {
     "mtime": 1787657189.2856784,
     "ast_hash": "63e5c3a937cba58318ab7f871a008fc7",
-    "semantic_hash": ""
-  },
-  "lib/actions/sales-traffic.ts": {
-    "mtime": 1788167254.422913,
-    "ast_hash": "0942133758e2702199191da4018b7721",
     "semantic_hash": ""
   }
 }
