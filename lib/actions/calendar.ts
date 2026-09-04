@@ -97,23 +97,30 @@ async function requireEditorAccess(
   return access;
 }
 
+interface AccessibleCalendar {
+  role: CalendarRole;
+  name: string;
+  ownerUsername: string;
+  createdAt: string;
+}
+
 /** Every calendar the user can see (owned + shared-with-them), keyed by id. */
 async function getAccessibleCalendarMap(
   client: SupabaseServerClient,
   username: string
-): Promise<Map<string, { role: CalendarRole; name: string; ownerUsername: string }>> {
-  const map = new Map<string, { role: CalendarRole; name: string; ownerUsername: string }>();
+): Promise<Map<string, AccessibleCalendar>> {
+  const map = new Map<string, AccessibleCalendar>();
 
   const [{ data: owned }, { data: memberRows }] = await Promise.all([
-    client.from("calendars").select("id, name, owner_username").eq("owner_username", username),
+    client.from("calendars").select("id, name, owner_username, created_at").eq("owner_username", username),
     client
       .from("calendar_members")
-      .select("role, calendars(id, name, owner_username)")
+      .select("role, calendars(id, name, owner_username, created_at)")
       .eq("username", username),
   ]);
 
   (owned ?? []).forEach((c) => {
-    map.set(c.id, { role: "owner", name: c.name, ownerUsername: c.owner_username });
+    map.set(c.id, { role: "owner", name: c.name, ownerUsername: c.owner_username, createdAt: c.created_at });
   });
   (memberRows ?? []).forEach((r) => {
     const cal = Array.isArray(r.calendars) ? r.calendars[0] : r.calendars;
@@ -122,6 +129,7 @@ async function getAccessibleCalendarMap(
         role: r.role as CalendarRole,
         name: cal.name,
         ownerUsername: cal.owner_username,
+        createdAt: cal.created_at,
       });
     }
   });
@@ -164,24 +172,16 @@ export async function getMyCalendars(): Promise<{ data: CalendarSummary[] | null
     name: c.name,
     ownerUsername: c.ownerUsername,
     myRole: c.role,
-    createdAt: "",
+    createdAt: c.createdAt,
   }));
 
-  // Fetch created_at separately (kept out of the map above to avoid widening
-  // its type for a field only this list needs) and merge, owned-first.
-  const { data: rows } = await client
-    .from("calendars")
-    .select("id, created_at")
-    .in("id", data.map((c) => c.id));
-  const createdAtById = new Map((rows ?? []).map((r) => [r.id, r.created_at]));
-  const withDates = data.map((c) => ({ ...c, createdAt: createdAtById.get(c.id) ?? "" }));
-  withDates.sort((a, b) => {
+  data.sort((a, b) => {
     if (a.myRole === "owner" && b.myRole !== "owner") return -1;
     if (a.myRole !== "owner" && b.myRole === "owner") return 1;
     return a.createdAt.localeCompare(b.createdAt);
   });
 
-  return { data: withDates, error: null };
+  return { data, error: null };
 }
 
 export async function createCalendar(
