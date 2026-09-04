@@ -26,6 +26,7 @@ import { tools } from "@/lib/tools";
 import { configurationItems } from "@/lib/configuration";
 import { communicationItems } from "@/lib/communications";
 import { salesItems } from "@/lib/sales";
+import { othersItems } from "@/lib/others";
 
 type StaffMember = {
   id: string;
@@ -42,6 +43,7 @@ const ACCESS_SECTIONS: { key: Section; label: string; items: { id: string; name:
   { key: "tools", label: "Tools", items: tools },
   { key: "configuration", label: "Configuration", items: configurationItems },
   { key: "communications", label: "Communications", items: communicationItems },
+  { key: "others", label: "Others", items: othersItems },
 ];
 
 function accessSummary(permissions: PermissionSet): number {
@@ -50,7 +52,8 @@ function accessSummary(permissions: PermissionSet): number {
     permissions.tools.length +
     permissions.configuration.length +
     permissions.communications.length +
-    permissions.sales.length
+    permissions.sales.length +
+    permissions.others.length
   );
 }
 

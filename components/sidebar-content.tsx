@@ -15,6 +15,7 @@ import { tools } from "@/lib/tools";
 import { configurationItems } from "@/lib/configuration";
 import { communicationItems } from "@/lib/communications";
 import { salesItems } from "@/lib/sales";
+import { othersItems } from "@/lib/others";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "@/components/user-menu";
 import { Separator } from "@/components/ui/separator";
@@ -55,6 +56,7 @@ export function SidebarContent({
     role,
     permissions
   );
+  const allowedOthers = filterItems("others", othersItems, role, permissions);
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -260,6 +262,35 @@ export function SidebarContent({
           ))}
 
         {allowedCommunications.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.id}
+              href={item.href}
+              title={collapsed ? item.name : undefined}
+              className={cn(
+                "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
+                collapsed && "justify-center px-2"
+              )}
+            >
+              <Icon className="size-4 shrink-0" />
+              {!collapsed && (
+                <span className="flex-1 truncate">{item.name}</span>
+              )}
+            </Link>
+          );
+        })}
+
+        {allowedOthers.length > 0 &&
+          (collapsed ? (
+            <Separator className="my-2" />
+          ) : (
+            <p className="px-3 pt-4 pb-1 text-xs font-medium text-muted-foreground">
+              Others
+            </p>
+          ))}
+
+        {allowedOthers.map((item) => {
           const Icon = item.icon;
           return (
             <Link

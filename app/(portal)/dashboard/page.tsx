@@ -4,6 +4,7 @@ import { tools } from "@/lib/tools";
 import { configurationItems } from "@/lib/configuration";
 import { communicationItems } from "@/lib/communications";
 import { salesItems } from "@/lib/sales";
+import { othersItems } from "@/lib/others";
 import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { filterItems, isAllowed } from "@/lib/roles";
@@ -21,6 +22,7 @@ export default async function DashboardPage() {
     { label: "Tools", group: "Tool", items: filterItems("tools", tools, role, permissions) },
     { label: "Configuration", group: "Configuration", items: filterItems("configuration", configurationItems, role, permissions) },
     { label: "Communications", group: "Communication", items: filterItems("communications", communicationItems, role, permissions) },
+    { label: "Others", group: "Other", items: filterItems("others", othersItems, role, permissions) },
   ].filter((group) => group.items.length > 0);
 
   const hasAnyAccess = accessGroups.length > 0;
