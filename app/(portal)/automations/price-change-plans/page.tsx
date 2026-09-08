@@ -555,6 +555,7 @@ function HistoryTable({ plans, emptyText }: { plans: PricePlan[]; emptyText: str
         <thead>
           <tr className="border-b border-border bg-muted/40 text-left text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
             <th className="px-3 py-2">SKU</th>
+            <th className="px-3 py-2">Type</th>
             <th className="px-3 py-2">Market</th>
             <th className="px-3 py-2">Start → Target</th>
             <th className="px-3 py-2">Created</th>
@@ -564,6 +565,7 @@ function HistoryTable({ plans, emptyText }: { plans: PricePlan[]; emptyText: str
           {plans.map((p) => (
             <tr key={p.id} className="border-b border-border last:border-0 even:bg-muted/20 hover:bg-muted/30">
               <td className="px-3 py-2.5 font-mono">{p.sku}</td>
+              <td className="px-3 py-2.5">{priceTypeLabel(p.price_type)}</td>
               <td className="px-3 py-2.5">
                 <MarketplaceBadge code={p.marketplace} />
               </td>
