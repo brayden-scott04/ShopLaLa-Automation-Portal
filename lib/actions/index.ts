@@ -13,3 +13,5 @@ export * from "./price-plan-import";
 export * from "./profit-analytics";
 export * from "./profit-goals";
 export * from "./calendar";
+export * from "./boards";
+export * from "./dashboards";
