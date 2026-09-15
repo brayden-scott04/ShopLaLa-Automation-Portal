@@ -15,7 +15,7 @@ import {
   type CalendarSummary,
   type CalendarTask,
 } from "@/lib/actions/calendar";
-import { buildMonthGrid } from "@/lib/calendar-date-utils";
+import { buildMonthGrid, eachDateKey, isSpanningTask } from "@/lib/calendar-date-utils";
 import { UpcomingPanel } from "./_components/upcoming-panel";
 import { CalendarSidebar } from "./_components/calendar-sidebar";
 import { MonthGrid } from "./_components/month-grid";
@@ -132,23 +132,36 @@ export default function CalendarPage() {
   );
   const editableCalendars = calendars.filter((c) => editableCalendarIds.has(c.id));
 
+  const selectedTasks = tasks.filter((t) => selectedIds.has(t.calendarId));
+  const spanningTasks = selectedTasks.filter(isSpanningTask);
+  const singleDayTasks = selectedTasks.filter((t) => !isSpanningTask(t));
+
   const eventsByDate = new Map<string, CalendarTask[]>();
   const dueByDate = new Map<string, CalendarTask[]>();
-  tasks.forEach((t) => {
-    if (selectedIds.has(t.calendarId)) {
-      const eventList = eventsByDate.get(t.eventDate) ?? [];
-      eventList.push(t);
-      eventsByDate.set(t.eventDate, eventList);
-      if (t.dueDate) {
-        const dueList = dueByDate.get(t.dueDate) ?? [];
-        dueList.push(t);
-        dueByDate.set(t.dueDate, dueList);
-      }
+  singleDayTasks.forEach((t) => {
+    const eventList = eventsByDate.get(t.eventDate) ?? [];
+    eventList.push(t);
+    eventsByDate.set(t.eventDate, eventList);
+    if (t.dueDate) {
+      const dueList = dueByDate.get(t.dueDate) ?? [];
+      dueList.push(t);
+      dueByDate.set(t.dueDate, dueList);
     }
   });
 
-  const dayTasks = dayDialogDate ? eventsByDate.get(dayDialogDate) ?? [] : [];
-  const dayDueTasks = dayDialogDate ? dueByDate.get(dayDialogDate) ?? [] : [];
+  // Every date a task is "active" on — spanning tasks appear on every day
+  // between eventDate and dueDate, not just the two endpoints.
+  const activeByDate = new Map<string, CalendarTask[]>();
+  selectedTasks.forEach((t) => {
+    const keys = t.dueDate ? eachDateKey(t.eventDate, t.dueDate) : [t.eventDate];
+    keys.forEach((key) => {
+      const list = activeByDate.get(key) ?? [];
+      list.push(t);
+      activeByDate.set(key, list);
+    });
+  });
+
+  const dayActiveTasks = dayDialogDate ? activeByDate.get(dayDialogDate) ?? [] : [];
 
   function handleDeleteCalendar(cal: CalendarSummary) {
     if (!window.confirm(`Delete "${cal.name}" and everything pinned to it? This can't be undone.`)) return;
@@ -198,18 +211,19 @@ export default function CalendarPage() {
             month={month}
             eventsByDate={eventsByDate}
             dueByDate={dueByDate}
+            spanningTasks={spanningTasks}
             onPrevMonth={() => goToMonth(-1)}
             onNextMonth={() => goToMonth(1)}
             onToday={goToToday}
             onDayClick={(dateKey) => setDayDialogDate(dateKey)}
+            onEditTask={(task) => setTaskForm({ open: true, task, date: task.eventDate })}
           />
         </div>
       </div>
 
       <DayTasksDialog
         date={dayDialogDate}
-        tasks={dayTasks}
-        dueTasks={dayDueTasks}
+        activeTasks={dayActiveTasks}
         editableCalendarIds={editableCalendarIds}
         onClose={() => setDayDialogDate(null)}
         onAddTask={() =>

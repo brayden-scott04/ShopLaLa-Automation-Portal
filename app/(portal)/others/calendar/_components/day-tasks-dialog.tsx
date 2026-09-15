@@ -18,8 +18,7 @@ import type { CalendarTask } from "@/lib/actions/calendar";
 
 export function DayTasksDialog({
   date,
-  tasks,
-  dueTasks,
+  activeTasks,
   editableCalendarIds,
   onClose,
   onAddTask,
@@ -27,8 +26,7 @@ export function DayTasksDialog({
   onDeleteTask,
 }: {
   date: string | null;
-  tasks: CalendarTask[];
-  dueTasks: CalendarTask[];
+  activeTasks: CalendarTask[];
   editableCalendarIds: Set<string>;
   onClose: () => void;
   onAddTask: () => void;
@@ -36,14 +34,7 @@ export function DayTasksDialog({
   onDeleteTask: (task: CalendarTask) => void;
 }) {
   const open = date !== null;
-  // A task can appear twice (pinned here, and due here) — de-dupe for the list view.
-  const combined = new Map<string, { task: CalendarTask; isDue: boolean; isEvent: boolean }>();
-  tasks.forEach((t) => combined.set(t.id, { task: t, isDue: false, isEvent: true }));
-  dueTasks.forEach((t) => {
-    const existing = combined.get(t.id);
-    combined.set(t.id, { task: t, isDue: true, isEvent: existing?.isEvent ?? false });
-  });
-  const rows = Array.from(combined.values());
+  const rows = activeTasks.map((task) => ({ task, isDue: task.dueDate === date }));
   const canAdd = editableCalendarIds.size > 0;
 
   return (
