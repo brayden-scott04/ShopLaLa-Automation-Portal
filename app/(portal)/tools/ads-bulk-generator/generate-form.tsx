@@ -440,7 +440,7 @@ export default function GenerateForm({
 
     setLoading(true);
     try {
-      const res = await fetch("/api/tools/pdp-bulk-generator/generate", {
+      const res = await fetch("/api/tools/ads-bulk-generator/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ campaigns: payload }),

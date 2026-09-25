@@ -1,6 +1,6 @@
 "use client";
 
-// Library sections shared by Sponsored Brands Upload and PDP Bulk Generator —
+// Library sections shared by Sponsored Brands Upload and Ads Bulk Generator —
 // both read and write the same bulk_campaign_* brand / video / keyword tables.
 
 import { useState } from "react";

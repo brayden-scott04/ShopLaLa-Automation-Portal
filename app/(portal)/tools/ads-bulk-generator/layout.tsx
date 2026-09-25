@@ -1,10 +1,10 @@
 import { assertItemAccess } from "@/lib/permissions";
 
-export default async function PdpBulkGeneratorLayout({
+export default async function AdsBulkGeneratorLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await assertItemAccess("tools", "pdp-bulk-generator");
+  await assertItemAccess("tools", "ads-bulk-generator");
   return <>{children}</>;
 }

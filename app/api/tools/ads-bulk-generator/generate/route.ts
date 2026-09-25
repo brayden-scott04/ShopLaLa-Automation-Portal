@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { role, permissions } = await getMyPermissions();
-  if (!isAllowed(role, permissions, "tools", "pdp-bulk-generator")) {
+  if (!isAllowed(role, permissions, "tools", "ads-bulk-generator")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

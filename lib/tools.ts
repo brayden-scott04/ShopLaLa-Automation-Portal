@@ -42,10 +42,10 @@ export const bulkCampaignUpload = defineTool({
   icon: FileSpreadsheet,
 });
 
-export const pdpBulkGenerator = defineTool({
-  name: "PDP Bulk Generator",
+export const adsBulkGenerator = defineTool({
+  name: "Ads Bulk Generator",
   description: "Generate Sponsored Brands Video, Store and Product Collection bulk files",
   icon: Clapperboard,
 });
 
-export const tools: AutomationTool[] = [bulkCampaignUpload, pdpBulkGenerator];
+export const tools: AutomationTool[] = [bulkCampaignUpload, adsBulkGenerator];

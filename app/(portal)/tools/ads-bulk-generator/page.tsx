@@ -11,7 +11,7 @@ import {
   AssetsSection,
   KeywordGarageSection,
 } from "@/components/bulk-campaign/library-sections";
-import { pdpBulkGenerator } from "@/lib/tools";
+import { adsBulkGenerator } from "@/lib/tools";
 import { extractBrandLogoId } from "@/lib/xlsx/assetId";
 import {
   listBrands,
@@ -40,7 +40,7 @@ import { BrandLibrarySection } from "./brand-library-section";
 
 type Step = "generate" | "library";
 
-export default function PdpBulkGeneratorPage() {
+export default function AdsBulkGeneratorPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [assets, setAssets] = useState<VideoAsset[]>([]);
   const [logos, setLogos] = useState<BrandLogo[]>([]);
@@ -93,9 +93,9 @@ export default function PdpBulkGeneratorPage() {
   return (
     <>
       <PageHeader
-        icon={pdpBulkGenerator.icon}
-        title={pdpBulkGenerator.name}
-        description={pdpBulkGenerator.description}
+        icon={adsBulkGenerator.icon}
+        title={adsBulkGenerator.name}
+        description={adsBulkGenerator.description}
       />
 
       <div className="space-y-6 px-6 pb-6 md:px-8 md:pb-8">

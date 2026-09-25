@@ -6,7 +6,7 @@ import { getSession } from "@/lib/session";
 
 // Brands, video assets and keyword themes are shared with Sponsored Brands
 // Upload — use the actions in ./bulk-campaign for those. This file only covers
-// the PDP Bulk Generator's own libraries.
+// the Ads Bulk Generator's own libraries.
 
 async function requireStaff() {
   const session = await getSession();
