@@ -395,6 +395,26 @@ period's figures are not trustworthy (surfaced as an amber banner on the page).
 > detects the format per row, the same way `settlement._parse_settlement_date` does for its own
 > dates. The reconciliation check above is what caught this — keep it.
 
+### PDP Bulk Generator tables
+
+Backs `/tools/pdp-bulk-generator` (ported from the standalone `pdp-bulk-generator` app). It
+**shares** `bulk_campaign_brands` / `_video_assets` / `_keyword_themes` with Sponsored Brands
+Upload (the Library cards for those live in `components/bulk-campaign/library-sections.tsx`,
+used by both pages) and adds three tables of its own — DDL in
+`sql/pdp_bulk_generator_migration.sql`, run by hand:
+
+- `bulk_campaign_brand_logos` / `bulk_campaign_store_urls` — several logos / Store URLs per brand
+  (`brand_id` FK, cascade delete). The migration backfills each brand's legacy single
+  `brand_logo_asset_id` / `store_page_url` into them.
+- `bulk_campaign_pdp_presets` — saved product boxes by SKU. Deliberately **not**
+  `bulk_campaign_presets`: the config shapes differ, so loading one tool's preset into the other
+  would half-fill the form.
+
+Server actions: `lib/actions/pdp-bulk-generator.ts`. Workbooks are built with `exceljs` by
+`lib/xlsx/pdp/buildVideoBulk.ts` (32-col "Sponsored Brands campaigns" sheet, PDP video) and
+`buildBrandBulk.ts` (75-col "SB Multi Ad Group Campaigns" sheet, Store video + Product
+Collection); one file can hold both sheets. Route: `app/api/tools/pdp-bulk-generator/generate`.
+
 ### Supabase clients
 
 ```typescript

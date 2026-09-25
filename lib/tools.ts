@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { FileSpreadsheet } from "lucide-react";
+import { Clapperboard, FileSpreadsheet } from "lucide-react";
 
 export interface AutomationTool {
   id: string;
@@ -42,4 +42,10 @@ export const bulkCampaignUpload = defineTool({
   icon: FileSpreadsheet,
 });
 
-export const tools: AutomationTool[] = [bulkCampaignUpload];
+export const pdpBulkGenerator = defineTool({
+  name: "PDP Bulk Generator",
+  description: "Generate Sponsored Brands Video, Store and Product Collection bulk files",
+  icon: Clapperboard,
+});
+
+export const tools: AutomationTool[] = [bulkCampaignUpload, pdpBulkGenerator];

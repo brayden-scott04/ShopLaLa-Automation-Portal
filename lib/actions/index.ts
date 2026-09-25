@@ -15,3 +15,4 @@ export * from "./profit-goals";
 export * from "./calendar";
 export * from "./boards";
 export * from "./dashboards";
+export * from "./pdp-bulk-generator";

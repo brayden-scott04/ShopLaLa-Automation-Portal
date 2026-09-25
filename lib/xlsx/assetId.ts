@@ -5,3 +5,11 @@ export function extractAssetId(input: string): string {
   const match = trimmed.match(/amzn1\.assetlibrary\.asset1\.[a-f0-9]+/i);
   return match ? match[0] : trimmed;
 }
+
+// Brand logo asset IDs keep their ":version_vN" suffix (unlike video assets),
+// so use this instead of extractAssetId for logos.
+export function extractBrandLogoId(input: string): string {
+  const trimmed = input.trim();
+  const match = trimmed.match(/amzn1\.assetlibrary\.asset1\.[a-f0-9]+(:version_v\d+)?/i);
+  return match ? match[0] : trimmed;
+}

@@ -1,0 +1,810 @@
+"use client";
+
+// Library sections shared by Sponsored Brands Upload and PDP Bulk Generator —
+// both read and write the same bulk_campaign_* brand / video / keyword tables.
+
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { extractAssetId } from "@/lib/xlsx/assetId";
+import {
+  createBrand,
+  updateBrand,
+  deleteBrand,
+  createVideoAsset,
+  updateVideoAsset,
+  deleteVideoAsset,
+  deleteVideoAssets,
+  createKeywordTheme,
+  updateKeywordTheme,
+  deleteKeywordTheme,
+  deleteKeywordThemes,
+  duplicateKeywordTheme,
+  type Brand,
+  type VideoAsset,
+  type KeywordTheme,
+} from "@/lib/actions/bulk-campaign";
+
+const COUNTRIES = ["US", "CA", "MX", "AU", "EU", "UK", "JP"];
+export const selectClass =
+  "h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
+export const labelClass = "mb-1.5 block text-xs font-medium text-muted-foreground";
+
+export function BrandsSection({ brands, onChanged }: { brands: Brand[]; onChanged: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<Brand | null>(null);
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState("US");
+  const [brandEntityId, setBrandEntityId] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [brandLogoAssetId, setBrandLogoAssetId] = useState("");
+  const [storePageUrl, setStorePageUrl] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Brand | null>(null);
+
+  function openAdd() {
+    setEditing(null);
+    setName("");
+    setCountry("US");
+    setBrandEntityId("");
+    setBrandName("");
+    setBrandLogoAssetId("");
+    setStorePageUrl("");
+    setFormError(null);
+    setOpen(true);
+  }
+
+  function openEdit(b: Brand) {
+    setEditing(b);
+    setName(b.name);
+    setCountry(b.country);
+    setBrandEntityId(b.brand_entity_id);
+    setBrandName(b.brand_name);
+    setBrandLogoAssetId(b.brand_logo_asset_id ?? "");
+    setStorePageUrl(b.store_page_url ?? "");
+    setFormError(null);
+    setOpen(true);
+  }
+
+  async function handleSave() {
+    setBusy(true);
+    setFormError(null);
+    const cleanLogo = extractAssetId(brandLogoAssetId);
+    const { error } = editing
+      ? await updateBrand(editing.id, {
+          name,
+          country,
+          brandEntityId,
+          brandName,
+          brandLogoAssetId: cleanLogo,
+          storePageUrl,
+        })
+      : await createBrand({
+          name,
+          country,
+          brandEntityId,
+          brandName,
+          brandLogoAssetId: cleanLogo,
+          storePageUrl,
+        });
+    setBusy(false);
+    if (error) {
+      setFormError(error);
+      return;
+    }
+    setOpen(false);
+    onChanged();
+  }
+
+  async function handleDelete(b: Brand) {
+    await deleteBrand(b.id);
+    onChanged();
+  }
+
+  return (
+    <Card>
+      <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
+        <CardTitle>Brand Profiles</CardTitle>
+        <CardDescription>Amazon brand entity used to fill in bulk campaign rows</CardDescription>
+        <CardAction>
+          <Button variant="outline" size="sm" onClick={openAdd}>
+            + Add Brand
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        {brands.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No brand profiles yet.</p>
+        ) : (
+          <div className="space-y-2">
+            {brands.map((b) => (
+              <div
+                key={b.id}
+                className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm"
+              >
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="truncate font-medium">{b.name}</span>
+                  <Badge variant="outline">{b.country}</Badge>
+                  <span className="truncate text-muted-foreground">{b.brand_name}</span>
+                </div>
+                <div className="flex shrink-0 gap-1">
+                  <Button variant="ghost" size="xs" onClick={() => openEdit(b)}>
+                    Edit
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={() => setPendingDelete(b)}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="right">
+          <SheetHeader>
+            <SheetTitle>{editing ? "Edit Brand Profile" : "Add Brand Profile"}</SheetTitle>
+            <SheetDescription>Used to fill Brand Entity ID / Brand name in generated rows.</SheetDescription>
+          </SheetHeader>
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4">
+            <div>
+              <label className={labelClass}>Name</label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Country</label>
+              <select className={selectClass} value={country} onChange={(e) => setCountry(e.target.value)}>
+                {COUNTRIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Brand Entity ID</label>
+              <Input value={brandEntityId} onChange={(e) => setBrandEntityId(e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Brand Name</label>
+              <Input value={brandName} onChange={(e) => setBrandName(e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Brand Logo Asset ID (optional)</label>
+              <Input
+                className="font-mono text-xs"
+                placeholder="amzn1.assetlibrary.asset1.XXXXX"
+                value={brandLogoAssetId}
+                onChange={(e) => setBrandLogoAssetId(e.target.value)}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Used on Product Collection ads when uploading directly to Amazon.
+              </p>
+            </div>
+            <div>
+              <label className={labelClass}>Store Page URL (optional)</label>
+              <Input
+                placeholder="https://www.amazon.com/stores/page/…"
+                value={storePageUrl}
+                onChange={(e) => setStorePageUrl(e.target.value)}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Brand Store landing page for Product Collection ads. Leave blank to link to the ASINs.
+              </p>
+            </div>
+            {formError && <p className="text-sm text-destructive">{formError}</p>}
+          </div>
+          <SheetFooter className="flex-row justify-end gap-2">
+            <Button onClick={handleSave} disabled={busy}>
+              {busy ? "Saving…" : "Save"}
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      <DeleteConfirm
+        item={pendingDelete}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={(b) => handleDelete(b)}
+        title="Delete brand profile?"
+        describe={(b) => (
+          <>
+            This deletes <span className="font-medium text-foreground">{b.name}</span> and all of its
+            video assets.
+          </>
+        )}
+      />
+    </Card>
+  );
+}
+
+export function AssetsSection({
+  brands,
+  assets,
+  onChanged,
+}: {
+  brands: Brand[];
+  assets: VideoAsset[];
+  onChanged: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<VideoAsset | null>(null);
+  const [brandId, setBrandId] = useState(brands[0]?.id ?? "");
+  const [label, setLabel] = useState("");
+  const [assetId, setAssetId] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<VideoAsset | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [pendingBulkDelete, setPendingBulkDelete] = useState<{
+    ids: string[];
+    mode: "selected" | "all";
+  } | null>(null);
+
+  // Drop any selected id that no longer exists (e.g. its brand was deleted,
+  // cascading its assets away) so a stale id can't linger in a bulk delete.
+  // Adjusted during render rather than in an effect, matching this file's
+  // existing prop-change pattern elsewhere.
+  const [prevAssets, setPrevAssets] = useState(assets);
+  if (assets !== prevAssets) {
+    setPrevAssets(assets);
+    setSelected((prev) => {
+      const next = new Set([...prev].filter((id) => assets.some((a) => a.id === id)));
+      return next.size === prev.size ? prev : next;
+    });
+  }
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    setSelected((prev) => (prev.size === assets.length ? new Set() : new Set(assets.map((a) => a.id))));
+  }
+
+  function openAdd() {
+    setEditing(null);
+    setBrandId(brands[0]?.id ?? "");
+    setLabel("");
+    setAssetId("");
+    setFormError(null);
+    setOpen(true);
+  }
+
+  function openEdit(a: VideoAsset) {
+    setEditing(a);
+    setBrandId(a.brand_id);
+    setLabel(a.label);
+    setAssetId(a.asset_id);
+    setFormError(null);
+    setOpen(true);
+  }
+
+  async function handleSave() {
+    setBusy(true);
+    setFormError(null);
+    const cleanAssetId = extractAssetId(assetId);
+    const { error } = editing
+      ? await updateVideoAsset(editing.id, { label, assetId: cleanAssetId })
+      : await createVideoAsset({ brandId, label, assetId: cleanAssetId });
+    setBusy(false);
+    if (error) {
+      setFormError(error);
+      return;
+    }
+    setOpen(false);
+    onChanged();
+  }
+
+  async function handleDelete(a: VideoAsset) {
+    await deleteVideoAsset(a.id);
+    setSelected((prev) => {
+      if (!prev.has(a.id)) return prev;
+      const next = new Set(prev);
+      next.delete(a.id);
+      return next;
+    });
+    onChanged();
+  }
+
+  async function handleBulkDelete(ids: string[]) {
+    await deleteVideoAssets(ids);
+    setSelected(new Set());
+    onChanged();
+  }
+
+  function brandName(id: string) {
+    return brands.find((b) => b.id === id)?.name ?? "Unknown brand";
+  }
+
+  return (
+    <Card>
+      <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
+        <CardTitle>Video Assets</CardTitle>
+        <CardDescription>Amazon creative asset IDs, per brand</CardDescription>
+        <CardAction className="flex items-center gap-2">
+          {selected.size > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPendingBulkDelete({ ids: [...selected], mode: "selected" })}
+              className="text-destructive hover:text-destructive"
+            >
+              Delete Selected ({selected.size})
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPendingBulkDelete({ ids: assets.map((a) => a.id), mode: "all" })}
+            disabled={assets.length === 0}
+            className="text-destructive hover:text-destructive"
+          >
+            Delete All
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={openAdd}
+            disabled={brands.length === 0}
+            title={brands.length === 0 ? "Add a Brand Profile first" : undefined}
+          >
+            + Add Asset
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        {assets.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No video assets yet.</p>
+        ) : (
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
+              <Checkbox
+                checked={selected.size === assets.length}
+                onCheckedChange={toggleSelectAll}
+              />
+              Select all
+            </label>
+            {assets.map((a) => (
+              <div
+                key={a.id}
+                className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm"
+              >
+                <div className="flex min-w-0 items-center gap-2">
+                  <Checkbox
+                    checked={selected.has(a.id)}
+                    onCheckedChange={() => toggleSelected(a.id)}
+                  />
+                  <span className="truncate font-medium">{a.label}</span>
+                  <Badge variant="outline">{brandName(a.brand_id)}</Badge>
+                  <span className="truncate font-mono text-xs text-muted-foreground">{a.asset_id}</span>
+                </div>
+                <div className="flex shrink-0 gap-1">
+                  <Button variant="ghost" size="xs" onClick={() => openEdit(a)}>
+                    Edit
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={() => setPendingDelete(a)}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="right">
+          <SheetHeader>
+            <SheetTitle>{editing ? "Edit Video Asset" : "Add Video Asset"}</SheetTitle>
+            <SheetDescription>Paste a creative asset URL or a bare asset ID.</SheetDescription>
+          </SheetHeader>
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4">
+            {!editing && (
+              <div>
+                <label className={labelClass}>Brand Profile</label>
+                <select className={selectClass} value={brandId} onChange={(e) => setBrandId(e.target.value)}>
+                  {brands.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name} ({b.country})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <div>
+              <label className={labelClass}>Label</label>
+              <Input value={label} onChange={(e) => setLabel(e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Asset ID or URL</label>
+              <Input
+                className="font-mono text-xs"
+                placeholder="amzn1.assetlibrary.asset1.XXXXX"
+                value={assetId}
+                onChange={(e) => setAssetId(e.target.value)}
+              />
+            </div>
+            {formError && <p className="text-sm text-destructive">{formError}</p>}
+          </div>
+          <SheetFooter className="flex-row justify-end gap-2">
+            <Button onClick={handleSave} disabled={busy}>
+              {busy ? "Saving…" : "Save"}
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      <DeleteConfirm
+        item={pendingDelete}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={(a) => handleDelete(a)}
+        title="Delete video asset?"
+        describe={(a) => (
+          <>
+            This deletes the video asset <span className="font-medium text-foreground">{a.label}</span>.
+          </>
+        )}
+      />
+
+      <DeleteConfirm
+        item={pendingBulkDelete}
+        onCancel={() => setPendingBulkDelete(null)}
+        onConfirm={(pending) => handleBulkDelete(pending.ids)}
+        title={pendingBulkDelete?.mode === "all" ? "Delete all video assets?" : "Delete selected video assets?"}
+        describe={(pending) => (
+          <>
+            This deletes{" "}
+            <span className="font-medium text-foreground">
+              {pending.ids.length} video asset{pending.ids.length === 1 ? "" : "s"}
+            </span>
+            . This can&apos;t be undone.
+          </>
+        )}
+      />
+    </Card>
+  );
+}
+
+export function KeywordGarageSection({
+  brands,
+  themes,
+  onChanged,
+}: {
+  brands: Brand[];
+  themes: KeywordTheme[];
+  onChanged: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<KeywordTheme | null>(null);
+  const [brandId, setBrandId] = useState<string>("");
+  const [name, setName] = useState("");
+  const [keywords, setKeywords] = useState("");
+  const [negativeKeywords, setNegativeKeywords] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<KeywordTheme | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [pendingBulkDelete, setPendingBulkDelete] = useState<{
+    ids: string[];
+    mode: "selected" | "all";
+  } | null>(null);
+
+  // Drop any selected id that no longer exists so a stale id can't linger in a bulk delete.
+  const [prevThemes, setPrevThemes] = useState(themes);
+  if (themes !== prevThemes) {
+    setPrevThemes(themes);
+    setSelected((prev) => {
+      const next = new Set([...prev].filter((id) => themes.some((t) => t.id === id)));
+      return next.size === prev.size ? prev : next;
+    });
+  }
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    setSelected((prev) => (prev.size === themes.length ? new Set() : new Set(themes.map((t) => t.id))));
+  }
+
+  function openAdd() {
+    setEditing(null);
+    setBrandId("");
+    setName("");
+    setKeywords("");
+    setNegativeKeywords("");
+    setFormError(null);
+    setOpen(true);
+  }
+
+  function openEdit(t: KeywordTheme) {
+    setEditing(t);
+    setBrandId(t.brand_id ?? "");
+    setName(t.name);
+    setKeywords(t.keywords);
+    setNegativeKeywords(t.negative_keywords);
+    setFormError(null);
+    setOpen(true);
+  }
+
+  async function handleSave() {
+    setBusy(true);
+    setFormError(null);
+    const { error } = editing
+      ? await updateKeywordTheme(editing.id, {
+          brandId: brandId || null,
+          name,
+          keywords,
+          negativeKeywords,
+        })
+      : await createKeywordTheme({ brandId: brandId || null, name, keywords, negativeKeywords });
+    setBusy(false);
+    if (error) {
+      setFormError(error);
+      return;
+    }
+    setOpen(false);
+    onChanged();
+  }
+
+  async function handleDelete(t: KeywordTheme) {
+    await deleteKeywordTheme(t.id);
+    setSelected((prev) => {
+      if (!prev.has(t.id)) return prev;
+      const next = new Set(prev);
+      next.delete(t.id);
+      return next;
+    });
+    onChanged();
+  }
+
+  async function handleBulkDelete(ids: string[]) {
+    await deleteKeywordThemes(ids);
+    setSelected(new Set());
+    onChanged();
+  }
+
+  async function handleDuplicate(t: KeywordTheme) {
+    await duplicateKeywordTheme(t.id);
+    onChanged();
+  }
+
+  function brandName(id: string | null) {
+    if (id === null) return "All brands";
+    return brands.find((b) => b.id === id)?.name ?? "Unknown brand";
+  }
+
+  return (
+    <Card>
+      <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
+        <CardTitle>Keyword Garage</CardTitle>
+        <CardDescription>Reusable keyword and negative-keyword sets</CardDescription>
+        <CardAction className="flex items-center gap-2">
+          {selected.size > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPendingBulkDelete({ ids: [...selected], mode: "selected" })}
+              className="text-destructive hover:text-destructive"
+            >
+              Delete Selected ({selected.size})
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPendingBulkDelete({ ids: themes.map((t) => t.id), mode: "all" })}
+            disabled={themes.length === 0}
+            className="text-destructive hover:text-destructive"
+          >
+            Delete All
+          </Button>
+          <Button variant="outline" size="sm" onClick={openAdd}>
+            + Add Theme
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        {themes.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No keyword themes yet.</p>
+        ) : (
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
+              <Checkbox checked={selected.size === themes.length} onCheckedChange={toggleSelectAll} />
+              Select all
+            </label>
+            {themes.map((t) => (
+              <div
+                key={t.id}
+                className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm"
+              >
+                <div className="flex min-w-0 items-center gap-2">
+                  <Checkbox checked={selected.has(t.id)} onCheckedChange={() => toggleSelected(t.id)} />
+                  <span className="truncate font-medium">{t.name}</span>
+                  <Badge variant="outline">{brandName(t.brand_id)}</Badge>
+                </div>
+                <div className="flex shrink-0 gap-1">
+                  <Button variant="ghost" size="xs" onClick={() => openEdit(t)}>
+                    Edit
+                  </Button>
+                  <Button variant="ghost" size="xs" onClick={() => handleDuplicate(t)}>
+                    Duplicate
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={() => setPendingDelete(t)}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="right" className="sm:max-w-lg">
+          <SheetHeader>
+            <SheetTitle>{editing ? "Edit Keyword Theme" : "Add Keyword Theme"}</SheetTitle>
+            <SheetDescription>
+              Leave Brand Profile unset to make this theme available to all brands.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4">
+            <div>
+              <label className={labelClass}>Brand Profile (optional)</label>
+              <select className={selectClass} value={brandId} onChange={(e) => setBrandId(e.target.value)}>
+                <option value="">All brands</option>
+                {brands.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name} ({b.country})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Name</label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Keywords (one per line)</label>
+              <Textarea
+                className="min-h-[120px] font-mono text-xs"
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Negative keywords (optional, one per line)</label>
+              <Textarea
+                className="min-h-[70px] font-mono text-xs"
+                value={negativeKeywords}
+                onChange={(e) => setNegativeKeywords(e.target.value)}
+              />
+            </div>
+            {formError && <p className="text-sm text-destructive">{formError}</p>}
+          </div>
+          <SheetFooter className="flex-row justify-end gap-2">
+            <Button onClick={handleSave} disabled={busy}>
+              {busy ? "Saving…" : "Save"}
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      <DeleteConfirm
+        item={pendingDelete}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={(t) => handleDelete(t)}
+        title="Delete keyword theme?"
+        describe={(t) => (
+          <>
+            This deletes the keyword theme <span className="font-medium text-foreground">{t.name}</span>.
+          </>
+        )}
+      />
+
+      <DeleteConfirm
+        item={pendingBulkDelete}
+        onCancel={() => setPendingBulkDelete(null)}
+        onConfirm={(pending) => handleBulkDelete(pending.ids)}
+        title={pendingBulkDelete?.mode === "all" ? "Delete all keyword themes?" : "Delete selected keyword themes?"}
+        describe={(pending) => (
+          <>
+            This deletes{" "}
+            <span className="font-medium text-foreground">
+              {pending.ids.length} keyword theme{pending.ids.length === 1 ? "" : "s"}
+            </span>
+            . This can&apos;t be undone.
+          </>
+        )}
+      />
+    </Card>
+  );
+}
+
+/** Shared destructive-confirm dialog for the Library sections. */
+export function DeleteConfirm<T>({
+  item,
+  onCancel,
+  onConfirm,
+  title,
+  describe,
+}: {
+  item: T | null;
+  onCancel: () => void;
+  onConfirm: (item: T) => void;
+  title: string;
+  describe: (item: T) => React.ReactNode;
+}) {
+  return (
+    <AlertDialog open={item !== null} onOpenChange={(o) => !o && onCancel()}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{item !== null ? describe(item) : null}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            variant="destructive"
+            onClick={() => {
+              if (item !== null) onConfirm(item);
+              onCancel();
+            }}
+          >
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
