@@ -17,7 +17,7 @@ export function ThreadView({ items, anchorUid }: ThreadViewProps) {
   }, [items, anchorUid]);
 
   return (
-    <div className="flex max-h-[60vh] flex-col gap-3 overflow-y-auto">
+    <div className="flex max-h-[60vh] min-w-0 flex-col gap-3 overflow-x-hidden overflow-y-auto">
       {items.map((item) => (
         <div
           key={`${item.folder}:${item.uid}`}
@@ -28,14 +28,14 @@ export function ThreadView({ items, anchorUid }: ThreadViewProps) {
             item.isAnchor && "ring-1 ring-primary"
           )}
         >
-          <div className="mb-1 flex items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">
+          <div className="mb-1 flex min-w-0 flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+            <span className="min-w-0 font-medium break-all text-foreground">
               {item.outgoing ? "You" : item.from}
               {!item.outgoing && item.fromAddress && ` <${item.fromAddress}>`}
             </span>
             <span>{new Date(item.date).toLocaleString()}</span>
           </div>
-          <p className="whitespace-pre-wrap text-sm text-foreground">{item.text || "(no content)"}</p>
+          <p className="text-sm whitespace-pre-wrap text-foreground [overflow-wrap:anywhere]">{item.text || "(no content)"}</p>
         </div>
       ))}
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CircleCheck, Forward, Inbox, Mail, RefreshCw, Reply, ReplyAll } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,14 @@ import { cn } from "@/lib/utils";
 import { companyInbox } from "@/lib/communications";
 import {
   listTitanEmails,
+  getTitanEmail,
   getTitanThread,
+  getTitanRepliedUids,
   sendTitanEmail,
   listYahooEmails,
+  getYahooEmail,
   getYahooThread,
+  getYahooRepliedUids,
   sendYahooEmail,
   listMailAccounts,
   type MailAccountId,
@@ -29,13 +33,29 @@ const MAIL_ACTIONS: Record<
   MailAccountId,
   {
     list: typeof listTitanEmails;
+    message: typeof getTitanEmail;
     thread: typeof getTitanThread;
+    replied: typeof getTitanRepliedUids;
     send: typeof sendTitanEmail;
   }
 > = {
-  titan: { list: listTitanEmails, thread: getTitanThread, send: sendTitanEmail },
-  yahoo: { list: listYahooEmails, thread: getYahooThread, send: sendYahooEmail },
+  titan: {
+    list: listTitanEmails,
+    message: getTitanEmail,
+    thread: getTitanThread,
+    replied: getTitanRepliedUids,
+    send: sendTitanEmail,
+  },
+  yahoo: {
+    list: listYahooEmails,
+    message: getYahooEmail,
+    thread: getYahooThread,
+    replied: getYahooRepliedUids,
+    send: sendYahooEmail,
+  },
 };
+
+const threadKey = (account: MailAccountId, uid: number) => `${account}:${uid}`;
 
 function formatDate(iso: string): string {
   const date = new Date(iso);
@@ -52,15 +72,26 @@ export default function CompanyInboxPage() {
 
   const [messages, setMessages] = useState<MailListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [listError, setListError] = useState<string | null>(null);
 
   const [selectedUid, setSelectedUid] = useState<number | null>(null);
   const [thread, setThread] = useState<ThreadItem[] | null>(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const [isThreadLoading, setIsThreadLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
 
   const [composeMode, setComposeMode] = useState<MailComposeMode | null>(null);
   const [sentNotice, setSentNotice] = useState<string | null>(null);
+
+  // In-memory caches so switching accounts or re-opening an email is instant;
+  // each cached view is still refreshed in the background.
+  const listCache = useRef(new Map<MailAccountId, MailListItem[]>());
+  const threadCache = useRef(new Map<string, ThreadItem[]>());
+  // Which account / email the latest request is for, so a slow response for
+  // something the user has already moved away from is ignored.
+  const currentAccount = useRef(activeAccount);
+  const currentThreadKey = useRef<string | null>(null);
 
   const anchor = thread?.find((item) => item.isAnchor) ?? null;
   const activeLabel = accounts.find((a) => a.id === activeAccount)?.label ?? "mailbox";
@@ -72,38 +103,106 @@ export default function CompanyInboxPage() {
   }, []);
 
   function loadMessages() {
-    setIsLoading(true);
-    setListError(null);
-    MAIL_ACTIONS[activeAccount].list().then(({ data, error }) => {
-      if (error) setListError(error);
-      else setMessages(data ?? []);
+    const account = activeAccount;
+    currentAccount.current = account;
+    const cached = listCache.current.get(account);
+    if (cached) {
+      setMessages(cached);
       setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+    setIsRefreshing(true);
+    setListError(null);
+
+    MAIL_ACTIONS[account].list().then(({ data, error }) => {
+      if (currentAccount.current !== account) return;
+      setIsLoading(false);
+      setIsRefreshing(false);
+      if (error) {
+        if (!cached) setListError(error);
+        return;
+      }
+      const items = data ?? [];
+      // Keep the replied badges we already know about until the fresh scan lands.
+      const knownReplied = new Set((cached ?? []).filter((m) => m.replied).map((m) => m.uid));
+      const merged = items.map((m) => (knownReplied.has(m.uid) ? { ...m, replied: true } : m));
+      listCache.current.set(account, merged);
+      setMessages(merged);
+
+      // "Replied" badges load separately so the list never waits on the Sent scan.
+      MAIL_ACTIONS[account]
+        .replied(items.map((m) => ({ uid: m.uid, messageId: m.messageId })))
+        .then(({ data: repliedUids }) => {
+          const replied = new Set(repliedUids);
+          const withBadges = (listCache.current.get(account) ?? []).map((m) => ({
+            ...m,
+            replied: replied.has(m.uid),
+          }));
+          listCache.current.set(account, withBadges);
+          if (currentAccount.current === account) setMessages(withBadges);
+        });
     });
   }
 
   useEffect(loadMessages, [activeAccount]);
 
   function openMessage(uid: number) {
+    const account = activeAccount;
+    const key = threadKey(account, uid);
+    currentThreadKey.current = key;
     setSelectedUid(uid);
-    setThread(null);
     setDetailError(null);
-    setIsDetailLoading(true);
-    MAIL_ACTIONS[activeAccount].thread(uid).then(({ data, error }) => {
-      if (error) setDetailError(error);
-      else setThread(data?.items ?? null);
+
+    const cached = threadCache.current.get(key);
+    setThread(cached ?? null);
+    setIsDetailLoading(!cached);
+    setIsThreadLoading(true);
+
+    // Fast path: the clicked email alone, shown as soon as it arrives.
+    let shown = !!cached;
+    let threadDone = false;
+    if (!cached) {
+      MAIL_ACTIONS[account].message(uid).then(({ data }) => {
+        if (currentThreadKey.current !== key || !data || threadDone) return;
+        shown = true;
+        setThread([{ ...data, folder: "inbox", outgoing: false, isAnchor: true }]);
+        setDetailError(null);
+        setIsDetailLoading(false);
+      });
+    }
+
+    // Full conversation — replaces the single email when it's ready.
+    MAIL_ACTIONS[account].thread(uid).then(({ data, error }) => {
+      if (currentThreadKey.current !== key) return;
+      setIsThreadLoading(false);
+      if (error || !data) {
+        // Keep showing the single email (or the cached thread) if we have one.
+        if (!shown) {
+          setDetailError(error ?? "Failed to load message");
+          setIsDetailLoading(false);
+        }
+        return;
+      }
+      threadDone = true;
       setIsDetailLoading(false);
+      threadCache.current.set(key, data.items);
+      setThread(data.items);
+      setDetailError(null);
     });
   }
 
   function handleAccountChange(id: MailAccountId) {
     if (id === activeAccount) return;
     setActiveAccount(id);
-    setMessages([]);
+    setMessages(listCache.current.get(id) ?? []);
     setListError(null);
+    currentThreadKey.current = null;
     setSelectedUid(null);
     setThread(null);
     setDetailError(null);
     setIsDetailLoading(false);
+    setIsThreadLoading(false);
     setComposeMode(null);
     setSentNotice(null);
   }
@@ -138,9 +237,9 @@ export default function CompanyInboxPage() {
             variant="outline"
             size="sm"
             onClick={loadMessages}
-            disabled={isLoading}
+            disabled={isRefreshing}
           >
-            <RefreshCw className={cn("size-4", isLoading && "animate-spin")} />
+            <RefreshCw className={cn("size-4", isRefreshing && "animate-spin")} />
             Refresh
           </Button>
         </div>
@@ -152,7 +251,7 @@ export default function CompanyInboxPage() {
         )}
 
         {!listError && (
-          <div className="grid gap-4 md:grid-cols-[minmax(0,320px)_1fr]">
+          <div className="grid gap-4 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
             <div className="rounded-lg border border-border">
               {isLoading ? (
                 <div className="flex flex-col gap-3 p-4">
@@ -209,7 +308,7 @@ export default function CompanyInboxPage() {
               )}
             </div>
 
-            <div className="rounded-lg border border-border p-6">
+            <div className="min-w-0 overflow-hidden rounded-lg border border-border p-6">
               {!selectedUid ? (
                 <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground">
                   <Mail className="size-8" />
@@ -229,12 +328,12 @@ export default function CompanyInboxPage() {
                 </div>
               ) : anchor && thread ? (
                 <div className="flex flex-col gap-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h2 className="text-base font-semibold text-foreground">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h2 className="text-base font-semibold break-words text-foreground">
                         {anchor.subject}
                       </h2>
-                      <p className="mt-1 text-sm text-muted-foreground">
+                      <p className="mt-1 text-sm break-words text-muted-foreground">
                         {anchor.from}
                         {anchor.fromAddress && ` <${anchor.fromAddress}>`}
                         {" · "}
@@ -278,6 +377,12 @@ export default function CompanyInboxPage() {
                   )}
 
                   <ThreadView items={thread} anchorUid={selectedUid} />
+                  {isThreadLoading && (
+                    <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <RefreshCw className="size-3 animate-spin" />
+                      Loading conversation…
+                    </p>
+                  )}
                 </div>
               ) : null}
             </div>
