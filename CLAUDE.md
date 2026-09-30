@@ -178,7 +178,13 @@ directly for this feature.
 > still holds all 144 ten-minute rows per `(country, metric, band)`, and the external process still
 > floors to a 10-minute slot every run (`current_slot()`, unchanged). Saving a half-hour row writes
 > the entered amount into its `:00`/`:30` **head** sub-slot and `0` into the two 10-minute sub-slots
-> after it (`subSlotsFor()`), so the job's three ticks inside that half hour pay out exactly once.
+> after it (`subSlotsFor()`). The job reads the grid at the half hour's **head** slot on all three of
+> its ticks and pays each `(campaign, metric)` at most once per half hour, at the **first tick the
+> campaign is OOB** — so a campaign that runs out just after `:00`/`:30` is paid at `:10`/`:20` (or
+> `:40`/`:50`) instead of waiting up to ~27 minutes for the next head. "Already paid" is checked
+> against that product's log (`get_acos_paid_this_half_hour()` / `half_hour_catch_up()` in the
+> PPC-Task repo). The half hour headed by a country's `reset_time` is excluded, since that head tick
+> runs the reset instead of paying.
 
 > **Backend status (2026-07-31): wired, running in testing mode.** The external process
 > (`LaLaGreen-PPC-Task`, sibling repo) now reads these tables live on every `/budget` run —
@@ -414,6 +420,35 @@ Server actions: `lib/actions/pdp-bulk-generator.ts`. Workbooks are built with `e
 `lib/xlsx/pdp/buildVideoBulk.ts` (32-col "Sponsored Brands campaigns" sheet, PDP video) and
 `buildBrandBulk.ts` (75-col "SB Multi Ad Group Campaigns" sheet, Store video + Product
 Collection); one file can hold both sheets. Route: `app/api/tools/ads-bulk-generator/generate`.
+
+### FBA Fee Tracker tables
+
+These back `/tools/fba-fee-tracker`, which catches Amazon re-measuring a SKU into a bigger size tier (e.g. large standard at about $5/unit becoming bulky at about $20/unit). It also compares Amazon's fee with the fee our own dimensions should cost. US only. The DDL is in `sql/fba_fee_tracker_migration.sql` and is run by hand.
+
+**The daily data comes from the sibling `LaLaGreen-Daily-Report` repo.**
+- `reportlib/fba_fee_sync.py` pulls `GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA`.
+- It runs from n8n (`n8n/fba-fee-sync.json`) at 04:30 SGT via `POST /sync-fba-fees`.
+- It sends Telegram messages only for new alerts, errors and timeouts.
+- That repo is deployed to the VPS by hand, not by git push; see its `.claude/CLAUDE.md`.
+
+The portal writes to these tables in only two ways, both in `lib/actions/fba-fee-tracker.ts`: true dimensions and alert status.
+
+- **`fba_fee_snapshots`**: one row per `(snapshot_date SGT, country_code, sku)`.
+  - Holds Amazon's dimensions, normalized to inches/lb, plus `size_tier`, `fee_per_unit` and price.
+  - Pruned after 400 days.
+- **`fba_fee_true_dims`**: our own package dimensions, one row per SKU.
+  - The worker seeds each row from the first Amazon reading for that SKU (`source='amazon_first_seen'`) and **never overwrites it**.
+  - Staff edits and Excel uploads set `source='manual'`.
+- **`fba_fee_alerts`**: raised when two consecutive snapshots differ in size tier, or when the fee moves ±15% or more.
+  - `cause` is `dims_changed` when Amazon's dimensions or weight moved, meaning a re-measure you can dispute. Otherwise it is `rate_change`: peak season, the annual rate card, or the fuel surcharge.
+  - Staff move alerts from `open` to `case_raised` (a case ID is required), `resolved` or `dismissed`.
+  - Unique on `(country_code, sku, detected_date, kind)`.
+- **`fba_fee_sync_runs`**: append-only run log.
+
+> **Expected fees are computed in the browser by `lib/fba-fee-calculator.ts`, which is our own copy of Amazon's rate card.** Revcal has no API, and the Product Fees API only uses Amazon's own dimensions.
+> - The rate card (`US_RATE_CARD`) is 2026 US non-apparel, non-peak, with the 3.5% fuel surcharge from 2026-04-17. **It must be updated by hand every January 15.**
+> - The page self-checks by running the calculator on *Amazon's* dimensions and comparing the result with Amazon's fee.
+> - If that match rate falls below 80%, the page shows a warning. That usually means the rate card is stale, or it's peak season (Oct 15–Jan 14), which isn't modelled.
 
 ### Supabase clients
 

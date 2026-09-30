@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Clapperboard, FileSpreadsheet } from "lucide-react";
+import { Clapperboard, FileSpreadsheet, PackageSearch } from "lucide-react";
 
 export interface AutomationTool {
   id: string;
@@ -48,4 +48,10 @@ export const adsBulkGenerator = defineTool({
   icon: Clapperboard,
 });
 
-export const tools: AutomationTool[] = [bulkCampaignUpload, adsBulkGenerator];
+export const fbaFeeTracker = defineTool({
+  name: "FBA Fee Tracker",
+  description: "Daily per-SKU FBA fee history, size-tier change alerts and expected fees",
+  icon: PackageSearch,
+});
+
+export const tools: AutomationTool[] = [bulkCampaignUpload, adsBulkGenerator, fbaFeeTracker];
