@@ -8,16 +8,19 @@
  * Plain module (not "use server"), so both the client page and server actions
  * can import it.
  *
- * Scope: US, non-apparel, non-dangerous-goods, NON-PEAK rates. The Oct 15 –
- * Jan 14 peak surcharge is not modelled, so during peak Amazon's fee will read
- * slightly (~$0.2–0.3) above ours for every SKU. That's well under the 15%
- * flag threshold, and the page's "calculator matches Amazon" self-check makes
- * any systematic drift visible.
+ * Scope: US, non-apparel, non-dangerous-goods. Non-peak rates apply
+ * Jan 15 – Oct 14; the separate peak card (Oct 15 – Jan 14) is picked by date.
+ * Amazon's fuel & logistics surcharge is NOT part of either table — it's added
+ * on top, exactly as Amazon's fee page footnotes it.
  *
- * UPDATE EVERY YEAR: Amazon publishes a new rate card each January 15. Edit
- * US_RATE_CARD below and bump its `effective` date. Rates transcribed
- * (2026-09-30) from the 2026 US non-peak tables as published, cross-checked
- * across two independent sources that matched on every standard-size row.
+ * Source: Amazon's official "FBA fulfillment fees (excluding apparel)" page in
+ * Seller Central, pasted by staff and checked number-for-number on 2026-10-01
+ * (non-peak 2026 + peak 2026/27).
+ *
+ * UPDATE EVERY YEAR: each January 15 Amazon publishes a new non-peak card —
+ * edit US_RATE_CARD and bump `effective`. Each autumn, replace `peak` with the
+ * coming season's card and dates. The page's "calculator check" tile drops when
+ * either is stale.
  */
 
 export type SizeTier =
@@ -58,12 +61,65 @@ interface IncrementalRate {
   aboveLb: number;
 }
 
+/** One season's fee tables (non-peak or peak) — same shape, different numbers. */
+interface RateTables {
+  smallStandard: WeightRow[];
+  largeStandard: WeightRow[];
+  largeStandardOver3Lb: IncrementalRate;
+  smallBulky: IncrementalRate;
+  largeBulky: IncrementalRate;
+  extraLarge0to50: IncrementalRate;
+  extraLarge50to70: IncrementalRate;
+  extraLarge70to150: IncrementalRate;
+  extraLarge150Plus: IncrementalRate;
+}
+
+/** 2026/27 peak season card, Oct 15, 2026 – Jan 14, 2027 (fuel surcharge not included). */
+const US_PEAK_2026: RateTables & { from: string; to: string } = {
+  from: "2026-10-15",
+  to: "2027-01-14",
+  smallStandard: [
+    { maxOz: 2, fee: [2.62, 3.51, 3.77] },
+    { maxOz: 4, fee: [2.68, 3.61, 3.87] },
+    { maxOz: 6, fee: [2.76, 3.65, 3.91] },
+    { maxOz: 8, fee: [2.86, 3.74, 4.0] },
+    { maxOz: 10, fee: [2.98, 3.89, 4.15] },
+    { maxOz: 12, fee: [3.03, 3.99, 4.25] },
+    { maxOz: 14, fee: [3.14, 4.13, 4.39] },
+    { maxOz: 16, fee: [3.17, 4.18, 4.44] },
+  ],
+  largeStandard: [
+    { maxOz: 4, fee: [3.15, 3.97, 4.23] },
+    { maxOz: 8, fee: [3.39, 4.21, 4.47] },
+    { maxOz: 12, fee: [3.66, 4.48, 4.74] },
+    { maxOz: 16, fee: [4.07, 4.89, 5.15] },
+    { maxOz: 20, fee: [4.52, 5.34, 5.6] },
+    { maxOz: 24, fee: [4.91, 5.73, 5.99] },
+    { maxOz: 28, fee: [5.07, 5.89, 6.15] },
+    { maxOz: 32, fee: [5.33, 6.15, 6.41] },
+    { maxOz: 36, fee: [5.47, 6.29, 6.55] },
+    { maxOz: 40, fee: [5.67, 6.49, 6.75] },
+    { maxOz: 44, fee: [5.84, 6.66, 6.92] },
+    { maxOz: 48, fee: [6.26, 7.08, 7.34] },
+  ],
+  largeStandardOver3Lb: { base: [6.69, 7.51, 7.77], perStep: 0.08, stepLb: 0.25, aboveLb: 3 },
+  smallBulky: { base: [7.82, 8.59, 8.59], perStep: 0.38, stepLb: 1, aboveLb: 1 },
+  largeBulky: { base: [9.62, 10.39, 10.39], perStep: 0.38, stepLb: 1, aboveLb: 1 },
+  extraLarge0to50: { base: [28.29, 29.06, 29.06], perStep: 0.38, stepLb: 1, aboveLb: 1 },
+  extraLarge50to70: { base: [39.36, 40.13, 40.13], perStep: 0.75, stepLb: 1, aboveLb: 51 },
+  extraLarge70to150: { base: [54.97, 55.74, 55.74], perStep: 0.75, stepLb: 1, aboveLb: 71 },
+  extraLarge150Plus: { base: [202.69, 203.46, 203.46], perStep: 0.19, stepLb: 1, aboveLb: 151 },
+};
+
 export const US_RATE_CARD = {
   effective: "2026-01-15",
   /** 3.5% fuel & logistics surcharge on every fulfillment fee, from 2026-04-17. */
   fuelSurcharge: { rate: 0.035, from: "2026-04-17" },
   dimDivisor: 139,
   dimMinSideIn: 2,
+  peak: US_PEAK_2026,
+
+  // Non-peak tables (Jan 15 – Oct 14) below.
 
   smallStandard: [
     { maxOz: 2, fee: [2.43, 3.32, 3.58] },
@@ -125,6 +181,8 @@ export interface FeeResult {
   shippingWeightLb: number;
   priceBand: 0 | 1 | 2;
   priceBandAssumed: boolean;
+  /** Priced with the peak-season card (Oct 15 – Jan 14). */
+  isPeak: boolean;
   baseFee: number;
   fee: number;
 }
@@ -192,36 +250,39 @@ export function expectedFbaFee(input: FeeInput): FeeResult {
 
   const { band, assumed } = priceBandOf(input.price);
 
+  const date = input.date ?? new Date().toISOString().slice(0, 10);
+  const isPeak = date >= card.peak.from && date <= card.peak.to;
+  const rates: RateTables = isPeak ? card.peak : card;
+
   let base: number;
   switch (tier) {
     case "small_standard":
-      base = fromRows(card.smallStandard, band, shippingLb) ?? card.smallStandard.at(-1)!.fee[band];
+      base = fromRows(rates.smallStandard, band, shippingLb) ?? rates.smallStandard.at(-1)!.fee[band];
       break;
     case "large_standard":
       base =
-        fromRows(card.largeStandard, band, shippingLb) ?? incremental(card.largeStandardOver3Lb, band, shippingLb);
+        fromRows(rates.largeStandard, band, shippingLb) ?? incremental(rates.largeStandardOver3Lb, band, shippingLb);
       break;
     case "small_bulky":
-      base = incremental(card.smallBulky, band, shippingLb);
+      base = incremental(rates.smallBulky, band, shippingLb);
       break;
     case "large_bulky":
-      base = incremental(card.largeBulky, band, shippingLb);
+      base = incremental(rates.largeBulky, band, shippingLb);
       break;
     case "extra_large_0_50":
-      base = incremental(card.extraLarge0to50, band, shippingLb);
+      base = incremental(rates.extraLarge0to50, band, shippingLb);
       break;
     case "extra_large_50_70":
-      base = incremental(card.extraLarge50to70, band, shippingLb);
+      base = incremental(rates.extraLarge50to70, band, shippingLb);
       break;
     case "extra_large_70_150":
-      base = incremental(card.extraLarge70to150, band, shippingLb);
+      base = incremental(rates.extraLarge70to150, band, shippingLb);
       break;
     case "extra_large_150_plus":
-      base = incremental(card.extraLarge150Plus, band, shippingLb);
+      base = incremental(rates.extraLarge150Plus, band, shippingLb);
       break;
   }
 
-  const date = input.date ?? new Date().toISOString().slice(0, 10);
   const fee = date >= card.fuelSurcharge.from ? base * (1 + card.fuelSurcharge.rate) : base;
 
   return {
@@ -230,6 +291,7 @@ export function expectedFbaFee(input: FeeInput): FeeResult {
     shippingWeightLb: round2(shippingLb),
     priceBand: band,
     priceBandAssumed: assumed,
+    isPeak,
     baseFee: round2(base),
     fee: round2(fee),
   };

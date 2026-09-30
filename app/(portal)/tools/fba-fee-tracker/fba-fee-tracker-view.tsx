@@ -444,8 +444,8 @@ export default function FbaFeeTrackerView() {
                 Run on Amazon&apos;s own dimensions, the calculator only matches Amazon&apos;s fee
                 for {matchRate.toFixed(0)}% of SKUs. The rate card in
                 <code className="mx-1">lib/fba-fee-calculator.ts</code>
-                may be out of date (or it&apos;s peak season, Oct 15–Jan 14, which it doesn&apos;t
-                model). Treat &quot;Expected fee&quot; as approximate until this is fixed.
+                may be out of date: Amazon publishes a new card every Jan 15 and a peak card
+                each autumn. Treat &quot;Expected fee&quot; as approximate until this is fixed.
               </span>
             </div>
           )}
@@ -721,10 +721,9 @@ export default function FbaFeeTrackerView() {
                 </table>
               </div>
               <p className="text-xs text-muted-foreground">
-                Expected fee uses Amazon&apos;s 2026 US non-peak rate card (non-apparel), including
-                the 3.5% fuel surcharge, the price band of the current selling price, and our true
-                dimensions. The Oct 15–Jan 14 peak surcharge isn&apos;t included, so during peak
-                Amazon&apos;s fee reads slightly higher on every SKU.
+                Expected fee uses Amazon&apos;s official 2026 US rate card (non-apparel): peak rates
+                from Oct 15 to Jan 14 and non-peak rates otherwise. It adds the 3.5% fuel surcharge
+                and uses the price band of the current selling price and our true dimensions.
               </p>
             </CardContent>
           </Card>
@@ -1028,6 +1027,7 @@ function SkuDetail({
                 {["< $10", "$10–$50", "> $50"][preview.priceBand]}
                 {preview.priceBandAssumed && " (price unknown, assumed)"}
               </span>
+              {preview.isPeak && <span>Peak-season rates</span>}
             </div>
             <div className="mt-2">
               Expected fee <span className="text-lg font-semibold">{money(preview.fee)}</span>{" "}

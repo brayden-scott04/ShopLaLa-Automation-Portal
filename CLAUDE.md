@@ -446,9 +446,9 @@ The portal writes to these tables in only two ways, both in `lib/actions/fba-fee
 - **`fba_fee_sync_runs`**: append-only run log.
 
 > **Expected fees are computed in the browser by `lib/fba-fee-calculator.ts`, which is our own copy of Amazon's rate card.** Revcal has no API, and the Product Fees API only uses Amazon's own dimensions.
-> - The rate card (`US_RATE_CARD`) is 2026 US non-apparel, non-peak, with the 3.5% fuel surcharge from 2026-04-17. **It must be updated by hand every January 15.**
+> - The rate card (`US_RATE_CARD`) is 2026 US non-apparel, verified number-for-number against Amazon's official Seller Central fee page (2026-10-01). It has non-peak tables plus a `peak` card (Oct 15, 2026 – Jan 14, 2027) picked by date, with the 3.5% fuel surcharge added on top from 2026-04-17. **Update the non-peak card by hand every January 15, and replace `peak` each autumn.**
 > - The page self-checks by running the calculator on *Amazon's* dimensions and comparing the result with Amazon's fee.
-> - If that match rate falls below 80%, the page shows a warning. That usually means the rate card is stale, or it's peak season (Oct 15–Jan 14), which isn't modelled.
+> - If that match rate falls below 80%, the page shows a warning. That usually means the rate card or peak card is stale.
 
 ### Supabase clients
 
