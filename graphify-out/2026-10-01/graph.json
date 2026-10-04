@@ -470,7 +470,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "app_portal_communications_company_inbox_compose_dialog_splitaddresses",
-      "community": 8,
+      "community": 45,
       "norm_label": "splitaddresses()"
     },
     {
@@ -490,7 +490,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "app_portal_communications_company_inbox_compose_dialog_composedialog",
-      "community": 8,
+      "community": 45,
       "norm_label": "composedialog()"
     },
     {
@@ -620,7 +620,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page",
-      "community": 67,
+      "community": 10,
       "norm_label": "page.tsx"
     },
     {
@@ -640,7 +640,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_masterlistpage",
-      "community": 67,
+      "community": 10,
       "norm_label": "masterlistpage()"
     },
     {
@@ -650,7 +650,7 @@
       "source_location": "L215",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_sortableskurow",
-      "community": 67,
+      "community": 10,
       "norm_label": "sortableskurow()"
     },
     {
@@ -660,7 +660,7 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_addskussheet",
-      "community": 67,
+      "community": 10,
       "norm_label": "addskussheet()"
     },
     {
@@ -670,7 +670,7 @@
       "source_location": "L336",
       "_origin": "ast",
       "id": "app_portal_configuration_master_list_page_importskussheet",
-      "community": 67,
+      "community": 10,
       "norm_label": "importskussheet()"
     },
     {
@@ -690,7 +690,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_dashboard_page",
-      "community": 58,
+      "community": 57,
       "norm_label": "page.tsx"
     },
     {
@@ -740,7 +740,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "app_portal_others_boards_boardid_page_boarddetailpage",
-      "community": 49,
+      "community": 53,
       "norm_label": "boarddetailpage()"
     },
     {
@@ -770,7 +770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_others_boards_page",
-      "community": 47,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -780,7 +780,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_portal_others_boards_page_boardspage",
-      "community": 49,
+      "community": 53,
       "norm_label": "boardspage()"
     },
     {
@@ -1000,7 +1000,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_others_dashboards_dashboardid_page",
-      "community": 47,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -1010,7 +1010,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "app_portal_others_dashboards_dashboardid_page_dashboarddetailpage",
-      "community": 49,
+      "community": 53,
       "norm_label": "dashboarddetailpage()"
     },
     {
@@ -1040,7 +1040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_others_dashboards_page",
-      "community": 47,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -1080,7 +1080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page",
-      "community": 62,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -1090,7 +1090,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_ranges",
-      "community": 62,
+      "community": 44,
       "norm_label": "ranges"
     },
     {
@@ -1100,7 +1100,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_scopes",
-      "community": 62,
+      "community": 44,
       "norm_label": "scopes"
     },
     {
@@ -1110,7 +1110,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_sgtdate",
-      "community": 62,
+      "community": 44,
       "norm_label": "sgtdate()"
     },
     {
@@ -1120,7 +1120,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_money",
-      "community": 62,
+      "community": 44,
       "norm_label": "money()"
     },
     {
@@ -1130,7 +1130,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_scope_currency",
-      "community": 62,
+      "community": 46,
       "norm_label": "scope_currency"
     },
     {
@@ -1140,7 +1140,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_moneyin",
-      "community": 62,
+      "community": 44,
       "norm_label": "moneyin()"
     },
     {
@@ -1150,7 +1150,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_relativetime",
-      "community": 62,
+      "community": 44,
       "norm_label": "relativetime()"
     },
     {
@@ -1160,7 +1160,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_profitanalyticspage",
-      "community": 62,
+      "community": 44,
       "norm_label": "profitanalyticspage()"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_location": "L601",
       "_origin": "ast",
       "id": "app_portal_sales_profit_analytics_page_stattile",
-      "community": 62,
+      "community": 46,
       "norm_label": "stattile()"
     },
     {
@@ -1180,7 +1180,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_settings_page",
-      "community": 43,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -1190,7 +1190,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "app_portal_settings_page_passwordfield",
-      "community": 43,
+      "community": 46,
       "norm_label": "passwordfield()"
     },
     {
@@ -1210,7 +1210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_team_page",
-      "community": 43,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -1220,7 +1220,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "app_portal_team_page_directoryentry",
-      "community": 43,
+      "community": 46,
       "norm_label": "directoryentry"
     },
     {
@@ -1230,7 +1230,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_portal_team_page_teampage",
-      "community": 0,
+      "community": 58,
       "norm_label": "teampage()"
     },
     {
@@ -1330,7 +1330,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_generate_form_padbrandasins",
-      "community": 43,
+      "community": 47,
       "norm_label": "padbrandasins()"
     },
     {
@@ -1340,7 +1340,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_generate_form_readdraft",
-      "community": 43,
+      "community": 47,
       "norm_label": "readdraft()"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_generate_form_generateform",
-      "community": 43,
+      "community": 47,
       "norm_label": "generateform()"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block",
-      "community": 43,
+      "community": 61,
       "norm_label": "product-block.tsx"
     },
     {
@@ -1420,7 +1420,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_blockmode",
-      "community": 43,
+      "community": 61,
       "norm_label": "blockmode"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_block",
-      "community": 43,
+      "community": 61,
       "norm_label": "block"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_todayiso",
-      "community": 43,
+      "community": 61,
       "norm_label": "todayiso()"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_newblock",
-      "community": 43,
+      "community": 47,
       "norm_label": "newblock()"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_tolines",
-      "community": 43,
+      "community": 61,
       "norm_label": "tolines()"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_field",
-      "community": 43,
+      "community": 61,
       "norm_label": "field()"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_product_block_productblock",
-      "community": 43,
+      "community": 61,
       "norm_label": "productblock()"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_searchable_select",
-      "community": 11,
+      "community": 61,
       "norm_label": "searchable-select.tsx"
     },
     {
@@ -1500,7 +1500,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_searchable_select_option",
-      "community": 11,
+      "community": 61,
       "norm_label": "option"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "app_portal_tools_ads_bulk_generator_searchable_select_searchableselect",
-      "community": 11,
+      "community": 61,
       "norm_label": "searchableselect()"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view",
-      "community": 48,
+      "community": 62,
       "norm_label": "fba-fee-tracker-view.tsx"
     },
     {
@@ -1540,7 +1540,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_sortkey",
-      "community": 48,
+      "community": 62,
       "norm_label": "sortkey"
     },
     {
@@ -1550,7 +1550,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_filter",
-      "community": 48,
+      "community": 62,
       "norm_label": "filter"
     },
     {
@@ -1560,7 +1560,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_money",
-      "community": 48,
+      "community": 50,
       "norm_label": "money()"
     },
     {
@@ -1570,7 +1570,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_pct",
-      "community": 48,
+      "community": 50,
       "norm_label": "pct()"
     },
     {
@@ -1580,7 +1580,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_num",
-      "community": 48,
+      "community": 50,
       "norm_label": "num()"
     },
     {
@@ -1590,7 +1590,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_dimstext",
-      "community": 48,
+      "community": 50,
       "norm_label": "dimstext()"
     },
     {
@@ -1600,7 +1600,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierlabel",
-      "community": 48,
+      "community": 50,
       "norm_label": "tierlabel()"
     },
     {
@@ -1610,7 +1610,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_relativetime",
-      "community": 48,
+      "community": 50,
       "norm_label": "relativetime()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_buildrows",
-      "community": 48,
+      "community": 50,
       "norm_label": "buildrows()"
     },
     {
@@ -1630,57 +1630,57 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_fbafeetrackerview",
-      "community": 48,
+      "community": 50,
       "norm_label": "fbafeetrackerview()"
     },
     {
       "label": "StatTile()",
       "file_type": "code",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L748",
+      "source_location": "L749",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_stattile",
-      "community": 48,
+      "community": 62,
       "norm_label": "stattile()"
     },
     {
       "label": "SortTh()",
       "file_type": "code",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L783",
+      "source_location": "L784",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_sortth",
-      "community": 48,
+      "community": 62,
       "norm_label": "sortth()"
     },
     {
       "label": "TierBadge()",
       "file_type": "code",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L812",
+      "source_location": "L813",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierbadge",
-      "community": 48,
+      "community": 50,
       "norm_label": "tierbadge()"
     },
     {
       "label": "DimsDiff()",
       "file_type": "code",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L822",
+      "source_location": "L823",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_dimsdiff",
-      "community": 48,
+      "community": 50,
       "norm_label": "dimsdiff()"
     },
     {
       "label": "SkuDetail()",
       "file_type": "code",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L850",
+      "source_location": "L851",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
-      "community": 48,
+      "community": 50,
       "norm_label": "skudetail()"
     },
     {
@@ -1690,7 +1690,7 @@
       "source_location": "L1058",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_caseraiseddialog",
-      "community": 48,
+      "community": 62,
       "norm_label": "caseraiseddialog()"
     },
     {
@@ -1700,7 +1700,7 @@
       "source_location": "L1124",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_uploaddimsdialog",
-      "community": 48,
+      "community": 62,
       "norm_label": "uploaddimsdialog()"
     },
     {
@@ -1730,7 +1730,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_page",
-      "community": 47,
+      "community": 65,
       "norm_label": "page.tsx"
     },
     {
@@ -1740,7 +1740,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_portal_tools_fba_fee_tracker_page_fbafeetrackerpage",
-      "community": 47,
+      "community": 65,
       "norm_label": "fbafeetrackerpage()"
     },
     {
@@ -1870,7 +1870,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_generate_form",
-      "community": 25,
+      "community": 47,
       "norm_label": "generate-form.tsx"
     },
     {
@@ -1880,7 +1880,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_generate_form_uploadresponse",
-      "community": 25,
+      "community": 47,
       "norm_label": "uploadresponse"
     },
     {
@@ -1890,7 +1890,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_generate_form_uploadable_countries",
-      "community": 25,
+      "community": 47,
       "norm_label": "uploadable_countries"
     },
     {
@@ -1970,7 +1970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block",
-      "community": 25,
+      "community": 47,
       "norm_label": "product-block.tsx"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_brand",
-      "community": 25,
+      "community": 47,
       "norm_label": "brand"
     },
     {
@@ -1990,7 +1990,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_asset",
-      "community": 25,
+      "community": 47,
       "norm_label": "asset"
     },
     {
@@ -2000,7 +2000,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_theme",
-      "community": 25,
+      "community": 47,
       "norm_label": "theme"
     },
     {
@@ -2010,7 +2010,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_block",
-      "community": 25,
+      "community": 47,
       "norm_label": "block"
     },
     {
@@ -2020,7 +2020,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_preset",
-      "community": 25,
+      "community": 47,
       "norm_label": "preset"
     },
     {
@@ -2030,7 +2030,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_newblock",
-      "community": 25,
+      "community": 47,
       "norm_label": "newblock()"
     },
     {
@@ -2040,7 +2040,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_tolines",
-      "community": 25,
+      "community": 47,
       "norm_label": "tolines()"
     },
     {
@@ -2050,7 +2050,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_sectiontitle",
-      "community": 25,
+      "community": 47,
       "norm_label": "sectiontitle()"
     },
     {
@@ -2060,7 +2060,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_section",
-      "community": 25,
+      "community": 47,
       "norm_label": "section()"
     },
     {
@@ -2070,7 +2070,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "app_portal_tools_sponsored_brands_upload_product_block_productblock",
-      "community": 25,
+      "community": 47,
       "norm_label": "productblock()"
     },
     {
@@ -2080,7 +2080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_auth_login_route",
-      "community": 43,
+      "community": 26,
       "norm_label": "route.ts"
     },
     {
@@ -2090,7 +2090,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "app_api_auth_login_route_post",
-      "community": 43,
+      "community": 26,
       "norm_label": "post()"
     },
     {
@@ -2100,7 +2100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_auth_logout_route",
-      "community": 43,
+      "community": 26,
       "norm_label": "route.ts"
     },
     {
@@ -2110,7 +2110,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_api_auth_logout_route_post",
-      "community": 43,
+      "community": 26,
       "norm_label": "post()"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_api_tools_ads_bulk_generator_generate_route_post",
-      "community": 51,
+      "community": 57,
       "norm_label": "post()"
     },
     {
@@ -2170,7 +2170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve",
-      "community": 66,
+      "community": 57,
       "norm_label": "_resolve.ts"
     },
     {
@@ -2180,7 +2180,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_incomingcampaign",
-      "community": 66,
+      "community": 57,
       "norm_label": "incomingcampaign"
     },
     {
@@ -2190,7 +2190,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_brandrow",
-      "community": 66,
+      "community": 4,
       "norm_label": "brandrow"
     },
     {
@@ -2200,7 +2200,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolveok",
-      "community": 66,
+      "community": 57,
       "norm_label": "resolveok"
     },
     {
@@ -2210,7 +2210,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolveerr",
-      "community": 66,
+      "community": 57,
       "norm_label": "resolveerr"
     },
     {
@@ -2220,7 +2220,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolvemarketplace",
-      "community": 66,
+      "community": 57,
       "norm_label": "resolvemarketplace()"
     },
     {
@@ -2230,7 +2230,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route",
-      "community": 66,
+      "community": 57,
       "norm_label": "route.ts"
     },
     {
@@ -2240,7 +2240,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route_post",
-      "community": 66,
+      "community": 57,
       "norm_label": "post()"
     },
     {
@@ -2250,7 +2250,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_upload_route",
-      "community": 2,
+      "community": 57,
       "norm_label": "route.ts"
     },
     {
@@ -2260,7 +2260,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_upload_route_budgetfor",
-      "community": 2,
+      "community": 57,
       "norm_label": "budgetfor()"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_upload_route_post",
-      "community": 2,
+      "community": 57,
       "norm_label": "post()"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_login_page",
-      "community": 43,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -2330,7 +2330,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_login_page_loginpage",
-      "community": 43,
+      "community": 46,
       "norm_label": "loginpage()"
     },
     {
@@ -2690,7 +2690,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_boards_status_badge",
-      "community": 49,
+      "community": 59,
       "norm_label": "status-badge.tsx"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_boards_status_badge_statusbadge",
-      "community": 49,
+      "community": 59,
       "norm_label": "statusbadge()"
     },
     {
@@ -2770,7 +2770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_dashboards_widget_card",
-      "community": 49,
+      "community": 59,
       "norm_label": "widget-card.tsx"
     },
     {
@@ -2780,7 +2780,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "components_dashboards_widget_card_chart_config",
-      "community": 49,
+      "community": 59,
       "norm_label": "chart_config"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_dashboards_widget_card_widgetcard",
-      "community": 49,
+      "community": 59,
       "norm_label": "widgetcard()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "components_dashboards_widget_card_numberwidgetbody",
-      "community": 49,
+      "community": 59,
       "norm_label": "numberwidgetbody()"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "components_dashboards_widget_card_chartwidgetbody",
-      "community": 49,
+      "community": 59,
       "norm_label": "chartwidgetbody()"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "components_dashboards_widget_card_tablewidgetbody",
-      "community": 49,
+      "community": 59,
       "norm_label": "tablewidgetbody()"
     },
     {
@@ -2830,7 +2830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_dashboards_widget_dialog",
-      "community": 49,
+      "community": 8,
       "norm_label": "widget-dialog.tsx"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "components_dashboards_widget_dialog_widgetdialog",
-      "community": 49,
+      "community": 8,
       "norm_label": "widgetdialog()"
     },
     {
@@ -2850,7 +2850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_login_form",
-      "community": 8,
+      "community": 61,
       "norm_label": "login-form.tsx"
     },
     {
@@ -2860,7 +2860,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_login_form_loginform",
-      "community": 43,
+      "community": 61,
       "norm_label": "loginform()"
     },
     {
@@ -2870,7 +2870,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_page_header",
-      "community": 47,
+      "community": 46,
       "norm_label": "page-header.tsx"
     },
     {
@@ -2880,7 +2880,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_page_header_pageheader",
-      "community": 47,
+      "community": 46,
       "norm_label": "pageheader()"
     },
     {
@@ -2910,7 +2910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_sidebar_content",
-      "community": 11,
+      "community": 60,
       "norm_label": "sidebar-content.tsx"
     },
     {
@@ -2920,7 +2920,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "components_sidebar_content_sidebarcontent",
-      "community": 11,
+      "community": 60,
       "norm_label": "sidebarcontent()"
     },
     {
@@ -2930,7 +2930,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_sidebar",
-      "community": 11,
+      "community": 60,
       "norm_label": "sidebar.tsx"
     },
     {
@@ -2940,7 +2940,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_sidebar_sidebar",
-      "community": 11,
+      "community": 60,
       "norm_label": "sidebar()"
     },
     {
@@ -2960,7 +2960,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_topbar_topbar",
-      "community": 57,
+      "community": 42,
       "norm_label": "topbar()"
     },
     {
@@ -3170,7 +3170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_badge",
-      "community": 25,
+      "community": 11,
       "norm_label": "badge.tsx"
     },
     {
@@ -3180,7 +3180,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_badge_badgevariants",
-      "community": 25,
+      "community": 11,
       "norm_label": "badgevariants"
     },
     {
@@ -3190,7 +3190,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "components_ui_badge_badge",
-      "community": 25,
+      "community": 11,
       "norm_label": "badge()"
     },
     {
@@ -3230,7 +3230,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_card",
-      "community": 43,
+      "community": 46,
       "norm_label": "card.tsx"
     },
     {
@@ -3240,7 +3240,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_ui_card_card",
-      "community": 43,
+      "community": 46,
       "norm_label": "card()"
     },
     {
@@ -3250,7 +3250,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "components_ui_card_cardheader",
-      "community": 43,
+      "community": 46,
       "norm_label": "cardheader()"
     },
     {
@@ -3260,7 +3260,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "components_ui_card_cardtitle",
-      "community": 43,
+      "community": 46,
       "norm_label": "cardtitle()"
     },
     {
@@ -3270,7 +3270,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "components_ui_card_carddescription",
-      "community": 47,
+      "community": 46,
       "norm_label": "carddescription()"
     },
     {
@@ -3280,7 +3280,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "components_ui_card_cardaction",
-      "community": 43,
+      "community": 46,
       "norm_label": "cardaction()"
     },
     {
@@ -3290,7 +3290,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ui_card_cardcontent",
-      "community": 43,
+      "community": 46,
       "norm_label": "cardcontent()"
     },
     {
@@ -3300,7 +3300,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "components_ui_card_cardfooter",
-      "community": 47,
+      "community": 46,
       "norm_label": "cardfooter()"
     },
     {
@@ -3440,7 +3440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_checkbox",
-      "community": 11,
+      "community": 47,
       "norm_label": "checkbox.tsx"
     },
     {
@@ -3450,7 +3450,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_checkbox_checkbox",
-      "community": 11,
+      "community": 47,
       "norm_label": "checkbox()"
     },
     {
@@ -3740,7 +3740,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_input",
-      "community": 8,
+      "community": 61,
       "norm_label": "input.tsx"
     },
     {
@@ -3750,7 +3750,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_ui_input_input",
-      "community": 8,
+      "community": 61,
       "norm_label": "input()"
     },
     {
@@ -3800,7 +3800,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentedcontrol",
-      "community": 62,
+      "community": 47,
       "norm_label": "segmentedcontrol()"
     },
     {
@@ -3810,7 +3810,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_separator",
-      "community": 11,
+      "community": 60,
       "norm_label": "separator.tsx"
     },
     {
@@ -3820,7 +3820,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_separator_separator",
-      "community": 11,
+      "community": 60,
       "norm_label": "separator()"
     },
     {
@@ -3940,7 +3940,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_skeleton",
-      "community": 47,
+      "community": 46,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -3950,7 +3950,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_ui_skeleton_skeleton",
-      "community": 47,
+      "community": 46,
       "norm_label": "skeleton()"
     },
     {
@@ -4040,7 +4040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_textarea",
-      "community": 25,
+      "community": 46,
       "norm_label": "textarea.tsx"
     },
     {
@@ -4050,7 +4050,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_ui_textarea_textarea",
-      "community": 25,
+      "community": 46,
       "norm_label": "textarea()"
     },
     {
@@ -4100,7 +4100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_ai_chat",
-      "community": 0,
+      "community": 58,
       "norm_label": "ai-chat.ts"
     },
     {
@@ -4110,7 +4110,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "lib_actions_ai_chat_sendaichatmessage",
-      "community": 0,
+      "community": 58,
       "norm_label": "sendaichatmessage()"
     },
     {
@@ -4120,7 +4120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_boards",
-      "community": 49,
+      "community": 53,
       "norm_label": "boards.ts"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_actions_boards_statusoption",
-      "community": 49,
+      "community": 59,
       "norm_label": "statusoption"
     },
     {
@@ -4140,7 +4140,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_actions_boards_boardcolumn",
-      "community": 49,
+      "community": 59,
       "norm_label": "boardcolumn"
     },
     {
@@ -4160,7 +4160,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "lib_actions_boards_boardsummary",
-      "community": 47,
+      "community": 46,
       "norm_label": "boardsummary"
     },
     {
@@ -4170,7 +4170,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "lib_actions_boards_boarddetail",
-      "community": 49,
+      "community": 53,
       "norm_label": "boarddetail"
     },
     {
@@ -4180,7 +4180,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_actions_boards_supabaseserverclient",
-      "community": 49,
+      "community": 53,
       "norm_label": "supabaseserverclient"
     },
     {
@@ -4190,7 +4190,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "lib_actions_boards_requirestaff",
-      "community": 49,
+      "community": 53,
       "norm_label": "requirestaff()"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "lib_actions_boards_toboardcolumn",
-      "community": 49,
+      "community": 53,
       "norm_label": "toboardcolumn()"
     },
     {
@@ -4210,7 +4210,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "lib_actions_boards_validateoptions",
-      "community": 49,
+      "community": 53,
       "norm_label": "validateoptions()"
     },
     {
@@ -4220,7 +4220,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "lib_actions_boards_validatecellvalue",
-      "community": 49,
+      "community": 53,
       "norm_label": "validatecellvalue()"
     },
     {
@@ -4230,7 +4230,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "lib_actions_boards_countbyboard",
-      "community": 49,
+      "community": 53,
       "norm_label": "countbyboard()"
     },
     {
@@ -4240,7 +4240,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "lib_actions_boards_listboards",
-      "community": 49,
+      "community": 53,
       "norm_label": "listboards()"
     },
     {
@@ -4250,7 +4250,7 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "lib_actions_boards_getboard",
-      "community": 49,
+      "community": 53,
       "norm_label": "getboard()"
     },
     {
@@ -4260,7 +4260,7 @@
       "source_location": "L246",
       "_origin": "ast",
       "id": "lib_actions_boards_createboard",
-      "community": 49,
+      "community": 53,
       "norm_label": "createboard()"
     },
     {
@@ -4270,7 +4270,7 @@
       "source_location": "L282",
       "_origin": "ast",
       "id": "lib_actions_boards_updateboard",
-      "community": 49,
+      "community": 53,
       "norm_label": "updateboard()"
     },
     {
@@ -4280,7 +4280,7 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "lib_actions_boards_deleteboard",
-      "community": 49,
+      "community": 53,
       "norm_label": "deleteboard()"
     },
     {
@@ -4290,7 +4290,7 @@
       "source_location": "L343",
       "_origin": "ast",
       "id": "lib_actions_boards_createcolumn",
-      "community": 49,
+      "community": 53,
       "norm_label": "createcolumn()"
     },
     {
@@ -4300,7 +4300,7 @@
       "source_location": "L383",
       "_origin": "ast",
       "id": "lib_actions_boards_updatecolumn",
-      "community": 49,
+      "community": 53,
       "norm_label": "updatecolumn()"
     },
     {
@@ -4310,7 +4310,7 @@
       "source_location": "L426",
       "_origin": "ast",
       "id": "lib_actions_boards_deletecolumn",
-      "community": 49,
+      "community": 53,
       "norm_label": "deletecolumn()"
     },
     {
@@ -4330,7 +4330,7 @@
       "source_location": "L487",
       "_origin": "ast",
       "id": "lib_actions_boards_renameitem",
-      "community": 49,
+      "community": 53,
       "norm_label": "renameitem()"
     },
     {
@@ -4340,7 +4340,7 @@
       "source_location": "L508",
       "_origin": "ast",
       "id": "lib_actions_boards_deleteitem",
-      "community": 49,
+      "community": 53,
       "norm_label": "deleteitem()"
     },
     {
@@ -4350,7 +4350,7 @@
       "source_location": "L523",
       "_origin": "ast",
       "id": "lib_actions_boards_setcellvalues",
-      "community": 49,
+      "community": 53,
       "norm_label": "setcellvalues()"
     },
     {
@@ -4960,7 +4960,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "lib_actions_dashboards_dashboardwidget",
-      "community": 49,
+      "community": 63,
       "norm_label": "dashboardwidget"
     },
     {
@@ -4990,7 +4990,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "lib_actions_dashboards_numberwidgetresult",
-      "community": 49,
+      "community": 59,
       "norm_label": "numberwidgetresult"
     },
     {
@@ -5000,7 +5000,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "lib_actions_dashboards_chartwidgetresult",
-      "community": 49,
+      "community": 59,
       "norm_label": "chartwidgetresult"
     },
     {
@@ -5010,7 +5010,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "lib_actions_dashboards_tablewidgetresult",
-      "community": 49,
+      "community": 59,
       "norm_label": "tablewidgetresult"
     },
     {
@@ -5020,7 +5020,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "lib_actions_dashboards_dashboardwidgetresult",
-      "community": 49,
+      "community": 63,
       "norm_label": "dashboardwidgetresult"
     },
     {
@@ -5140,7 +5140,7 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "lib_actions_dashboards_validatewidgetconfig",
-      "community": 49,
+      "community": 63,
       "norm_label": "validatewidgetconfig()"
     },
     {
@@ -5457,7 +5457,7 @@
       "label": "bulkUpdateTrueDims()",
       "file_type": "code",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L396",
+      "source_location": "L395",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
       "community": 48,
@@ -5467,7 +5467,7 @@
       "label": "updateAlertStatus()",
       "file_type": "code",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L511",
+      "source_location": "L503",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_updatealertstatus",
       "community": 48,
@@ -7050,7 +7050,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_pricing_update",
-      "community": 24,
+      "community": 67,
       "norm_label": "pricing-update.ts"
     },
     {
@@ -7060,7 +7060,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_actions_pricing_update_requirestaff",
-      "community": 24,
+      "community": 67,
       "norm_label": "requirestaff()"
     },
     {
@@ -7070,7 +7070,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_actions_pricing_update_fetchskupricing",
-      "community": 24,
+      "community": 67,
       "norm_label": "fetchskupricing()"
     },
     {
@@ -7080,7 +7080,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_actions_pricing_update_fetchskudetail",
-      "community": 24,
+      "community": 67,
       "norm_label": "fetchskudetail()"
     },
     {
@@ -7620,7 +7620,7 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectedskusheet",
-      "community": 67,
+      "community": 10,
       "norm_label": "detectedskusheet"
     },
     {
@@ -7650,7 +7650,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_staff",
-      "community": 43,
+      "community": 60,
       "norm_label": "staff.ts"
     },
     {
@@ -7690,7 +7690,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_actions_staff_getstaffdirectory",
-      "community": 0,
+      "community": 58,
       "norm_label": "getstaffdirectory()"
     },
     {
@@ -7750,7 +7750,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "lib_actions_staff_changeownpassword",
-      "community": 43,
+      "community": 60,
       "norm_label": "changeownpassword()"
     },
     {
@@ -7770,7 +7770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_ai_chat_provider",
-      "community": 0,
+      "community": 58,
       "norm_label": "chat-provider.ts"
     },
     {
@@ -7780,7 +7780,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_ai_chat_provider_chatmessage",
-      "community": 0,
+      "community": 58,
       "norm_label": "chatmessage"
     },
     {
@@ -7790,7 +7790,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_ai_chat_provider_generateassistantreply",
-      "community": 0,
+      "community": 58,
       "norm_label": "generateassistantreply()"
     },
     {
@@ -7800,7 +7800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_ai_tools",
-      "community": 0,
+      "community": 58,
       "norm_label": "tools.ts"
     },
     {
@@ -7810,7 +7810,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_ai_tools_chattooldefinitions",
-      "community": 0,
+      "community": 58,
       "norm_label": "chattooldefinitions"
     },
     {
@@ -7820,7 +7820,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_ai_tools_runchattool",
-      "community": 0,
+      "community": 58,
       "norm_label": "runchattool()"
     },
     {
@@ -7870,7 +7870,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_isuploadablecountry",
-      "community": 2,
+      "community": 57,
       "norm_label": "isuploadablecountry()"
     },
     {
@@ -7900,7 +7900,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_getprofileid",
-      "community": 2,
+      "community": 57,
       "norm_label": "getprofileid()"
     },
     {
@@ -7920,7 +7920,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_sleep",
-      "community": 2,
+      "community": 57,
       "norm_label": "sleep()"
     },
     {
@@ -8100,7 +8100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces",
-      "community": 67,
+      "community": 24,
       "norm_label": "marketplaces.ts"
     },
     {
@@ -8110,7 +8110,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_region",
-      "community": 67,
+      "community": 24,
       "norm_label": "region"
     },
     {
@@ -8120,7 +8120,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_region_hosts",
-      "community": 67,
+      "community": 24,
       "norm_label": "region_hosts"
     },
     {
@@ -8130,7 +8130,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_region_labels",
-      "community": 67,
+      "community": 24,
       "norm_label": "region_labels"
     },
     {
@@ -8160,7 +8160,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplace_ids",
-      "community": 67,
+      "community": 24,
       "norm_label": "marketplace_ids"
     },
     {
@@ -8170,7 +8170,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplace_codes",
-      "community": 67,
+      "community": 24,
       "norm_label": "marketplace_codes"
     },
     {
@@ -8180,7 +8180,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_islivemarketplace",
-      "community": 67,
+      "community": 24,
       "norm_label": "islivemarketplace()"
     },
     {
@@ -8230,7 +8230,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "lib_amazon_sp_api_pricingresult",
-      "community": 24,
+      "community": 54,
       "norm_label": "pricingresult"
     },
     {
@@ -8240,7 +8240,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "lib_amazon_sp_api_skudetail",
-      "community": 24,
+      "community": 54,
       "norm_label": "skudetail"
     },
     {
@@ -8470,7 +8470,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_boards_constants",
-      "community": 49,
+      "community": 59,
       "norm_label": "boards-constants.ts"
     },
     {
@@ -8480,7 +8480,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_boards_constants_board_column_types",
-      "community": 49,
+      "community": 53,
       "norm_label": "board_column_types"
     },
     {
@@ -8490,7 +8490,7 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "lib_boards_constants_boardcolumntype",
-      "community": 49,
+      "community": 59,
       "norm_label": "boardcolumntype"
     },
     {
@@ -8500,7 +8500,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_boards_constants_board_column_type_labels",
-      "community": 49,
+      "community": 59,
       "norm_label": "board_column_type_labels"
     },
     {
@@ -8510,7 +8510,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_boards_constants_statuscolorswatch",
-      "community": 49,
+      "community": 59,
       "norm_label": "statuscolorswatch"
     },
     {
@@ -8520,7 +8520,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_boards_constants_status_color_swatches",
-      "community": 49,
+      "community": 53,
       "norm_label": "status_color_swatches"
     },
     {
@@ -8530,7 +8530,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "lib_boards_constants_swatchfor",
-      "community": 49,
+      "community": 59,
       "norm_label": "swatchfor()"
     },
     {
@@ -8910,7 +8910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_dashboards_constants",
-      "community": 49,
+      "community": 63,
       "norm_label": "dashboards-constants.ts"
     },
     {
@@ -8930,7 +8930,7 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "lib_dashboards_constants_widgettype",
-      "community": 49,
+      "community": 63,
       "norm_label": "widgettype"
     },
     {
@@ -8940,7 +8940,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_dashboards_constants_widget_type_labels",
-      "community": 49,
+      "community": 63,
       "norm_label": "widget_type_labels"
     },
     {
@@ -8950,7 +8950,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_dashboards_constants_chart_types",
-      "community": 49,
+      "community": 63,
       "norm_label": "chart_types"
     },
     {
@@ -8960,7 +8960,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_dashboards_constants_charttype",
-      "community": 49,
+      "community": 63,
       "norm_label": "charttype"
     },
     {
@@ -8970,7 +8970,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_dashboards_constants_chart_type_labels",
-      "community": 49,
+      "community": 63,
       "norm_label": "chart_type_labels"
     },
     {
@@ -8980,7 +8980,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_dashboards_constants_aggregations",
-      "community": 49,
+      "community": 63,
       "norm_label": "aggregations"
     },
     {
@@ -8990,7 +8990,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_dashboards_constants_aggregation",
-      "community": 49,
+      "community": 63,
       "norm_label": "aggregation"
     },
     {
@@ -9000,7 +9000,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_dashboards_constants_aggregation_labels",
-      "community": 49,
+      "community": 63,
       "norm_label": "aggregation_labels"
     },
     {
@@ -9010,7 +9010,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "lib_dashboards_constants_chart_colors",
-      "community": 49,
+      "community": 63,
       "norm_label": "chart_colors"
     },
     {
@@ -9020,114 +9020,94 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator",
-      "community": 48,
+      "community": 50,
       "norm_label": "fba-fee-calculator.ts"
     },
     {
       "label": "SizeTier",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L26",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_sizetier",
-      "community": 48,
+      "community": 50,
       "norm_label": "sizetier"
     },
     {
       "label": "SIZE_TIER_LABELS",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L36",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_size_tier_labels",
-      "community": 48,
+      "community": 50,
       "norm_label": "size_tier_labels"
     },
     {
       "label": "Banded",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L48",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_banded",
-      "community": 48,
+      "community": 50,
       "norm_label": "banded"
     },
     {
       "label": "WeightRow",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L50",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_weightrow",
-      "community": 48,
+      "community": 50,
       "norm_label": "weightrow"
     },
     {
       "label": "IncrementalRate",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L56",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_incrementalrate",
-      "community": 48,
+      "community": 50,
       "norm_label": "incrementalrate"
-    },
-    {
-      "label": "RateTables",
-      "file_type": "code",
-      "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L65",
-      "_origin": "ast",
-      "id": "lib_fba_fee_calculator_ratetables",
-      "community": 48,
-      "norm_label": "ratetables"
-    },
-    {
-      "label": "US_PEAK_2026",
-      "file_type": "code",
-      "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L78",
-      "_origin": "ast",
-      "id": "lib_fba_fee_calculator_us_peak_2026",
-      "community": 48,
-      "norm_label": "us_peak_2026"
     },
     {
       "label": "US_RATE_CARD",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L114",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_us_rate_card",
-      "community": 48,
+      "community": 50,
       "norm_label": "us_rate_card"
     },
     {
       "label": "TIER_LIMITS",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L161",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_tier_limits",
-      "community": 48,
+      "community": 50,
       "norm_label": "tier_limits"
     },
     {
       "label": "FeeInput",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L168",
+      "source_location": "L112",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_feeinput",
-      "community": 48,
+      "community": 50,
       "norm_label": "feeinput"
     },
     {
       "label": "FeeResult",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L178",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_feeresult",
       "community": 48,
@@ -9137,90 +9117,90 @@
       "label": "round2()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L190",
+      "source_location": "L132",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_round2",
-      "community": 48,
+      "community": 50,
       "norm_label": "round2()"
     },
     {
       "label": "priceBandOf()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L194",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_pricebandof",
-      "community": 48,
+      "community": 50,
       "norm_label": "pricebandof()"
     },
     {
       "label": "sortSides()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L201",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_sortsides",
-      "community": 48,
+      "community": 50,
       "norm_label": "sortsides()"
     },
     {
       "label": "sizeTierFor()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L206",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_sizetierfor",
-      "community": 48,
+      "community": 50,
       "norm_label": "sizetierfor()"
     },
     {
       "label": "incremental()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L226",
+      "source_location": "L168",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_incremental",
-      "community": 48,
+      "community": 50,
       "norm_label": "incremental()"
     },
     {
       "label": "fromRows()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L233",
+      "source_location": "L175",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_fromrows",
-      "community": 48,
+      "community": 50,
       "norm_label": "fromrows()"
     },
     {
       "label": "expectedFbaFee()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L239",
+      "source_location": "L181",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_expectedfbafee",
-      "community": 48,
+      "community": 50,
       "norm_label": "expectedfbafee()"
     },
     {
       "label": "normalizeAmazonTier()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L305",
+      "source_location": "L243",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_normalizeamazontier",
-      "community": 48,
+      "community": 50,
       "norm_label": "normalizeamazontier()"
     },
     {
       "label": "isStandardTier()",
       "file_type": "code",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L324",
+      "source_location": "L262",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_isstandardtier",
-      "community": 48,
+      "community": 50,
       "norm_label": "isstandardtier()"
     },
     {
@@ -9320,7 +9300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_others",
-      "community": 47,
+      "community": 68,
       "norm_label": "others.ts"
     },
     {
@@ -9330,7 +9310,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_others_otheritem",
-      "community": 47,
+      "community": 68,
       "norm_label": "otheritem"
     },
     {
@@ -9340,7 +9320,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_others_otheriteminput",
-      "community": 47,
+      "community": 68,
       "norm_label": "otheriteminput"
     },
     {
@@ -9350,7 +9330,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_others_slugify",
-      "community": 47,
+      "community": 68,
       "norm_label": "slugify()"
     },
     {
@@ -9360,7 +9340,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_others_defineotheritem",
-      "community": 47,
+      "community": 68,
       "norm_label": "defineotheritem()"
     },
     {
@@ -9370,7 +9350,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_others_calendar",
-      "community": 47,
+      "community": 68,
       "norm_label": "calendar"
     },
     {
@@ -9380,7 +9360,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_others_boards",
-      "community": 47,
+      "community": 68,
       "norm_label": "boards"
     },
     {
@@ -9390,7 +9370,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_others_dashboards",
-      "community": 47,
+      "community": 46,
       "norm_label": "dashboards"
     },
     {
@@ -9400,7 +9380,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "lib_others_othersitems",
-      "community": 47,
+      "community": 68,
       "norm_label": "othersitems"
     },
     {
@@ -9430,7 +9410,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "lib_permissions_sanitizepermissions",
-      "community": 57,
+      "community": 43,
       "norm_label": "sanitizepermissions()"
     },
     {
@@ -9850,7 +9830,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_projects_ppctopup",
-      "community": 58,
+      "community": 1,
       "norm_label": "ppctopup"
     },
     {
@@ -9880,7 +9860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_roles",
-      "community": 43,
+      "community": 60,
       "norm_label": "roles.ts"
     },
     {
@@ -9890,7 +9870,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_roles_role",
-      "community": 43,
+      "community": 60,
       "norm_label": "role"
     },
     {
@@ -9900,7 +9880,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_roles_roles",
-      "community": 43,
+      "community": 60,
       "norm_label": "roles"
     },
     {
@@ -9910,7 +9890,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_roles_role_labels",
-      "community": 43,
+      "community": 46,
       "norm_label": "role_labels"
     },
     {
@@ -9930,7 +9910,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_roles_sections",
-      "community": 43,
+      "community": 60,
       "norm_label": "sections"
     },
     {
@@ -9940,7 +9920,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "lib_roles_permissionset",
-      "community": 43,
+      "community": 60,
       "norm_label": "permissionset"
     },
     {
@@ -9960,7 +9940,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_roles_canmanageusers",
-      "community": 43,
+      "community": 60,
       "norm_label": "canmanageusers()"
     },
     {
@@ -9970,7 +9950,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "lib_roles_canadminister",
-      "community": 43,
+      "community": 60,
       "norm_label": "canadminister()"
     },
     {
@@ -9980,7 +9960,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "lib_roles_torole",
-      "community": 43,
+      "community": 26,
       "norm_label": "torole()"
     },
     {
@@ -9990,7 +9970,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "lib_roles_isallowed",
-      "community": 66,
+      "community": 57,
       "norm_label": "isallowed()"
     },
     {
@@ -10000,7 +9980,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "lib_roles_filteritems",
-      "community": 11,
+      "community": 60,
       "norm_label": "filteritems()"
     },
     {
@@ -10010,7 +9990,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "lib_roles_topermissionset",
-      "community": 57,
+      "community": 43,
       "norm_label": "topermissionset()"
     },
     {
@@ -10020,7 +10000,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_sales",
-      "community": 26,
+      "community": 43,
       "norm_label": "sales.ts"
     },
     {
@@ -10030,7 +10010,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_sales_salesitem",
-      "community": 26,
+      "community": 43,
       "norm_label": "salesitem"
     },
     {
@@ -10040,7 +10020,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_sales_salesiteminput",
-      "community": 26,
+      "community": 43,
       "norm_label": "salesiteminput"
     },
     {
@@ -10050,7 +10030,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_sales_slugify",
-      "community": 26,
+      "community": 43,
       "norm_label": "slugify()"
     },
     {
@@ -10060,7 +10040,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_sales_definesalesitem",
-      "community": 26,
+      "community": 43,
       "norm_label": "definesalesitem()"
     },
     {
@@ -10070,7 +10050,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_sales_profitanalytics",
-      "community": 26,
+      "community": 43,
       "norm_label": "profitanalytics"
     },
     {
@@ -10080,7 +10060,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_sales_salesitems",
-      "community": 26,
+      "community": 43,
       "norm_label": "salesitems"
     },
     {
@@ -10090,7 +10070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_session",
-      "community": 43,
+      "community": 26,
       "norm_label": "session.ts"
     },
     {
@@ -10100,7 +10080,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "lib_session_getsecretkey",
-      "community": 43,
+      "community": 26,
       "norm_label": "getsecretkey()"
     },
     {
@@ -10110,7 +10090,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_session_sessionpayload",
-      "community": 43,
+      "community": 60,
       "norm_label": "sessionpayload"
     },
     {
@@ -10120,7 +10100,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_session_signsession",
-      "community": 43,
+      "community": 26,
       "norm_label": "signsession()"
     },
     {
@@ -10130,7 +10110,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "lib_session_verifysessiontoken",
-      "community": 43,
+      "community": 26,
       "norm_label": "verifysessiontoken()"
     },
     {
@@ -10140,7 +10120,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "lib_session_getsession",
-      "community": 0,
+      "community": 57,
       "norm_label": "getsession()"
     },
     {
@@ -10150,7 +10130,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_session_setsessioncookie",
-      "community": 43,
+      "community": 26,
       "norm_label": "setsessioncookie()"
     },
     {
@@ -10160,7 +10140,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "lib_session_clearsessioncookie",
-      "community": 43,
+      "community": 26,
       "norm_label": "clearsessioncookie()"
     },
     {
@@ -10190,7 +10170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_supabase_server",
-      "community": 1,
+      "community": 51,
       "norm_label": "server.ts"
     },
     {
@@ -10230,7 +10210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_tools",
-      "community": 58,
+      "community": 65,
       "norm_label": "tools.ts"
     },
     {
@@ -10240,7 +10220,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_tools_automationtool",
-      "community": 58,
+      "community": 65,
       "norm_label": "automationtool"
     },
     {
@@ -10250,7 +10230,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_tools_toolinput",
-      "community": 58,
+      "community": 65,
       "norm_label": "toolinput"
     },
     {
@@ -10260,7 +10240,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_tools_slugify",
-      "community": 58,
+      "community": 65,
       "norm_label": "slugify()"
     },
     {
@@ -10270,7 +10250,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_tools_definetool",
-      "community": 58,
+      "community": 65,
       "norm_label": "definetool()"
     },
     {
@@ -10280,7 +10260,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_tools_bulkcampaignupload",
-      "community": 58,
+      "community": 65,
       "norm_label": "bulkcampaignupload"
     },
     {
@@ -10290,7 +10270,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_tools_adsbulkgenerator",
-      "community": 58,
+      "community": 65,
       "norm_label": "adsbulkgenerator"
     },
     {
@@ -10300,7 +10280,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_tools_fbafeetracker",
-      "community": 58,
+      "community": 65,
       "norm_label": "fbafeetracker"
     },
     {
@@ -10320,7 +10300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_utils",
-      "community": 11,
+      "community": 61,
       "norm_label": "utils.ts"
     },
     {
@@ -10430,7 +10410,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_country",
-      "community": 66,
+      "community": 4,
       "norm_label": "country"
     },
     {
@@ -10470,7 +10450,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_campaigninput",
-      "community": 66,
+      "community": 57,
       "norm_label": "campaigninput"
     },
     {
@@ -11150,7 +11130,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "package_dependencies_xlsx",
-      "community": 10,
+      "community": 48,
       "norm_label": "xlsx"
     },
     {
@@ -11320,7 +11300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "proxy",
-      "community": 43,
+      "community": 26,
       "norm_label": "proxy.ts"
     },
     {
@@ -11330,7 +11310,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "proxy_proxy",
-      "community": 43,
+      "community": 26,
       "norm_label": "proxy()"
     },
     {
@@ -11340,7 +11320,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "proxy_config",
-      "community": 43,
+      "community": 26,
       "norm_label": "config"
     },
     {
@@ -24662,7 +24642,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L822",
+      "source_location": "L823",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_dimsdiff",
@@ -24752,7 +24732,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L850",
+      "source_location": "L851",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
@@ -24772,7 +24752,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L783",
+      "source_location": "L784",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_sortth",
@@ -24782,7 +24762,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L748",
+      "source_location": "L749",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_stattile",
@@ -24792,7 +24772,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L812",
+      "source_location": "L813",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierbadge",
@@ -25494,7 +25474,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L983",
+      "source_location": "L984",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_money",
@@ -25516,7 +25496,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L838",
+      "source_location": "L839",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_dimsdiff",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_num",
@@ -25549,7 +25529,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L904",
+      "source_location": "L905",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_dimstext",
@@ -25571,7 +25551,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L904",
+      "source_location": "L905",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierlabel",
@@ -25582,7 +25562,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L817",
+      "source_location": "L818",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierbadge",
       "target": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierlabel",
@@ -25682,7 +25662,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L761",
+      "source_location": "L762",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_stattile",
       "target": "lib_utils_cn"
@@ -25693,7 +25673,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L800",
+      "source_location": "L801",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_sortth",
       "target": "lib_utils_cn"
@@ -25704,7 +25684,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L814",
+      "source_location": "L815",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierbadge",
       "target": "lib_fba_fee_calculator_isstandardtier"
@@ -25715,7 +25695,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L813",
+      "source_location": "L814",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_tierbadge",
       "target": "lib_fba_fee_calculator_normalizeamazontier"
@@ -25726,7 +25706,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L837",
+      "source_location": "L838",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_dimsdiff",
       "target": "lib_utils_cn"
@@ -25737,7 +25717,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L872",
+      "source_location": "L873",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
       "target": "lib_actions_fba_fee_tracker_getskufeehistory"
@@ -25748,7 +25728,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/tools/fba-fee-tracker/fba-fee-tracker-view.tsx",
-      "source_location": "L886",
+      "source_location": "L887",
       "weight": 1.0,
       "source": "app_portal_tools_fba_fee_tracker_fba_fee_tracker_view_skudetail",
       "target": "lib_fba_fee_calculator_expectedfbafee"
@@ -38491,7 +38471,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L396",
+      "source_location": "L395",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker",
       "target": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
@@ -38651,7 +38631,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L511",
+      "source_location": "L503",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker",
       "target": "lib_actions_fba_fee_tracker_updatealertstatus",
@@ -38836,7 +38816,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L399",
+      "source_location": "L398",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
       "target": "lib_actions_fba_fee_tracker_requirestaff",
@@ -38891,7 +38871,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L517",
+      "source_location": "L509",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_updatealertstatus",
       "target": "lib_actions_fba_fee_tracker_requirestaff",
@@ -39001,7 +38981,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L478",
+      "source_location": "L470",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
       "target": "lib_actions_fba_fee_tracker_validatedims",
@@ -39057,7 +39037,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L500",
+      "source_location": "L492",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
       "target": "lib_supabase_service_createserviceclient"
@@ -39068,7 +39048,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L408",
+      "source_location": "L407",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
       "target": "package_dependencies_xlsx"
@@ -39079,7 +39059,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L519",
+      "source_location": "L511",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_updatealertstatus",
       "target": "lib_fba_fee_tracker_constants_alert_statuses"
@@ -39090,7 +39070,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/fba-fee-tracker.ts",
-      "source_location": "L532",
+      "source_location": "L524",
       "weight": 1.0,
       "source": "lib_actions_fba_fee_tracker_updatealertstatus",
       "target": "lib_supabase_service_createserviceclient"
@@ -48134,7 +48114,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L48",
+      "source_location": "L45",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_banded",
@@ -48144,7 +48124,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L239",
+      "source_location": "L181",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_expectedfbafee",
@@ -48154,7 +48134,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L168",
+      "source_location": "L112",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_feeinput",
@@ -48164,7 +48144,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L178",
+      "source_location": "L122",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_feeresult",
@@ -48174,7 +48154,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L233",
+      "source_location": "L175",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_fromrows",
@@ -48184,7 +48164,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L226",
+      "source_location": "L168",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_incremental",
@@ -48194,7 +48174,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L56",
+      "source_location": "L53",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_incrementalrate",
@@ -48204,7 +48184,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L324",
+      "source_location": "L262",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_isstandardtier",
@@ -48214,7 +48194,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L305",
+      "source_location": "L243",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_normalizeamazontier",
@@ -48224,7 +48204,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L194",
+      "source_location": "L136",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_pricebandof",
@@ -48234,17 +48214,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L65",
-      "weight": 1.0,
-      "source": "lib_fba_fee_calculator",
-      "target": "lib_fba_fee_calculator_ratetables",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L190",
+      "source_location": "L132",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_round2",
@@ -48254,7 +48224,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L36",
+      "source_location": "L33",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_size_tier_labels",
@@ -48264,7 +48234,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L26",
+      "source_location": "L23",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_sizetier",
@@ -48274,7 +48244,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L206",
+      "source_location": "L148",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_sizetierfor",
@@ -48284,7 +48254,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L201",
+      "source_location": "L143",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_sortsides",
@@ -48294,7 +48264,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L161",
+      "source_location": "L105",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_tier_limits",
@@ -48304,17 +48274,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L78",
-      "weight": 1.0,
-      "source": "lib_fba_fee_calculator",
-      "target": "lib_fba_fee_calculator_us_peak_2026",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L114",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_us_rate_card",
@@ -48324,7 +48284,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L50",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator",
       "target": "lib_fba_fee_calculator_weightrow",
@@ -48335,7 +48295,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L290",
+      "source_location": "L229",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_expectedfbafee",
       "target": "lib_fba_fee_calculator_round2",
@@ -48346,7 +48306,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L251",
+      "source_location": "L193",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_expectedfbafee",
       "target": "lib_fba_fee_calculator_pricebandof",
@@ -48357,7 +48317,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L241",
+      "source_location": "L183",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_expectedfbafee",
       "target": "lib_fba_fee_calculator_sortsides",
@@ -48368,7 +48328,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L207",
+      "source_location": "L149",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_sizetierfor",
       "target": "lib_fba_fee_calculator_sortsides",
@@ -48379,7 +48339,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L243",
+      "source_location": "L185",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_expectedfbafee",
       "target": "lib_fba_fee_calculator_sizetierfor",
@@ -48390,7 +48350,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L264",
+      "source_location": "L202",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_expectedfbafee",
       "target": "lib_fba_fee_calculator_incremental",
@@ -48401,7 +48361,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/fba-fee-calculator.ts",
-      "source_location": "L260",
+      "source_location": "L198",
       "weight": 1.0,
       "source": "lib_fba_fee_calculator_expectedfbafee",
       "target": "lib_fba_fee_calculator_fromrows",
@@ -52026,5 +51986,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "740d492f185d2042b7050fcb7536eb451f08c537"
+  "built_at_commit": "5695e8fe718ab0ec20cbe9d067fde6663d1e56c0"
 }

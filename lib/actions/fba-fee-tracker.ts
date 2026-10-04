@@ -388,9 +388,10 @@ export interface BulkDimsResult {
 
 /**
  * Excel/CSV upload of true dimensions. Expects a header row with a SKU column
- * and length / width / height / weight columns (any order, any case). Units
- * default to inches and pounds; a header mentioning cm / kg / oz / g is
- * converted.
+ * and the unit's "Inner Box Width (cm)" / "Length" / "Height" / "Weight (kg)"
+ * columns (any order, any case); plain "Length" etc. headers work too. Outer
+ * carton columns are ignored. Units default to inches and pounds; a header
+ * mentioning cm / kg / oz / g is converted.
  */
 export async function bulkUpdateTrueDims(
   formData: FormData
@@ -415,7 +416,13 @@ export async function bulkUpdateTrueDims(
   }
 
   // Find the header row in the first 10 rows: needs SKU plus all four measurements.
+  // A measurement column is the unit's own box ("Inner Box Width (cm)" or a plain
+  // "Width"), never the shipping carton's, and an "inner" header wins over a plain one.
   const find = (headers: string[], re: RegExp) => headers.findIndex((h) => re.test(h));
+  const findDim = (headers: string[], re: RegExp) => {
+    const unit = headers.map((h, idx) => ({ h, idx })).filter(({ h }) => re.test(h) && !/outer|carton|master/.test(h));
+    return (unit.find(({ h }) => /\binner\b/.test(h)) ?? unit[0])?.idx ?? -1;
+  };
   let headerRow = -1;
   let cols: { sku: number; l: number; w: number; h: number; wt: number } | null = null;
   let headers: string[] = [];
@@ -423,10 +430,10 @@ export async function bulkUpdateTrueDims(
     headers = (matrix[i] ?? []).map((c) => String(c ?? "").trim().toLowerCase());
     const c = {
       sku: find(headers, /^(seller[\s_-]?)?sku$/),
-      l: find(headers, /^(length|longest)/),
-      w: find(headers, /^(width|median)/),
-      h: find(headers, /^(height|shortest|depth)/),
-      wt: find(headers, /^weight/),
+      l: findDim(headers, /\b(length|longest)\b/),
+      w: findDim(headers, /\b(width|median)\b/),
+      h: findDim(headers, /\b(height|shortest|depth)\b/),
+      wt: findDim(headers, /\bweight\b/),
     };
     if (Object.values(c).every((v) => v >= 0)) {
       headerRow = i;
@@ -437,7 +444,8 @@ export async function bulkUpdateTrueDims(
   if (!cols) {
     return {
       data: null,
-      error: "Couldn't find the header row — it needs columns named SKU, Length, Width, Height and Weight",
+      error:
+        "Couldn't find the header row — it needs columns named SKU, Inner Box Width (cm), Inner Box Length (cm), Inner Box Height (cm) and Inner Box Weight (kg)",
     };
   }
 

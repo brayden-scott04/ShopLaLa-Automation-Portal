@@ -1170,10 +1170,11 @@ function UploadDimsDialog({
         <DialogHeader>
           <DialogTitle>Upload true dimensions</DialogTitle>
           <DialogDescription>
-            An Excel or CSV file with a header row of <b>SKU</b>, <b>Length</b>, <b>Width</b>,{" "}
-            <b>Height</b> and <b>Weight</b>. Units are inches and pounds unless the header says
-            otherwise, e.g. &quot;Length (cm)&quot; or &quot;Weight (kg)&quot;. Every row replaces
-            that SKU&apos;s true dimensions and marks them Manual.
+            An Excel or CSV file with a header row of <b>SKU</b>, <b>Inner Box Width (cm)</b>,{" "}
+            <b>Inner Box Length (cm)</b>, <b>Inner Box Height (cm)</b> and{" "}
+            <b>Inner Box Weight (kg)</b>. Outer Carton and Qty columns are ignored. Centimetres and
+            kilograms are converted to inches and pounds. Every row replaces that SKU&apos;s true
+            dimensions and marks them Manual.
           </DialogDescription>
         </DialogHeader>
         <DialogBody className="space-y-3">
