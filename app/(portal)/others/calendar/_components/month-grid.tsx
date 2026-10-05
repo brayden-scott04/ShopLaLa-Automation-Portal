@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ChevronLeft, ChevronRight, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { colorFor } from "@/lib/calendar-constants";
@@ -7,9 +8,10 @@ import { buildMonthGrid, diffDays, monthLabel, todayKey } from "@/lib/calendar-d
 import type { CalendarTask } from "@/lib/actions/calendar";
 
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const MAX_CHIPS_PER_DAY = 3;
+// Rows a day cell shows while its week is collapsed — ribbons and chips share the budget.
+const MAX_ROWS_PER_DAY = 3;
 
-type RibbonCell = { task: CalendarTask; isStart: boolean; isEnd: boolean; showLabel: boolean };
+type RibbonCell = { task: CalendarTask; isStart: boolean; isEnd: boolean };
 
 /**
  * Lays spanning tasks that touch this week into lanes so overlapping ranges
@@ -46,7 +48,7 @@ function layoutWeekRibbons(week: string[], spanningTasks: CalendarTask[]): (Ribb
       const date = week[col];
       const isStart = date === task.eventDate;
       const isEnd = date === task.dueDate;
-      lanes[lane][col] = { task, isStart, isEnd, showLabel: isStart };
+      lanes[lane][col] = { task, isStart, isEnd };
     }
   });
 
@@ -81,6 +83,19 @@ export function MonthGrid({
   const weeks: string[][] = [];
   for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
 
+  // Keyed by the week's Monday. A whole week expands at once so its cells stay
+  // the same height and its ribbons stay continuous.
+  const [expandedWeeks, setExpandedWeeks] = useState<Set<string>>(new Set());
+
+  function setWeekExpanded(weekKey: string, expanded: boolean) {
+    setExpandedWeeks((prev) => {
+      const next = new Set(prev);
+      if (expanded) next.add(weekKey);
+      else next.delete(weekKey);
+      return next;
+    });
+  }
+
   return (
     <div className="flex min-w-0 flex-1 flex-col">
       <div className="mb-3 flex items-center justify-between">
@@ -112,6 +127,7 @@ export function MonthGrid({
 
         {weeks.map((week) => {
           const lanes = layoutWeekRibbons(week, spanningTasks);
+          const expanded = expandedWeeks.has(week[0]);
 
           return (
             <div key={week[0]} className="grid grid-cols-7">
@@ -128,8 +144,22 @@ export function MonthGrid({
                 events.forEach((t) => merged.set(t.id, { task: t, isDuePin: false }));
                 dues.forEach((t) => merged.set(t.id, { task: t, isDuePin: true }));
                 const entries = Array.from(merged.values());
-                const chips = entries.slice(0, MAX_CHIPS_PER_DAY);
-                const overflow = entries.length - chips.length;
+
+                // Collapsed budget: ribbons keep their lane (so they line up across
+                // the week), chips take whatever rows are left below this day's
+                // last visible ribbon.
+                const collapsedLanes = lanes.slice(0, MAX_ROWS_PER_DAY);
+                const collapsedLaneRows =
+                  collapsedLanes.reduce((last, lane, i) => (lane[colIndex] ? i : last), -1) + 1;
+                const collapsedChipSlots = MAX_ROWS_PER_DAY - collapsedLaneRows;
+                const hiddenCount =
+                  lanes.slice(MAX_ROWS_PER_DAY).filter((lane) => lane[colIndex]).length +
+                  Math.max(0, entries.length - collapsedChipSlots);
+
+                const dayLanes = expanded
+                  ? lanes.slice(0, lanes.reduce((last, lane, i) => (lane[colIndex] ? i : last), -1) + 1)
+                  : collapsedLanes.slice(0, collapsedLaneRows);
+                const chips = expanded ? entries : entries.slice(0, collapsedChipSlots);
 
                 return (
                   <div
@@ -159,7 +189,7 @@ export function MonthGrid({
                       {dayNum}
                     </span>
 
-                    {lanes.map((lane, laneIndex) => {
+                    {dayLanes.map((lane, laneIndex) => {
                       const cell = lane[colIndex];
                       if (!cell) return <div key={laneIndex} className="h-4" />;
                       const color = colorFor(cell.task.color);
@@ -172,13 +202,13 @@ export function MonthGrid({
                             onEditTask(cell.task);
                           }}
                           title={cell.task.title}
-                          className={`flex h-4 items-center gap-0.5 truncate text-left text-[10px] font-medium leading-4 text-white ${
-                            cell.isStart ? "-ml-1.5 rounded-l pl-1" : "-ml-px"
+                          className={`flex h-4 min-w-0 shrink-0 items-center gap-0.5 pl-1 text-left text-[10px] font-medium leading-4 text-white ${
+                            cell.isStart ? "-ml-1.5 rounded-l" : "-ml-px"
                           } ${cell.isEnd ? "-mr-1.5 rounded-r pr-1" : "-mr-px"}`}
                           style={{ backgroundColor: color.hex }}
                         >
                           {cell.isEnd && <Flag className="size-2.5 shrink-0" />}
-                          {cell.showLabel && <span className="truncate">{cell.task.title}</span>}
+                          <span className="truncate">{cell.task.title}</span>
                         </button>
                       );
                     })}
@@ -198,8 +228,17 @@ export function MonthGrid({
                           </span>
                         );
                       })}
-                      {overflow > 0 && (
-                        <span className="text-[11px] text-muted-foreground">+{overflow} more</span>
+                      {hiddenCount > 0 && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setWeekExpanded(week[0], !expanded);
+                          }}
+                          className="self-start rounded px-1 text-[11px] text-muted-foreground hover:bg-muted hover:text-foreground"
+                        >
+                          {expanded ? "Show less" : `+${hiddenCount} more`}
+                        </button>
                       )}
                     </div>
                   </div>
