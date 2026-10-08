@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { colorFor } from "@/lib/calendar-constants";
 import { formatDayLabel } from "@/lib/calendar-date-utils";
+import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
 export function DayTasksDialog({
@@ -52,7 +53,7 @@ export function DayTasksDialog({
             const canEdit = editableCalendarIds.has(task.calendarId);
             return (
               <div
-                key={task.id}
+                key={occurrenceKey(task)}
                 className="flex items-start gap-2 rounded-md border border-border p-2.5"
               >
                 <span className={`mt-1 size-2 shrink-0 rounded-full ${color.dot}`} />

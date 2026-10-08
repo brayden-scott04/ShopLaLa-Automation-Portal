@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CALENDAR_MEMBER_ROLES, type CalendarMemberRole } from "@/lib/calendar-constants";
 import {
   getCalendarMembers,
-  addCalendarMember,
+  addCalendarMembers,
   updateCalendarMemberRole,
   removeCalendarMember,
   type CalendarSummary,
@@ -35,7 +36,7 @@ export function ManageAccessDialog({
   const open = calendar !== null;
   const [members, setMembers] = useState<CalendarMember[]>([]);
   const [staffOptions, setStaffOptions] = useState<{ username: string }[]>([]);
-  const [selectedUsername, setSelectedUsername] = useState("");
+  const [selectedUsernames, setSelectedUsernames] = useState<Set<string>>(new Set());
   const [selectedRole, setSelectedRole] = useState<CalendarMemberRole>("viewer");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -68,16 +69,31 @@ export function ManageAccessDialog({
     });
   }
 
+  const allSelected = availableStaff.length > 0 && availableStaff.every((s) => selectedUsernames.has(s.username));
+
+  function toggleStaff(username: string) {
+    setSelectedUsernames((prev) => {
+      const next = new Set(prev);
+      if (next.has(username)) next.delete(username);
+      else next.add(username);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    setSelectedUsernames(allSelected ? new Set() : new Set(availableStaff.map((s) => s.username)));
+  }
+
   function handleAdd() {
-    if (!calendar || !selectedUsername) return;
+    if (!calendar || selectedUsernames.size === 0) return;
     setError(null);
     startTransition(async () => {
-      const { error } = await addCalendarMember(calendar.id, selectedUsername, selectedRole);
+      const { error } = await addCalendarMembers(calendar.id, Array.from(selectedUsernames), selectedRole);
       if (error) {
         setError(error);
         return;
       }
-      setSelectedUsername("");
+      setSelectedUsernames(new Set());
       reload();
     });
   }
@@ -110,37 +126,49 @@ export function ManageAccessDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogBody className="space-y-4">
-          <div className="flex items-end gap-2">
-            <div className="flex-1">
-              <Label className="mb-1">Add staff member</Label>
-              <select
-                value={selectedUsername}
-                onChange={(e) => setSelectedUsername(e.target.value)}
-                className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <option value="">Select a username…</option>
+          {availableStaff.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <Label>Add staff members</Label>
+                <label className="flex cursor-pointer items-center gap-2 text-sm">
+                  <Checkbox
+                    checked={allSelected}
+                    indeterminate={selectedUsernames.size > 0 && !allSelected}
+                    onCheckedChange={toggleAll}
+                  />
+                  Add all
+                </label>
+              </div>
+              <div className="max-h-44 space-y-1.5 overflow-y-auto rounded-md border border-border p-2">
                 {availableStaff.map((s) => (
-                  <option key={s.username} value={s.username}>
+                  <label key={s.username} className="flex cursor-pointer items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={selectedUsernames.has(s.username)}
+                      onCheckedChange={() => toggleStaff(s.username)}
+                    />
                     {s.username}
-                  </option>
+                  </label>
                 ))}
-              </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <select
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value as CalendarMemberRole)}
+                  className="h-8 flex-1 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  {CALENDAR_MEMBER_ROLES.map((r) => (
+                    <option key={r} value={r}>
+                      {r === "editor" ? "Can edit" : "Can view"}
+                    </option>
+                  ))}
+                </select>
+                <Button variant="outline" onClick={handleAdd} disabled={selectedUsernames.size === 0 || isPending}>
+                  <UserPlus />
+                  Add {selectedUsernames.size > 0 ? selectedUsernames.size : ""} selected
+                </Button>
+              </div>
             </div>
-            <select
-              value={selectedRole}
-              onChange={(e) => setSelectedRole(e.target.value as CalendarMemberRole)}
-              className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              {CALENDAR_MEMBER_ROLES.map((r) => (
-                <option key={r} value={r}>
-                  {r === "editor" ? "Can edit" : "Can view"}
-                </option>
-              ))}
-            </select>
-            <Button size="icon" variant="outline" onClick={handleAdd} disabled={!selectedUsername || isPending}>
-              <UserPlus />
-            </Button>
-          </div>
+          )}
 
           <div className="space-y-1.5">
             {members.length === 0 ? (

@@ -41,6 +41,33 @@ export function buildMonthGrid(year: number, month: number): string[] {
   return days;
 }
 
+/** The Monday on/before `key`. */
+export function startOfWeek(key: string): string {
+  const jsDay = fromDateKey(key).getDay();
+  return addDays(key, -((jsDay + 6) % 7));
+}
+
+/** Seven date keys, Monday to Sunday, of the week containing `key`. */
+export function buildWeek(key: string): string[] {
+  const start = startOfWeek(key);
+  return Array.from({ length: 7 }, (_, i) => addDays(start, i));
+}
+
+/** Shifts a date key by whole months, clamping the day to the target month's length. */
+export function addMonths(key: string, months: number): string {
+  const d = fromDateKey(key);
+  const target = new Date(d.getFullYear(), d.getMonth() + months, 1);
+  const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+  return toDateKey(new Date(target.getFullYear(), target.getMonth(), Math.min(d.getDate(), lastDay)));
+}
+
+export function weekLabel(key: string): string {
+  const week = buildWeek(key);
+  const fmt = (k: string, withYear: boolean) =>
+    fromDateKey(k).toLocaleDateString(undefined, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
+  return `${fmt(week[0], false)} – ${fmt(week[6], true)}`;
+}
+
 export function formatRelativeDay(key: string): string {
   const diff = Math.round(
     (fromDateKey(key).getTime() - fromDateKey(todayKey()).getTime()) / (1000 * 60 * 60 * 24)

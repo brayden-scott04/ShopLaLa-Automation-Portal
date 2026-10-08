@@ -15,15 +15,32 @@ export const TASK_COLORS: TaskColorOption[] = [
   { key: "green", label: "Green", hex: "#22c55e", dot: "bg-green-500", ring: "ring-green-500", chip: "bg-green-500/15 text-green-600 dark:text-green-400" },
   { key: "blue", label: "Blue", hex: "#3b82f6", dot: "bg-blue-500", ring: "ring-blue-500", chip: "bg-blue-500/15 text-blue-600 dark:text-blue-400" },
   { key: "purple", label: "Purple", hex: "#a855f7", dot: "bg-purple-500", ring: "ring-purple-500", chip: "bg-purple-500/15 text-purple-600 dark:text-purple-400" },
+  { key: "pink", label: "Pink", hex: "#ec4899", dot: "bg-pink-500", ring: "ring-pink-500", chip: "bg-pink-500/15 text-pink-600 dark:text-pink-400" },
+  { key: "teal", label: "Teal", hex: "#14b8a6", dot: "bg-teal-500", ring: "ring-teal-500", chip: "bg-teal-500/15 text-teal-600 dark:text-teal-400" },
+  { key: "cyan", label: "Cyan", hex: "#06b6d4", dot: "bg-cyan-500", ring: "ring-cyan-500", chip: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-400" },
+  { key: "indigo", label: "Indigo", hex: "#6366f1", dot: "bg-indigo-500", ring: "ring-indigo-500", chip: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400" },
+  { key: "brown", label: "Brown", hex: "#a16207", dot: "bg-amber-700", ring: "ring-amber-700", chip: "bg-amber-700/15 text-amber-800 dark:text-amber-500" },
+  { key: "gray", label: "Gray", hex: "#6b7280", dot: "bg-gray-500", ring: "ring-gray-500", chip: "bg-gray-500/15 text-gray-600 dark:text-gray-400" },
 ];
 
 export type TaskColorKey = (typeof TASK_COLORS)[number]["key"];
 export const DEFAULT_TASK_COLOR: TaskColorKey = "blue";
 
 export function colorFor(key: string): TaskColorOption {
-  return TASK_COLORS.find((c) => c.key === key) ?? TASK_COLORS[TASK_COLORS.length - 1];
+  return TASK_COLORS.find((c) => c.key === key) ?? TASK_COLORS.find((c) => c.key === "purple")!;
 }
 
-export const CALENDAR_MEMBER_ROLES = ["editor", "viewer"] as const;
+export const REPEAT_FREQS = ["daily", "weekly", "monthly", "yearly"] as const;
+export type RepeatFreq = (typeof REPEAT_FREQS)[number];
+
+/** Recurrence rule, anchored on a task's event date. `weekdays`: 0=Mon..6=Sun (weekly only). */
+export interface RepeatRule {
+  freq: RepeatFreq;
+  interval: number;
+  weekdays: number[] | null;
+  until: string | null;
+}
+
+export const CALENDAR_MEMBER_ROLES =["editor", "viewer"] as const;
 export type CalendarMemberRole = (typeof CALENDAR_MEMBER_ROLES)[number];
 export type CalendarRole = "owner" | CalendarMemberRole;

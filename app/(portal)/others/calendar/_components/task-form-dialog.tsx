@@ -15,10 +15,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TASK_COLORS, DEFAULT_TASK_COLOR, type TaskColorKey } from "@/lib/calendar-constants";
-import { getCalendarMembers, createTask, updateTask } from "@/lib/actions/calendar";
+import {
+  TASK_COLORS,
+  DEFAULT_TASK_COLOR,
+  type TaskColorKey,
+  type RepeatFreq,
+  type RepeatRule,
+} from "@/lib/calendar-constants";
+import { getCalendarMembers, createTask, updateTask, copyTaskToDates } from "@/lib/actions/calendar";
 import type { CalendarSummary, CalendarTask } from "@/lib/actions/calendar";
+import { addDays } from "@/lib/calendar-date-utils";
+import { describeRecurrence, weekdayIndex } from "@/lib/calendar-recurrence";
 import { cn } from "@/lib/utils";
+
+const WEEKDAY_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export function TaskFormDialog({
   open,
@@ -46,6 +56,13 @@ export function TaskFormDialog({
   const [color, setColor] = useState<TaskColorKey>(DEFAULT_TASK_COLOR);
   const [assignees, setAssignees] = useState<Set<string>>(new Set());
   const [members, setMembers] = useState<{ username: string; label: string }[]>([]);
+  const [repeatFreq, setRepeatFreq] = useState<RepeatFreq | "none">("none");
+  const [repeatInterval, setRepeatInterval] = useState(1);
+  const [repeatWeekdays, setRepeatWeekdays] = useState<number[]>([]);
+  const [hasRepeatEnd, setHasRepeatEnd] = useState(false);
+  const [repeatUntil, setRepeatUntil] = useState("");
+  const [copyOpen, setCopyOpen] = useState(false);
+  const [copyDays, setCopyDays] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   // Tracks the closed->open edge so the reset below (a render-time "adjusting
@@ -59,13 +76,24 @@ export function TaskFormDialog({
     setWasOpen(open);
     if (open) {
       setError(null);
+      setCopyOpen(false);
+      setCopyDays(new Set());
+      const rule = task?.repeat ?? null;
+      setRepeatFreq(rule?.freq ?? "none");
+      setRepeatInterval(rule?.interval ?? 1);
+      setRepeatWeekdays(rule?.weekdays ?? []);
+      setHasRepeatEnd(!!rule?.until);
+      setRepeatUntil(rule?.until ?? "");
       if (task) {
+        // Occurrences of a recurring task carry shifted dates; edit the series' own.
+        const seriesEvent = task.seriesEventDate ?? task.eventDate;
+        const seriesDue = task.seriesEventDate ? task.seriesDueDate ?? null : task.dueDate;
         setCalendarId(task.calendarId);
         setTitle(task.title);
         setNotes(task.notes ?? "");
-        setEventDate(task.eventDate);
-        setHasDueDate(!!task.dueDate);
-        setDueDate(task.dueDate ?? "");
+        setEventDate(seriesEvent);
+        setHasDueDate(!!seriesDue);
+        setDueDate(seriesDue ?? "");
         setColor(task.color);
         setAssignees(new Set(task.assignees));
       } else {
@@ -107,6 +135,49 @@ export function TaskFormDialog({
     });
   }
 
+  function buildRepeat(): RepeatRule | null {
+    if (repeatFreq === "none") return null;
+    return {
+      freq: repeatFreq,
+      interval: Math.max(1, Math.floor(repeatInterval) || 1),
+      weekdays: repeatFreq === "weekly" && repeatWeekdays.length > 0 ? repeatWeekdays : null,
+      until: hasRepeatEnd && repeatUntil ? repeatUntil : null,
+    };
+  }
+
+  function toggleRepeatWeekday(day: number) {
+    setRepeatWeekdays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]));
+  }
+
+  // The Monday of the week the task's date falls in; copy targets are that week's days.
+  const copyBase = task?.occurrenceDate ?? eventDate;
+  const weekStart = copyBase ? addDays(copyBase, -weekdayIndex(copyBase)) : "";
+  const ownDay = copyBase ? weekdayIndex(copyBase) : -1;
+
+  function toggleCopyDay(day: number) {
+    setCopyDays((prev) => {
+      const next = new Set(prev);
+      if (next.has(day)) next.delete(day);
+      else next.add(day);
+      return next;
+    });
+  }
+
+  function handleCopy() {
+    if (!task || copyDays.size === 0) return;
+    setError(null);
+    startTransition(async () => {
+      const dates = Array.from(copyDays).map((d) => addDays(weekStart, d));
+      const { error } = await copyTaskToDates(task.id, dates);
+      if (error) {
+        setError(error);
+        return;
+      }
+      setCopyOpen(false);
+      onSaved();
+    });
+  }
+
   function handleSave() {
     setError(null);
     if (!title.trim()) {
@@ -122,6 +193,13 @@ export function TaskFormDialog({
       return;
     }
 
+    if (repeatFreq !== "none" && hasRepeatEnd && repeatUntil && repeatUntil < eventDate) {
+      setError("Repeat end can't be before the start date");
+      return;
+    }
+
+    const repeat = buildRepeat();
+
     startTransition(async () => {
       const result = isEdit
         ? await updateTask(task!.id, {
@@ -131,6 +209,7 @@ export function TaskFormDialog({
             dueDate: hasDueDate ? dueDate || null : null,
             color,
             assigneeUsernames: Array.from(assignees),
+            repeat,
           })
         : await createTask({
             calendarId,
@@ -140,6 +219,7 @@ export function TaskFormDialog({
             dueDate: hasDueDate ? dueDate || null : null,
             color,
             assigneeUsernames: Array.from(assignees),
+            repeat,
           });
 
       if (result.error) {
@@ -204,9 +284,126 @@ export function TaskFormDialog({
             </div>
           </div>
 
+          <div className="space-y-2">
+            <Label className="mb-1">Repeat</Label>
+            <div className="flex items-center gap-2">
+              <select
+                value={repeatFreq}
+                onChange={(e) => {
+                  const next = e.target.value as RepeatFreq | "none";
+                  setRepeatFreq(next);
+                  if (next === "weekly" && repeatWeekdays.length === 0 && eventDate) {
+                    setRepeatWeekdays([weekdayIndex(eventDate)]);
+                  }
+                }}
+                className="h-8 flex-1 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                <option value="none">Does not repeat</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+              {repeatFreq !== "none" && (
+                <label className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  every
+                  <Input
+                    type="number"
+                    min={1}
+                    value={repeatInterval}
+                    onChange={(e) => setRepeatInterval(Number(e.target.value))}
+                    className="w-16"
+                  />
+                </label>
+              )}
+            </div>
+            {repeatFreq === "weekly" && (
+              <div className="flex flex-wrap gap-1.5">
+                {WEEKDAY_SHORT.map((label, day) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => toggleRepeatWeekday(day)}
+                    className={cn(
+                      "rounded-md border px-2 py-1 text-xs font-medium transition-colors",
+                      repeatWeekdays.includes(day)
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-input hover:bg-accent"
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {repeatFreq !== "none" && (
+              <>
+                <div className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 text-sm">
+                    <Checkbox checked={hasRepeatEnd} onCheckedChange={() => setHasRepeatEnd((v) => !v)} />
+                    Ends on
+                  </label>
+                  <Input
+                    type="date"
+                    value={repeatUntil}
+                    disabled={!hasRepeatEnd}
+                    min={eventDate}
+                    onChange={(e) => setRepeatUntil(e.target.value)}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {describeRecurrence(buildRepeat(), eventDate)}
+                  {isEdit && task?.repeat ? " · Changes apply to the whole series." : ""}
+                </p>
+              </>
+            )}
+          </div>
+
+          {isEdit && (
+            <div className="space-y-2">
+              <Button type="button" variant="outline" size="sm" onClick={() => setCopyOpen((v) => !v)}>
+                Copy to day
+              </Button>
+              {copyOpen && (
+                <div className="rounded-md border border-border p-3">
+                  <p className="mb-2 text-xs text-muted-foreground">
+                    Copy this task to the selected days of the same week.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {WEEKDAY_SHORT.map((label, day) => (
+                      <label
+                        key={label}
+                        className={cn(
+                          "flex items-center gap-1.5 text-sm",
+                          day === ownDay ? "opacity-50" : "cursor-pointer"
+                        )}
+                      >
+                        <Checkbox
+                          checked={copyDays.has(day)}
+                          disabled={day === ownDay}
+                          onCheckedChange={() => toggleCopyDay(day)}
+                        />
+                        {label}
+                      </label>
+                    ))}
+                  </div>
+                  <Button
+                    type="button"
+                    size="sm"
+                    className="mt-3"
+                    onClick={handleCopy}
+                    disabled={copyDays.size === 0 || isPending}
+                  >
+                    Copy to {copyDays.size || ""} day{copyDays.size === 1 ? "" : "s"}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
           <div>
             <Label className="mb-1.5">Colour</Label>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {TASK_COLORS.map((c) => (
                 <button
                   key={c.key}

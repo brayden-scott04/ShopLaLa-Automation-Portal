@@ -3,7 +3,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
-import { TASK_COLORS, type TaskColorKey, type CalendarRole, type CalendarMemberRole, CALENDAR_MEMBER_ROLES } from "@/lib/calendar-constants";
+import {
+  TASK_COLORS,
+  REPEAT_FREQS,
+  type TaskColorKey,
+  type CalendarRole,
+  type CalendarMemberRole,
+  type RepeatRule,
+  CALENDAR_MEMBER_ROLES,
+} from "@/lib/calendar-constants";
+import { addDays, diffDays } from "@/lib/calendar-date-utils";
+import { expandTask } from "@/lib/calendar-recurrence";
+
+const TASK_COLUMNS =
+  "id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at, repeat_freq, repeat_interval, repeat_weekdays, repeat_until";
 
 const MAX_NAME_LENGTH = 60;
 
@@ -33,6 +46,12 @@ export interface CalendarTask {
   createdBy: string;
   assignees: string[];
   createdAt: string;
+  repeat: RepeatRule | null;
+  /** Set on expanded occurrences of a recurring task: the occurrence's own start date. */
+  occurrenceDate?: string;
+  /** On occurrences: the series' own anchor dates (what the edit form must show). */
+  seriesEventDate?: string;
+  seriesDueDate?: string | null;
 }
 
 export interface TaskInput {
@@ -43,6 +62,7 @@ export interface TaskInput {
   dueDate?: string | null;
   color: TaskColorKey;
   assigneeUsernames?: string[];
+  repeat?: RepeatRule | null;
 }
 
 export interface TaskUpdate {
@@ -52,6 +72,32 @@ export interface TaskUpdate {
   dueDate?: string | null;
   color?: TaskColorKey;
   assigneeUsernames?: string[];
+  repeat?: RepeatRule | null;
+}
+
+function validateRepeat(repeat: RepeatRule | null | undefined, eventDate: string): string | null {
+  if (!repeat) return null;
+  if (!REPEAT_FREQS.includes(repeat.freq)) return "Invalid repeat frequency";
+  if (!Number.isInteger(repeat.interval) || repeat.interval < 1 || repeat.interval > 999) {
+    return "Repeat interval must be at least 1";
+  }
+  if (repeat.weekdays && repeat.weekdays.some((d) => !Number.isInteger(d) || d < 0 || d > 6)) {
+    return "Invalid repeat weekdays";
+  }
+  if (repeat.until && repeat.until < eventDate) return "Repeat end can't be before the start date";
+  return null;
+}
+
+function repeatColumns(repeat: RepeatRule | null | undefined) {
+  if (!repeat) {
+    return { repeat_freq: null, repeat_interval: 1, repeat_weekdays: null, repeat_until: null };
+  }
+  return {
+    repeat_freq: repeat.freq,
+    repeat_interval: repeat.interval,
+    repeat_weekdays: repeat.freq === "weekly" && repeat.weekdays?.length ? repeat.weekdays : null,
+    repeat_until: repeat.until || null,
+  };
 }
 
 type AccessResult = { role: CalendarRole; ownerUsername: string } | { error: string };
@@ -335,6 +381,52 @@ export async function addCalendarMember(
   return { data: { ok: true }, error: null };
 }
 
+export async function addCalendarMembers(
+  calendarId: string,
+  usernames: string[],
+  role: CalendarMemberRole
+): Promise<{ data: { added: number } | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  if (!CALENDAR_MEMBER_ROLES.includes(role)) return { data: null, error: "Invalid role" };
+
+  const normalized = Array.from(new Set(usernames.map((u) => u.trim().toLowerCase()).filter(Boolean))).filter(
+    (u) => u !== session.username
+  );
+  if (normalized.length === 0) return { data: null, error: "Select at least one person" };
+
+  const client = await createClient();
+  const { data: cal, error: calError } = await client
+    .from("calendars")
+    .select("owner_username")
+    .eq("id", calendarId)
+    .maybeSingle();
+  if (calError) return { data: null, error: calError.message };
+  if (!cal) return { data: null, error: "Calendar not found" };
+  if (cal.owner_username !== session.username) {
+    return { data: null, error: "Only the calendar owner can manage access" };
+  }
+
+  const { data: staffRows, error: staffError } = await client
+    .from("staff")
+    .select("username")
+    .in("username", normalized);
+  if (staffError) return { data: null, error: staffError.message };
+  const valid = (staffRows ?? []).map((s) => s.username);
+  if (valid.length === 0) return { data: null, error: "No matching staff members" };
+
+  const service = createServiceClient();
+  const { error: insertError } = await service
+    .from("calendar_members")
+    .upsert(
+      valid.map((username) => ({ calendar_id: calendarId, username, role })),
+      { onConflict: "calendar_id,username", ignoreDuplicates: true }
+    );
+  if (insertError) return { data: null, error: insertError.message };
+
+  return { data: { added: valid.length }, error: null };
+}
+
 export async function updateCalendarMemberRole(
   calendarId: string,
   username: string,
@@ -411,6 +503,10 @@ function toCalendarTask(
     color: string;
     created_by: string;
     created_at: string;
+    repeat_freq: string | null;
+    repeat_interval: number | null;
+    repeat_weekdays: number[] | null;
+    repeat_until: string | null;
   },
   calendarName: string,
   assignees: string[]
@@ -427,6 +523,14 @@ function toCalendarTask(
     createdBy: row.created_by,
     assignees,
     createdAt: row.created_at,
+    repeat: row.repeat_freq
+      ? {
+          freq: row.repeat_freq as RepeatRule["freq"],
+          interval: row.repeat_interval ?? 1,
+          weekdays: row.repeat_weekdays,
+          until: row.repeat_until,
+        }
+      : null,
   };
 }
 
@@ -445,16 +549,17 @@ export async function getTasksForRange(
 
   const { data: tasks, error } = await client
     .from("calendar_tasks")
-    .select("id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at")
+    .select(TASK_COLUMNS)
     .in("calendar_id", targetIds)
     .or(
-      `and(event_date.gte.${startDate},event_date.lte.${endDate}),and(due_date.gte.${startDate},due_date.lte.${endDate})`
+      `and(event_date.gte.${startDate},event_date.lte.${endDate}),and(event_date.lte.${endDate},due_date.gte.${startDate}),and(repeat_freq.not.is.null,event_date.lte.${endDate})`
     );
   if (error) return { data: null, error: error.message };
 
-  const assigneesByTask = await loadAssignees(client, (tasks ?? []).map((t) => t.id));
+  const rows = (tasks ?? []).filter((t) => !t.repeat_freq || !t.repeat_until || t.repeat_until >= startDate);
+  const assigneesByTask = await loadAssignees(client, rows.map((t) => t.id));
 
-  const result = (tasks ?? []).map((t) =>
+  const result = rows.map((t) =>
     toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? [])
   );
 
@@ -479,9 +584,11 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
 
   const { data: tasks, error } = await client
     .from("calendar_tasks")
-    .select("id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at")
+    .select(TASK_COLUMNS)
     .in("calendar_id", calendarIds)
-    .or(`and(event_date.gte.${start},event_date.lte.${end}),and(due_date.gte.${start},due_date.lte.${end})`);
+    .or(
+      `and(event_date.gte.${start},event_date.lte.${end}),and(due_date.gte.${start},due_date.lte.${end}),and(repeat_freq.not.is.null,event_date.lte.${end})`
+    );
   if (error) return { data: null, error: error.message };
 
   const assigneesByTask = await loadAssignees(client, (tasks ?? []).map((t) => t.id));
@@ -490,9 +597,10 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
     (t) => t.created_by === session.username || (assigneesByTask.get(t.id) ?? []).includes(session.username)
   );
 
-  const result = relevant.map((t) =>
-    toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? [])
-  );
+  const result = relevant
+    .map((t) => toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? []))
+    .flatMap((t) => expandTask(t, start, end))
+    .filter((t) => (t.dueDate ?? t.eventDate) >= start && t.eventDate <= end);
 
   // Sort by whichever of the task's dates actually falls in the window (a
   // due date far past the window shouldn't out-rank a near-term event date).
@@ -540,6 +648,9 @@ export async function createTask(
     return { data: null, error: "Due date can't be before the pinned date" };
   }
 
+  const repeatError = validateRepeat(input.repeat, input.eventDate);
+  if (repeatError) return { data: null, error: repeatError };
+
   const client = await createClient();
   const access = await requireEditorAccess(client, input.calendarId, session.username);
   if ("error" in access) return { data: null, error: access.error };
@@ -559,8 +670,9 @@ export async function createTask(
       due_date: input.dueDate || null,
       color: input.color,
       created_by: session.username,
+      ...repeatColumns(input.repeat),
     })
-    .select("id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at")
+    .select(TASK_COLUMNS)
     .single();
   if (error) return { data: null, error: error.message };
 
@@ -601,8 +713,13 @@ export async function updateTask(
   if (updates.color !== undefined && !TASK_COLORS.some((c) => c.key === updates.color)) {
     return { data: null, error: "Invalid color" };
   }
+  if (updates.repeat !== undefined) {
+    const repeatError = validateRepeat(updates.repeat, nextEventDate);
+    if (repeatError) return { data: null, error: repeatError };
+  }
 
   const patch: Record<string, unknown> = {};
+  if (updates.repeat !== undefined) Object.assign(patch, repeatColumns(updates.repeat));
   if (updates.title !== undefined) {
     const title = updates.title.trim();
     if (!title) return { data: null, error: "Title is required" };
@@ -641,6 +758,61 @@ export async function updateTask(
   }
 
   return { data: { ok: true }, error: null };
+}
+
+/** Copies a task (non-recurring copies, same span length and assignees) onto each of the given dates. */
+export async function copyTaskToDates(
+  taskId: string,
+  dates: string[]
+): Promise<{ data: { copied: number } | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  const targets = Array.from(new Set(dates)).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d));
+  if (targets.length === 0) return { data: null, error: "Pick at least one day" };
+  if (targets.length > 31) return { data: null, error: "Too many days selected" };
+
+  const client = await createClient();
+  const { data: source, error: fetchError } = await client
+    .from("calendar_tasks")
+    .select(TASK_COLUMNS)
+    .eq("id", taskId)
+    .maybeSingle();
+  if (fetchError) return { data: null, error: fetchError.message };
+  if (!source) return { data: null, error: "Task not found" };
+
+  const access = await requireEditorAccess(client, source.calendar_id, session.username);
+  if ("error" in access) return { data: null, error: access.error };
+
+  const span = source.due_date ? diffDays(source.event_date, source.due_date) : null;
+  const assigneesByTask = await loadAssignees(client, [taskId]);
+  const assignees = assigneesByTask.get(taskId) ?? [];
+
+  const service = createServiceClient();
+  const { data: inserted, error } = await service
+    .from("calendar_tasks")
+    .insert(
+      targets.map((date) => ({
+        calendar_id: source.calendar_id,
+        title: source.title,
+        notes: source.notes,
+        event_date: date,
+        due_date: span === null ? null : addDays(date, span),
+        color: source.color,
+        created_by: session.username,
+      }))
+    )
+    .select("id");
+  if (error) return { data: null, error: error.message };
+
+  if (assignees.length > 0 && inserted?.length) {
+    const { error: assigneeError } = await service
+      .from("calendar_task_assignees")
+      .insert(inserted.flatMap((t) => assignees.map((username) => ({ task_id: t.id, username }))));
+    if (assigneeError) return { data: null, error: assigneeError.message };
+  }
+
+  return { data: { copied: inserted?.length ?? 0 }, error: null };
 }
 
 export async function deleteTask(

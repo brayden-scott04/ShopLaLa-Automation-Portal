@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Flag } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Flag } from "lucide-react";
 import { colorFor } from "@/lib/calendar-constants";
-import { buildMonthGrid, diffDays, monthLabel, todayKey } from "@/lib/calendar-date-utils";
+import { buildMonthGrid, diffDays, todayKey } from "@/lib/calendar-date-utils";
+import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -61,9 +61,6 @@ export function MonthGrid({
   eventsByDate,
   dueByDate,
   spanningTasks,
-  onPrevMonth,
-  onNextMonth,
-  onToday,
   onDayClick,
   onEditTask,
 }: {
@@ -72,9 +69,6 @@ export function MonthGrid({
   eventsByDate: Map<string, CalendarTask[]>;
   dueByDate: Map<string, CalendarTask[]>;
   spanningTasks: CalendarTask[];
-  onPrevMonth: () => void;
-  onNextMonth: () => void;
-  onToday: () => void;
   onDayClick: (dateKey: string) => void;
   onEditTask: (task: CalendarTask) => void;
 }) {
@@ -98,21 +92,6 @@ export function MonthGrid({
 
   return (
     <div className="flex min-w-0 flex-1 flex-col">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-foreground">{monthLabel(year, month)}</h3>
-        <div className="flex items-center gap-1.5">
-          <Button size="sm" variant="outline" onClick={onToday}>
-            Today
-          </Button>
-          <Button size="icon-sm" variant="outline" onClick={onPrevMonth} title="Previous month">
-            <ChevronLeft />
-          </Button>
-          <Button size="icon-sm" variant="outline" onClick={onNextMonth} title="Next month">
-            <ChevronRight />
-          </Button>
-        </div>
-      </div>
-
       <div className="overflow-hidden rounded-lg border border-border">
         <div className="grid grid-cols-7">
           {WEEKDAY_LABELS.map((label) => (
@@ -141,8 +120,8 @@ export function MonthGrid({
                 // De-duped per task: a task due on the same day it's pinned shows
                 // once, as the flagged "due" chip.
                 const merged = new Map<string, { task: CalendarTask; isDuePin: boolean }>();
-                events.forEach((t) => merged.set(t.id, { task: t, isDuePin: false }));
-                dues.forEach((t) => merged.set(t.id, { task: t, isDuePin: true }));
+                events.forEach((t) => merged.set(occurrenceKey(t), { task: t, isDuePin: false }));
+                dues.forEach((t) => merged.set(occurrenceKey(t), { task: t, isDuePin: true }));
                 const entries = Array.from(merged.values());
 
                 // Collapsed budget: ribbons keep their lane (so they line up across
@@ -216,9 +195,27 @@ export function MonthGrid({
                     <div className="flex flex-1 flex-col gap-1">
                       {chips.map(({ task, isDuePin }) => {
                         const color = colorFor(task.color);
+                        // A lone task with nothing else on the day grows to fill the cell:
+                        // short titles get bigger text, long ones fall back to the compact size.
+                        const solo = entries.length === 1 && !lanes.some((lane) => lane[colIndex]);
+                        const len = task.title.length;
+                        const soloSize = len <= 14 ? "text-base font-semibold" : len <= 30 ? "text-sm font-medium" : "";
+                        if (solo && soloSize) {
+                          return (
+                            <span
+                              key={occurrenceKey(task)}
+                              className={`flex flex-1 items-center gap-1 rounded px-1.5 py-1 leading-tight ${soloSize} ${color.chip} ${
+                                isDuePin ? `ring-1 ${color.ring}` : ""
+                              }`}
+                            >
+                              {isDuePin && <Flag className="size-3 shrink-0" />}
+                              <span className="line-clamp-3 break-words">{task.title}</span>
+                            </span>
+                          );
+                        }
                         return (
                           <span
-                            key={task.id}
+                            key={occurrenceKey(task)}
                             className={`flex items-center gap-1 truncate rounded px-1 py-0.5 text-[11px] font-medium ${color.chip} ${
                               isDuePin ? `ring-1 ${color.ring}` : ""
                             }`}
