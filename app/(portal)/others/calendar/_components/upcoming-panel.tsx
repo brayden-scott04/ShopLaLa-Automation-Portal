@@ -3,7 +3,8 @@
 import { Flag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { colorFor } from "@/lib/calendar-constants";
-import { addDays, formatRelativeDay, todayKey } from "@/lib/calendar-date-utils";
+import { addDays, formatRelativeDay, formatTimeRange, todayKey } from "@/lib/calendar-date-utils";
+import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
 export function UpcomingPanel({ tasks }: { tasks: CalendarTask[] }) {
@@ -29,7 +30,7 @@ export function UpcomingPanel({ tasks }: { tasks: CalendarTask[] }) {
 
         return (
           <div
-            key={task.id}
+            key={occurrenceKey(task)}
             className="flex min-w-56 shrink-0 flex-col gap-1.5 rounded-lg border border-border bg-card p-3"
           >
             <div className="flex items-center gap-2">
@@ -41,6 +42,7 @@ export function UpcomingPanel({ tasks }: { tasks: CalendarTask[] }) {
                 {task.dueDate && isDueSoon && <Flag className="size-3" />}
                 {isDueSoon ? `Due · ${relative}` : relative}
               </Badge>
+              {task.startTime && !isDueSoon && <Badge variant="outline">{formatTimeRange(task)}</Badge>}
               <Badge variant="secondary">{task.calendarName}</Badge>
             </div>
           </div>
