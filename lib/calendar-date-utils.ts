@@ -68,6 +68,28 @@ export function weekLabel(key: string): string {
   return `${fmt(week[0], false)} – ${fmt(week[6], true)}`;
 }
 
+/** "14:30" -> "2:30pm", "09:00" -> "9am". */
+export function formatTime(time: string): string {
+  const [h, m] = time.split(":").map(Number);
+  const suffix = h >= 12 ? "pm" : "am";
+  const hour = h % 12 === 0 ? 12 : h % 12;
+  return m === 0 ? `${hour}${suffix}` : `${hour}:${String(m).padStart(2, "0")}${suffix}`;
+}
+
+/** "" for all-day tasks, otherwise "9am" or "9am – 10:30am". */
+export function formatTimeRange(task: { startTime: string | null; endTime: string | null }): string {
+  if (!task.startTime) return "";
+  return task.endTime ? `${formatTime(task.startTime)} – ${formatTime(task.endTime)}` : formatTime(task.startTime);
+}
+
+/** Sort comparator: all-day first, then by start time. */
+export function compareByTime(
+  a: { startTime: string | null },
+  b: { startTime: string | null }
+): number {
+  return (a.startTime ?? "").localeCompare(b.startTime ?? "");
+}
+
 export function formatRelativeDay(key: string): string {
   const diff = Math.round(
     (fromDateKey(key).getTime() - fromDateKey(todayKey()).getTime()) / (1000 * 60 * 60 * 24)

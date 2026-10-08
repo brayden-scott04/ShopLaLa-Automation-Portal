@@ -56,6 +56,9 @@ export function TaskFormDialog({
   const [color, setColor] = useState<TaskColorKey>(DEFAULT_TASK_COLOR);
   const [assignees, setAssignees] = useState<Set<string>>(new Set());
   const [members, setMembers] = useState<{ username: string; label: string }[]>([]);
+  const [allDay, setAllDay] = useState(true);
+  const [startTime, setStartTime] = useState("09:00");
+  const [endTime, setEndTime] = useState("");
   const [repeatFreq, setRepeatFreq] = useState<RepeatFreq | "none">("none");
   const [repeatInterval, setRepeatInterval] = useState(1);
   const [repeatWeekdays, setRepeatWeekdays] = useState<number[]>([]);
@@ -76,6 +79,9 @@ export function TaskFormDialog({
     setWasOpen(open);
     if (open) {
       setError(null);
+      setAllDay(!task?.startTime);
+      setStartTime(task?.startTime ?? "09:00");
+      setEndTime(task?.endTime ?? "");
       setCopyOpen(false);
       setCopyDays(new Set());
       const rule = task?.repeat ?? null;
@@ -193,6 +199,15 @@ export function TaskFormDialog({
       return;
     }
 
+    if (!allDay && !startTime) {
+      setError("Set a start time or choose all day");
+      return;
+    }
+    const sameDay = !hasDueDate || !dueDate || dueDate === eventDate;
+    if (!allDay && endTime && sameDay && endTime < startTime) {
+      setError("End time can't be before the start time");
+      return;
+    }
     if (repeatFreq !== "none" && hasRepeatEnd && repeatUntil && repeatUntil < eventDate) {
       setError("Repeat end can't be before the start date");
       return;
@@ -210,6 +225,8 @@ export function TaskFormDialog({
             color,
             assigneeUsernames: Array.from(assignees),
             repeat,
+            startTime: allDay ? null : startTime,
+            endTime: allDay ? null : endTime || null,
           })
         : await createTask({
             calendarId,
@@ -220,6 +237,8 @@ export function TaskFormDialog({
             color,
             assigneeUsernames: Array.from(assignees),
             repeat,
+            startTime: allDay ? null : startTime,
+            endTime: allDay ? null : endTime || null,
           });
 
       if (result.error) {
@@ -282,6 +301,25 @@ export function TaskFormDialog({
                 onChange={(e) => setDueDate(e.target.value)}
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-sm font-medium">
+              <Checkbox checked={allDay} onCheckedChange={() => setAllDay((v) => !v)} />
+              All day
+            </label>
+            {!allDay && (
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="mb-1">Start time</Label>
+                  <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                </div>
+                <div>
+                  <Label className="mb-1">End time (optional)</Label>
+                  <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">

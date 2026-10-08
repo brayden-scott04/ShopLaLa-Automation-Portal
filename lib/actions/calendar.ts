@@ -16,7 +16,7 @@ import { addDays, diffDays } from "@/lib/calendar-date-utils";
 import { expandTask } from "@/lib/calendar-recurrence";
 
 const TASK_COLUMNS =
-  "id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at, repeat_freq, repeat_interval, repeat_weekdays, repeat_until";
+  "id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at, repeat_freq, repeat_interval, repeat_weekdays, repeat_until, start_time, end_time";
 
 const MAX_NAME_LENGTH = 60;
 
@@ -47,6 +47,9 @@ export interface CalendarTask {
   assignees: string[];
   createdAt: string;
   repeat: RepeatRule | null;
+  /** "HH:MM"; null start = all-day. End time is only ever set alongside a start time. */
+  startTime: string | null;
+  endTime: string | null;
   /** Set on expanded occurrences of a recurring task: the occurrence's own start date. */
   occurrenceDate?: string;
   /** On occurrences: the series' own anchor dates (what the edit form must show). */
@@ -63,6 +66,8 @@ export interface TaskInput {
   color: TaskColorKey;
   assigneeUsernames?: string[];
   repeat?: RepeatRule | null;
+  startTime?: string | null;
+  endTime?: string | null;
 }
 
 export interface TaskUpdate {
@@ -73,6 +78,24 @@ export interface TaskUpdate {
   color?: TaskColorKey;
   assigneeUsernames?: string[];
   repeat?: RepeatRule | null;
+  startTime?: string | null;
+  endTime?: string | null;
+}
+
+const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+function validateTimes(
+  startTime: string | null | undefined,
+  endTime: string | null | undefined,
+  eventDate: string,
+  dueDate: string | null | undefined
+): string | null {
+  if (startTime && !TIME_RE.test(startTime)) return "Invalid start time";
+  if (endTime && !TIME_RE.test(endTime)) return "Invalid end time";
+  if (endTime && !startTime) return "Set a start time before an end time";
+  const sameDay = !dueDate || dueDate === eventDate;
+  if (startTime && endTime && sameDay && endTime < startTime) return "End time can't be before the start time";
+  return null;
 }
 
 function validateRepeat(repeat: RepeatRule | null | undefined, eventDate: string): string | null {
@@ -507,6 +530,8 @@ function toCalendarTask(
     repeat_interval: number | null;
     repeat_weekdays: number[] | null;
     repeat_until: string | null;
+    start_time: string | null;
+    end_time: string | null;
   },
   calendarName: string,
   assignees: string[]
@@ -523,6 +548,8 @@ function toCalendarTask(
     createdBy: row.created_by,
     assignees,
     createdAt: row.created_at,
+    startTime: row.start_time ? row.start_time.slice(0, 5) : null,
+    endTime: row.end_time ? row.end_time.slice(0, 5) : null,
     repeat: row.repeat_freq
       ? {
           freq: row.repeat_freq as RepeatRule["freq"],
@@ -650,6 +677,8 @@ export async function createTask(
 
   const repeatError = validateRepeat(input.repeat, input.eventDate);
   if (repeatError) return { data: null, error: repeatError };
+  const timeError = validateTimes(input.startTime, input.endTime, input.eventDate, input.dueDate);
+  if (timeError) return { data: null, error: timeError };
 
   const client = await createClient();
   const access = await requireEditorAccess(client, input.calendarId, session.username);
@@ -670,6 +699,8 @@ export async function createTask(
       due_date: input.dueDate || null,
       color: input.color,
       created_by: session.username,
+      start_time: input.startTime || null,
+      end_time: input.startTime ? input.endTime || null : null,
       ...repeatColumns(input.repeat),
     })
     .select(TASK_COLUMNS)
@@ -696,7 +727,7 @@ export async function updateTask(
   const client = await createClient();
   const { data: existing, error: fetchError } = await client
     .from("calendar_tasks")
-    .select("id, calendar_id, event_date, due_date")
+    .select("id, calendar_id, event_date, due_date, start_time, end_time")
     .eq("id", taskId)
     .maybeSingle();
   if (fetchError) return { data: null, error: fetchError.message };
@@ -717,8 +748,16 @@ export async function updateTask(
     const repeatError = validateRepeat(updates.repeat, nextEventDate);
     if (repeatError) return { data: null, error: repeatError };
   }
+  const nextStart = updates.startTime === undefined ? existing.start_time?.slice(0, 5) ?? null : updates.startTime;
+  const nextEnd = updates.endTime === undefined ? existing.end_time?.slice(0, 5) ?? null : updates.endTime;
+  const timeError = validateTimes(nextStart, nextEnd, nextEventDate, nextDueDate);
+  if (timeError) return { data: null, error: timeError };
 
   const patch: Record<string, unknown> = {};
+  if (updates.startTime !== undefined || updates.endTime !== undefined) {
+    patch.start_time = nextStart || null;
+    patch.end_time = nextStart ? nextEnd || null : null;
+  }
   if (updates.repeat !== undefined) Object.assign(patch, repeatColumns(updates.repeat));
   if (updates.title !== undefined) {
     const title = updates.title.trim();
@@ -799,6 +838,8 @@ export async function copyTaskToDates(
         event_date: date,
         due_date: span === null ? null : addDays(date, span),
         color: source.color,
+        start_time: source.start_time,
+        end_time: source.end_time,
         created_by: session.username,
       }))
     )

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Flag } from "lucide-react";
 import { colorFor } from "@/lib/calendar-constants";
-import { buildMonthGrid, diffDays, todayKey } from "@/lib/calendar-date-utils";
+import { buildMonthGrid, diffDays, formatTime, formatTimeRange, todayKey } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
@@ -209,7 +209,12 @@ export function MonthGrid({
                               }`}
                             >
                               {isDuePin && <Flag className="size-3 shrink-0" />}
-                              <span className="line-clamp-3 break-words">{task.title}</span>
+                              <span className="line-clamp-3 break-words">
+                                {task.startTime && (
+                                  <span className="mr-1 text-xs font-normal opacity-80">{formatTimeRange(task)}</span>
+                                )}
+                                {task.title}
+                              </span>
                             </span>
                           );
                         }
@@ -221,7 +226,10 @@ export function MonthGrid({
                             }`}
                           >
                             {isDuePin && <Flag className="size-2.5 shrink-0" />}
-                            <span className="truncate">{task.title}</span>
+                            <span className="truncate">
+                              {task.startTime && <span className="mr-1 opacity-70">{formatTime(task.startTime)}</span>}
+                              {task.title}
+                            </span>
                           </span>
                         );
                       })}

@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { colorFor } from "@/lib/calendar-constants";
-import { formatDayLabel } from "@/lib/calendar-date-utils";
+import { formatDayLabel, formatTimeRange } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
@@ -61,6 +61,9 @@ export function DayTasksDialog({
                   <p className="truncate text-sm font-medium text-foreground">{task.title}</p>
                   {task.notes && (
                     <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{task.notes}</p>
+                  )}
+                  {task.startTime && (
+                    <p className="text-xs text-muted-foreground">{formatTimeRange(task)}</p>
                   )}
                   <div className="mt-1 flex flex-wrap items-center gap-1.5">
                     <Badge variant="secondary" className="text-[10px]">

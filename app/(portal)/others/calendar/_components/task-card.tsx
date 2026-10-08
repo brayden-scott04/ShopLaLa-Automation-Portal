@@ -2,6 +2,7 @@
 
 import { Flag, Repeat } from "lucide-react";
 import { colorFor } from "@/lib/calendar-constants";
+import { formatTimeRange } from "@/lib/calendar-date-utils";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
 /** Full-text task card used by the week and day views. */
@@ -27,6 +28,7 @@ export function TaskCard({
         isDue ? `ring-1 ${color.ring}` : ""
       }`}
     >
+      <span className="text-[11px] font-normal opacity-80">{task.startTime ? formatTimeRange(task) : "All day"}</span>
       <span className="flex w-full items-start gap-1">
         {isDue && <Flag className="mt-0.5 size-3 shrink-0" />}
         <span className="min-w-0 flex-1 break-words">{task.title}</span>

@@ -610,8 +610,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/day-tasks-dialog.tsx": {
-    "mtime": 1791459440.5568855,
-    "ast_hash": "f7162cacbbf4b181de3f095194e72eb5",
+    "mtime": 1791461862.1175177,
+    "ast_hash": "004ce8fbb35c01a1f8aa029989921260",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/manage-access-dialog.tsx": {
@@ -620,8 +620,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/month-grid.tsx": {
-    "mtime": 1791459434.0088086,
-    "ast_hash": "ac9e3b7c8ab710ce009ce2d713ea2d36",
+    "mtime": 1791461857.5980797,
+    "ast_hash": "8027efca1820e90fdae7c4febfeaac55",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/name-calendar-dialog.tsx": {
@@ -630,8 +630,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/task-form-dialog.tsx": {
-    "mtime": 1791459417.6046169,
-    "ast_hash": "5f84e94d3347fc50f8510c14acfafef1",
+    "mtime": 1791461873.6989915,
+    "ast_hash": "f9e0fd0edc552a982ba0a30a79f27f8d",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/upcoming-panel.tsx": {
@@ -645,8 +645,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/page.tsx": {
-    "mtime": 1791459540.5172012,
-    "ast_hash": "d87228e5c280478aaecf38ad06d7306e",
+    "mtime": 1791461854.2420597,
+    "ast_hash": "35b96b17bcb36ccc28a560e611968b9d",
     "semantic_hash": ""
   },
   "app/(portal)/others/dashboards/[dashboardId]/page.tsx": {
@@ -750,8 +750,8 @@
     "semantic_hash": ""
   },
   "lib/actions/calendar.ts": {
-    "mtime": 1791459372.0183702,
-    "ast_hash": "63254b5d02764cbaae0d334d19720c48",
+    "mtime": 1791461842.8290122,
+    "ast_hash": "1be98cd090ba03babf519372cec60836",
     "semantic_hash": ""
   },
   "lib/actions/dashboards.ts": {
@@ -775,13 +775,13 @@
     "semantic_hash": ""
   },
   "lib/calendar-constants.ts": {
-    "mtime": 1791459296.1965342,
-    "ast_hash": "58a2effd1a7ce16f0d91c29147467f64",
+    "mtime": 1791461625.535216,
+    "ast_hash": "b24761feb0b48703c2c09e38c4cf79cc",
     "semantic_hash": ""
   },
   "lib/calendar-date-utils.ts": {
-    "mtime": 1791459444.0316105,
-    "ast_hash": "a34ece3f3ca5513a9ffa19b6588780b1",
+    "mtime": 1791461852.152259,
+    "ast_hash": "8d647e0ec5a7d73b3b7fb146bf993999",
     "semantic_hash": ""
   },
   "lib/dashboards-constants.ts": {
@@ -840,8 +840,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/task-card.tsx": {
-    "mtime": 1791459452.077008,
-    "ast_hash": "7756a238b90651dc7e5ffbe86f3677eb",
+    "mtime": 1791461859.7413304,
+    "ast_hash": "9e05112560ffc54233654513a54087ea",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/week-view.tsx": {
@@ -862,6 +862,16 @@
   "sql/calendar_recurrence_migration.sql": {
     "mtime": 1791459282.674581,
     "ast_hash": "b6a3d10e1a7cf98687cbb0d44d51dcb3",
+    "semantic_hash": ""
+  },
+  "sql/calendar_more_colors_migration.sql": {
+    "mtime": 1791461630.8498895,
+    "ast_hash": "7a249c7fe8d495529ad3429e78d8b0aa",
+    "semantic_hash": ""
+  },
+  "sql/calendar_task_times_migration.sql": {
+    "mtime": 1791461823.5434017,
+    "ast_hash": "928c2897f4687e21e9374dadb5727d6c",
     "semantic_hash": ""
   }
 }

@@ -20,6 +20,7 @@ import {
   addMonths,
   buildMonthGrid,
   buildWeek,
+  compareByTime,
   eachDateKey,
   formatDayLabel,
   isSpanningTask,
@@ -184,7 +185,8 @@ export default function CalendarPage() {
   const [rangeStart, rangeEnd] = rangeFor(view, anchor);
   const selectedTasks = tasks
     .filter((t) => selectedIds.has(t.calendarId))
-    .flatMap((t) => expandTask(t, rangeStart, rangeEnd));
+    .flatMap((t) => expandTask(t, rangeStart, rangeEnd))
+    .sort(compareByTime);
   const spanningTasks = selectedTasks.filter(isSpanningTask);
   const singleDayTasks = selectedTasks.filter((t) => !isSpanningTask(t));
 
