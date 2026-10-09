@@ -193,6 +193,10 @@ export interface FeeBreakdown {
   itemizedTotal: number;
   /** Earliest date in range that has itemized detail, null if none. */
   detailFrom: string | null;
+  /** Portion of itemizedTotal from the still-open settlement period (source=estimate). */
+  estimateTotal: number;
+  /** Earliest date covered by estimate rows, null if none. */
+  estimateFrom: string | null;
 }
 
 interface FeeRow {
@@ -256,11 +260,17 @@ export async function getFeeBreakdown(
   const usdRates = await getUsdRates();
   const byType = new Map<string, number>();
   let detailFrom: string | null = null;
+  let estimateTotal = 0;
+  let estimateFrom: string | null = null;
   for (const row of rows) {
     const key = `${row.metric_date}|${row.country_code}`;
     if (rank(row.source) !== bestSource.get(key)) continue;
     const rate = scope === "ALL" ? (usdRates[row.country_code as ProfitCountry] ?? 1) : 1;
     byType.set(row.fee_type, (byType.get(row.fee_type) ?? 0) + num(row.amount) * rate);
+    if (row.source === "estimate") {
+      estimateTotal += num(row.amount) * rate;
+      if (estimateFrom === null || row.metric_date < estimateFrom) estimateFrom = row.metric_date;
+    }
     if (detailFrom === null || row.metric_date < detailFrom) detailFrom = row.metric_date;
   }
 
@@ -282,7 +292,16 @@ export async function getFeeBreakdown(
   const itemizedTotal =
     Math.round(families.reduce((s, f) => s + f.total, 0) * 100) / 100;
 
-  return { data: { families, itemizedTotal, detailFrom }, error: null };
+  return {
+    data: {
+      families,
+      itemizedTotal,
+      detailFrom,
+      estimateTotal: Math.round(estimateTotal * 100) / 100,
+      estimateFrom,
+    },
+    error: null,
+  };
 }
 
 /**

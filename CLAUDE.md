@@ -347,6 +347,11 @@ fee_type)`; amounts keep Amazon's sign. Written by `profit_sync` alongside `prof
 (DDL: `sql/profit_fee_breakdown_migration.sql`). Only reports ingested after it existed, or
 re-run via `python -m reportlib.profit_sync --fee-detail` (limited to Amazon's 90-day report
 window), have detail; the dialog shows the remainder as "not itemized".
+**Open period:** settlement reports only exist once a period closes, so `reportlib/finances_open_period.py`
+(Daily-Report repo; started in a background thread at the end of every `run_sync`) pulls the open and
+just-closed Finances API event groups into `source='estimate'` rows (both tables), skipping dates that
+already have settlement rows. The portal's existing settlement > finances_backfill > estimate precedence
+lets the real settlement take over when it lands; the dialog flags estimate-sourced amounts.
 
 **`profit_ingested_settlement_reports`** — `report_id` (PK) ledger, checked before any parsing
 so the ~84 no-op runs/week cost one indexed lookup. Also stores `reconciliation_delta` /

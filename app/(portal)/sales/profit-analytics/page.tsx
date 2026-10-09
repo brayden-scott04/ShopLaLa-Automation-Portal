@@ -796,13 +796,20 @@ function FeeBreakdownBody({
 }) {
   const fmt = (v: number) =>
     v.toLocaleString(undefined, { style: "currency", currency, maximumFractionDigits: 2 });
-  // Fees are negative; show magnitudes, credits (reimbursements) come out negative-of-fee.
-  const shown = (v: number) => fmt(-v);
+  // Seller Central convention: fees negative, credits (reimbursements) positive, as stored.
+  const shown = (v: number) => fmt(v);
   const grand = Math.abs(totalFees) || 1;
   const notItemized = totalFees - breakdown.itemizedTotal;
 
   return (
     <div className="space-y-4">
+      {breakdown.estimateFrom && (
+        <div className="rounded-md border border-sky-500/30 bg-sky-500/10 px-3 py-2 text-xs text-sky-700 dark:text-sky-400">
+          Includes {shown(breakdown.estimateTotal)} from the open settlement period (since{" "}
+          {breakdown.estimateFrom}), pulled live from Amazon&apos;s Finances API. Not yet settled, so
+          figures can still change slightly.
+        </div>
+      )}
       {Math.abs(notItemized) >= 0.5 && (
         <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-400">
           {shown(notItemized)} of this period&apos;s fees ({((Math.abs(notItemized) / grand) * 100).toFixed(1)}%)
