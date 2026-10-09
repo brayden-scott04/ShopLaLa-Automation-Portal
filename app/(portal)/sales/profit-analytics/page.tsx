@@ -123,15 +123,24 @@ function relativeTime(iso: string | null): string {
 
 export default function ProfitAnalyticsPage() {
   const [scope, setScope] = useState<ProfitScope>("ALL");
-  const [rangeKey, setRangeKey] = useState<(typeof RANGES)[number]["key"]>("90");
+  const [rangeKey, setRangeKey] = useState<(typeof RANGES)[number]["key"] | "custom">("90");
   const [overview, setOverview] = useState<ProfitOverview | null>(null);
   const [salesOverview, setSalesOverview] = useState<SalesOverview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [, startTransition] = useTransition();
 
+  const [customFrom, setCustomFrom] = useState(() => sgtDate(-30));
+  const [customTo, setCustomTo] = useState(() => sgtDate());
+  const isCustom = rangeKey === "custom";
+  const rangeFrom = isCustom
+    ? customFrom
+    : sgtDate(-(RANGES.find((r) => r.key === rangeKey)?.days ?? 90));
+  const rangeTo = isCustom ? customTo : sgtDate();
+  const rangeValid = !!rangeFrom && !!rangeTo && rangeFrom <= rangeTo;
+
   useEffect(() => {
-    const days = RANGES.find((r) => r.key === rangeKey)?.days ?? 90;
+    if (!rangeValid) return;
     // Clicking through marketplaces faster than the queries return would
     // otherwise let a slow earlier response land last and overwrite the
     // current selection's data, so stale results are dropped on unmount/change.
@@ -140,8 +149,8 @@ export default function ProfitAnalyticsPage() {
     startTransition(async () => {
       setIsLoading(true);
       const [{ data, error: err }, { data: salesData }] = await Promise.all([
-        getProfitOverview(scope, sgtDate(-days), sgtDate()),
-        getSalesOverview(scope, sgtDate(-days), sgtDate()),
+        getProfitOverview(scope, rangeFrom, rangeTo),
+        getSalesOverview(scope, rangeFrom, rangeTo),
       ]);
       if (cancelled) return;
       if (err) {
@@ -158,26 +167,47 @@ export default function ProfitAnalyticsPage() {
     return () => {
       cancelled = true;
     };
-  }, [scope, rangeKey]);
+  }, [scope, rangeFrom, rangeTo, rangeValid]);
 
   const [feeDialogOpen, setFeeDialogOpen] = useState(false);
   const [feeBreakdown, setFeeBreakdown] = useState<FeeBreakdown | null>(null);
   const [feeError, setFeeError] = useState<string | null>(null);
-  const [feeLoading, setFeeLoading] = useState(false);
+  const [feeLoadedKey, setFeeLoadedKey] = useState("");
   const [feeShowAll, setFeeShowAll] = useState(false);
 
+  // The dialog has its own range (starts as the dashboard's) so fees can be inspected for any
+  // period, e.g. one settlement cycle, without moving the dashboard.
+  const [feeFrom, setFeeFrom] = useState("");
+  const [feeTo, setFeeTo] = useState("");
+  const [feeTotal, setFeeTotal] = useState(0);
+
   function openFeeDialog() {
-    const days = RANGES.find((r) => r.key === rangeKey)?.days ?? 90;
+    setFeeFrom(rangeFrom);
+    setFeeTo(rangeTo);
     setFeeDialogOpen(true);
-    setFeeLoading(true);
-    setFeeError(null);
-    setFeeBreakdown(null);
-    getFeeBreakdown(scope, sgtDate(-days), sgtDate()).then(({ data, error: err }) => {
-      setFeeBreakdown(data);
-      setFeeError(err);
-      setFeeLoading(false);
-    });
   }
+
+  const feeLoading =
+    feeDialogOpen && !!feeFrom && feeFrom <= feeTo && feeLoadedKey !== `${scope}|${feeFrom}|${feeTo}`;
+
+  useEffect(() => {
+    if (!feeDialogOpen || !feeFrom || !feeTo || feeFrom > feeTo) return;
+    let cancelled = false;
+    const key = `${scope}|${feeFrom}|${feeTo}`;
+    Promise.all([
+      getFeeBreakdown(scope, feeFrom, feeTo),
+      getProfitOverview(scope, feeFrom, feeTo),
+    ]).then(([fees, ov]) => {
+      if (cancelled) return;
+      setFeeBreakdown(fees.data);
+      setFeeTotal(ov.data?.totals.total_fees ?? 0);
+      setFeeError(fees.error ?? ov.error);
+      setFeeLoadedKey(key);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [feeDialogOpen, scope, feeFrom, feeTo]);
 
   const [goalProgress, setGoalProgress] = useState<GoalProgress[]>([]);
   const [goalsLoading, setGoalsLoading] = useState(true);
@@ -302,16 +332,41 @@ export default function ProfitAnalyticsPage() {
               ))}
             </TabsList>
           </Tabs>
-          <Tabs value={rangeKey} onValueChange={(v) => setRangeKey(v as typeof rangeKey)}>
-            <TabsList>
-              {RANGES.map((r) => (
-                <TabsTrigger key={r.key} value={r.key}>
-                  {r.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <div className="flex flex-wrap items-center gap-2">
+            {isCustom && (
+              <div className="flex items-center gap-1.5 text-sm">
+                <input
+                  type="date"
+                  value={customFrom}
+                  max={customTo || undefined}
+                  onChange={(e) => setCustomFrom(e.target.value)}
+                  className="rounded-md border border-input bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+                <span className="text-muted-foreground">→</span>
+                <input
+                  type="date"
+                  value={customTo}
+                  min={customFrom || undefined}
+                  onChange={(e) => setCustomTo(e.target.value)}
+                  className="rounded-md border border-input bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+            )}
+            <Tabs value={rangeKey} onValueChange={(v) => setRangeKey(v as typeof rangeKey)}>
+              <TabsList>
+                {RANGES.map((r) => (
+                  <TabsTrigger key={r.key} value={r.key}>
+                    {r.label}
+                  </TabsTrigger>
+                ))}
+                <TabsTrigger value="custom">Custom</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
         </div>
+        {isCustom && !rangeValid && (
+          <p className="text-xs text-destructive">Pick a start date on or before the end date.</p>
+        )}
 
         {scope !== "US" && (
           <p className="text-xs text-muted-foreground">
@@ -496,13 +551,30 @@ export default function ProfitAnalyticsPage() {
               Amazon fees · {SCOPES.find((s) => s.key === scope)?.label}
             </DialogTitle>
             <DialogDescription>
-              Last {RANGES.find((r) => r.key === rangeKey)?.label} ·{" "}
-              {moneyIn(Math.abs(totals?.total_fees ?? 0), nativeCurrency)} total, itemized by
-              Amazon fee type
+              {moneyIn(Math.abs(feeTotal), nativeCurrency)} total, itemized by Amazon fee type
             </DialogDescription>
           </DialogHeader>
           <DialogBody className="space-y-4">
-            {feeLoading ? (
+            <div className="flex flex-wrap items-center gap-1.5 text-sm">
+              <input
+                type="date"
+                value={feeFrom}
+                max={feeTo || undefined}
+                onChange={(e) => setFeeFrom(e.target.value)}
+                className="rounded-md border border-input bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+              <span className="text-muted-foreground">→</span>
+              <input
+                type="date"
+                value={feeTo}
+                min={feeFrom || undefined}
+                onChange={(e) => setFeeTo(e.target.value)}
+                className="rounded-md border border-input bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            {feeFrom > feeTo ? (
+              <p className="text-xs text-destructive">Pick a start date on or before the end date.</p>
+            ) : feeLoading ? (
               <Skeleton className="h-64 w-full" />
             ) : feeError ? (
               <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
@@ -520,7 +592,7 @@ export default function ProfitAnalyticsPage() {
                 </label>
                 <FeeBreakdownBody
                   breakdown={feeBreakdown}
-                  totalFees={totals?.total_fees ?? 0}
+                  totalFees={feeTotal}
                   currency={nativeCurrency}
                   showAll={feeShowAll}
                 />
