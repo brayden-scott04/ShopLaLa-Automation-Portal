@@ -421,6 +421,20 @@ Server actions: `lib/actions/pdp-bulk-generator.ts`. Workbooks are built with `e
 `buildBrandBulk.ts` (75-col "SB Multi Ad Group Campaigns" sheet, Store video + Product
 Collection); one file can hold both sheets. Route: `app/api/tools/ads-bulk-generator/generate`.
 
+### Tasks tables
+
+Backs `/others/tasks` (Others → "Tasks"), which replaced the old Boards and Dashboards features
+(dropped by `sql/tasks_migration.sql`, run by hand). Fixed fields only — no user-defined columns.
+
+- **`tasks`**: `title`, `notes`, `task_date` (Date), `due_date`, `priority` (1-5, **5 = highest**), `done`, `owner_username` (the creator).
+- **`task_assignees`**: `(task_id, username)`, cascade on delete.
+
+A task is visible **only to its owner and assignees** (admins see all), enforced in `lib/actions/tasks.ts`
+(not RLS — policies are permissive and writes use the service client). Owner and assignees can edit and
+tick done; only the owner (or an admin) can delete. Actions are named `createTrackedTask` /
+`updateTrackedTask` / `deleteTrackedTask` because `lib/actions/calendar.ts` already exports
+`createTask` etc. through the `lib/actions/index.ts` barrel.
+
 ### FBA Fee Tracker tables
 
 These back `/tools/fba-fee-tracker`, which catches Amazon re-measuring a SKU into a bigger size tier (e.g. large standard at about $5/unit becoming bulky at about $20/unit). It also compares Amazon's fee with the fee our own dimensions should cost. US only. The DDL is in `sql/fba_fee_tracker_migration.sql` and is run by hand.

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { CalendarDays, LayoutGrid, LayoutDashboard } from "lucide-react";
+import { CalendarDays, ListChecks } from "lucide-react";
 
 export interface OtherItem {
   id: string;
@@ -42,16 +42,10 @@ export const calendar = defineOtherItem({
   icon: CalendarDays,
 });
 
-export const boards = defineOtherItem({
-  name: "Boards",
-  description: "Custom boards with typed columns for tracking anything",
-  icon: LayoutGrid,
+export const tasks = defineOtherItem({
+  name: "Tasks",
+  description: "Track tasks and projects with owners, assignees, and priority",
+  icon: ListChecks,
 });
 
-export const dashboards = defineOtherItem({
-  name: "Dashboards",
-  description: "Connect boards and build widgets to visualize their data",
-  icon: LayoutDashboard,
-});
-
-export const othersItems: OtherItem[] = [calendar, boards, dashboards];
+export const othersItems: OtherItem[] = [calendar, tasks];
