@@ -34,6 +34,9 @@ import {
 export interface ProfitDailyPoint {
   metric_date: string;
   revenue: number;
+  /** Money collected on shipped orders (price, shipping, tax) before refunds. */
+  sales_collected: number;
+  refunds: number;
   total_fees: number;
   fba_fees: number;
   referral_fees: number;
@@ -45,6 +48,8 @@ export interface ProfitDailyPoint {
 
 export interface ProfitTotals {
   revenue: number;
+  sales_collected: number;
+  refunds: number;
   total_fees: number;
   fba_fees: number;
   referral_fees: number;
@@ -85,6 +90,8 @@ interface MetricRow {
   source: string;
   source_ref: string;
   revenue: number | string;
+  sales_collected: number | string;
+  refunds: number | string;
   total_fees: number | string;
   fba_fees: number | string;
   referral_fees: number | string;
@@ -95,7 +102,7 @@ interface MetricRow {
 }
 
 const METRIC_COLUMNS =
-  "metric_date, country_code, source, source_ref, revenue, total_fees, fba_fees, " +
+  "metric_date, country_code, source, source_ref, revenue, sales_collected, refunds, total_fees, fba_fees, " +
   "referral_fees, other_fees, gross_margin, units, orders";
 
 // PostgREST silently caps a response at 1000 rows, and a short read here is
@@ -118,6 +125,8 @@ function num(value: number | string | null | undefined): number {
 function emptyTotals(): ProfitTotals {
   return {
     revenue: 0,
+    sales_collected: 0,
+    refunds: 0,
     total_fees: 0,
     fba_fees: 0,
     referral_fees: 0,
@@ -130,6 +139,8 @@ function emptyTotals(): ProfitTotals {
 
 function addInto(target: ProfitTotals, row: MetricRow, rate = 1) {
   target.revenue += num(row.revenue) * rate;
+  target.sales_collected += num(row.sales_collected) * rate;
+  target.refunds += num(row.refunds) * rate;
   target.total_fees += num(row.total_fees) * rate;
   target.fba_fees += num(row.fba_fees) * rate;
   target.referral_fees += num(row.referral_fees) * rate;
@@ -144,6 +155,8 @@ function scaleTotals(totals: ProfitTotals, rate: number): ProfitTotals {
   return {
     ...totals,
     revenue: totals.revenue * rate,
+    sales_collected: totals.sales_collected * rate,
+    refunds: totals.refunds * rate,
     total_fees: totals.total_fees * rate,
     fba_fees: totals.fba_fees * rate,
     referral_fees: totals.referral_fees * rate,
@@ -156,6 +169,8 @@ function round2(totals: ProfitTotals): ProfitTotals {
   return {
     ...totals,
     revenue: Math.round(totals.revenue * 100) / 100,
+    sales_collected: Math.round(totals.sales_collected * 100) / 100,
+    refunds: Math.round(totals.refunds * 100) / 100,
     total_fees: Math.round(totals.total_fees * 100) / 100,
     fba_fees: Math.round(totals.fba_fees * 100) / 100,
     referral_fees: Math.round(totals.referral_fees * 100) / 100,

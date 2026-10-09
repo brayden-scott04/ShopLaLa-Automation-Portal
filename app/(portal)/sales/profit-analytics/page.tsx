@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import { ChevronRight, Settings } from "lucide-react";
+import { ChevronRight, CircleHelp, Settings } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import {
   Card,
@@ -377,8 +378,8 @@ export default function ProfitAnalyticsPage() {
         )}
 
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, i) => (
               <Card key={i}>
                 <CardContent>
                   <Skeleton className="h-16 w-full" />
@@ -387,21 +388,38 @@ export default function ProfitAnalyticsPage() {
             ))}
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             <StatTile
               label="Sales"
+              info="Ordered product sales, counted by ORDER date the moment an order is placed (from Amazon's Sales & Traffic data). Excludes shipping, tax and reimbursements, so it will not match Seller Central's Payments 'Sales'. Use 'Collected (shipped)' for that."
               value={moneyIn(salesTotals?.ordered_product_sales ?? 0, nativeCurrency)}
               usdValue={salesTotalsUsd ? money(salesTotalsUsd.ordered_product_sales) : undefined}
-              sub="Gross, counted the moment an order is placed"
+              sub="Ordered product sales, counted by order date when placed"
+            />
+            <StatTile
+              label="Collected (shipped)"
+              info="Same basis as Seller Central's Payments Dashboard 'Sales': the amount collected from shipped orders, including product price, shipping, gift wrap and taxes, before refunds (shown separately in the line below). Counted when Amazon posts the transaction, from settlement data. Dates are SGT; Seller Central uses Pacific, so edge days can differ slightly."
+              value={moneyIn(totals?.sales_collected ?? 0, nativeCurrency)}
+              usdValue={totalsUsd ? money(totalsUsd.sales_collected) : undefined}
+              sub={
+                totals
+                  ? `Seller Central "Sales" basis: shipped orders incl. shipping & tax, before ${moneyIn(
+                      Math.abs(totals.refunds),
+                      nativeCurrency
+                    )} refunds`
+                  : undefined
+              }
             />
             <StatTile
               label="Revenue"
+              info="Collected sales net of refunds, from Amazon's settlement reports, counted once Amazon settles payment. Before Amazon fees, so it is not profit."
               value={moneyIn(totals?.revenue ?? 0, nativeCurrency)}
               usdValue={totalsUsd ? money(totalsUsd.revenue) : undefined}
               sub="Net of refunds, counted once Amazon settles payment"
             />
             <StatTile
               label="Amazon fees"
+              info="All fees Amazon charged in the period (referral, FBA fulfillment, storage, AWD, returns, promo rebates, withheld tax, etc.), net of credits such as reimbursements. Click for the full breakdown by fee type. The latest open settlement period is an estimate from Amazon's Finances API until the settlement closes."
               onClick={openFeeDialog}
               value={moneyIn(Math.abs(totals?.total_fees ?? 0), nativeCurrency)}
               usdValue={totalsUsd ? money(Math.abs(totalsUsd.total_fees)) : undefined}
@@ -416,12 +434,14 @@ export default function ProfitAnalyticsPage() {
             />
             <StatTile
               label="Gross margin"
+              info="Revenue minus Amazon fees. This is BEFORE product cost (COGS) and advertising, so it is not net profit."
               value={moneyIn(totals?.gross_margin ?? 0, nativeCurrency)}
               usdValue={totalsUsd ? money(totalsUsd.gross_margin) : undefined}
               sub={marginPct !== null ? `${marginPct.toFixed(1)}% of revenue` : undefined}
             />
             <StatTile
               label="Units / orders"
+              info="Units and distinct orders shipped in the period, before returns. Counted once per order line, not once per fee line."
               value={`${(totals?.units ?? 0).toLocaleString()} / ${(
                 totals?.orders ?? 0
               ).toLocaleString()}`}
@@ -742,13 +762,59 @@ export default function ProfitAnalyticsPage() {
   );
 }
 
+/** (?) icon with a hover/focus explanation. Portalled and fixed-positioned because the
+ * stat cards clip overflow. */
+function InfoTip({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+
+  function show() {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    const width = 288;
+    const x = Math.min(Math.max(8, r.left + r.width / 2 - width / 2), window.innerWidth - width - 8);
+    setPos({ x, y: r.bottom + 6 });
+  }
+
+  return (
+    <>
+      <span
+        ref={ref}
+        tabIndex={0}
+        aria-label={text}
+        onMouseEnter={show}
+        onMouseLeave={() => setPos(null)}
+        onFocus={show}
+        onBlur={() => setPos(null)}
+        onClick={(e) => e.stopPropagation()}
+        className="inline-flex cursor-help rounded-full text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <CircleHelp className="h-3.5 w-3.5" />
+      </span>
+      {pos &&
+        createPortal(
+          <div
+            role="tooltip"
+            style={{ left: pos.x, top: pos.y, width: 288 }}
+            className="pointer-events-none fixed z-50 rounded-md border border-border bg-popover px-3 py-2 text-xs font-normal normal-case leading-relaxed tracking-normal text-popover-foreground shadow-md"
+          >
+            {text}
+          </div>,
+          document.body
+        )}
+    </>
+  );
+}
+
 function StatTile({
   label,
   value,
   sub,
   usdValue,
   onClick,
+  info,
 }: {
+  info?: string;
   label: string;
   value: string;
   sub?: string;
@@ -761,7 +827,10 @@ function StatTile({
     <Card className={cn(onClick && "transition-colors group-hover:bg-accent/40")}>
       <CardContent className="space-y-1">
         <p className="flex items-center justify-between text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {label}
+          <span className="flex items-center gap-1.5">
+            {label}
+            {info && <InfoTip text={info} />}
+          </span>
           {onClick && <ChevronRight className="h-3.5 w-3.5" />}
         </p>
         <p className="text-2xl font-semibold tabular-nums">{value}</p>
