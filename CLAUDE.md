@@ -340,6 +340,14 @@ once-daily 12:00 SGT Excel workbook job. DDL:
 > writes its own row per date and **readers SUM across `source_ref`** — additive across reports,
 > idempotent within one. Nothing may assume one row per `(date, country)`.
 
+**`profit_daily_fee_metrics`** — per-fee-type detail behind the "Amazon fees" tile's drill-down
+dialog (`getFeeBreakdown()`, `lib/profit-fee-families.ts` mirrors `FEE_FAMILIES` in the
+Daily-Report repo's `feetypes.py`). Keyed `(metric_date, country_code, source, source_ref,
+fee_type)`; amounts keep Amazon's sign. Written by `profit_sync` alongside `profit_daily_metrics`
+(DDL: `sql/profit_fee_breakdown_migration.sql`). Only reports ingested after it existed, or
+re-run via `python -m reportlib.profit_sync --fee-detail` (limited to Amazon's 90-day report
+window), have detail; the dialog shows the remainder as "not itemized".
+
 **`profit_ingested_settlement_reports`** — `report_id` (PK) ledger, checked before any parsing
 so the ~84 no-op runs/week cost one indexed lookup. Also stores `reconciliation_delta` /
 `reconciled`: every settlement's rows must sum to its own `total-amount`, verified to the cent

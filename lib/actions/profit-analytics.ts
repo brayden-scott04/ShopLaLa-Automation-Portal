@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getSession } from "@/lib/session";
+import { FEE_FAMILIES, familyOfFeeType } from "@/lib/profit-fee-families";
 import {
   PROFIT_COUNTRIES,
   getUsdRates,
@@ -163,6 +164,127 @@ function round2(totals: ProfitTotals): ProfitTotals {
   };
 }
 
+function validateScopeAndRange(scope: ProfitScope, from: string, to: string): string | null {
+  if (scope !== "ALL" && !PROFIT_COUNTRIES.includes(scope as ProfitCountry)) {
+    return `Invalid marketplace: ${scope}`;
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || !/^\d{4}-\d{2}-\d{2}$/.test(to)) {
+    return "Invalid date range";
+  }
+  if (from > to) return "Start date must be on or before end date";
+  return null;
+}
+
+export interface FeeBreakdownType {
+  fee_type: string;
+  /** Negative = fee, positive = credit (e.g. reimbursements), as Amazon reports. */
+  amount: number;
+}
+
+export interface FeeBreakdownFamily {
+  family: string;
+  total: number;
+  types: FeeBreakdownType[];
+}
+
+export interface FeeBreakdown {
+  families: FeeBreakdownFamily[];
+  /** Sum of all itemized fee rows (same currency as the tile: native, or USD for ALL). */
+  itemizedTotal: number;
+  /** Earliest date in range that has itemized detail, null if none. */
+  detailFrom: string | null;
+}
+
+interface FeeRow {
+  metric_date: string;
+  country_code: string;
+  source: string;
+  fee_type: string;
+  amount: number | string;
+}
+
+/**
+ * Per-fee-type breakdown of Amazon fees for the same scope/range as getProfitOverview.
+ * Reads profit_daily_fee_metrics (written by profit_sync). Applies the same per-(date,
+ * country) source precedence as the overview, so the itemized total ties to the tile; any
+ * difference is dates synced before itemization existed ("not itemized" in the UI).
+ */
+export async function getFeeBreakdown(
+  scope: ProfitScope,
+  from: string,
+  to: string
+): Promise<{ data: FeeBreakdown | null; error: string | null }> {
+  const { error: authError } = await requireStaff();
+  if (authError) return { data: null, error: authError };
+
+  const invalid = validateScopeAndRange(scope, from, to);
+  if (invalid) return { data: null, error: invalid };
+
+  const client = await createClient();
+
+  const rows: FeeRow[] = [];
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    let query = client
+      .from("profit_daily_fee_metrics")
+      .select("metric_date, country_code, source, fee_type, amount")
+      .gte("metric_date", from)
+      .lte("metric_date", to)
+      .order("metric_date", { ascending: true })
+      .order("country_code", { ascending: true })
+      .order("source_ref", { ascending: true })
+      .order("fee_type", { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1);
+    if (scope !== "ALL") query = query.eq("country_code", scope);
+
+    const { data, error } = await query;
+    if (error) return { data: null, error: error.message };
+
+    const page = (data ?? []) as unknown as FeeRow[];
+    rows.push(...page);
+    if (page.length < PAGE_SIZE) break;
+  }
+
+  const rank = (source: string) =>
+    source === "settlement" ? 0 : source === "finances_backfill" ? 1 : 2;
+  const bestSource = new Map<string, number>();
+  for (const row of rows) {
+    const key = `${row.metric_date}|${row.country_code}`;
+    const r = rank(row.source);
+    if (r < (bestSource.get(key) ?? 99)) bestSource.set(key, r);
+  }
+
+  const usdRates = await getUsdRates();
+  const byType = new Map<string, number>();
+  let detailFrom: string | null = null;
+  for (const row of rows) {
+    const key = `${row.metric_date}|${row.country_code}`;
+    if (rank(row.source) !== bestSource.get(key)) continue;
+    const rate = scope === "ALL" ? (usdRates[row.country_code as ProfitCountry] ?? 1) : 1;
+    byType.set(row.fee_type, (byType.get(row.fee_type) ?? 0) + num(row.amount) * rate);
+    if (detailFrom === null || row.metric_date < detailFrom) detailFrom = row.metric_date;
+  }
+
+  const grouped = new Map<string, FeeBreakdownType[]>();
+  for (const [fee_type, amount] of byType) {
+    const family = familyOfFeeType(fee_type);
+    const list = grouped.get(family) ?? [];
+    list.push({ fee_type, amount: Math.round(amount * 100) / 100 });
+    grouped.set(family, list);
+  }
+
+  const families: FeeBreakdownFamily[] = FEE_FAMILIES.map(({ family, types }) => {
+    const list = grouped.get(family) ?? [];
+    list.sort((a, b) => types.indexOf(a.fee_type) - types.indexOf(b.fee_type));
+    const total = list.reduce((s, t) => s + t.amount, 0);
+    return { family, total: Math.round(total * 100) / 100, types: list };
+  }).filter((f) => f.types.length > 0);
+
+  const itemizedTotal =
+    Math.round(families.reduce((s, f) => s + f.total, 0) * 100) / 100;
+
+  return { data: { families, itemizedTotal, detailFrom }, error: null };
+}
+
 /**
  * Daily revenue/fee/margin series plus period totals for one marketplace, or for
  * all of them consolidated.
@@ -183,15 +305,8 @@ export async function getProfitOverview(
   const { error: authError } = await requireStaff();
   if (authError) return { data: null, error: authError };
 
-  if (scope !== "ALL" && !PROFIT_COUNTRIES.includes(scope as ProfitCountry)) {
-    return { data: null, error: `Invalid marketplace: ${scope}` };
-  }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || !/^\d{4}-\d{2}-\d{2}$/.test(to)) {
-    return { data: null, error: "Invalid date range" };
-  }
-  if (from > to) {
-    return { data: null, error: "Start date must be on or before end date" };
-  }
+  const invalid = validateScopeAndRange(scope, from, to);
+  if (invalid) return { data: null, error: invalid };
 
   const client = await createClient();
 

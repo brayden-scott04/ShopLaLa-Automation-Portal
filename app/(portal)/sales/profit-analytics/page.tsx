@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import { Settings } from "lucide-react";
+import { ChevronRight, Settings } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import {
   Card,
@@ -35,7 +35,13 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { profitAnalytics } from "@/lib/sales";
-import { getProfitOverview, type ProfitOverview } from "@/lib/actions/profit-analytics";
+import {
+  getProfitOverview,
+  getFeeBreakdown,
+  type ProfitOverview,
+  type FeeBreakdown,
+} from "@/lib/actions/profit-analytics";
+import { FEE_FAMILIES } from "@/lib/profit-fee-families";
 import { getSalesOverview, type SalesOverview } from "@/lib/actions/sales-traffic";
 import {
   getGoalProgress,
@@ -153,6 +159,25 @@ export default function ProfitAnalyticsPage() {
       cancelled = true;
     };
   }, [scope, rangeKey]);
+
+  const [feeDialogOpen, setFeeDialogOpen] = useState(false);
+  const [feeBreakdown, setFeeBreakdown] = useState<FeeBreakdown | null>(null);
+  const [feeError, setFeeError] = useState<string | null>(null);
+  const [feeLoading, setFeeLoading] = useState(false);
+  const [feeShowAll, setFeeShowAll] = useState(false);
+
+  function openFeeDialog() {
+    const days = RANGES.find((r) => r.key === rangeKey)?.days ?? 90;
+    setFeeDialogOpen(true);
+    setFeeLoading(true);
+    setFeeError(null);
+    setFeeBreakdown(null);
+    getFeeBreakdown(scope, sgtDate(-days), sgtDate()).then(({ data, error: err }) => {
+      setFeeBreakdown(data);
+      setFeeError(err);
+      setFeeLoading(false);
+    });
+  }
 
   const [goalProgress, setGoalProgress] = useState<GoalProgress[]>([]);
   const [goalsLoading, setGoalsLoading] = useState(true);
@@ -322,6 +347,7 @@ export default function ProfitAnalyticsPage() {
             />
             <StatTile
               label="Amazon fees"
+              onClick={openFeeDialog}
               value={moneyIn(Math.abs(totals?.total_fees ?? 0), nativeCurrency)}
               usdValue={totalsUsd ? money(Math.abs(totalsUsd.total_fees)) : undefined}
               sub={
@@ -463,6 +489,52 @@ export default function ProfitAnalyticsPage() {
         </Card>
       </div>
 
+      <Dialog open={feeDialogOpen} onOpenChange={setFeeDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              Amazon fees · {SCOPES.find((s) => s.key === scope)?.label}
+            </DialogTitle>
+            <DialogDescription>
+              Last {RANGES.find((r) => r.key === rangeKey)?.label} ·{" "}
+              {moneyIn(Math.abs(totals?.total_fees ?? 0), nativeCurrency)} total, itemized by
+              Amazon fee type
+            </DialogDescription>
+          </DialogHeader>
+          <DialogBody className="space-y-4">
+            {feeLoading ? (
+              <Skeleton className="h-64 w-full" />
+            ) : feeError ? (
+              <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                {feeError}
+              </div>
+            ) : feeBreakdown ? (
+              <>
+                <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    checked={feeShowAll}
+                    onChange={(e) => setFeeShowAll(e.target.checked)}
+                  />
+                  Show all fee types, including $0
+                </label>
+                <FeeBreakdownBody
+                  breakdown={feeBreakdown}
+                  totalFees={totals?.total_fees ?? 0}
+                  currency={nativeCurrency}
+                  showAll={feeShowAll}
+                />
+              </>
+            ) : null}
+          </DialogBody>
+          <DialogFooter>
+            <DialogClose className="rounded-md px-3 py-1.5 text-sm font-medium hover:bg-accent">
+              Done
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={goalsDialogOpen} onOpenChange={setGoalsDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -603,23 +675,113 @@ function StatTile({
   value,
   sub,
   usdValue,
+  onClick,
 }: {
   label: string;
   value: string;
   sub?: string;
   /** Secondary "(~$X USD)" line for a native-currency (CA/MX) figure. */
   usdValue?: string;
+  /** When set the whole tile becomes a button (drill-down). */
+  onClick?: () => void;
 }) {
-  return (
-    <Card>
+  const card = (
+    <Card className={cn(onClick && "transition-colors group-hover:bg-accent/40")}>
       <CardContent className="space-y-1">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        <p className="flex items-center justify-between text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {label}
+          {onClick && <ChevronRight className="h-3.5 w-3.5" />}
         </p>
         <p className="text-2xl font-semibold tabular-nums">{value}</p>
         {usdValue && <p className="text-xs text-muted-foreground">(~{usdValue} USD)</p>}
         {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
+        {onClick && <p className="text-xs text-primary">View breakdown</p>}
       </CardContent>
     </Card>
+  );
+  if (!onClick) return card;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group block w-full rounded-xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {card}
+    </button>
+  );
+}
+
+function FeeBreakdownBody({
+  breakdown,
+  totalFees,
+  currency,
+  showAll,
+}: {
+  breakdown: FeeBreakdown;
+  totalFees: number;
+  currency: string;
+  showAll: boolean;
+}) {
+  const fmt = (v: number) =>
+    v.toLocaleString(undefined, { style: "currency", currency, maximumFractionDigits: 2 });
+  // Fees are negative; show magnitudes, credits (reimbursements) come out negative-of-fee.
+  const shown = (v: number) => fmt(-v);
+  const grand = Math.abs(totalFees) || 1;
+  const notItemized = totalFees - breakdown.itemizedTotal;
+
+  return (
+    <div className="space-y-4">
+      {Math.abs(notItemized) >= 0.5 && (
+        <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-400">
+          {shown(notItemized)} of this period&apos;s fees ({((Math.abs(notItemized) / grand) * 100).toFixed(1)}%)
+          {breakdown.detailFrom
+            ? ` pre-date itemized detail, which starts ${breakdown.detailFrom}.`
+            : " has no itemized detail yet."}
+        </div>
+      )}
+      {breakdown.families.map((fam) => {
+        const defs = FEE_FAMILIES.find((f) => f.family === fam.family)?.types ?? [];
+        const present = new Map(fam.types.map((t) => [t.fee_type, t.amount]));
+        const names = showAll
+          ? [...defs, ...fam.types.map((t) => t.fee_type).filter((n) => !defs.includes(n))]
+          : fam.types.filter((t) => Math.abs(t.amount) >= 0.005).map((t) => t.fee_type);
+        return (
+          <div key={fam.family} className="overflow-hidden rounded-md border border-border">
+            <div className="flex items-center justify-between bg-muted px-3 py-2 text-sm font-medium">
+              <span>{fam.family}</span>
+              <span className="tabular-nums">{shown(fam.total)}</span>
+            </div>
+            <table className="w-full text-sm">
+              <tbody>
+                {names.map((name) => {
+                  const amount = present.get(name) ?? 0;
+                  return (
+                    <tr key={name} className="border-t border-border">
+                      <td className="px-3 py-1.5">{name}</td>
+                      <td className="px-3 py-1.5 text-right text-xs text-muted-foreground tabular-nums">
+                        {amount !== 0 ? `${((Math.abs(amount) / grand) * 100).toFixed(1)}%` : ""}
+                      </td>
+                      <td
+                        className={cn(
+                          "w-28 px-3 py-1.5 text-right tabular-nums",
+                          amount > 0 && "text-emerald-600 dark:text-emerald-400"
+                        )}
+                      >
+                        {shown(amount)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+      })}
+      {breakdown.families.length === 0 && (
+        <p className="py-6 text-center text-sm text-muted-foreground">
+          No itemized fee detail for this marketplace and date range yet.
+        </p>
+      )}
+    </div>
   );
 }
