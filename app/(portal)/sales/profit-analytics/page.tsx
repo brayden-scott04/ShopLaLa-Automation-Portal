@@ -297,6 +297,10 @@ export default function ProfitAnalyticsPage() {
   const salesTotals = salesOverview?.totals;
   const salesTotalsUsd = salesOverview?.totalsUsd ?? null;
   const nativeCurrency = SCOPE_CURRENCY[scope];
+  // Rows with revenue but no collected/refund split make Collected (and its refunds line)
+  // understated. Only flag when material (>0.5% of revenue), so rounding-level gaps don't nag.
+  const collectedIncomplete =
+    !!totals && totals.collected_gap_revenue > Math.max(1, Math.abs(totals.revenue) * 0.005);
   const marginPct =
     totals && totals.revenue > 0 ? (totals.gross_margin / totals.revenue) * 100 : null;
 
@@ -402,12 +406,17 @@ export default function ProfitAnalyticsPage() {
               value={moneyIn(totals?.sales_collected ?? 0, nativeCurrency)}
               usdValue={totalsUsd ? money(totalsUsd.sales_collected) : undefined}
               sub={
-                totals
-                  ? `Seller Central "Sales" basis: shipped orders incl. shipping & tax, before ${moneyIn(
-                      Math.abs(totals.refunds),
+                totals && collectedIncomplete
+                  ? `Incomplete: ${moneyIn(
+                      totals.collected_gap_revenue,
                       nativeCurrency
-                    )} refunds`
-                  : undefined
+                    )} of revenue in this range has no collected/refund split yet, so this is understated`
+                  : totals
+                    ? `Seller Central "Sales" basis: shipped orders incl. shipping & tax, before ${moneyIn(
+                        Math.abs(totals.refunds),
+                        nativeCurrency
+                      )} refunds`
+                    : undefined
               }
             />
             <StatTile

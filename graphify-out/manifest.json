@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1791538700.7378383,
-    "ast_hash": "9380e89e9bc32d65788e59cf74d05e15",
+    "mtime": 1791822472.37932,
+    "ast_hash": "d678e96d82697c6fea139292173bc6cf",
     "semantic_hash": ""
   },
   "README.md": {
@@ -550,8 +550,8 @@
     "semantic_hash": ""
   },
   "lib/actions/profit-analytics.ts": {
-    "mtime": 1788167665.1241398,
-    "ast_hash": "728211e1aaa0ff3a6cd470ca3c0c8ea2",
+    "mtime": 1791689526.560593,
+    "ast_hash": "8a1f3726e9434c5c320bc7d966021179",
     "semantic_hash": ""
   },
   "lib/profit-analytics-constants.ts": {
@@ -565,8 +565,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/sales/profit-analytics/page.tsx": {
-    "mtime": 1788167302.9209638,
-    "ast_hash": "41bfe8300741b8df08f158abf62742cf",
+    "mtime": 1791689535.5538824,
+    "ast_hash": "1cb1524aa92d2693f0ba572e3d6043a3",
     "semantic_hash": ""
   },
   "lib/sales.ts": {
@@ -615,8 +615,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/task-form-dialog.tsx": {
-    "mtime": 1791461873.6989915,
-    "ast_hash": "f9e0fd0edc552a982ba0a30a79f27f8d",
+    "mtime": 1791822386.2745807,
+    "ast_hash": "0288e835a095fb427e6ca35a4c283263",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/upcoming-panel.tsx": {
@@ -630,8 +630,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/page.tsx": {
-    "mtime": 1791461854.2420597,
-    "ast_hash": "35b96b17bcb36ccc28a560e611968b9d",
+    "mtime": 1791822404.123664,
+    "ast_hash": "58f016a1d9bcd2ca8cc8169463c3e4b9",
     "semantic_hash": ""
   },
   "app/(portal)/tools/ads-bulk-generator/brand-library-section.tsx": {
@@ -690,8 +690,8 @@
     "semantic_hash": ""
   },
   "lib/actions/calendar.ts": {
-    "mtime": 1791461842.8290122,
-    "ast_hash": "1be98cd090ba03babf519372cec60836",
+    "mtime": 1791822421.1541815,
+    "ast_hash": "9d0558e4f0af27e2998985999817abf2",
     "semantic_hash": ""
   },
   "lib/actions/fba-fee-tracker.ts": {
@@ -705,8 +705,8 @@
     "semantic_hash": ""
   },
   "lib/calendar-constants.ts": {
-    "mtime": 1791461625.535216,
-    "ast_hash": "b24761feb0b48703c2c09e38c4cf79cc",
+    "mtime": 1791822227.2044327,
+    "ast_hash": "1aedef0750171c4e20daaaa7113c6406",
     "semantic_hash": ""
   },
   "lib/calendar-date-utils.ts": {
@@ -770,8 +770,8 @@
     "semantic_hash": ""
   },
   "lib/calendar-recurrence.ts": {
-    "mtime": 1791459373.282916,
-    "ast_hash": "70faf86d400efd8a1d85bf7973f4a488",
+    "mtime": 1791822249.81022,
+    "ast_hash": "184f37408355e66257718a3100177df2",
     "semantic_hash": ""
   },
   "sql/calendar_recurrence_migration.sql": {
@@ -795,18 +795,18 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/tasks/page.tsx": {
-    "mtime": 1791538689.140858,
-    "ast_hash": "58b0b0acfdb9b6cab97a7a16c7dad3fc",
+    "mtime": 1791544879.918524,
+    "ast_hash": "d2a1ef6f089594d8ee9fdc14cfe688ed",
     "semantic_hash": ""
   },
   "components/tasks/task-form-dialog.tsx": {
-    "mtime": 1791538680.7488337,
-    "ast_hash": "6e9cce9f109dcbd9098efe59ab3831e5",
+    "mtime": 1791544869.7432313,
+    "ast_hash": "94eb6b5568324718ef011907a84d7980",
     "semantic_hash": ""
   },
   "lib/actions/tasks.ts": {
-    "mtime": 1791538680.68731,
-    "ast_hash": "8856bffcb91f3baee6cec87130a8bcf7",
+    "mtime": 1791544869.7233868,
+    "ast_hash": "2cd25c3fcc0ff2e8f2cb3eabc0b17eda",
     "semantic_hash": ""
   },
   "lib/tasks-constants.ts": {
@@ -815,8 +815,23 @@
     "semantic_hash": ""
   },
   "sql/tasks_migration.sql": {
-    "mtime": 1791538571.6045651,
-    "ast_hash": "b9d6f9162f65532335e8b3e0b214f8e2",
+    "mtime": 1791544869.7203853,
+    "ast_hash": "6c49a40e3ac791b5ea45d9cd6772ee76",
+    "semantic_hash": ""
+  },
+  "lib/profit-fee-families.ts": {
+    "mtime": 1791545446.2525096,
+    "ast_hash": "4428766289559042df708cce084a94f3",
+    "semantic_hash": ""
+  },
+  "app/(portal)/others/calendar/_components/delete-scope-dialog.tsx": {
+    "mtime": 1791822396.5459566,
+    "ast_hash": "4c8c9be16f7a289518b40d9f22be8a67",
+    "semantic_hash": ""
+  },
+  "sql/calendar_recurrence_v2_migration.sql": {
+    "mtime": 1791822223.7738194,
+    "ast_hash": "caaf9134cb195427a91c86c0eb7fab4c",
     "semantic_hash": ""
   }
 }

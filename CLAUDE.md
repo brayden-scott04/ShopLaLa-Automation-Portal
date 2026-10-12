@@ -448,6 +448,24 @@ tick done; only the owner (or an admin) can delete. Actions are named `createTra
 `updateTrackedTask` / `deleteTrackedTask` because `lib/actions/calendar.ts` already exports
 `createTask` etc. through the `lib/actions/index.ts` barrel.
 
+### Calendar recurrence (`/others/calendar`)
+
+A task is one `calendar_tasks` row; recurring ones are expanded client-side by `expandTask()` in
+`lib/calendar-recurrence.ts` (no stored occurrences). DDL for the columns below:
+`sql/calendar_recurrence_migration.sql` and `sql/calendar_recurrence_v2_migration.sql`, run by hand.
+
+- **Monthly "nth weekday"**: `repeat_month_week` (1-4, `-1` = last) + `repeat_month_weekday`
+  (0=Mon..6=Sun). Both null = repeat on the anchor's day-of-month (the original behaviour).
+- **`calendar_task_exceptions`**: one row per edited/removed occurrence, PK `(task_id, occurrence_date)`.
+  `is_deleted` hides that day. Null `title`/`notes` inherit from the series (`notes = ''` clears them);
+  `start_time`/`end_time` only apply when `time_overridden` is true, so null can mean all-day.
+  `updateOccurrence` / `resetOccurrence` / `deleteOccurrences` in `lib/actions/calendar.ts` own the writes.
+- **Edit scope**: opening an occurrence of a repeating task defaults to "this day only" (title, notes and
+  times); ticking "Apply to all occurrences" edits the series row via `updateTask`.
+- **Delete scope**: every delete goes through `DeleteScopeDialog`. Repeating tasks offer this occurrence
+  (exception row), this and following (sets `repeat_until` to the day before; deletes the whole row if
+  nothing would remain), or all (`deleteTask`).
+
 ### FBA Fee Tracker tables
 
 These back `/tools/fba-fee-tracker`, which catches Amazon re-measuring a SKU into a bigger size tier (e.g. large standard at about $5/unit becoming bulky at about $20/unit). It also compares Amazon's fee with the fee our own dimensions should cost. US only. The DDL is in `sql/fba_fee_tracker_migration.sql` and is run by hand.

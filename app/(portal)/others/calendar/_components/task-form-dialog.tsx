@@ -15,20 +15,30 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Trash2 } from "lucide-react";
 import {
   TASK_COLORS,
   DEFAULT_TASK_COLOR,
+  MONTH_WEEK_OPTIONS,
   type TaskColorKey,
   type RepeatFreq,
   type RepeatRule,
 } from "@/lib/calendar-constants";
-import { getCalendarMembers, createTask, updateTask, copyTaskToDates } from "@/lib/actions/calendar";
+import {
+  getCalendarMembers,
+  createTask,
+  updateTask,
+  updateOccurrence,
+  resetOccurrence,
+  copyTaskToDates,
+} from "@/lib/actions/calendar";
 import type { CalendarSummary, CalendarTask } from "@/lib/actions/calendar";
-import { addDays } from "@/lib/calendar-date-utils";
-import { describeRecurrence, weekdayIndex } from "@/lib/calendar-recurrence";
+import { addDays, formatDayLabel } from "@/lib/calendar-date-utils";
+import { describeRecurrence, nthWeekOfMonth, weekdayIndex } from "@/lib/calendar-recurrence";
 import { cn } from "@/lib/utils";
 
 const WEEKDAY_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const WEEKDAY_FULL = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 export function TaskFormDialog({
   open,
@@ -38,6 +48,7 @@ export function TaskFormDialog({
   task,
   onClose,
   onSaved,
+  onDelete,
 }: {
   open: boolean;
   calendars: CalendarSummary[];
@@ -46,6 +57,8 @@ export function TaskFormDialog({
   task: CalendarTask | null;
   onClose: () => void;
   onSaved: () => void;
+  /** Called when the user asks to delete the task being edited; the parent shows the confirm. */
+  onDelete: (task: CalendarTask) => void;
 }) {
   const [calendarId, setCalendarId] = useState("");
   const [title, setTitle] = useState("");
@@ -64,6 +77,11 @@ export function TaskFormDialog({
   const [repeatWeekdays, setRepeatWeekdays] = useState<number[]>([]);
   const [hasRepeatEnd, setHasRepeatEnd] = useState(false);
   const [repeatUntil, setRepeatUntil] = useState("");
+  const [monthMode, setMonthMode] = useState<"day" | "nth">("day");
+  const [monthWeek, setMonthWeek] = useState(1);
+  const [monthWeekday, setMonthWeekday] = useState(0);
+  // Only meaningful when editing one occurrence of a recurring task: checked = edit the whole series.
+  const [applyToAll, setApplyToAll] = useState(false);
   const [copyOpen, setCopyOpen] = useState(false);
   const [copyDays, setCopyDays] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string | null>(null);
@@ -74,11 +92,16 @@ export function TaskFormDialog({
   const [wasOpen, setWasOpen] = useState(false);
 
   const isEdit = task !== null;
+  // Editing one dated occurrence of a repeating task, with "apply to all" unticked:
+  // only title/notes/times can change, and only for that date.
+  const isOccurrence = isEdit && !!task?.repeat && !!task?.occurrenceDate;
+  const occurrenceOnly = isOccurrence && !applyToAll;
 
   if (open !== wasOpen) {
     setWasOpen(open);
     if (open) {
       setError(null);
+      setApplyToAll(false);
       setAllDay(!task?.startTime);
       setStartTime(task?.startTime ?? "09:00");
       setEndTime(task?.endTime ?? "");
@@ -90,6 +113,11 @@ export function TaskFormDialog({
       setRepeatWeekdays(rule?.weekdays ?? []);
       setHasRepeatEnd(!!rule?.until);
       setRepeatUntil(rule?.until ?? "");
+      const seed = task?.seriesEventDate ?? task?.eventDate ?? defaultDate;
+      const hasNth = rule?.monthWeek != null && rule?.monthWeekday != null;
+      setMonthMode(hasNth ? "nth" : "day");
+      setMonthWeek(hasNth ? rule!.monthWeek! : seed ? nthWeekOfMonth(seed) : 1);
+      setMonthWeekday(hasNth ? rule!.monthWeekday! : seed ? weekdayIndex(seed) : 0);
       if (task) {
         // Occurrences of a recurring task carry shifted dates; edit the series' own.
         const seriesEvent = task.seriesEventDate ?? task.eventDate;
@@ -148,7 +176,21 @@ export function TaskFormDialog({
       interval: Math.max(1, Math.floor(repeatInterval) || 1),
       weekdays: repeatFreq === "weekly" && repeatWeekdays.length > 0 ? repeatWeekdays : null,
       until: hasRepeatEnd && repeatUntil ? repeatUntil : null,
+      monthWeek: repeatFreq === "monthly" && monthMode === "nth" ? monthWeek : null,
+      monthWeekday: repeatFreq === "monthly" && monthMode === "nth" ? monthWeekday : null,
     };
+  }
+
+  /** The "Nth weekday" pickers follow the date field, so the first occurrence is the picked date. */
+  function syncMonthPickerToDate(date: string) {
+    if (!date) return;
+    setMonthWeek(nthWeekOfMonth(date));
+    setMonthWeekday(weekdayIndex(date));
+  }
+
+  function handleEventDateChange(next: string) {
+    setEventDate(next);
+    if (repeatFreq === "monthly" && monthMode === "nth") syncMonthPickerToDate(next);
   }
 
   function toggleRepeatWeekday(day: number) {
@@ -184,6 +226,19 @@ export function TaskFormDialog({
     });
   }
 
+  function handleResetOccurrence() {
+    if (!task?.occurrenceDate) return;
+    setError(null);
+    startTransition(async () => {
+      const { error } = await resetOccurrence(task.id, task.occurrenceDate!);
+      if (error) {
+        setError(error);
+        return;
+      }
+      onSaved();
+    });
+  }
+
   function handleSave() {
     setError(null);
     if (!title.trim()) {
@@ -208,6 +263,24 @@ export function TaskFormDialog({
       setError("End time can't be before the start time");
       return;
     }
+
+    if (occurrenceOnly) {
+      startTransition(async () => {
+        const result = await updateOccurrence(task!.id, task!.occurrenceDate!, {
+          title,
+          notes,
+          startTime: allDay ? null : startTime,
+          endTime: allDay ? null : endTime || null,
+        });
+        if (result.error) {
+          setError(result.error);
+          return;
+        }
+        onSaved();
+      });
+      return;
+    }
+
     if (repeatFreq !== "none" && hasRepeatEnd && repeatUntil && repeatUntil < eventDate) {
       setError("Repeat end can't be before the start date");
       return;
@@ -256,6 +329,38 @@ export function TaskFormDialog({
           <DialogTitle>{isEdit ? "Edit task" : "Add a task"}</DialogTitle>
         </DialogHeader>
         <DialogBody className="space-y-4">
+          {isOccurrence && (
+            <div className="rounded-md border border-border bg-muted/40 p-3">
+              <label className="flex cursor-pointer items-start gap-2 text-sm font-medium">
+                <Checkbox
+                  className="mt-0.5"
+                  checked={applyToAll}
+                  onCheckedChange={() => setApplyToAll((v) => !v)}
+                />
+                <span>
+                  Apply to all occurrences
+                  <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
+                    {applyToAll
+                      ? "Changes update every day in this repeating series."
+                      : `Only changes ${formatDayLabel(task!.occurrenceDate!)}. Title, notes and time can be edited; tick the box to change anything else.`}
+                  </span>
+                </span>
+              </label>
+              {occurrenceOnly && task?.isException && (
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="mt-1 h-auto p-0 text-xs"
+                  onClick={handleResetOccurrence}
+                  disabled={isPending}
+                >
+                  Reset this day to the series
+                </Button>
+              )}
+            </div>
+          )}
+
           {!isEdit && calendars.length > 1 && (
             <div>
               <Label className="mb-1">Calendar</Label>
@@ -286,17 +391,26 @@ export function TaskFormDialog({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="mb-1">Date</Label>
-              <Input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+              <Input
+                type="date"
+                value={occurrenceOnly ? task!.occurrenceDate! : eventDate}
+                disabled={occurrenceOnly}
+                onChange={(e) => handleEventDateChange(e.target.value)}
+              />
             </div>
             <div>
               <label className="mb-1 flex items-center gap-2 text-sm font-medium">
-                <Checkbox checked={hasDueDate} onCheckedChange={() => setHasDueDate((v) => !v)} />
+                <Checkbox
+                  checked={hasDueDate}
+                  disabled={occurrenceOnly}
+                  onCheckedChange={() => setHasDueDate((v) => !v)}
+                />
                 Set a deadline
               </label>
               <Input
                 type="date"
-                value={dueDate}
-                disabled={!hasDueDate}
+                value={occurrenceOnly ? task!.dueDate ?? "" : dueDate}
+                disabled={!hasDueDate || occurrenceOnly}
                 min={eventDate}
                 onChange={(e) => setDueDate(e.target.value)}
               />
@@ -327,9 +441,11 @@ export function TaskFormDialog({
             <div className="flex items-center gap-2">
               <select
                 value={repeatFreq}
+                disabled={occurrenceOnly}
                 onChange={(e) => {
                   const next = e.target.value as RepeatFreq | "none";
                   setRepeatFreq(next);
+                  if (next === "monthly" && eventDate) syncMonthPickerToDate(eventDate);
                   if (next === "weekly" && repeatWeekdays.length === 0 && eventDate) {
                     setRepeatWeekdays([weekdayIndex(eventDate)]);
                   }
@@ -349,6 +465,7 @@ export function TaskFormDialog({
                     type="number"
                     min={1}
                     value={repeatInterval}
+                    disabled={occurrenceOnly}
                     onChange={(e) => setRepeatInterval(Number(e.target.value))}
                     className="w-16"
                   />
@@ -362,6 +479,7 @@ export function TaskFormDialog({
                     key={label}
                     type="button"
                     onClick={() => toggleRepeatWeekday(day)}
+                    disabled={occurrenceOnly}
                     className={cn(
                       "rounded-md border px-2 py-1 text-xs font-medium transition-colors",
                       repeatWeekdays.includes(day)
@@ -374,24 +492,75 @@ export function TaskFormDialog({
                 ))}
               </div>
             )}
+            {repeatFreq === "monthly" && (
+              <div className="space-y-2">
+                <select
+                  value={monthMode}
+                  disabled={occurrenceOnly}
+                  onChange={(e) => {
+                    const next = e.target.value as "day" | "nth";
+                    setMonthMode(next);
+                    if (next === "nth" && eventDate) syncMonthPickerToDate(eventDate);
+                  }}
+                  className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <option value="day">
+                    {`On day ${eventDate ? Number(eventDate.slice(8, 10)) : "…"} of the month`}
+                  </option>
+                  <option value="nth">On a specific weekday (e.g. first Monday)</option>
+                </select>
+                {monthMode === "nth" && (
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={monthWeek}
+                      disabled={occurrenceOnly}
+                      onChange={(e) => setMonthWeek(Number(e.target.value))}
+                      className="h-8 flex-1 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                    >
+                      {MONTH_WEEK_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={monthWeekday}
+                      disabled={occurrenceOnly}
+                      onChange={(e) => setMonthWeekday(Number(e.target.value))}
+                      className="h-8 flex-1 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                    >
+                      {WEEKDAY_FULL.map((label, day) => (
+                        <option key={label} value={day}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+            )}
             {repeatFreq !== "none" && (
               <>
                 <div className="flex items-center gap-2">
                   <label className="flex items-center gap-2 text-sm">
-                    <Checkbox checked={hasRepeatEnd} onCheckedChange={() => setHasRepeatEnd((v) => !v)} />
+                    <Checkbox
+                      checked={hasRepeatEnd}
+                      disabled={occurrenceOnly}
+                      onCheckedChange={() => setHasRepeatEnd((v) => !v)}
+                    />
                     Ends on
                   </label>
                   <Input
                     type="date"
                     value={repeatUntil}
-                    disabled={!hasRepeatEnd}
+                    disabled={!hasRepeatEnd || occurrenceOnly}
                     min={eventDate}
                     onChange={(e) => setRepeatUntil(e.target.value)}
                   />
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {describeRecurrence(buildRepeat(), eventDate)}
-                  {isEdit && task?.repeat ? " · Changes apply to the whole series." : ""}
+                  {isOccurrence && applyToAll ? " · Changes apply to the whole series." : ""}
                 </p>
               </>
             )}
@@ -448,8 +617,9 @@ export function TaskFormDialog({
                   type="button"
                   title={c.label}
                   onClick={() => setColor(c.key)}
+                  disabled={occurrenceOnly}
                   className={cn(
-                    "size-7 rounded-full transition-transform",
+                    "size-7 rounded-full transition-transform disabled:cursor-not-allowed disabled:opacity-40",
                     c.dot,
                     color === c.key ? "ring-2 ring-offset-2 ring-offset-background" : "opacity-70 hover:opacity-100"
                   )}
@@ -467,6 +637,7 @@ export function TaskFormDialog({
                   <label key={m.username} className="flex cursor-pointer items-center gap-2 text-sm">
                     <Checkbox
                       checked={assignees.has(m.username)}
+                      disabled={occurrenceOnly}
                       onCheckedChange={() => toggleAssignee(m.username)}
                     />
                     {m.label}
@@ -478,11 +649,25 @@ export function TaskFormDialog({
 
           {error && <p className="text-sm text-destructive">{error}</p>}
         </DialogBody>
-        <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
-          <Button onClick={handleSave} disabled={isPending}>
-            {isPending ? "Saving…" : isEdit ? "Save changes" : "Add task"}
-          </Button>
+        <DialogFooter className={isEdit ? "sm:justify-between" : undefined}>
+          {isEdit && (
+            <Button
+              type="button"
+              variant="outline"
+              className="text-destructive hover:text-destructive"
+              onClick={() => task && onDelete(task)}
+              disabled={isPending}
+            >
+              <Trash2 />
+              Delete
+            </Button>
+          )}
+          <div className="flex flex-col-reverse gap-2 sm:flex-row">
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+            <Button onClick={handleSave} disabled={isPending}>
+              {isPending ? "Saving…" : isEdit ? "Save changes" : "Add task"}
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

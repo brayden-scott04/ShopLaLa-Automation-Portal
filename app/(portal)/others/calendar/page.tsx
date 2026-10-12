@@ -11,7 +11,6 @@ import {
   deleteCalendar,
   getTasksForRange,
   getUpcomingTasks,
-  deleteTask,
   type CalendarSummary,
   type CalendarTask,
 } from "@/lib/actions/calendar";
@@ -39,6 +38,7 @@ import { DayView } from "./_components/day-view";
 import { YearView } from "./_components/year-view";
 import { DayTasksDialog } from "./_components/day-tasks-dialog";
 import { TaskFormDialog } from "./_components/task-form-dialog";
+import { DeleteScopeDialog } from "./_components/delete-scope-dialog";
 import { ManageAccessDialog } from "./_components/manage-access-dialog";
 import { NameCalendarDialog } from "./_components/name-calendar-dialog";
 
@@ -89,6 +89,7 @@ export default function CalendarPage() {
     task: null,
     date: "",
   });
+  const [deleteTarget, setDeleteTarget] = useState<CalendarTask | null>(null);
   const [newCalendarOpen, setNewCalendarOpen] = useState(false);
   const [renameTarget, setRenameTarget] = useState<CalendarSummary | null>(null);
   const [manageAccessTarget, setManageAccessTarget] = useState<CalendarSummary | null>(null);
@@ -226,13 +227,12 @@ export default function CalendarPage() {
     });
   }
 
+  // Both the day dialog's trash button and the edit form's Delete land here, so
+  // deleting always goes through the same this / following / all choice.
   function handleDeleteTask(task: CalendarTask) {
-    if (!window.confirm(`Delete "${task.title}"?`)) return;
-    startTransition(async () => {
-      await deleteTask(task.id);
-      setDayDialogDate(null);
-      refreshAfterMutation();
-    });
+    setDayDialogDate(null);
+    setTaskForm((f) => ({ ...f, open: false }));
+    setDeleteTarget(task);
   }
 
   return (
@@ -362,6 +362,16 @@ export default function CalendarPage() {
         onClose={() => setTaskForm((f) => ({ ...f, open: false }))}
         onSaved={() => {
           setTaskForm((f) => ({ ...f, open: false }));
+          refreshAfterMutation();
+        }}
+        onDelete={handleDeleteTask}
+      />
+
+      <DeleteScopeDialog
+        task={deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onDeleted={() => {
+          setDeleteTarget(null);
           refreshAfterMutation();
         }}
       />

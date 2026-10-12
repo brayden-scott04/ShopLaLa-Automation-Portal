@@ -10,13 +10,14 @@ import {
   type CalendarRole,
   type CalendarMemberRole,
   type RepeatRule,
+  type TaskException,
   CALENDAR_MEMBER_ROLES,
 } from "@/lib/calendar-constants";
 import { addDays, diffDays } from "@/lib/calendar-date-utils";
 import { expandTask } from "@/lib/calendar-recurrence";
 
 const TASK_COLUMNS =
-  "id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at, repeat_freq, repeat_interval, repeat_weekdays, repeat_until, start_time, end_time";
+  "id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at, repeat_freq, repeat_interval, repeat_weekdays, repeat_until, repeat_month_week, repeat_month_weekday, start_time, end_time";
 
 const MAX_NAME_LENGTH = 60;
 
@@ -55,6 +56,19 @@ export interface CalendarTask {
   /** On occurrences: the series' own anchor dates (what the edit form must show). */
   seriesEventDate?: string;
   seriesDueDate?: string | null;
+  /** On a series row: per-occurrence edits/removals keyed by occurrence date. */
+  exceptions?: Record<string, TaskException>;
+  /** On an occurrence: it carries edits that differ from the series. */
+  isException?: boolean;
+}
+
+export type DeleteScope = "this" | "following" | "all";
+
+export interface OccurrenceUpdate {
+  title: string;
+  notes: string | null;
+  startTime: string | null;
+  endTime: string | null;
 }
 
 export interface TaskInput {
@@ -108,18 +122,35 @@ function validateRepeat(repeat: RepeatRule | null | undefined, eventDate: string
     return "Invalid repeat weekdays";
   }
   if (repeat.until && repeat.until < eventDate) return "Repeat end can't be before the start date";
+  if (repeat.monthWeek != null || repeat.monthWeekday != null) {
+    if (repeat.freq !== "monthly") return "Nth-weekday only applies to monthly repeats";
+    if (repeat.monthWeek == null || ![1, 2, 3, 4, -1].includes(repeat.monthWeek)) return "Invalid week of month";
+    if (repeat.monthWeekday == null || !Number.isInteger(repeat.monthWeekday) || repeat.monthWeekday < 0 || repeat.monthWeekday > 6) {
+      return "Invalid weekday";
+    }
+  }
   return null;
 }
 
 function repeatColumns(repeat: RepeatRule | null | undefined) {
   if (!repeat) {
-    return { repeat_freq: null, repeat_interval: 1, repeat_weekdays: null, repeat_until: null };
+    return {
+      repeat_freq: null,
+      repeat_interval: 1,
+      repeat_weekdays: null,
+      repeat_until: null,
+      repeat_month_week: null,
+      repeat_month_weekday: null,
+    };
   }
+  const nth = repeat.freq === "monthly" && repeat.monthWeek != null && repeat.monthWeekday != null;
   return {
     repeat_freq: repeat.freq,
     repeat_interval: repeat.interval,
     repeat_weekdays: repeat.freq === "weekly" && repeat.weekdays?.length ? repeat.weekdays : null,
     repeat_until: repeat.until || null,
+    repeat_month_week: nth ? repeat.monthWeek : null,
+    repeat_month_weekday: nth ? repeat.monthWeekday : null,
   };
 }
 
@@ -225,6 +256,35 @@ async function loadAssignees(
   });
 
   return assigneesByTask;
+}
+
+/** Per-occurrence edits/removals for the given series, keyed by task id then occurrence date. */
+async function loadExceptions(
+  client: SupabaseServerClient,
+  taskIds: string[]
+): Promise<Map<string, Record<string, TaskException>>> {
+  const byTask = new Map<string, Record<string, TaskException>>();
+  if (taskIds.length === 0) return byTask;
+
+  const { data } = await client
+    .from("calendar_task_exceptions")
+    .select("task_id, occurrence_date, is_deleted, title, notes, time_overridden, start_time, end_time")
+    .in("task_id", taskIds);
+
+  (data ?? []).forEach((row) => {
+    const map = byTask.get(row.task_id) ?? {};
+    map[row.occurrence_date] = {
+      isDeleted: row.is_deleted,
+      title: row.title,
+      notes: row.notes,
+      timeOverridden: row.time_overridden,
+      startTime: row.start_time ? row.start_time.slice(0, 5) : null,
+      endTime: row.end_time ? row.end_time.slice(0, 5) : null,
+    };
+    byTask.set(row.task_id, map);
+  });
+
+  return byTask;
 }
 
 // ---- Calendars ----
@@ -530,6 +590,8 @@ function toCalendarTask(
     repeat_interval: number | null;
     repeat_weekdays: number[] | null;
     repeat_until: string | null;
+    repeat_month_week: number | null;
+    repeat_month_weekday: number | null;
     start_time: string | null;
     end_time: string | null;
   },
@@ -556,6 +618,8 @@ function toCalendarTask(
           interval: row.repeat_interval ?? 1,
           weekdays: row.repeat_weekdays,
           until: row.repeat_until,
+          monthWeek: row.repeat_month_week,
+          monthWeekday: row.repeat_month_weekday,
         }
       : null,
   };
@@ -585,10 +649,16 @@ export async function getTasksForRange(
 
   const rows = (tasks ?? []).filter((t) => !t.repeat_freq || !t.repeat_until || t.repeat_until >= startDate);
   const assigneesByTask = await loadAssignees(client, rows.map((t) => t.id));
-
-  const result = rows.map((t) =>
-    toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? [])
+  const exceptionsByTask = await loadExceptions(
+    client,
+    rows.filter((t) => t.repeat_freq).map((t) => t.id)
   );
+
+  const result = rows.map((t) => {
+    const task = toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? []);
+    const exceptions = exceptionsByTask.get(t.id);
+    return exceptions ? { ...task, exceptions } : task;
+  });
 
   return { data: result, error: null };
 }
@@ -624,8 +694,17 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
     (t) => t.created_by === session.username || (assigneesByTask.get(t.id) ?? []).includes(session.username)
   );
 
+  const exceptionsByTask = await loadExceptions(
+    client,
+    relevant.filter((t) => t.repeat_freq).map((t) => t.id)
+  );
+
   const result = relevant
-    .map((t) => toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? []))
+    .map((t) => {
+      const task = toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? []);
+      const exceptions = exceptionsByTask.get(t.id);
+      return exceptions ? { ...task, exceptions } : task;
+    })
     .flatMap((t) => expandTask(t, start, end))
     .filter((t) => (t.dueDate ?? t.eventDate) >= start && t.eventDate <= end);
 
@@ -877,6 +956,184 @@ export async function deleteTask(
   const service = createServiceClient();
   const { error } = await service.from("calendar_tasks").delete().eq("id", taskId);
   if (error) return { data: null, error: error.message };
+
+  return { data: { ok: true }, error: null };
+}
+
+/** Loads a recurring series and confirms `occurrenceDate` is one of its occurrences. */
+async function loadOccurrenceTarget(
+  client: SupabaseServerClient,
+  taskId: string,
+  occurrenceDate: string,
+  username: string
+) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(occurrenceDate)) return { error: "Invalid occurrence date" } as const;
+
+  const { data: row, error } = await client
+    .from("calendar_tasks")
+    .select(TASK_COLUMNS)
+    .eq("id", taskId)
+    .maybeSingle();
+  if (error) return { error: error.message } as const;
+  if (!row) return { error: "Task not found" } as const;
+  if (!row.repeat_freq) return { error: "This task doesn't repeat" } as const;
+
+  const access = await requireEditorAccess(client, row.calendar_id, username);
+  if ("error" in access) return { error: access.error } as const;
+
+  const series = toCalendarTask(row, "", []);
+  if (!expandTask(series, occurrenceDate, occurrenceDate).some((t) => t.occurrenceDate === occurrenceDate)) {
+    return { error: "That date isn't part of this repeating task" } as const;
+  }
+  return { row, series } as const;
+}
+
+/** Edits one occurrence of a recurring task without touching the rest of the series. */
+export async function updateOccurrence(
+  taskId: string,
+  occurrenceDate: string,
+  updates: OccurrenceUpdate
+): Promise<{ data: { ok: true } | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  const title = updates.title.trim();
+  if (!title) return { data: null, error: "Title is required" };
+
+  const client = await createClient();
+  const target = await loadOccurrenceTarget(client, taskId, occurrenceDate, session.username);
+  if (target.error !== undefined) return { data: null, error: target.error };
+  const { row } = target;
+
+  const timeError = validateTimes(
+    updates.startTime,
+    updates.endTime,
+    occurrenceDate,
+    row.due_date && row.due_date !== row.event_date ? row.due_date : null
+  );
+  if (timeError) return { data: null, error: timeError };
+
+  const startTime = updates.startTime || null;
+  const endTime = startTime ? updates.endTime || null : null;
+  const seriesStart = row.start_time ? row.start_time.slice(0, 5) : null;
+  const seriesEnd = row.end_time ? row.end_time.slice(0, 5) : null;
+  const seriesNotes = row.notes ?? "";
+  const nextNotes = updates.notes?.trim() ?? "";
+
+  const timeOverridden = startTime !== seriesStart || endTime !== seriesEnd;
+  const titleOverride = title !== row.title ? title : null;
+  const notesOverride = nextNotes !== seriesNotes ? nextNotes : null;
+
+  const service = createServiceClient();
+
+  // Nothing differs from the series: drop any previous edit instead of storing a no-op row.
+  if (!timeOverridden && titleOverride === null && notesOverride === null) {
+    const { error } = await service
+      .from("calendar_task_exceptions")
+      .delete()
+      .eq("task_id", taskId)
+      .eq("occurrence_date", occurrenceDate);
+    if (error) return { data: null, error: error.message };
+    return { data: { ok: true }, error: null };
+  }
+
+  const { error } = await service.from("calendar_task_exceptions").upsert(
+    {
+      task_id: taskId,
+      occurrence_date: occurrenceDate,
+      is_deleted: false,
+      title: titleOverride,
+      notes: notesOverride,
+      time_overridden: timeOverridden,
+      start_time: timeOverridden ? startTime : null,
+      end_time: timeOverridden ? endTime : null,
+    },
+    { onConflict: "task_id,occurrence_date" }
+  );
+  if (error) return { data: null, error: error.message };
+
+  return { data: { ok: true }, error: null };
+}
+
+/** Puts one occurrence back to the series' title, notes and times (also undoes a removal). */
+export async function resetOccurrence(
+  taskId: string,
+  occurrenceDate: string
+): Promise<{ data: { ok: true } | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  const client = await createClient();
+  const target = await loadOccurrenceTarget(client, taskId, occurrenceDate, session.username);
+  if (target.error !== undefined) return { data: null, error: target.error };
+
+  const service = createServiceClient();
+  const { error } = await service
+    .from("calendar_task_exceptions")
+    .delete()
+    .eq("task_id", taskId)
+    .eq("occurrence_date", occurrenceDate);
+  if (error) return { data: null, error: error.message };
+
+  return { data: { ok: true }, error: null };
+}
+
+/**
+ * Deletes part of a recurring series. `this` hides one occurrence, `following` ends
+ * the series the day before it, `all` removes the whole task.
+ */
+export async function deleteOccurrences(
+  taskId: string,
+  occurrenceDate: string,
+  scope: DeleteScope
+): Promise<{ data: { ok: true } | null; error: string | null }> {
+  if (scope === "all") return deleteTask(taskId);
+  if (scope !== "this" && scope !== "following") return { data: null, error: "Invalid delete scope" };
+
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  const client = await createClient();
+  const target = await loadOccurrenceTarget(client, taskId, occurrenceDate, session.username);
+  if (target.error !== undefined) return { data: null, error: target.error };
+
+  const service = createServiceClient();
+
+  if (scope === "this") {
+    const { error } = await service.from("calendar_task_exceptions").upsert(
+      {
+        task_id: taskId,
+        occurrence_date: occurrenceDate,
+        is_deleted: true,
+        title: null,
+        notes: null,
+        time_overridden: false,
+        start_time: null,
+        end_time: null,
+      },
+      { onConflict: "task_id,occurrence_date" }
+    );
+    if (error) return { data: null, error: error.message };
+    return { data: { ok: true }, error: null };
+  }
+
+  // "following": nothing left before this occurrence means the whole series goes.
+  const lastKept = addDays(occurrenceDate, -1);
+  if (lastKept < target.row.event_date) return deleteTask(taskId);
+
+  const { error: updateError } = await service
+    .from("calendar_tasks")
+    .update({ repeat_until: lastKept })
+    .eq("id", taskId);
+  if (updateError) return { data: null, error: updateError.message };
+
+  // Edits past the new end date can never show again; don't leave them behind.
+  const { error: cleanupError } = await service
+    .from("calendar_task_exceptions")
+    .delete()
+    .eq("task_id", taskId)
+    .gte("occurrence_date", occurrenceDate);
+  if (cleanupError) return { data: null, error: cleanupError.message };
 
   return { data: { ok: true }, error: null };
 }

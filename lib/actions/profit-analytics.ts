@@ -50,6 +50,13 @@ export interface ProfitTotals {
   revenue: number;
   sales_collected: number;
   refunds: number;
+  /**
+   * Revenue from rows that carry no sales_collected/refunds split (finances_backfill rows
+   * written before that split existed, pre-migration settlements). `sales_collected` and
+   * `refunds` are understated by roughly this amount, so the Collected tile flags itself
+   * when it is material instead of showing a figure that is quietly too low.
+   */
+  collected_gap_revenue: number;
   total_fees: number;
   fba_fees: number;
   referral_fees: number;
@@ -127,6 +134,7 @@ function emptyTotals(): ProfitTotals {
     revenue: 0,
     sales_collected: 0,
     refunds: 0,
+    collected_gap_revenue: 0,
     total_fees: 0,
     fba_fees: 0,
     referral_fees: 0,
@@ -141,6 +149,9 @@ function addInto(target: ProfitTotals, row: MetricRow, rate = 1) {
   target.revenue += num(row.revenue) * rate;
   target.sales_collected += num(row.sales_collected) * rate;
   target.refunds += num(row.refunds) * rate;
+  if (num(row.sales_collected) === 0 && num(row.revenue) !== 0) {
+    target.collected_gap_revenue += num(row.revenue) * rate;
+  }
   target.total_fees += num(row.total_fees) * rate;
   target.fba_fees += num(row.fba_fees) * rate;
   target.referral_fees += num(row.referral_fees) * rate;
@@ -157,6 +168,7 @@ function scaleTotals(totals: ProfitTotals, rate: number): ProfitTotals {
     revenue: totals.revenue * rate,
     sales_collected: totals.sales_collected * rate,
     refunds: totals.refunds * rate,
+    collected_gap_revenue: totals.collected_gap_revenue * rate,
     total_fees: totals.total_fees * rate,
     fba_fees: totals.fba_fees * rate,
     referral_fees: totals.referral_fees * rate,
@@ -171,6 +183,7 @@ function round2(totals: ProfitTotals): ProfitTotals {
     revenue: Math.round(totals.revenue * 100) / 100,
     sales_collected: Math.round(totals.sales_collected * 100) / 100,
     refunds: Math.round(totals.refunds * 100) / 100,
+    collected_gap_revenue: Math.round(totals.collected_gap_revenue * 100) / 100,
     total_fees: Math.round(totals.total_fees * 100) / 100,
     fba_fees: Math.round(totals.fba_fees * 100) / 100,
     referral_fees: Math.round(totals.referral_fees * 100) / 100,

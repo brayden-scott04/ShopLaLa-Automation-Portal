@@ -1,5 +1,5 @@
 import type { CalendarTask } from "@/lib/actions/calendar";
-import type { RepeatRule } from "@/lib/calendar-constants";
+import { MONTH_WEEK_OPTIONS, type RepeatRule } from "@/lib/calendar-constants";
 import { addDays, diffDays, fromDateKey, toDateKey } from "@/lib/calendar-date-utils";
 
 const MAX_ITERATIONS = 2000;
@@ -13,6 +13,28 @@ export function weekdayIndex(key: string): number {
 function clampedDate(year: number, month: number, day: number): string {
   const lastDay = new Date(year, month + 1, 0).getDate();
   return toDateKey(new Date(year, month, Math.min(day, lastDay)));
+}
+
+/**
+ * The `week`th (1-4) or last (-1) `weekday` (0=Mon..6=Sun) of a month, as a date key.
+ * `month` is 0-based.
+ */
+export function nthWeekdayOfMonth(year: number, month: number, week: number, weekday: number): string {
+  if (week > 0) {
+    const firstIdx = (new Date(year, month, 1).getDay() + 6) % 7;
+    const offset = (weekday - firstIdx + 7) % 7;
+    return toDateKey(new Date(year, month, 1 + offset + (week - 1) * 7));
+  }
+  const lastDate = new Date(year, month + 1, 0);
+  const lastIdx = (lastDate.getDay() + 6) % 7;
+  const offset = (lastIdx - weekday + 7) % 7;
+  return toDateKey(new Date(year, month, lastDate.getDate() - offset));
+}
+
+/** Which "Nth weekday of the month" a date is: weeks 1-4 by position; a 5th occurrence counts as "last". */
+export function nthWeekOfMonth(key: string): number {
+  const n = Math.ceil(fromDateKey(key).getDate() / 7);
+  return n >= 5 ? -1 : n;
 }
 
 /** Start dates of every occurrence of `rule` (anchored at `anchor`) that could touch [start, end]. */
@@ -46,9 +68,14 @@ function occurrenceStarts(anchor: string, rule: RepeatRule, span: number, start:
     const lower = fromDateKey(lowerBound);
     const monthsDiff = (lower.getFullYear() - anchorDate.getFullYear()) * 12 + lower.getMonth() - anchorDate.getMonth();
     const k0 = Math.max(0, Math.floor(monthsDiff / interval) - 1);
+    const nth = rule.monthWeek != null && rule.monthWeekday != null;
     for (let k = k0, i = 0; i < MAX_ITERATIONS; k++, i++) {
       const total = anchorDate.getMonth() + k * interval;
-      const d = clampedDate(anchorDate.getFullYear() + Math.floor(total / 12), ((total % 12) + 12) % 12, anchorDate.getDate());
+      const year = anchorDate.getFullYear() + Math.floor(total / 12);
+      const monthIdx = ((total % 12) + 12) % 12;
+      const d = nth
+        ? nthWeekdayOfMonth(year, monthIdx, rule.monthWeek!, rule.monthWeekday!)
+        : clampedDate(year, monthIdx, anchorDate.getDate());
       if (d > last) break;
       if (d >= anchor && d >= lowerBound) out.push(d);
     }
@@ -71,14 +98,30 @@ function occurrenceStarts(anchor: string, rule: RepeatRule, span: number, start:
 export function expandTask(task: CalendarTask, startKey: string, endKey: string): CalendarTask[] {
   if (!task.repeat) return [task];
   const span = task.dueDate ? diffDays(task.eventDate, task.dueDate) : 0;
-  return occurrenceStarts(task.eventDate, task.repeat, span, startKey, endKey).map((d) => ({
-    ...task,
-    eventDate: d,
-    dueDate: task.dueDate ? addDays(d, span) : null,
-    occurrenceDate: d,
-    seriesEventDate: task.eventDate,
-    seriesDueDate: task.dueDate,
-  }));
+  const out: CalendarTask[] = [];
+  for (const d of occurrenceStarts(task.eventDate, task.repeat, span, startKey, endKey)) {
+    const exception = task.exceptions?.[d];
+    if (exception?.isDeleted) continue;
+    const occurrence: CalendarTask = {
+      ...task,
+      eventDate: d,
+      dueDate: task.dueDate ? addDays(d, span) : null,
+      occurrenceDate: d,
+      seriesEventDate: task.eventDate,
+      seriesDueDate: task.dueDate,
+    };
+    if (exception) {
+      occurrence.isException = true;
+      if (exception.title) occurrence.title = exception.title;
+      if (exception.notes !== null) occurrence.notes = exception.notes || null;
+      if (exception.timeOverridden) {
+        occurrence.startTime = exception.startTime;
+        occurrence.endTime = exception.endTime;
+      }
+    }
+    out.push(occurrence);
+  }
+  return out;
 }
 
 export function occurrenceKey(task: CalendarTask): string {
@@ -96,8 +139,14 @@ export function describeRecurrence(repeat: RepeatRule | null, eventDate: string)
     );
     base = n === 1 ? `Every ${days.join(", ")}` : `Every ${n} weeks on ${days.join(", ")}`;
   } else if (repeat.freq === "monthly") {
-    const day = fromDateKey(eventDate).getDate();
-    base = n === 1 ? `Monthly on day ${day}` : `Every ${n} months on day ${day}`;
+    if (repeat.monthWeek != null && repeat.monthWeekday != null) {
+      const week = (MONTH_WEEK_OPTIONS.find((o) => o.value === repeat.monthWeek)?.label ?? "").toLowerCase();
+      const when = `the ${week} ${WEEKDAY_NAMES[repeat.monthWeekday]}`;
+      base = n === 1 ? `Monthly on ${when}` : `Every ${n} months on ${when}`;
+    } else {
+      const day = fromDateKey(eventDate).getDate();
+      base = n === 1 ? `Monthly on day ${day}` : `Every ${n} months on day ${day}`;
+    }
   } else {
     base = n === 1 ? "Every year" : `Every ${n} years`;
   }

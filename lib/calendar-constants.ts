@@ -33,12 +33,38 @@ export function colorFor(key: string): TaskColorOption {
 export const REPEAT_FREQS = ["daily", "weekly", "monthly", "yearly"] as const;
 export type RepeatFreq = (typeof REPEAT_FREQS)[number];
 
-/** Recurrence rule, anchored on a task's event date. `weekdays`: 0=Mon..6=Sun (weekly only). */
+/**
+ * Recurrence rule, anchored on a task's event date. `weekdays`: 0=Mon..6=Sun (weekly only).
+ * `monthWeek` (1-4, or -1 = last) + `monthWeekday` (0=Mon..6=Sun) make a monthly rule
+ * "the Nth <weekday>"; both null = same day-of-month as the anchor.
+ */
 export interface RepeatRule {
   freq: RepeatFreq;
   interval: number;
   weekdays: number[] | null;
   until: string | null;
+  monthWeek: number | null;
+  monthWeekday: number | null;
+}
+
+export const MONTH_WEEK_OPTIONS: { value: number; label: string }[] = [
+  { value: 1, label: "First" },
+  { value: 2, label: "Second" },
+  { value: 3, label: "Third" },
+  { value: 4, label: "Fourth" },
+  { value: -1, label: "Last" },
+];
+
+/** Edits to one occurrence of a recurring task. Null title/notes = inherit from the series. */
+export interface TaskException {
+  isDeleted: boolean;
+  title: string | null;
+  /** "" = notes cleared for this occurrence. */
+  notes: string | null;
+  /** When true, startTime/endTime replace the series' times (null start = all day). */
+  timeOverridden: boolean;
+  startTime: string | null;
+  endTime: string | null;
 }
 
 export const CALENDAR_MEMBER_ROLES =["editor", "viewer"] as const;
