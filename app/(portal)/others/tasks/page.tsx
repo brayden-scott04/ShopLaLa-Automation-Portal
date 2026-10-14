@@ -246,7 +246,7 @@ export default function TasksPage() {
             <table className="w-full text-sm">
               <thead className="border-b border-border bg-muted/40 text-left text-xs">
                 <tr>
-                  <th className="w-10 px-3 py-2" />
+                  <th className="w-14 px-3 py-2 font-medium text-muted-foreground">Done</th>
                   <th className="px-3 py-2">
                     {sortHeader("Priority", "priority")}
                   </th>
