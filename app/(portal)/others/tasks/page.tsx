@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { ArrowDown, ArrowUp, ListChecks, Pencil, Plus, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronUp,
+  ChevronsUp,
+  ListChecks,
+  Pencil,
+  Plus,
+  Trash2,
+  type LucideIcon,
+} from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,6 +41,23 @@ import {
 } from "@/lib/actions/tasks";
 import { getCurrentUser, getStaffDirectory } from "@/lib/actions/staff";
 import { PRIORITY_CLASSES, PRIORITY_LABELS } from "@/lib/tasks-constants";
+
+const PRIORITY_ICONS: Record<number, LucideIcon> = { 4: ChevronUp, 5: ChevronsUp };
+
+function PriorityPill({ priority }: { priority: number }) {
+  const Icon = PRIORITY_ICONS[priority];
+  return (
+    <span
+      className={cn(
+        "inline-flex h-7 items-center gap-1 whitespace-nowrap rounded-md px-2 text-xs",
+        PRIORITY_CLASSES[priority]
+      )}
+    >
+      {Icon && <Icon className="size-3.5" aria-hidden />}
+      {priority} · {PRIORITY_LABELS[priority]}
+    </span>
+  );
+}
 
 type SortKey = "priority" | "date" | "dueDate";
 type Scope = "all" | "mine" | "assigned";
@@ -226,6 +253,12 @@ export default function TasksPage() {
               <Checkbox checked={showDone} onCheckedChange={(c) => setShowDone(c === true)} />
               Show done
             </label>
+            <div className="hidden items-center gap-1.5 xl:flex" aria-label="Priority key">
+              <span className="text-xs text-muted-foreground">Priority:</span>
+              {[1, 2, 3, 4, 5].map((p) => (
+                <PriorityPill key={p} priority={p} />
+              ))}
+            </div>
           </div>
           <Button size="sm" onClick={openCreate}>
             <Plus /> New task
@@ -277,15 +310,8 @@ export default function TasksPage() {
                         />
                       </td>
                       <td className="px-3 py-2">
-                        <span
-                          className={cn(
-                            "inline-flex size-7 items-center justify-center rounded-md text-xs",
-                            PRIORITY_CLASSES[t.priority]
-                          )}
-                          title={PRIORITY_LABELS[t.priority]}
-                        >
-                          {t.priority}
-                        </span>
+                        <PriorityPill priority={t.priority} />
+
                       </td>
                       <td className={cn("px-3 py-2 font-medium", t.done && "line-through")}>{t.title}</td>
                       <td className="whitespace-nowrap px-3 py-2">{formatDate(t.date)}</td>
