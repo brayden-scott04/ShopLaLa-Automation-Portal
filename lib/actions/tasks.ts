@@ -1,8 +1,8 @@
-"use server";
+﻿"use server";
 
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
-import { MAX_TASK_TITLE_LENGTH, MAX_TASK_NOTES_LENGTH } from "@/lib/tasks-constants";
+import { MAX_TASK_TITLE_LENGTH, MAX_TASK_NOTES_LENGTH, MAX_TASK_UPDATE_LENGTH } from "@/lib/tasks-constants";
 
 export interface Task {
   id: string;
@@ -17,6 +17,13 @@ export interface Task {
   createdAt: string;
   canEdit: boolean;
   canDelete: boolean;
+}
+
+export interface TaskProgressUpdate {
+  id: string;
+  username: string;
+  body: string;
+  createdAt: string;
 }
 
 export interface TrackedTaskInput {
@@ -197,6 +204,47 @@ export async function setTaskDone(id: string, done: boolean): Promise<{ error: s
     .update({ done, updated_at: new Date().toISOString() })
     .eq("id", id);
   return { error: error?.message ?? null };
+}
+
+type TaskUpdateRow = { id: string; username: string; body: string; created_at: string };
+
+function toTaskUpdate(row: TaskUpdateRow): TaskProgressUpdate {
+  return { id: row.id, username: row.username, body: row.body, createdAt: row.created_at };
+}
+
+/** Newest first. Same visibility as the task itself. */
+export async function listTaskUpdates(taskId: string): Promise<{ data: TaskProgressUpdate[] | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  if (!(await loadVisible(taskId, session.username, session.role === "admin"))) return { data: null, error: "Task not found" };
+
+  const db = createServiceClient();
+  const { data, error } = await db
+    .from("task_updates")
+    .select("id, username, body, created_at")
+    .eq("task_id", taskId)
+    .order("created_at", { ascending: false });
+  if (error) return { data: null, error: error.message };
+  return { data: (data as TaskUpdateRow[]).map(toTaskUpdate), error: null };
+}
+
+/** Append-only: updates are never edited or deleted, and don't touch the task's notes. */
+export async function addTaskUpdate(taskId: string, body: string): Promise<{ data: TaskProgressUpdate | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  const text = body.trim();
+  if (!text) return { data: null, error: "Update is empty" };
+  if (text.length > MAX_TASK_UPDATE_LENGTH) return { data: null, error: `Update must be ${MAX_TASK_UPDATE_LENGTH} characters or fewer` };
+  if (!(await loadVisible(taskId, session.username, session.role === "admin"))) return { data: null, error: "Task not found" };
+
+  const db = createServiceClient();
+  const { data, error } = await db
+    .from("task_updates")
+    .insert({ task_id: taskId, username: session.username, body: text })
+    .select("id, username, body, created_at")
+    .single();
+  if (error || !data) return { data: null, error: error?.message ?? "Failed to add update" };
+  return { data: toTaskUpdate(data as TaskUpdateRow), error: null };
 }
 
 export async function deleteTrackedTask(id: string): Promise<{ error: string | null }> {

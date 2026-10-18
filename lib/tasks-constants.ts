@@ -1,5 +1,6 @@
 export const MAX_TASK_TITLE_LENGTH = 120;
 export const MAX_TASK_NOTES_LENGTH = 2000;
+export const MAX_TASK_UPDATE_LENGTH = 1000;
 
 export const PRIORITIES = [1, 2, 3, 4, 5] as const;
 

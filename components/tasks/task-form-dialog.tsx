@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { TaskUpdates } from "@/components/tasks/task-updates";
 import type { Task, TrackedTaskInput } from "@/lib/actions/tasks";
 import {
   MAX_TASK_TITLE_LENGTH,
@@ -146,6 +147,8 @@ function TaskFormInner({
               maxLength={MAX_TASK_NOTES_LENGTH}
             />
           </div>
+
+          {task && <TaskUpdates taskId={task.id} />}
 
           {error && <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
         </DialogBody>
