@@ -313,7 +313,19 @@ export default function TasksPage() {
                         <PriorityPill priority={t.priority} />
 
                       </td>
-                      <td className={cn("px-3 py-2 font-medium", t.done && "line-through")}>{t.title}</td>
+                      <td className={cn("px-3 py-2 font-medium", t.done && "line-through")}>
+                        {t.canEdit ? (
+                          <button
+                            type="button"
+                            onClick={() => openEdit(t)}
+                            className="text-left hover:underline focus-visible:underline focus-visible:outline-none"
+                          >
+                            {t.title}
+                          </button>
+                        ) : (
+                          t.title
+                        )}
+                      </td>
                       <td className="whitespace-nowrap px-3 py-2">{formatDate(t.date)}</td>
                       <td className={cn("whitespace-nowrap px-3 py-2", overdue && "font-medium text-red-600 dark:text-red-400")}>
                         {formatDate(t.dueDate)}
