@@ -28,6 +28,13 @@ interface TaskFormDialogProps {
   onSave: (input: TrackedTaskInput) => void;
 }
 
+/** Today's date as YYYY-MM-DD in the browser's timezone (not UTC, which would be yesterday before 08:00 SGT). */
+function todayLocal(): string {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
 export function TaskFormDialog(props: TaskFormDialogProps) {
   // Remount the form on every open so its state re-initializes from `task`.
   return props.open ? <TaskFormInner key={props.task?.id ?? "new"} {...props} /> : null;
@@ -45,7 +52,8 @@ function TaskFormInner({
 }: TaskFormDialogProps) {
   const [title, setTitle] = useState(task?.title ?? "");
   const [notes, setNotes] = useState(task?.notes ?? "");
-  const [date, setDate] = useState(task?.date ?? "");
+  // New tasks default to today (local date); existing tasks keep whatever they have, even if blank.
+  const [date, setDate] = useState(task ? (task.date ?? "") : todayLocal());
   const [dueDate, setDueDate] = useState(task?.dueDate ?? "");
   const [priority, setPriority] = useState(task?.priority ?? 3);
   const [assignees, setAssignees] = useState<string[]>(task?.assignees ?? [currentUser]);
