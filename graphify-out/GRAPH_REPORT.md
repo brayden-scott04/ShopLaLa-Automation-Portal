@@ -1,16 +1,16 @@
 # Graph Report - LaLaGreen-Automation-Portal  (2026-10-19)
 
 ## Corpus Check
-- 185 files · ~119,484 words
+- 185 files · ~119,537 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1264 nodes · 3742 edges · 56 communities (32 shown, 24 thin omitted)
+- 1264 nodes · 3742 edges · 57 communities (33 shown, 24 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.57)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8f527deb`
+- Built from commit: `cb012803`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -60,6 +60,7 @@
 - page-header.tsx
 - mail.ts
 - buildVideoBulk.ts
+- skeleton.tsx
 - fba-fee-tracker.ts
 - product-block.tsx
 - fba-fee-calculator.ts
@@ -97,7 +98,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (56 total, 24 thin omitted)
+## Communities (57 total, 24 thin omitted)
 
 ### Community 0 - "calendar.ts"
 Cohesion: 0.07
@@ -145,7 +146,7 @@ Nodes (17): analyzeBulkPriceImport(), ColumnDetectSchema, ColumnMapping, detectC
 
 ### Community 11 - "Sponsored Brands Bulk XLSX Builder"
 Cohesion: 0.09
-Nodes (32): Option, SearchableSelect(), CalendarSidebar(), NavLeaf(), Pin(), Avatar(), AvatarBadge(), AvatarFallback() (+24 more)
+Nodes (33): Option, SearchableSelect(), CalendarSidebar(), NavLeaf(), Pin(), Avatar(), AvatarBadge(), AvatarFallback() (+25 more)
 
 ### Community 23 - "LaLaGreen Automation Portal — Developer Guide"
 Cohesion: 0.07
@@ -160,16 +161,16 @@ Cohesion: 0.13
 Nodes (30): BrandLibrarySection(), distributeKeywords(), GenerateForm(), padBrandAsins(), readDraft(), shuffle(), AdsBulkGeneratorPage(), Step (+22 more)
 
 ### Community 26 - "chart.tsx"
-Cohesion: 0.10
-Nodes (22): AcknowledgedCell(), COLUMNS, formatDate(), formatDateTime(), notesTooltip(), PRIORITY_ICONS, PriorityPill(), Scope (+14 more)
+Cohesion: 0.08
+Nodes (32): Asset, Block, newBlock(), Preset, ProductBlock(), Theme, toLines(), AcknowledgedCell() (+24 more)
 
 ### Community 27 - "README.md"
 Cohesion: 0.50
 Nodes (3): Deploy on Vercel, Getting Started, Learn More
 
 ### Community 41 - "build.ts"
-Cohesion: 0.28
-Nodes (12): blockIssues(), BlockSummary, buildCampaigns(), buildName(), Campaign, campaignCountForBlock(), distributeKeywords(), shuffle() (+4 more)
+Cohesion: 0.23
+Nodes (14): blockIssues(), BlockSummary, buildCampaigns(), buildName(), Campaign, campaignCountForBlock(), distributeKeywords(), shuffle() (+6 more)
 
 ### Community 42 - "projects.ts"
 Cohesion: 0.17
@@ -191,13 +192,17 @@ Nodes (65): ComposeDialogProps, CompanyInboxPage(), formatDate(), MAIL_ACTIONS, 
 Cohesion: 0.17
 Nodes (20): addSkus(), ColumnDetectSchema, ColumnMapping, deleteSku(), detectColumnHeuristically(), detectColumnWithAi(), DetectedSkuSheet, detectStatusColumnHeuristically() (+12 more)
 
+### Community 47 - "skeleton.tsx"
+Cohesion: 0.27
+Nodes (4): ChatPanel(), markdownComponents, PageHeader(), Skeleton()
+
 ### Community 48 - "fba-fee-tracker.ts"
 Cohesion: 0.06
 Nodes (65): buildRows(), DimsDiff(), dimsText(), FbaFeeTrackerView(), Filter, money(), num(), pct() (+57 more)
 
 ### Community 49 - "product-block.tsx"
-Cohesion: 0.09
-Nodes (32): ActionResult, BrandLibraryItem, UPLOADABLE_COUNTRIES, UploadResponse, Asset, Block, Brand, newBlock() (+24 more)
+Cohesion: 0.15
+Nodes (16): ActionResult, BrandLibraryItem, UPLOADABLE_COUNTRIES, UploadResponse, AlertDialogTitle(), Badge(), badgeVariants, CardAction() (+8 more)
 
 ### Community 50 - "fba-fee-calculator.ts"
 Cohesion: 0.06
@@ -213,7 +218,7 @@ Nodes (24): GoalVsPerformanceLayout(), ProfitAnalyticsLayout(), AdvertisementsLa
 
 ### Community 57 - "page.tsx"
 Cohesion: 0.14
-Nodes (21): Block, BlockMode, STEPS, WizardStep, AssetsSection(), BrandsSection(), COUNTRIES, KeywordGarageSection() (+13 more)
+Nodes (20): Block, STEPS, WizardStep, AssetsSection(), BrandsSection(), COUNTRIES, KeywordGarageSection(), LoginForm() (+12 more)
 
 ### Community 62 - "sidebar-content.tsx"
 Cohesion: 0.26
@@ -229,7 +234,7 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `getSession()` connect `fba-fee-calculator.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `Sponsored Brands Upload - Campaign Data`, `PPC Schedule AI Import`, `product-block.tsx`, `monday.com Dashboards — Comprehensive Reference`, `projects.ts`, `utils.ts`, `page-header.tsx`, `mail.ts`, `buildVideoBulk.ts`, `fba-fee-tracker.ts`, `permissions.ts`, `sp-api.ts`, `projects.ts`, `sidebar-content.tsx`?**
   _High betweenness centrality (0.123) - this node is a cross-community bridge._
-- **Why does `cn()` connect `Sponsored Brands Bulk XLSX Builder` to `calendar.ts`, `PPC Top-Up Automation`, `tabs.tsx`, `page-header.tsx`, `mail.ts`, `fba-fee-tracker.ts`, `product-block.tsx`, `sp-api.ts`, `sidebar-content.tsx`, `page.tsx`, `chart.tsx`, `projects.ts`?**
+- **Why does `cn()` connect `Sponsored Brands Bulk XLSX Builder` to `calendar.ts`, `PPC Top-Up Automation`, `tabs.tsx`, `page-header.tsx`, `mail.ts`, `skeleton.tsx`, `fba-fee-tracker.ts`, `product-block.tsx`, `sp-api.ts`, `sidebar-content.tsx`, `page.tsx`, `chart.tsx`, `projects.ts`?**
   _High betweenness centrality (0.087) - this node is a cross-community bridge._
 - **Why does `createClient()` connect `fba-fee-calculator.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `Sponsored Brands Upload - Campaign Data`, `PPC Schedule AI Import`, `monday.com Dashboards — Comprehensive Reference`, `projects.ts`, `page-header.tsx`, `buildVideoBulk.ts`, `fba-fee-tracker.ts`, `permissions.ts`, `sp-api.ts`, `projects.ts`, `sidebar-content.tsx`?**
   _High betweenness centrality (0.072) - this node is a cross-community bridge._

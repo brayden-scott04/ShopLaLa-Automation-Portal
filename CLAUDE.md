@@ -6,6 +6,11 @@
 
 Internal automation portal for LaLaGreen. Staff log in and access automation tools — each tool has its own dedicated page with custom controls. The only shared UI is the header/sidebar.
 
+> **Never `git push` on your own.** The user pushes every change manually, so stop at a local
+> commit (or leave changes uncommitted if not asked to commit) unless they explicitly say to push
+> in that request. Pushing `main` deploys to production via Vercel, so this applies here and to the
+> sibling repos alike.
+
 ---
 
 ## Architecture

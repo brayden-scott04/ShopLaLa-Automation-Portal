@@ -60,7 +60,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_chat_page",
-      "community": 26,
+      "community": 47,
       "norm_label": "page.tsx"
     },
     {
@@ -70,7 +70,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_portal_chat_page_chatpage",
-      "community": 26,
+      "community": 47,
       "norm_label": "chatpage()"
     },
     {
@@ -520,7 +520,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_product_block_blockmode",
-      "community": 57,
+      "community": 25,
       "norm_label": "blockmode"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block",
-      "community": 49,
+      "community": 26,
       "norm_label": "product-block.tsx"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_brand",
-      "community": 49,
+      "community": 41,
       "norm_label": "brand"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_asset",
-      "community": 49,
+      "community": 26,
       "norm_label": "asset"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_theme",
-      "community": 49,
+      "community": 26,
       "norm_label": "theme"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_block",
-      "community": 49,
+      "community": 26,
       "norm_label": "block"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_preset",
-      "community": 49,
+      "community": 26,
       "norm_label": "preset"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_newblock",
-      "community": 49,
+      "community": 26,
       "norm_label": "newblock()"
     },
     {
@@ -1500,7 +1500,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_tolines",
-      "community": 49,
+      "community": 26,
       "norm_label": "tolines()"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_sectiontitle",
-      "community": 49,
+      "community": 26,
       "norm_label": "sectiontitle()"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_section",
-      "community": 49,
+      "community": 26,
       "norm_label": "section()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_productblock",
-      "community": 49,
+      "community": 26,
       "norm_label": "productblock()"
     },
     {
@@ -3230,7 +3230,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel",
-      "community": 26,
+      "community": 47,
       "norm_label": "chat-panel.tsx"
     },
     {
@@ -3240,7 +3240,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_markdowncomponents",
-      "community": 26,
+      "community": 47,
       "norm_label": "markdowncomponents"
     },
     {
@@ -3250,7 +3250,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_composer",
-      "community": 26,
+      "community": 47,
       "norm_label": "composer()"
     },
     {
@@ -3260,7 +3260,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_chatpanel",
-      "community": 26,
+      "community": 47,
       "norm_label": "chatpanel()"
     },
     {
@@ -3350,7 +3350,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_page_header",
-      "community": 26,
+      "community": 47,
       "norm_label": "page-header.tsx"
     },
     {
@@ -3360,7 +3360,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_page_header_pageheader",
-      "community": 26,
+      "community": 47,
       "norm_label": "pageheader()"
     },
     {
@@ -3720,7 +3720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_alert_dialog",
-      "community": 49,
+      "community": 26,
       "norm_label": "alert-dialog.tsx"
     },
     {
@@ -3730,7 +3730,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialog",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialog()"
     },
     {
@@ -3740,7 +3740,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogtrigger",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogtrigger()"
     },
     {
@@ -3750,7 +3750,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogportal",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogportal()"
     },
     {
@@ -3760,7 +3760,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogoverlay",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogoverlay()"
     },
     {
@@ -3770,7 +3770,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogcontent",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogcontent()"
     },
     {
@@ -3780,7 +3780,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogheader",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogheader()"
     },
     {
@@ -3790,7 +3790,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogfooter",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogfooter()"
     },
     {
@@ -3800,7 +3800,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogmedia",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogmedia()"
     },
     {
@@ -3830,7 +3830,7 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogaction",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogaction()"
     },
     {
@@ -3840,7 +3840,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogcancel",
-      "community": 49,
+      "community": 26,
       "norm_label": "alertdialogcancel()"
     },
     {
@@ -4030,7 +4030,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "components_ui_card_cardaction",
-      "community": 57,
+      "community": 49,
       "norm_label": "cardaction()"
     },
     {
@@ -4190,7 +4190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_checkbox",
-      "community": 49,
+      "community": 11,
       "norm_label": "checkbox.tsx"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_checkbox_checkbox",
-      "community": 49,
+      "community": 11,
       "norm_label": "checkbox()"
     },
     {
@@ -4550,7 +4550,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentedcontrol",
-      "community": 26,
+      "community": 57,
       "norm_label": "segmentedcontrol()"
     },
     {
@@ -4690,7 +4690,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_skeleton",
-      "community": 26,
+      "community": 47,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -4700,7 +4700,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_ui_skeleton_skeleton",
-      "community": 26,
+      "community": 47,
       "norm_label": "skeleton()"
     },
     {
@@ -10890,7 +10890,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_xlsx_assetid",
-      "community": 25,
+      "community": 41,
       "norm_label": "assetid.ts"
     },
     {
@@ -10900,7 +10900,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_xlsx_assetid_extractassetid",
-      "community": 25,
+      "community": 41,
       "norm_label": "extractassetid()"
     },
     {
@@ -12167,7 +12167,7 @@
       "label": "Architecture",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L11",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "claude_architecture",
       "community": 23,
@@ -12177,7 +12177,7 @@
       "label": "Auth System",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L54",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "claude_auth_system",
       "community": 23,
@@ -12187,7 +12187,7 @@
       "label": "How it works",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L56",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "claude_how_it_works",
       "community": 23,
@@ -12197,7 +12197,7 @@
       "label": "Public routes (no auth required)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L66",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "claude_public_routes_no_auth_required",
       "community": 23,
@@ -12207,7 +12207,7 @@
       "label": "Login flow",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L70",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "claude_login_flow",
       "community": 23,
@@ -12217,7 +12217,7 @@
       "label": "Adding a new staff member",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L77",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "claude_adding_a_new_staff_member",
       "community": 23,
@@ -12227,7 +12227,7 @@
       "label": "Reading the session server-side",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L89",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "claude_reading_the_session_server_side",
       "community": 23,
@@ -12237,7 +12237,7 @@
       "label": "Environment variables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L97",
+      "source_location": "L102",
       "_origin": "ast",
       "id": "claude_environment_variables",
       "community": 23,
@@ -12247,7 +12247,7 @@
       "label": "Amazon Advertising API (Sponsored Brands Upload \u2192 \"Upload to Amazon\")",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L106",
+      "source_location": "L111",
       "_origin": "ast",
       "id": "claude_amazon_advertising_api_sponsored_brands_upload_upload_to_amazon",
       "community": 23,
@@ -12257,7 +12257,7 @@
       "label": "Database (Supabase)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L134",
+      "source_location": "L139",
       "_origin": "ast",
       "id": "claude_database_supabase",
       "community": 23,
@@ -12267,7 +12267,7 @@
       "label": "`staff` table",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L138",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "claude_staff_table",
       "community": 23,
@@ -12277,7 +12277,7 @@
       "label": "PPC ACOS Top-Up tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L148",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "claude_ppc_acos_top_up_tables",
       "community": 23,
@@ -12287,7 +12287,7 @@
       "label": "Profit Analytics tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L305",
+      "source_location": "L310",
       "_origin": "ast",
       "id": "claude_profit_analytics_tables",
       "community": 23,
@@ -12297,7 +12297,7 @@
       "label": "Ads Bulk Generator tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L428",
+      "source_location": "L433",
       "_origin": "ast",
       "id": "claude_ads_bulk_generator_tables",
       "community": 23,
@@ -12307,7 +12307,7 @@
       "label": "Tasks tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L448",
+      "source_location": "L453",
       "_origin": "ast",
       "id": "claude_tasks_tables",
       "community": 23,
@@ -12317,7 +12317,7 @@
       "label": "Calendar recurrence (`/others/calendar`)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L462",
+      "source_location": "L467",
       "_origin": "ast",
       "id": "claude_calendar_recurrence_others_calendar",
       "community": 23,
@@ -12327,7 +12327,7 @@
       "label": "FBA Fee Tracker tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L480",
+      "source_location": "L485",
       "_origin": "ast",
       "id": "claude_fba_fee_tracker_tables",
       "community": 23,
@@ -12337,7 +12337,7 @@
       "label": "Supabase clients",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L509",
+      "source_location": "L514",
       "_origin": "ast",
       "id": "claude_supabase_clients",
       "community": 23,
@@ -12347,7 +12347,7 @@
       "label": "Server Actions",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L523",
+      "source_location": "L528",
       "_origin": "ast",
       "id": "claude_server_actions",
       "community": 23,
@@ -12357,7 +12357,7 @@
       "label": "Navigation & Adding a Page",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L553",
+      "source_location": "L558",
       "_origin": "ast",
       "id": "claude_navigation_adding_a_page",
       "community": 23,
@@ -12367,7 +12367,7 @@
       "label": "Adding a page to an existing group",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L584",
+      "source_location": "L589",
       "_origin": "ast",
       "id": "claude_adding_a_page_to_an_existing_group",
       "community": 23,
@@ -12377,7 +12377,7 @@
       "label": "Adding a Layer-1 group",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L597",
+      "source_location": "L602",
       "_origin": "ast",
       "id": "claude_adding_a_layer_1_group",
       "community": 23,
@@ -12387,7 +12387,7 @@
       "label": "Adding an API route",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L605",
+      "source_location": "L610",
       "_origin": "ast",
       "id": "claude_adding_an_api_route",
       "community": 23,
@@ -12397,7 +12397,7 @@
       "label": "Page Header Component",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L622",
+      "source_location": "L627",
       "_origin": "ast",
       "id": "claude_page_header_component",
       "community": 23,
@@ -12407,7 +12407,7 @@
       "label": "Key Conventions",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L640",
+      "source_location": "L645",
       "_origin": "ast",
       "id": "claude_key_conventions",
       "community": 23,
@@ -12417,7 +12417,7 @@
       "label": "Key File Reference",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L654",
+      "source_location": "L659",
       "_origin": "ast",
       "id": "claude_key_file_reference",
       "community": 23,
@@ -12427,7 +12427,7 @@
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L671",
+      "source_location": "L676",
       "_origin": "ast",
       "id": "claude_graphify",
       "community": 23,
@@ -52481,7 +52481,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L11",
+      "source_location": "L16",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_architecture",
@@ -52491,7 +52491,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L54",
+      "source_location": "L59",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_auth_system",
@@ -52501,7 +52501,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L134",
+      "source_location": "L139",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_database_supabase",
@@ -52511,7 +52511,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L671",
+      "source_location": "L676",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_graphify",
@@ -52521,7 +52521,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L640",
+      "source_location": "L645",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_key_conventions",
@@ -52531,7 +52531,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L654",
+      "source_location": "L659",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_key_file_reference",
@@ -52541,7 +52541,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L553",
+      "source_location": "L558",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_navigation_adding_a_page",
@@ -52551,7 +52551,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L622",
+      "source_location": "L627",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_page_header_component",
@@ -52571,7 +52571,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L523",
+      "source_location": "L528",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_server_actions",
@@ -52581,7 +52581,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L77",
+      "source_location": "L82",
       "weight": 1.0,
       "source": "claude_auth_system",
       "target": "claude_adding_a_new_staff_member",
@@ -52591,7 +52591,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L97",
+      "source_location": "L102",
       "weight": 1.0,
       "source": "claude_auth_system",
       "target": "claude_environment_variables",
@@ -52601,7 +52601,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L56",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "claude_auth_system",
       "target": "claude_how_it_works",
@@ -52611,7 +52611,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L70",
+      "source_location": "L75",
       "weight": 1.0,
       "source": "claude_auth_system",
       "target": "claude_login_flow",
@@ -52621,7 +52621,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L66",
+      "source_location": "L71",
       "weight": 1.0,
       "source": "claude_auth_system",
       "target": "claude_public_routes_no_auth_required",
@@ -52631,7 +52631,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L89",
+      "source_location": "L94",
       "weight": 1.0,
       "source": "claude_auth_system",
       "target": "claude_reading_the_session_server_side",
@@ -52641,7 +52641,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L106",
+      "source_location": "L111",
       "weight": 1.0,
       "source": "claude_environment_variables",
       "target": "claude_amazon_advertising_api_sponsored_brands_upload_upload_to_amazon",
@@ -52651,7 +52651,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L428",
+      "source_location": "L433",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_ads_bulk_generator_tables",
@@ -52661,7 +52661,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L462",
+      "source_location": "L467",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_calendar_recurrence_others_calendar",
@@ -52671,7 +52671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L480",
+      "source_location": "L485",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_fba_fee_tracker_tables",
@@ -52681,7 +52681,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L148",
+      "source_location": "L153",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_ppc_acos_top_up_tables",
@@ -52691,7 +52691,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L305",
+      "source_location": "L310",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_profit_analytics_tables",
@@ -52701,7 +52701,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L138",
+      "source_location": "L143",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_staff_table",
@@ -52711,7 +52711,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L509",
+      "source_location": "L514",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_supabase_clients",
@@ -52721,7 +52721,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L448",
+      "source_location": "L453",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_tasks_tables",
@@ -52731,7 +52731,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L597",
+      "source_location": "L602",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_a_layer_1_group",
@@ -52741,7 +52741,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L584",
+      "source_location": "L589",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_a_page_to_an_existing_group",
@@ -52751,7 +52751,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L605",
+      "source_location": "L610",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_an_api_route",
@@ -52789,5 +52789,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8f527debb293fd57f2c6e0aa65911a4f5c237d0f"
+  "built_at_commit": "cb012803d10f05759ec56d531f7e1c9435551186"
 }

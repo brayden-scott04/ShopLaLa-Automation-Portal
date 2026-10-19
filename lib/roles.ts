@@ -17,11 +17,11 @@ export type Role = "admin" | "moderator" | "user";
 
 export const ROLES: Role[] = ["admin", "moderator", "user"];
 
-/** Display labels. "Staff" is kept for the `user` role (matches the Team page). */
+/** Display labels for each role. */
 export const ROLE_LABELS: Record<Role, string> = {
   admin: "Admin",
   moderator: "Moderator",
-  user: "Staff",
+  user: "User",
 };
 
 /**
