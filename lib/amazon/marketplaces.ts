@@ -61,7 +61,7 @@ export const MARKETPLACES = {
   SA: { id: "A17E79C6D8DWNP", currency: "SAR", region: "EU", live: false, label: "Saudi Arabia" },
 
   // --- Far East ------------------------------------------------------------
-  AU: { id: "A39IBJ37TRP1C6", currency: "AUD", region: "FE", live: false, label: "Australia" },
+  AU: { id: "A39IBJ37TRP1C6", currency: "AUD", region: "FE", live: true,  label: "Australia" },
 } as const satisfies Record<string, Marketplace>;
 
 export type MarketplaceCode = keyof typeof MARKETPLACES;
