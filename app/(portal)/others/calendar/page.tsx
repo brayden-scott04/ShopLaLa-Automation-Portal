@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition, useCallback } from "react";
 import { CalendarDays } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
-import { calendar as calendarItem } from "@/lib/others";
+import { calendar as calendarItem } from "@/lib/nav";
 import {
   getMyCalendars,
   createCalendar,

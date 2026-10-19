@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { role, permissions } = await getMyPermissions();
-  if (!isAllowed(role, permissions, "tools", "sponsored-brands-upload")) {
+  if (!isAllowed(role, permissions, "marketOps", "sponsored-brands-upload")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

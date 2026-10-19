@@ -7,25 +7,19 @@ import {
   type Section,
   type PermissionSet,
   EMPTY_PERMISSIONS,
+  SECTIONS,
   toPermissionSet,
   isAllowed,
 } from "@/lib/roles";
-import { projects } from "@/lib/projects";
-import { tools } from "@/lib/tools";
-import { configurationItems } from "@/lib/configuration";
-import { communicationItems } from "@/lib/communications";
-import { salesItems } from "@/lib/sales";
-import { othersItems } from "@/lib/others";
+import { NAV_GROUPS } from "@/lib/nav";
 
-/** Every known item id per section — the universe an admin can grant from. */
-export const ALL_ITEM_IDS: Record<Section, string[]> = {
-  automations: projects.map((p) => p.id),
-  tools: tools.map((t) => t.id),
-  configuration: configurationItems.map((c) => c.id),
-  communications: communicationItems.map((c) => c.id),
-  sales: salesItems.map((s) => s.id),
-  others: othersItems.map((o) => o.id),
-};
+/** Every grantable item id per section — the universe an admin can grant from. */
+export const ALL_ITEM_IDS = Object.fromEntries(
+  NAV_GROUPS.map((group) => [
+    group.section,
+    group.items.filter((item) => !item.ungated).map((item) => item.id),
+  ])
+) as PermissionSet;
 
 /**
  * Strips any ids that don't correspond to a real item, so a stale or forged
@@ -33,18 +27,11 @@ export const ALL_ITEM_IDS: Record<Section, string[]> = {
  */
 export function sanitizePermissions(input: unknown): PermissionSet {
   const parsed = toPermissionSet(input);
-  return {
-    automations: parsed.automations.filter((id) => ALL_ITEM_IDS.automations.includes(id)),
-    tools: parsed.tools.filter((id) => ALL_ITEM_IDS.tools.includes(id)),
-    configuration: parsed.configuration.filter((id) =>
-      ALL_ITEM_IDS.configuration.includes(id)
-    ),
-    communications: parsed.communications.filter((id) =>
-      ALL_ITEM_IDS.communications.includes(id)
-    ),
-    sales: parsed.sales.filter((id) => ALL_ITEM_IDS.sales.includes(id)),
-    others: parsed.others.filter((id) => ALL_ITEM_IDS.others.includes(id)),
-  };
+  const result = { ...EMPTY_PERMISSIONS };
+  for (const section of SECTIONS) {
+    result[section] = parsed[section].filter((id) => ALL_ITEM_IDS[section].includes(id));
+  }
+  return result;
 }
 
 /**

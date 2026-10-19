@@ -21,11 +21,14 @@ automation-portal/
 │   │   └── logout/route.ts                 # POST /api/auth/logout
 │   └── (portal)/                           # All protected pages live here
 │       ├── layout.tsx                      # Sidebar + topbar shell
-│       ├── dashboard/page.tsx              # Project grid (auto-populated)
+│       ├── dashboard/page.tsx              # Home: "Your access" grid (auto-populated)
+│       ├── dashboard/<id>/                 # Dashboard group pages (e.g. profit-analytics)
+│       ├── supply-chain/<id>/              # Supply Chain group pages
+│       ├── market-ops/<id>/                # Market Ops pages; market-ops/automations/<id>/ for its Automations fold
+│       ├── visual/<id>/                    # Visual group pages
+│       ├── others/<id>/                    # Others group pages (calendar, tasks, company-inbox, …)
 │       ├── team/page.tsx                   # Read-only staff directory (username + role), visible to all staff
-│       ├── admin/users/page.tsx            # Create staff accounts + manage roles (admin only)
-│       └── automations/
-│           └── ppc-top-up/page.tsx
+│       └── admin/users/page.tsx            # Create staff accounts + manage roles (admin only)
 ├── components/
 │   ├── ui/                                 # Base UI (Button, Input, Card, Skeleton, etc.)
 │   ├── page-header.tsx                     # Shared page header for every automation
@@ -34,7 +37,7 @@ automation-portal/
 │   ├── login-form.tsx
 │   └── user-menu.tsx
 ├── lib/
-│   ├── projects.ts                         # Single source of truth for all projects
+│   ├── nav.ts                              # Single source of truth for sidebar groups + pages
 │   ├── session.ts                          # JWT sign/verify/cookie helpers
 │   ├── supabase/
 │   │   ├── client.ts                       # Browser Supabase client
@@ -293,7 +296,7 @@ Key semantics, different from the daily-cap widget:
 
 ### Profit Analytics tables
 
-Backs `/sales/profit-analytics` (Phase 1: revenue / Amazon fees / gross margin per
+Backs `/dashboard/profit-analytics` (Phase 1: revenue / Amazon fees / gross margin per
 marketplace). **The portal only ever reads these** — every row is written by the sibling
 `LaLaGreen-Daily-Report` repo's `reportlib/profit_sync.py`, on its own ~2-hourly n8n schedule
 (`n8n/profit-sync.json` → `POST /sync-profit`), which is separate from that repo's unchanged
@@ -416,7 +419,7 @@ period's figures are not trustworthy (surfaced as an amber banner on the page).
 
 ### Ads Bulk Generator tables
 
-Backs `/tools/ads-bulk-generator` (Tools → "Ads Bulk Generator") (ported from the standalone `pdp-bulk-generator` app). It
+Backs `/market-ops/automations/ads-bulk-generator` (Market Ops → Automations → "Ads Bulk Generator") (ported from the standalone `pdp-bulk-generator` app). It
 **shares** `bulk_campaign_brands` / `_video_assets` / `_keyword_themes` with Sponsored Brands
 Upload (the Library cards for those live in `components/bulk-campaign/library-sections.tsx`,
 used by both pages) and adds three tables of its own — DDL in
@@ -468,7 +471,7 @@ A task is one `calendar_tasks` row; recurring ones are expanded client-side by `
 
 ### FBA Fee Tracker tables
 
-These back `/tools/fba-fee-tracker`, which catches Amazon re-measuring a SKU into a bigger size tier (e.g. large standard at about $5/unit becoming bulky at about $20/unit). It also compares Amazon's fee with the fee our own dimensions should cost. US only. The DDL is in `sql/fba_fee_tracker_migration.sql` and is run by hand.
+These back `/market-ops/automations/fba-fee-tracker`, which catches Amazon re-measuring a SKU into a bigger size tier (e.g. large standard at about $5/unit becoming bulky at about $20/unit). It also compares Amazon's fee with the fee our own dimensions should cost. US only. The DDL is in `sql/fba_fee_tracker_migration.sql` and is run by hand.
 
 **The daily data comes from the sibling `LaLaGreen-Daily-Report` repo.**
 - `reportlib/fba_fee_sync.py` pulls `GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA`.
@@ -539,63 +542,59 @@ Admin-only actions (`listStaff`, `createStaffMember`, `updateStaffMember`, `rese
 
 ---
 
-## Adding a New Project
+## Navigation & Adding a Page
 
-Every project needs two things: a definition in `lib/projects.ts` and a page file.
+The sidebar has a fixed top block (Dashboard, Chat, Team), then five **Layer-1 groups**, each
+with its **Layer-2 pages**. Everything comes from one registry, `lib/nav.ts` (`NAV_GROUPS`), which
+also feeds the dashboard's "Your access" grid, the Manage Users access editor, the AI chat's
+`list_portal_pages` tool, and the permission universe (`ALL_ITEM_IDS` in `lib/permissions.ts`).
 
-### Step 1 — Define the project (`lib/projects.ts`)
+| Layer 1 (permission `Section` / route prefix) | Layer 2 pages |
+|---|---|
+| Dashboard (`dashboard` / `/dashboard`) | Goal vs Performance\*, Profit Analytics |
+| Supply Chain (`supplyChain` / `/supply-chain`) | Partners\*, Sourcing\*, Orders\*, Shipments\*, Automations\* |
+| Market Ops (`marketOps` / `/market-ops`) | Products\*, Inventory\*, Advertisements\*, Master List, and an **Automations** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker |
+| Visual (`visual` / `/visual`) | Listing Score\* |
+| Others (`others` / `/others`) | Calendar, Finance\*, Tasks, Company Inbox |
 
-```typescript
-import { BarChart3 } from "lucide-react"; // pick any lucide icon
+\* = placeholder page (`components/placeholder-page.tsx`), still grantable per user like any other.
 
-export const salesMetrics = defineProject({
-  name: "Sales Metrics",
-  description: "Real-time sales performance dashboard",
-  icon: BarChart3,
-});
+The sidebar renders **no icons** for Layer 1/2. Each group header is a coloured "pin" whose
+colour is a CSS var (`--nav-dashboard`, `--nav-supply-chain`, `--nav-market-ops`, `--nav-visual`,
+`--nav-others` in `app/globals.css`, with dark-mode variants), referenced by `NavGroup.colorVar`.
+Groups and the Automations fold are collapsible, open by default, with fold state in
+`localStorage` (`sidebar-folded`). Items still carry an `icon` — it's used by `<PageHeader>` and
+the dashboard cards.
 
-// Add it to the projects array — this auto-updates sidebar + dashboard
-export const projects: AutomationProject[] = [
-  ppcAdUpdates,
-  inventoryReports,
-  salesMetrics, // <-- add here
-];
-```
+> **URLs moved on 2026-10-19** (was `/sales/*`, `/automations/*`, `/tools/*`, `/configuration/*`,
+> `/communications/*`). `next.config.ts` `redirects()` keeps the old paths working. API routes
+> (`/api/tools/...`) did **not** move. Permission sections were renamed the same day;
+> `toPermissionSet()` in `lib/roles.ts` folds legacy keys (`sales→dashboard`,
+> `automations|tools|configuration→marketOps`, `communications→others`) on every read, and
+> `sql/nav_restructure_migration.sql` optionally rewrites stored rows. Item ids didn't change.
 
-The `id` and `href` are auto-derived from the name (e.g. `"Sales Metrics"` → `id: "sales-metrics"`, `href: "/automations/sales-metrics"`).
+### Adding a page to an existing group
 
-### Step 2 — Create the page
+1. In `lib/nav.ts`, add a `defineNavItem({ name, description, icon, section, subgroup? })` export
+   and put it in its group's `items`. `id` is slugified from the name; `href` is
+   `<group prefix>[/<subgroup>]/<id>`.
+2. Create `app/(portal)/<prefix>/[<subgroup>/]<id>/page.tsx` — `<PageHeader>` then whatever custom
+   content (or `<PlaceholderPage item={…} />` for now).
+3. Create a sibling `layout.tsx` calling `assertItemAccess("<section>", "<id>")` — that guard is
+   what stops a direct URL visit, not the hidden sidebar link. Any API route / server action for
+   the page should check `isAllowed(role, permissions, "<section>", "<id>")` the same way.
 
-Create `app/(portal)/automations/sales-metrics/page.tsx`:
+That's it — sidebar, dashboard, access editor and permission sanitising all pick it up.
 
-```typescript
-"use client"; // only needed if the page has interactivity
+### Adding a Layer-1 group
 
-import { PageHeader } from "@/components/page-header";
-import { salesMetrics } from "@/lib/projects";
+Add the key to `Section` / `SECTIONS` / `EMPTY_PERMISSIONS` and the empty result in
+`toPermissionSet()` (`lib/roles.ts`), its route prefix to `BASE_PATHS` and a `NavGroup` to
+`NAV_GROUPS` (`lib/nav.ts`), and a `--nav-<name>` colour in both `:root` and `.dark` in
+`app/globals.css`. No DB migration is needed: `staff.permissions` is untyped jsonb and missing keys
+default to `[]`.
 
-export default function SalesMetricsPage() {
-  return (
-    <>
-      <PageHeader
-        icon={salesMetrics.icon}
-        title={salesMetrics.name}
-        description={salesMetrics.description}
-      />
-      {/* Everything below here is completely custom — no shared layout constraints */}
-      <div className="p-6 md:p-8">
-        {/* your controls, tables, forms, etc. */}
-      </div>
-    </>
-  );
-}
-```
-
-That's it. The project now appears in the sidebar and dashboard automatically.
-
-### Step 3 — Add an API route (if needed)
-
-Create `app/api/your-route/route.ts`:
+### Adding an API route
 
 ```typescript
 import { NextResponse } from "next/server";
@@ -609,43 +608,6 @@ export async function GET() {
   return NextResponse.json({ data: [] });
 }
 ```
-
----
-
-## Adding a New Tool
-
-The sidebar and dashboard also have a separate "Tools" section, below Automations, sourced from `lib/tools.ts`. It follows the exact same pattern as `lib/projects.ts`, just under a different heading and route prefix. The "Tools" heading always renders (like "Automations"), even when the `tools` array is empty.
-
-### Step 1 — Define the tool (`lib/tools.ts`)
-
-```typescript
-import { Wrench } from "lucide-react"; // pick any lucide icon
-
-export const labelPrinter = defineTool({
-  name: "Label Printer",
-  description: "Print shipping labels in bulk",
-  icon: Wrench,
-});
-
-// Add it to the tools array — this auto-updates sidebar + dashboard
-export const tools: AutomationTool[] = [
-  labelPrinter, // <-- add here
-];
-```
-
-The `id` and `href` are auto-derived from the name (e.g. `"Label Printer"` → `id: "label-printer"`, `href: "/tools/label-printer"`).
-
-### Step 2 — Create the page
-
-Create `app/(portal)/tools/label-printer/page.tsx` following the same `<PageHeader>` pattern as an automation page (see "Adding a New Project" above) — just import from `@/lib/tools` instead of `@/lib/projects`.
-
----
-
-## Adding a New Sales Item
-
-A third nav category, "Sales", sits **above** Automations in both the sidebar and dashboard, sourced from `lib/sales.ts`. Same pattern again: `SalesItem` / `defineSalesItem()` / `salesItems` array, route prefix `/sales/<id>`, guarded per-page via `assertItemAccess("sales", "<id>")` in that page's own `layout.tsx`. Currently holds only Profit Analytics (`app/(portal)/sales/profit-analytics/`). Follow the same two-step pattern as "Adding a New Tool" above, importing from `@/lib/sales` instead.
-
-Adding a category is bigger than adding an item within one: it also means a new entry in `Section` (`lib/roles.ts`), `PermissionSet`/`EMPTY_PERMISSIONS`/`toPermissionSet()` (`lib/roles.ts`), `ALL_ITEM_IDS`/`sanitizePermissions()` (`lib/permissions.ts`), the sidebar's per-section render block (`components/sidebar-content.tsx`), the dashboard's `accessGroups` array (`app/(portal)/dashboard/page.tsx`), and the admin permissions editor's `ACCESS_SECTIONS` (`app/(portal)/admin/users/page.tsx`) — all touched in lockstep when Sales was added. No DB migration is needed for a new section: `staff.permissions` is untyped jsonb and `toPermissionSet()` defaults any missing key to `[]`.
 
 ---
 
@@ -685,9 +647,8 @@ Below `<PageHeader>`, each page is entirely custom — there are no shared layou
 
 | File | Purpose |
 |---|---|
-| `lib/projects.ts` | Add/edit automation projects |
-| `lib/tools.ts` | Add/edit tools (separate "Tools" nav section) |
-| `lib/sales.ts` | Add/edit sales items (separate "Sales" nav section, above Automations) |
+| `lib/nav.ts` | Add/edit sidebar groups and pages (`NAV_GROUPS`) |
+| `components/placeholder-page.tsx` | "Coming soon" body for not-yet-built pages |
 | `lib/session.ts` | JWT sign/verify/cookie helpers |
 | `lib/supabase/server.ts` | Supabase client for server-side code |
 | `lib/supabase/client.ts` | Supabase client for browser code |
@@ -696,7 +657,7 @@ Below `<PageHeader>`, each page is entirely custom — there are no shared layou
 | `app/(portal)/layout.tsx` | Sidebar + topbar shell |
 | `app/(portal)/admin/users/page.tsx` | Create staff accounts and manage roles |
 | `app/(portal)/team/page.tsx` | Read-only staff directory (visible to all staff) |
-| `components/page-header.tsx` | Shared header for automation pages |
+| `components/page-header.tsx` | Shared header for every page |
 | `.env.local` | All secrets and env config |
 
 ## graphify

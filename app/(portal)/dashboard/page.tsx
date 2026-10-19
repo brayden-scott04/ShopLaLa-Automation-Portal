@@ -1,10 +1,5 @@
 import Link from "next/link";
-import { ppcTopUp, projects } from "@/lib/projects";
-import { tools } from "@/lib/tools";
-import { configurationItems } from "@/lib/configuration";
-import { communicationItems } from "@/lib/communications";
-import { salesItems } from "@/lib/sales";
-import { othersItems } from "@/lib/others";
+import { NAV_GROUPS, ppcTopUp } from "@/lib/nav";
 import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { filterItems, isAllowed } from "@/lib/roles";
@@ -16,17 +11,14 @@ export default async function DashboardPage() {
 
   const { role, permissions } = await getMyPermissions();
 
-  const accessGroups = [
-    { label: "Sales", group: "Sales", items: filterItems("sales", salesItems, role, permissions) },
-    { label: "Automations", group: "Automation", items: filterItems("automations", projects, role, permissions) },
-    { label: "Tools", group: "Tool", items: filterItems("tools", tools, role, permissions) },
-    { label: "Configuration", group: "Configuration", items: filterItems("configuration", configurationItems, role, permissions) },
-    { label: "Communications", group: "Communication", items: filterItems("communications", communicationItems, role, permissions) },
-    { label: "Others", group: "Other", items: filterItems("others", othersItems, role, permissions) },
-  ].filter((group) => group.items.length > 0);
+  const accessGroups = NAV_GROUPS.map((group) => ({
+    group: group.label,
+    colorVar: group.colorVar,
+    items: filterItems(group.section, group.items, role, permissions).filter((item) => !item.ungated),
+  })).filter((group) => group.items.length > 0);
 
   const hasAnyAccess = accessGroups.length > 0;
-  const canSeePpc = isAllowed(role, permissions, "automations", ppcTopUp.id);
+  const canSeePpc = isAllowed(role, permissions, ppcTopUp.section, ppcTopUp.id);
 
   return (
     <div className="p-6 md:p-8">
@@ -52,7 +44,9 @@ export default async function DashboardPage() {
         {hasAnyAccess ? (
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {accessGroups
-              .flatMap((g) => g.items.map((item) => ({ ...item, group: g.group })))
+              .flatMap((g) =>
+                g.items.map((item) => ({ ...item, group: g.group, colorVar: g.colorVar }))
+              )
               .map((item) => {
                 const Icon = item.icon;
                 return (
@@ -64,7 +58,12 @@ export default async function DashboardPage() {
                     <Icon className="size-5 shrink-0 text-muted-foreground" />
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium text-foreground">{item.name}</span>
-                      <span className="block text-[11px] uppercase tracking-wide text-muted-foreground">
+                      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-muted-foreground">
+                        <span
+                          aria-hidden
+                          className="size-1.5 rounded-[2px]"
+                          style={{ backgroundColor: `var(${item.colorVar})` }}
+                        />
                         {item.group}
                       </span>
                     </span>

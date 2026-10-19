@@ -50,7 +50,7 @@ async function requirePlanAccess() {
   if (error) return { session: null, error };
 
   const { role, permissions } = await getMyPermissions();
-  if (!isAllowed(role, permissions, "automations", "price-change-plans")) {
+  if (!isAllowed(role, permissions, "marketOps", "price-change-plans")) {
     return { session: null, error: "Forbidden" as const };
   }
   return { session, error: null };

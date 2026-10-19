@@ -6,7 +6,7 @@ import { CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from "rec
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
-import { ppcTopUp } from "@/lib/projects";
+import { ppcTopUp } from "@/lib/nav";
 import { getDailyCapConfig, type CountryConfig } from "@/lib/actions/ppc-daily-cap";
 import { listManualTopUps } from "@/lib/actions/ppc-manual-topups";
 import { computeProjectedRows, currentSlotSgt } from "@/lib/ppc-daily-cap-constants";

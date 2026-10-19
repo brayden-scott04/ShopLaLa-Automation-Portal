@@ -19,14 +19,10 @@ import {
   type Section,
   ROLE_LABELS,
   EMPTY_PERMISSIONS,
+  SECTIONS,
   toPermissionSet,
 } from "@/lib/roles";
-import { projects } from "@/lib/projects";
-import { tools } from "@/lib/tools";
-import { configurationItems } from "@/lib/configuration";
-import { communicationItems } from "@/lib/communications";
-import { salesItems } from "@/lib/sales";
-import { othersItems } from "@/lib/others";
+import { NAV_GROUPS, SUBGROUP_LABELS, type NavItem } from "@/lib/nav";
 
 type StaffMember = {
   id: string;
@@ -36,25 +32,18 @@ type StaffMember = {
   permissions: PermissionSet;
 };
 
-// The gated sections, with the concrete items an admin can grant per section.
-const ACCESS_SECTIONS: { key: Section; label: string; items: { id: string; name: string }[] }[] = [
-  { key: "sales", label: "Sales", items: salesItems },
-  { key: "automations", label: "Automations", items: projects },
-  { key: "tools", label: "Tools", items: tools },
-  { key: "configuration", label: "Configuration", items: configurationItems },
-  { key: "communications", label: "Communications", items: communicationItems },
-  { key: "others", label: "Others", items: othersItems },
-];
+// The gated sections (sidebar Layer-1 groups), with the concrete items an admin
+// can grant per section. Ungated items (e.g. Team) are visible to everyone.
+const ACCESS_SECTIONS: { key: Section; label: string; colorVar: string; items: NavItem[] }[] =
+  NAV_GROUPS.map((group) => ({
+    key: group.section,
+    label: group.label,
+    colorVar: group.colorVar,
+    items: group.items.filter((item) => !item.ungated),
+  }));
 
 function accessSummary(permissions: PermissionSet): number {
-  return (
-    permissions.automations.length +
-    permissions.tools.length +
-    permissions.configuration.length +
-    permissions.communications.length +
-    permissions.sales.length +
-    permissions.others.length
-  );
+  return SECTIONS.reduce((sum, section) => sum + permissions[section].length, 0);
 }
 
 export default function ManageUsersPage() {
@@ -498,17 +487,27 @@ export default function ManageUsersPage() {
             <div className="max-h-[50vh] space-y-4 overflow-y-auto">
               {ACCESS_SECTIONS.map((section) => (
                 <div key={section.key}>
-                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <span
+                      aria-hidden
+                      className="size-2 rounded-[3px]"
+                      style={{ backgroundColor: `var(${section.colorVar})` }}
+                    />
                     {section.label}
                   </p>
                   {section.items.length === 0 ? (
                     <p className="text-xs text-muted-foreground">No items</p>
                   ) : (
                     <div className="space-y-1.5">
-                      {section.items.map((item) => (
+                      {section.items.map((item, i) => (
+                        <div key={item.id}>
+                        {item.subgroup && section.items[i - 1]?.subgroup !== item.subgroup && (
+                          <p className="mt-2.5 mb-1.5 text-[11px] font-medium text-muted-foreground">
+                            {SUBGROUP_LABELS[item.subgroup]}
+                          </p>
+                        )}
                         <label
-                          key={item.id}
-                          className="flex cursor-pointer items-center gap-2 text-sm"
+                          className={`flex cursor-pointer items-center gap-2 text-sm ${item.subgroup ? "pl-3" : ""}`}
                         >
                           <input
                             type="checkbox"
@@ -518,6 +517,7 @@ export default function ManageUsersPage() {
                           />
                           {item.name}
                         </label>
+                        </div>
                       ))}
                     </div>
                   )}

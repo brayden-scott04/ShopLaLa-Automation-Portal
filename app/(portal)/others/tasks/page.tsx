@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { TaskFormDialog } from "@/components/tasks/task-form-dialog";
 import { ColumnResizeHandle, useResizableColumns } from "@/components/resizable-columns";
-import { tasks as tasksItem } from "@/lib/others";
+import { tasks as tasksItem } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import {
   listTasks,

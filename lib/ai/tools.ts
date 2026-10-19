@@ -1,7 +1,6 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { getStaffDirectory } from "@/lib/actions/staff";
-import { projects } from "@/lib/projects";
-import { tools as portalTools } from "@/lib/tools";
+import { NAV_GROUPS, SUBGROUP_LABELS } from "@/lib/nav";
 
 /**
  * Read-only tools exposed to the AI assistant. No mutating actions
@@ -16,15 +15,9 @@ export const chatToolDefinitions: Anthropic.Tool[] = [
     input_schema: { type: "object", properties: {}, additionalProperties: false },
   },
   {
-    name: "list_automations",
+    name: "list_portal_pages",
     description:
-      "List the automation projects available in the portal, with their names and descriptions.",
-    input_schema: { type: "object", properties: {}, additionalProperties: false },
-  },
-  {
-    name: "list_tools",
-    description:
-      "List the standalone tools available in the portal (distinct from automations), with their names and descriptions.",
+      "List the pages available in the portal, grouped by sidebar section (Dashboard, Supply Chain, Market Ops, Visual, Others), with their names, descriptions and URLs. Market Ops pages under the Automations sub-group are the portal's automations and generators.",
     input_schema: { type: "object", properties: {}, additionalProperties: false },
   },
 ];
@@ -36,10 +29,16 @@ export async function runChatTool(name: string): Promise<unknown> {
       if (error) return { error };
       return data;
     }
-    case "list_automations":
-      return projects.map(({ name, description }) => ({ name, description }));
-    case "list_tools":
-      return portalTools.map(({ name, description }) => ({ name, description }));
+    case "list_portal_pages":
+      return NAV_GROUPS.map((group) => ({
+        section: group.label,
+        pages: group.items.map(({ name, description, href, subgroup }) => ({
+          name,
+          description,
+          url: href,
+          ...(subgroup ? { subgroup: SUBGROUP_LABELS[subgroup] } : {}),
+        })),
+      }));
     default:
       return { error: `Unknown tool: ${name}` };
   }

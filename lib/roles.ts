@@ -24,35 +24,36 @@ export const ROLE_LABELS: Record<Role, string> = {
   user: "Staff",
 };
 
-/** The gated navigation sections. Keys match route prefixes and permission keys. */
-export type Section = "automations" | "tools" | "configuration" | "communications" | "sales" | "others";
+/**
+ * The gated navigation sections — the sidebar's Layer-1 groups (see lib/nav.ts,
+ * which maps each to its label, route prefix and colour). Keys are permission keys.
+ */
+export type Section = "dashboard" | "supplyChain" | "marketOps" | "visual" | "others";
 
-export const SECTIONS: Section[] = [
-  "automations",
-  "tools",
-  "configuration",
-  "communications",
-  "sales",
-  "others",
-];
+export const SECTIONS: Section[] = ["dashboard", "supplyChain", "marketOps", "visual", "others"];
 
 /** Per-account access grants: arrays of item slug ids per section. */
-export interface PermissionSet {
-  automations: string[];
-  tools: string[];
-  configuration: string[];
-  communications: string[];
-  sales: string[];
-  others: string[];
-}
+export type PermissionSet = Record<Section, string[]>;
 
 export const EMPTY_PERMISSIONS: PermissionSet = {
-  automations: [],
-  tools: [],
-  configuration: [],
-  communications: [],
-  sales: [],
+  dashboard: [],
+  supplyChain: [],
+  marketOps: [],
+  visual: [],
   others: [],
+};
+
+/**
+ * Pre-2026-10 section keys, before the nav was regrouped. Item ids didn't
+ * change, only the section they live in, so a stored grant under an old key is
+ * folded into its new section on read (see {@link toPermissionSet}).
+ */
+const LEGACY_SECTIONS: Record<string, Section> = {
+  sales: "dashboard",
+  automations: "marketOps",
+  tools: "marketOps",
+  configuration: "marketOps",
+  communications: "others",
 };
 
 /** Admins + moderators can create users and reset user passwords. */
@@ -81,29 +82,37 @@ export function isAllowed(
 }
 
 /** Returns the subset of `items` the given user may access (admins: all). */
-export function filterItems<T extends { id: string }>(
+export function filterItems<T extends { id: string; ungated?: boolean }>(
   section: Section,
   items: T[],
   role: Role,
   permissions: PermissionSet
 ): T[] {
   if (role === "admin") return items;
-  return items.filter((item) => permissions[section].includes(item.id));
+  return items.filter((item) => item.ungated || permissions[section].includes(item.id));
 }
 
-/** Coerces an arbitrary value (jsonb column, form payload) into a valid PermissionSet. */
+/**
+ * Coerces an arbitrary value (jsonb column, form payload) into a valid
+ * PermissionSet, folding any legacy section keys into their new section.
+ */
 export function toPermissionSet(value: unknown): PermissionSet {
-  const source = (value ?? {}) as Partial<Record<Section, unknown>>;
-  const pick = (key: Section): string[] =>
-    Array.isArray(source[key])
-      ? (source[key] as unknown[]).filter((v): v is string => typeof v === "string")
-      : [];
-  return {
-    automations: pick("automations"),
-    tools: pick("tools"),
-    configuration: pick("configuration"),
-    communications: pick("communications"),
-    sales: pick("sales"),
-    others: pick("others"),
+  const source = (value ?? {}) as Record<string, unknown>;
+  const result: PermissionSet = {
+    dashboard: [],
+    supplyChain: [],
+    marketOps: [],
+    visual: [],
+    others: [],
   };
+  for (const [key, ids] of Object.entries(source)) {
+    const section = (SECTIONS as string[]).includes(key)
+      ? (key as Section)
+      : LEGACY_SECTIONS[key];
+    if (!section || !Array.isArray(ids)) continue;
+    for (const id of ids) {
+      if (typeof id === "string" && !result[section].includes(id)) result[section].push(id);
+    }
+  }
+  return result;
 }

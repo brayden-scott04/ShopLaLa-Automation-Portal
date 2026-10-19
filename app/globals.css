@@ -83,6 +83,12 @@
   --sidebar-accent-foreground: #2E2E2E;
   --sidebar-border: #E3DED2;
   --sidebar-ring: #9CAF88;
+  /* Sidebar Layer-1 group pins (lib/nav.ts NAV_GROUPS.colorVar) */
+  --nav-dashboard: #8FA876;
+  --nav-supply-chain: #C47A57;
+  --nav-market-ops: #C99A2E;
+  --nav-visual: #9479AB;
+  --nav-others: #6A88A3;
 }
 
 .dark {
@@ -117,6 +123,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --nav-dashboard: #A9C292;
+  --nav-supply-chain: #DB9677;
+  --nav-market-ops: #E0B653;
+  --nav-visual: #B69BCB;
+  --nav-others: #8FAAC2;
 }
 
 @layer base {

@@ -46,21 +46,15 @@
   "44": "page-header.tsx",
   "45": "mail.ts",
   "46": "buildVideoBulk.ts",
-  "47": "profit-goals.ts",
   "48": "fba-fee-tracker.ts",
   "49": "product-block.tsx",
   "50": "fba-fee-calculator.ts",
   "51": "server.ts",
   "52": "permissions.ts",
-  "53": "communications.ts",
-  "54": "chart.tsx",
   "55": "credentials.ts",
   "56": "hash-password.ts",
   "57": "page.tsx",
   "58": "projects.ts",
-  "59": "sales-traffic.ts",
-  "60": "page.tsx",
   "61": "getStaffDirectory",
-  "62": "sidebar-content.tsx",
-  "63": "resizable-columns.tsx"
+  "62": "sidebar-content.tsx"
 }
