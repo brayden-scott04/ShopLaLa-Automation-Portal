@@ -38,6 +38,7 @@ import {
   setTaskDone,
   deleteTrackedTask,
   type Task,
+  type TaskProgressUpdate,
   type TrackedTaskInput,
 } from "@/lib/actions/tasks";
 import { getCurrentUser, getStaffDirectory } from "@/lib/actions/staff";
@@ -68,6 +69,16 @@ function todayIso(): string {
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
   return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
+/** Hover text for the Notes cell: the notes, then every update as "user - text", newest first. */
+function notesTooltip(task: Task): string | undefined {
+  const parts: string[] = [];
+  if (task.notes) parts.push(task.notes);
+  if (task.updates.length) {
+    parts.push(["Updates:", ...task.updates.map((u) => `${u.username} - ${u.body}`)].join("\n"));
+  }
+  return parts.length ? parts.join("\n\n") : undefined;
 }
 
 function formatDate(iso: string | null): string {
@@ -190,6 +201,10 @@ export default function TasksPage() {
       });
       setFormOpen(false);
     });
+  }
+
+  function handleUpdatePosted(taskId: string, update: TaskProgressUpdate) {
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, updates: [update, ...t.updates] } : t)));
   }
 
   function handleToggleDone(task: Task, done: boolean) {
@@ -357,7 +372,7 @@ export default function TasksPage() {
                       </td>
                       <td className="px-3 py-2">{t.owner}</td>
                       <td className="px-3 py-2">{t.assignees.length ? t.assignees.join(", ") : "—"}</td>
-                      <td className="max-w-xs truncate px-3 py-2 text-muted-foreground" title={t.notes ?? undefined}>
+                      <td className="max-w-xs truncate px-3 py-2 text-muted-foreground" title={notesTooltip(t)}>
                         {t.notes ?? "—"}
                       </td>
                       <td className="px-3 py-2">
@@ -397,6 +412,7 @@ export default function TasksPage() {
         saving={isPending}
         error={formError}
         onSave={handleSave}
+        onUpdatePosted={handleUpdatePosted}
       />
 
       <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>

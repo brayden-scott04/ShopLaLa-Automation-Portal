@@ -14,6 +14,8 @@ export interface Task {
   done: boolean;
   owner: string;
   assignees: string[];
+  /** Progress log, newest first. */
+  updates: TaskProgressUpdate[];
   createdAt: string;
   canEdit: boolean;
   canDelete: boolean;
@@ -48,6 +50,13 @@ type TaskRow = {
 };
 
 const TASK_COLUMNS = "id, title, notes, task_date, due_date, priority, done, owner_username, created_at";
+const UPDATE_COLUMNS = "id, username, body, created_at";
+
+type TaskUpdateRow = { id: string; username: string; body: string; created_at: string };
+
+function toTaskUpdate(row: TaskUpdateRow): TaskProgressUpdate {
+  return { id: row.id, username: row.username, body: row.body, createdAt: row.created_at };
+}
 
 function validate(input: TrackedTaskInput): string | null {
   const title = input.title.trim();
@@ -61,7 +70,13 @@ function validate(input: TrackedTaskInput): string | null {
   return null;
 }
 
-function toTask(row: TaskRow, assignees: string[], username: string, isAdmin: boolean): Task {
+function toTask(
+  row: TaskRow,
+  assignees: string[],
+  updates: TaskProgressUpdate[],
+  username: string,
+  isAdmin: boolean
+): Task {
   const isOwner = row.owner_username === username;
   return {
     id: row.id,
@@ -73,6 +88,7 @@ function toTask(row: TaskRow, assignees: string[], username: string, isAdmin: bo
     done: row.done,
     owner: row.owner_username,
     assignees,
+    updates,
     createdAt: row.created_at,
     // Visible only to owner + assignees (admins see everything), so "can see" == "can edit".
     canEdit: isAdmin || isOwner || assignees.includes(username),
@@ -108,7 +124,13 @@ async function loadVisible(taskId: string, username: string, isAdmin: boolean): 
   if (!row) return null;
   const { data: a } = await db.from("task_assignees").select("username").eq("task_id", taskId);
   const assignees = (a ?? []).map((r) => r.username as string);
-  const task = toTask(row as TaskRow, assignees, username, isAdmin);
+  const { data: u } = await db
+    .from("task_updates")
+    .select(UPDATE_COLUMNS)
+    .eq("task_id", taskId)
+    .order("created_at", { ascending: false });
+  const updates = ((u ?? []) as TaskUpdateRow[]).map(toTaskUpdate);
+  const task = toTask(row as TaskRow, assignees, updates, username, isAdmin);
   return task.canEdit ? task : null;
 }
 
@@ -131,8 +153,21 @@ export async function listTasks(): Promise<{ data: Task[] | null; error: string 
     byTask.set(l.task_id as string, list);
   }
 
+  const { data: updateRows, error: updateError } = await db
+    .from("task_updates")
+    .select(`task_id, ${UPDATE_COLUMNS}`)
+    .order("created_at", { ascending: false });
+  if (updateError) return { data: null, error: updateError.message };
+
+  const updatesByTask = new Map<string, TaskProgressUpdate[]>();
+  for (const u of (updateRows ?? []) as (TaskUpdateRow & { task_id: string })[]) {
+    const list = updatesByTask.get(u.task_id) ?? [];
+    list.push(toTaskUpdate(u));
+    updatesByTask.set(u.task_id, list);
+  }
+
   const tasks = (rows as TaskRow[])
-    .map((r) => toTask(r, byTask.get(r.id) ?? [], session.username, isAdmin))
+    .map((r) => toTask(r, byTask.get(r.id) ?? [], updatesByTask.get(r.id) ?? [], session.username, isAdmin))
     .filter((t) => t.canEdit);
   return { data: tasks, error: null };
 }
@@ -206,12 +241,6 @@ export async function setTaskDone(id: string, done: boolean): Promise<{ error: s
   return { error: error?.message ?? null };
 }
 
-type TaskUpdateRow = { id: string; username: string; body: string; created_at: string };
-
-function toTaskUpdate(row: TaskUpdateRow): TaskProgressUpdate {
-  return { id: row.id, username: row.username, body: row.body, createdAt: row.created_at };
-}
-
 /** Newest first. Same visibility as the task itself. */
 export async function listTaskUpdates(taskId: string): Promise<{ data: TaskProgressUpdate[] | null; error: string | null }> {
   const session = await getSession();
@@ -221,7 +250,7 @@ export async function listTaskUpdates(taskId: string): Promise<{ data: TaskProgr
   const db = createServiceClient();
   const { data, error } = await db
     .from("task_updates")
-    .select("id, username, body, created_at")
+    .select(UPDATE_COLUMNS)
     .eq("task_id", taskId)
     .order("created_at", { ascending: false });
   if (error) return { data: null, error: error.message };
@@ -241,7 +270,7 @@ export async function addTaskUpdate(taskId: string, body: string): Promise<{ dat
   const { data, error } = await db
     .from("task_updates")
     .insert({ task_id: taskId, username: session.username, body: text })
-    .select("id, username, body, created_at")
+    .select(UPDATE_COLUMNS)
     .single();
   if (error || !data) return { data: null, error: error?.message ?? "Failed to add update" };
   return { data: toTaskUpdate(data as TaskUpdateRow), error: null };

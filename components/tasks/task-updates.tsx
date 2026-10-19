@@ -19,7 +19,13 @@ function formatWhen(iso: string): string {
 }
 
 /** Progress log for an existing task. Posting saves immediately, independent of the dialog's Save button. */
-export function TaskUpdates({ taskId }: { taskId: string }) {
+export function TaskUpdates({
+  taskId,
+  onPosted,
+}: {
+  taskId: string;
+  onPosted?: (update: TaskProgressUpdate) => void;
+}) {
   const [updates, setUpdates] = useState<TaskProgressUpdate[]>([]);
   const [draft, setDraft] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +51,7 @@ export function TaskUpdates({ taskId }: { taskId: string }) {
       }
       setUpdates((prev) => [result.data!, ...prev]);
       setDraft("");
+      onPosted?.(result.data);
     });
   }
 

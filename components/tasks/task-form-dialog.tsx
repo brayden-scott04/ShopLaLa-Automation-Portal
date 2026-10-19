@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { TaskUpdates } from "@/components/tasks/task-updates";
-import type { Task, TrackedTaskInput } from "@/lib/actions/tasks";
+import type { Task, TaskProgressUpdate, TrackedTaskInput } from "@/lib/actions/tasks";
 import {
   MAX_TASK_TITLE_LENGTH,
   MAX_TASK_NOTES_LENGTH,
@@ -27,6 +27,8 @@ interface TaskFormDialogProps {
   saving: boolean;
   error: string | null;
   onSave: (input: TrackedTaskInput) => void;
+  /** Fired when an update is posted from the dialog, so the list can refresh without a reload. */
+  onUpdatePosted?: (taskId: string, update: TaskProgressUpdate) => void;
 }
 
 /** Today's date as YYYY-MM-DD in the browser's timezone (not UTC, which would be yesterday before 08:00 SGT). */
@@ -50,6 +52,7 @@ function TaskFormInner({
   saving,
   error,
   onSave,
+  onUpdatePosted,
 }: TaskFormDialogProps) {
   const [title, setTitle] = useState(task?.title ?? "");
   const [notes, setNotes] = useState(task?.notes ?? "");
@@ -148,7 +151,7 @@ function TaskFormInner({
             />
           </div>
 
-          {task && <TaskUpdates taskId={task.id} />}
+          {task && <TaskUpdates taskId={task.id} onPosted={(u) => onUpdatePosted?.(task.id, u)} />}
 
           {error && <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
         </DialogBody>
