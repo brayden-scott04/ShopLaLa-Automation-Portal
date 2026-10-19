@@ -1,7 +1,7 @@
 # Graph Report - LaLaGreen-Automation-Portal  (2026-10-19)
 
 ## Corpus Check
-- 163 files · ~116,742 words
+- 163 files · ~116,740 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -140,7 +140,7 @@ Nodes (21): Option, SearchableSelect(), ChatPanel(), markdownComponents, LoginFo
 
 ### Community 9 - "monday.com Dashboards — Comprehensive Reference"
 Cohesion: 0.14
-Nodes (15): DashboardPage(), ConfigurationItem, ConfigurationItemInput, configurationItems, defineConfigurationItem(), masterList, slugify(), calendar (+7 more)
+Nodes (15): DashboardPage(), CommunicationItem, CommunicationItemInput, communicationItems, companyInbox, defineCommunicationItem(), slugify(), calendar (+7 more)
 
 ### Community 10 - "utils.ts"
 Cohesion: 0.08
@@ -220,7 +220,7 @@ Nodes (11): PpcTopUpLayout(), PriceChangePlansLayout(), CompanyInboxLayout(), Ma
 
 ### Community 53 - "communications.ts"
 Cohesion: 0.33
-Nodes (6): CommunicationItem, CommunicationItemInput, communicationItems, companyInbox, defineCommunicationItem(), slugify()
+Nodes (6): ConfigurationItem, ConfigurationItemInput, configurationItems, defineConfigurationItem(), masterList, slugify()
 
 ### Community 54 - "page.tsx"
 Cohesion: 0.40

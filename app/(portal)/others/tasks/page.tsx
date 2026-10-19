@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { TaskFormDialog } from "@/components/tasks/task-form-dialog";
+import { ColumnResizeHandle, useResizableColumns } from "@/components/resizable-columns";
 import { tasks as tasksItem } from "@/lib/others";
 import { cn } from "@/lib/utils";
 import {
@@ -62,6 +63,19 @@ function PriorityPill({ priority }: { priority: number }) {
 }
 
 type SortKey = "priority" | "date" | "dueDate";
+
+/** Table columns in display order. `className` only shapes the default (auto) layout. */
+const COLUMNS: { label: string; sort?: SortKey; className?: string }[] = [
+  { label: "Done", className: "w-14" },
+  { label: "Priority", sort: "priority" },
+  { label: "Task / project" },
+  { label: "Date", sort: "date" },
+  { label: "Due date", sort: "dueDate" },
+  { label: "Owner" },
+  { label: "Assignees" },
+  { label: "Notes" },
+  { label: "", className: "w-20" },
+];
 type Scope = "all" | "mine" | "assigned";
 
 function todayIso(): string {
@@ -103,6 +117,7 @@ export default function TasksPage() {
   const [showDone, setShowDone] = useState(false);
   const [search, setSearch] = useState("");
   const [isPending, startTransition] = useTransition();
+  const columns = useResizableColumns("tasks.columnWidths", COLUMNS.length);
 
   useEffect(() => {
     startTransition(async () => {
@@ -316,24 +331,36 @@ export default function TasksPage() {
           </div>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-border">
-            <table className="w-full text-sm">
+            <table
+              style={columns.tableStyle}
+              className={cn("text-sm", columns.widths ? "[&_td]:overflow-hidden [&_td]:text-ellipsis" : "w-full")}
+            >
+              {columns.widths && (
+                <colgroup>
+                  {columns.widths.map((w, i) => (
+                    <col key={i} style={{ width: w }} />
+                  ))}
+                </colgroup>
+              )}
               <thead className="border-b border-border bg-muted/40 text-left text-xs">
                 <tr>
-                  <th className="w-14 px-3 py-2 font-medium text-muted-foreground">Done</th>
-                  <th className="px-3 py-2">
-                    {sortHeader("Priority", "priority")}
-                  </th>
-                  <th className="px-3 py-2 font-medium text-muted-foreground">Task / project</th>
-                  <th className="px-3 py-2">
-                    {sortHeader("Date", "date")}
-                  </th>
-                  <th className="px-3 py-2">
-                    {sortHeader("Due date", "dueDate")}
-                  </th>
-                  <th className="px-3 py-2 font-medium text-muted-foreground">Owner</th>
-                  <th className="px-3 py-2 font-medium text-muted-foreground">Assignees</th>
-                  <th className="px-3 py-2 font-medium text-muted-foreground">Notes</th>
-                  <th className="w-20 px-3 py-2" />
+                  {COLUMNS.map((col, i) => (
+                    <th
+                      key={i}
+                      className={cn(
+                        "relative px-3 py-2 font-medium text-muted-foreground",
+                        !columns.widths && col.className
+                      )}
+                    >
+                      {col.sort ? sortHeader(col.label, col.sort) : col.label}
+                      {col.label && (
+                        <ColumnResizeHandle
+                          onPointerDown={(e) => columns.startResize(i, e)}
+                          onReset={columns.reset}
+                        />
+                      )}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -372,7 +399,8 @@ export default function TasksPage() {
                       </td>
                       <td className="px-3 py-2">{t.owner}</td>
                       <td className="px-3 py-2">{t.assignees.length ? t.assignees.join(", ") : "—"}</td>
-                      <td className="max-w-xs truncate px-3 py-2 text-muted-foreground" title={notesTooltip(t)}>
+                      <td
+                        className={cn("truncate px-3 py-2 text-muted-foreground", !columns.widths && "max-w-xs")} title={notesTooltip(t)}>
                         {t.notes ?? "—"}
                       </td>
                       <td className="px-3 py-2">

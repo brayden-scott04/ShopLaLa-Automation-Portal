@@ -795,8 +795,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/tasks/page.tsx": {
-    "mtime": 1792401960.8512897,
-    "ast_hash": "975fadbdb87909abfd8f550df359f660",
+    "mtime": 1792402301.4748094,
+    "ast_hash": "c23b81a279f0739beecdb7072948829d",
     "semantic_hash": ""
   },
   "components/tasks/task-form-dialog.tsx": {
@@ -842,6 +842,11 @@
   "sql/task_updates_migration.sql": {
     "mtime": 1792339509.0009842,
     "ast_hash": "8e82db5cd9ba4558b9561fa6c1399d9c",
+    "semantic_hash": ""
+  },
+  "components/resizable-columns.tsx": {
+    "mtime": 1792402301.4748094,
+    "ast_hash": "6e2585db5013e0209d350b64bf473810",
     "semantic_hash": ""
   }
 }
