@@ -7474,14 +7474,14 @@
       "norm_label": "task"
     },
     {
-      "label": "TaskUpdate",
+      "label": "TaskProgressUpdate",
       "file_type": "code",
       "source_file": "lib/actions/tasks.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "lib_actions_tasks_taskupdate",
+      "id": "lib_actions_tasks_taskprogressupdate",
       "community": 50,
-      "norm_label": "taskupdate"
+      "norm_label": "taskprogressupdate"
     },
     {
       "label": "TrackedTaskInput",
@@ -9740,7 +9740,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_projects",
-      "community": 58,
+      "community": 42,
       "norm_label": "projects.ts"
     },
     {
@@ -9750,7 +9750,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_projects_automationproject",
-      "community": 58,
+      "community": 42,
       "norm_label": "automationproject"
     },
     {
@@ -9760,7 +9760,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_projects_projectinput",
-      "community": 58,
+      "community": 42,
       "norm_label": "projectinput"
     },
     {
@@ -9770,7 +9770,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_projects_slugify",
-      "community": 58,
+      "community": 42,
       "norm_label": "slugify()"
     },
     {
@@ -9780,7 +9780,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_projects_defineproject",
-      "community": 58,
+      "community": 42,
       "norm_label": "defineproject()"
     },
     {
@@ -9800,7 +9800,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_projects_pricechangeplans",
-      "community": 58,
+      "community": 42,
       "norm_label": "pricechangeplans"
     },
     {
@@ -9810,7 +9810,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_projects_projects",
-      "community": 58,
+      "community": 42,
       "norm_label": "projects"
     },
     {
@@ -10210,7 +10210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_tools",
-      "community": 70,
+      "community": 58,
       "norm_label": "tools.ts"
     },
     {
@@ -10220,7 +10220,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_tools_automationtool",
-      "community": 70,
+      "community": 58,
       "norm_label": "automationtool"
     },
     {
@@ -10230,7 +10230,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_tools_toolinput",
-      "community": 70,
+      "community": 58,
       "norm_label": "toolinput"
     },
     {
@@ -10240,7 +10240,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_tools_slugify",
-      "community": 70,
+      "community": 58,
       "norm_label": "slugify()"
     },
     {
@@ -10250,7 +10250,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_tools_definetool",
-      "community": 70,
+      "community": 58,
       "norm_label": "definetool()"
     },
     {
@@ -10260,7 +10260,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_tools_bulkcampaignupload",
-      "community": 70,
+      "community": 58,
       "norm_label": "bulkcampaignupload"
     },
     {
@@ -10270,7 +10270,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_tools_adsbulkgenerator",
-      "community": 70,
+      "community": 58,
       "norm_label": "adsbulkgenerator"
     },
     {
@@ -10290,7 +10290,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "lib_tools_tools",
-      "community": 70,
+      "community": 58,
       "norm_label": "tools"
     },
     {
@@ -31138,7 +31138,7 @@
       "source_location": "L8",
       "weight": 1.0,
       "source": "components_tasks_task_updates",
-      "target": "lib_actions_tasks_taskupdate",
+      "target": "lib_actions_tasks_taskprogressupdate",
       "confidence_score": 1.0
     },
     {
@@ -44539,20 +44539,20 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/tasks.ts",
-      "source_location": "L38",
+      "source_location": "L22",
       "weight": 1.0,
       "source": "lib_actions_tasks",
-      "target": "lib_actions_tasks_taskrow",
+      "target": "lib_actions_tasks_taskprogressupdate",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/tasks.ts",
-      "source_location": "L22",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "lib_actions_tasks",
-      "target": "lib_actions_tasks_taskupdate",
+      "target": "lib_actions_tasks_taskrow",
       "confidence_score": 1.0
     },
     {

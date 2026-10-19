@@ -1,7 +1,7 @@
 # Graph Report - LaLaGreen-Automation-Portal  (2026-10-19)
 
 ## Corpus Check
-- 163 files · ~116,434 words
+- 163 files · ~116,525 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8f168757`
+- Built from commit: `4e628083`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -176,8 +176,8 @@ Cohesion: 0.18
 Nodes (17): analyzeBulkPriceImport(), ColumnDetectSchema, ColumnMapping, detectColumnHeuristically(), detectColumnWithAi(), DetectedPriceImportSheet, detectTargetColumnHeuristically(), extractRowsFromSheet() (+9 more)
 
 ### Community 42 - "projects.ts"
-Cohesion: 0.33
-Nodes (6): AutomationProject, defineProject(), priceChangePlans, ProjectInput, projects, slugify()
+Cohesion: 0.29
+Nodes (7): adsBulkGenerator, AutomationTool, bulkCampaignUpload, defineTool(), slugify(), ToolInput, tools
 
 ### Community 43 - "tabs.tsx"
 Cohesion: 0.15
@@ -216,8 +216,8 @@ Cohesion: 0.18
 Nodes (17): daysRemaining(), EditPricePlanForm(), formatDate(), formatPrice(), HistoryTable(), NewBulkPricePlanSheet(), NewPricePlanSheet(), nextStepPrice() (+9 more)
 
 ### Community 58 - "projects.ts"
-Cohesion: 0.19
-Nodes (12): sendAiChatMessage(), ChatMessage, generateAssistantReply(), chatToolDefinitions, runChatTool(), adsBulkGenerator, AutomationTool, bulkCampaignUpload (+4 more)
+Cohesion: 0.21
+Nodes (11): sendAiChatMessage(), ChatMessage, generateAssistantReply(), chatToolDefinitions, runChatTool(), AutomationProject, defineProject(), priceChangePlans (+3 more)
 
 ### Community 59 - "others.ts"
 Cohesion: 0.29

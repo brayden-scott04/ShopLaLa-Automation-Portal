@@ -55,6 +55,7 @@
 - create-next-app Bootstrapped Project
 - Vercel Platform
 - build.ts
+- projects.ts
 - tabs.tsx
 - page-header.tsx
 - mail.ts
@@ -72,7 +73,6 @@
 - price-change-plans.ts
 - pricing-update.ts
 - pricing-update.ts
-- tools.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 112 edges
@@ -175,6 +175,10 @@ Nodes (3): Deploy on Vercel, Getting Started, Learn More
 Cohesion: 0.18
 Nodes (17): analyzeBulkPriceImport(), ColumnDetectSchema, ColumnMapping, detectColumnHeuristically(), detectColumnWithAi(), DetectedPriceImportSheet, detectTargetColumnHeuristically(), extractRowsFromSheet() (+9 more)
 
+### Community 42 - "projects.ts"
+Cohesion: 0.33
+Nodes (6): AutomationProject, defineProject(), priceChangePlans, ProjectInput, projects, slugify()
+
 ### Community 43 - "tabs.tsx"
 Cohesion: 0.15
 Nodes (22): ACCESS_SECTIONS, accessSummary(), ManageUsersPage(), StaffMember, SettingsPage(), createStaffMember(), deleteStaffMember(), getCurrentUser() (+14 more)
@@ -212,8 +216,8 @@ Cohesion: 0.18
 Nodes (17): daysRemaining(), EditPricePlanForm(), formatDate(), formatPrice(), HistoryTable(), NewBulkPricePlanSheet(), NewPricePlanSheet(), nextStepPrice() (+9 more)
 
 ### Community 58 - "projects.ts"
-Cohesion: 0.21
-Nodes (11): sendAiChatMessage(), ChatMessage, generateAssistantReply(), chatToolDefinitions, runChatTool(), AutomationProject, defineProject(), priceChangePlans (+3 more)
+Cohesion: 0.19
+Nodes (12): sendAiChatMessage(), ChatMessage, generateAssistantReply(), chatToolDefinitions, runChatTool(), adsBulkGenerator, AutomationTool, bulkCampaignUpload (+4 more)
 
 ### Community 59 - "others.ts"
 Cohesion: 0.29
@@ -234,10 +238,6 @@ Nodes (10): MarketplaceOptions(), formatPrice(), SkuDetailDialog(), formatMoney(
 ### Community 68 - "pricing-update.ts"
 Cohesion: 0.83
 Nodes (3): fetchSkuDetail(), fetchSkuPricing(), requireStaff()
-
-### Community 70 - "tools.ts"
-Cohesion: 0.29
-Nodes (7): adsBulkGenerator, AutomationTool, bulkCampaignUpload, defineTool(), slugify(), ToolInput, tools
 
 ## Knowledge Gaps
 - **278 isolated node(s):** `StaffMember`, `ACCESS_SECTIONS`, `PRICE_TYPES`, `PriceTypeOption`, `SendResult` (+273 more)

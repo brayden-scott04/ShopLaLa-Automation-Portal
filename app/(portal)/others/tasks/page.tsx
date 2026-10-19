@@ -9,6 +9,7 @@ import {
   ListChecks,
   Pencil,
   Plus,
+  Search,
   Trash2,
   type LucideIcon,
 } from "lucide-react";
@@ -89,6 +90,7 @@ export default function TasksPage() {
   const [sortDesc, setSortDesc] = useState(true);
   const [scope, setScope] = useState<Scope>("all");
   const [showDone, setShowDone] = useState(false);
+  const [search, setSearch] = useState("");
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -114,8 +116,18 @@ export default function TasksPage() {
   const today = todayIso();
 
   const visible = useMemo(() => {
+    const query = search.trim().toLowerCase();
     const filtered = tasks.filter((t) => {
       if (!showDone && t.done) return false;
+      // Matches the task name, its owner, or any assignee (case-insensitive).
+      if (
+        query &&
+        !t.title.toLowerCase().includes(query) &&
+        !t.owner.toLowerCase().includes(query) &&
+        !t.assignees.some((a) => a.toLowerCase().includes(query))
+      ) {
+        return false;
+      }
       if (scope === "mine") return t.owner === me;
       if (scope === "assigned") return t.assignees.includes(me);
       return true;
@@ -133,7 +145,7 @@ export default function TasksPage() {
       if (!bv) return -1;
       return av.localeCompare(bv) * dir || b.priority - a.priority;
     });
-  }, [tasks, scope, showDone, sortKey, sortDesc, me]);
+  }, [tasks, scope, showDone, search, sortKey, sortDesc, me]);
 
   const stats = useMemo(() => {
     const open = tasks.filter((t) => !t.done);
@@ -240,6 +252,17 @@ export default function TasksPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3">
+            <div className="relative w-full sm:w-64">
+              <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search task or assignee"
+                aria-label="Search tasks by name, owner or assignee"
+                className="w-full rounded-md border border-input bg-background py-1.5 pr-2 pl-8 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
+              />
+            </div>
             <SegmentedControl
               value={scope}
               onValueChange={(v) => setScope(v as Scope)}
@@ -272,7 +295,9 @@ export default function TasksPage() {
         ) : visible.length === 0 ? (
           <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border py-16 text-center">
             <ListChecks className="size-8 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">No tasks here. Create one to get started.</p>
+            <p className="text-sm text-muted-foreground">
+              {search.trim() ? `No tasks match "${search.trim()}".` : "No tasks here. Create one to get started."}
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-border">
