@@ -442,9 +442,9 @@ Backs `/others/tasks` (Others → "Tasks"), which replaced the old Boards and Da
 - **`tasks`**: `title`, `notes`, `task_date` (Date), `due_date`, `priority` (1-5, **5 = highest**), `done`, `owner_username` (the creator).
 - **`task_assignees`**: `(task_id, username)`, cascade on delete.
 
-A task is visible **only to its owner and assignees** (admins see all), enforced in `lib/actions/tasks.ts`
+A task is visible **only to its owner and assignees** — admins included, for privacy (no admin override), enforced in `lib/actions/tasks.ts`
 (not RLS — policies are permissive and writes use the service client). Owner and assignees can edit and
-tick done; only the owner (or an admin) can delete. Actions are named `createTrackedTask` /
+tick done; only the owner can delete. Actions are named `createTrackedTask` /
 `updateTrackedTask` / `deleteTrackedTask` because `lib/actions/calendar.ts` already exports
 `createTask` etc. through the `lib/actions/index.ts` barrel.
 

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import {
   ArrowDown,
   ArrowUp,
+  CheckCheck,
   ChevronUp,
   ChevronsUp,
   ListChecks,
@@ -37,6 +38,7 @@ import {
   createTrackedTask,
   updateTrackedTask,
   setTaskDone,
+  setTaskAcknowledged,
   deleteTrackedTask,
   type Task,
   type TaskProgressUpdate,
@@ -73,6 +75,7 @@ const COLUMNS: { label: string; sort?: SortKey; className?: string }[] = [
   { label: "Due date", sort: "dueDate" },
   { label: "Owner" },
   { label: "Assignees" },
+  { label: "Acknowledged" },
   { label: "Notes" },
   { label: "", className: "w-20" },
 ];
@@ -93,6 +96,55 @@ function notesTooltip(task: Task): string | undefined {
     parts.push(["Updates:", ...task.updates.map((u) => `${u.username} - ${u.body}`)].join("\n"));
   }
   return parts.length ? parts.join("\n\n") : undefined;
+}
+
+function formatDateTime(iso: string): string {
+  return new Date(iso).toLocaleString(undefined, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+}
+
+/**
+ * Assignees (other than the owner) get a tick box to say they've read the task; everyone else sees
+ * how many have, with who/when on hover.
+ */
+function AcknowledgedCell({
+  task,
+  me,
+  onToggle,
+}: {
+  task: Task;
+  me: string;
+  onToggle: (acknowledged: boolean) => void;
+}) {
+  const acks = task.acknowledgements;
+  if (acks.length === 0) return <span className="text-muted-foreground">—</span>;
+
+  const mine = acks.find((a) => a.username === me);
+  const done = acks.filter((a) => a.acknowledgedAt).length;
+  const all = done === acks.length;
+  const detail = acks
+    .map((a) => `${a.username} - ${a.acknowledgedAt ? `read ${formatDateTime(a.acknowledgedAt)}` : "not yet"}`)
+    .join("\n");
+
+  return (
+    <div className="flex items-center gap-2" title={detail}>
+      {mine && (
+        <Checkbox
+          checked={mine.acknowledgedAt !== null}
+          onCheckedChange={(c) => onToggle(c === true)}
+          aria-label="Mark as read"
+        />
+      )}
+      <span
+        className={cn(
+          "inline-flex items-center gap-1 whitespace-nowrap text-xs",
+          all ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
+        )}
+      >
+        {all && <CheckCheck className="size-3.5" aria-hidden />}
+        {done}/{acks.length} read
+      </span>
+    </div>
+  );
 }
 
 function formatDate(iso: string | null): string {
@@ -220,6 +272,28 @@ export default function TasksPage() {
 
   function handleUpdatePosted(taskId: string, update: TaskProgressUpdate) {
     setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, updates: [update, ...t.updates] } : t)));
+  }
+
+  function handleToggleAcknowledged(task: Task, acknowledged: boolean) {
+    const setMine = (acknowledgedAt: string | null) =>
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === task.id
+            ? { ...t, acknowledgements: t.acknowledgements.map((a) => (a.username === me ? { ...a, acknowledgedAt } : a)) }
+            : t
+        )
+      );
+    const previous = task.acknowledgements.find((a) => a.username === me)?.acknowledgedAt ?? null;
+    setMine(acknowledged ? new Date().toISOString() : null);
+    startTransition(async () => {
+      const result = await setTaskAcknowledged(task.id, acknowledged);
+      if (result.error) {
+        setError(result.error);
+        setMine(previous);
+      } else {
+        setMine(result.data);
+      }
+    });
   }
 
   function handleToggleDone(task: Task, done: boolean) {
@@ -399,6 +473,9 @@ export default function TasksPage() {
                       </td>
                       <td className="px-3 py-2">{t.owner}</td>
                       <td className="px-3 py-2">{t.assignees.length ? t.assignees.join(", ") : "—"}</td>
+                      <td className="px-3 py-2">
+                        <AcknowledgedCell task={t} me={me} onToggle={(a) => handleToggleAcknowledged(t, a)} />
+                      </td>
                       <td
                         className={cn("truncate px-3 py-2 text-muted-foreground", !columns.widths && "max-w-xs")} title={notesTooltip(t)}>
                         {t.notes ?? "—"}
