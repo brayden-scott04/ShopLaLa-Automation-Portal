@@ -78,6 +78,14 @@ automation-portal/
 
 Go to `/admin/users` → click **Create User** → enter a username and password. The account is created immediately as a `"user"` role — no email or confirmation step, and no way to make it an admin from the UI. Every staff member (any role) can see the full account list, read-only, at `/team`.
 
+**Renaming:** admins can change a user's or moderator's username from the pencil icon on
+`/admin/users` (`renameStaffMember`). Admin usernames are DB-only. Every table that links to
+`staff.username` by foreign key follows the rename via `ON UPDATE CASCADE`. The tasks tables always
+had it; the calendar tables got it from `sql/staff_rename_cascade_migration.sql` (applied 2026-10-19). Free-text audit columns
+(`price_change_plans.created_by`, `*_by_username`, `fba_fee_*.updated_by`) keep the old name. The
+renamed person's JWT still holds the old username: `getMyPermissions()` reports
+`accountExists: false` and the portal layout redirects them to `/login`.
+
 ### Reading the session server-side
 
 ```typescript
@@ -522,7 +530,7 @@ import { listStaff, createStaffMember, getCurrentUser } from "@/lib/actions/staf
 const { data, error } = await listStaff();
 ```
 
-Admin-only actions (`listStaff`, `createStaffMember`, `updateStaffMember`, `resetPassword`, `deleteStaffMember`) call `requireAdmin()` internally and return `{ data: null, error: "Unauthorized" }` if the session role isn't `"admin"`. `getStaffDirectory` (backs `/team`) and `getCurrentUser` only require a valid session — any authenticated staff member, not just admins.
+Admin-only actions (`listStaff`, `createStaffMember`, `updateStaffMember`, `renameStaffMember`, `resetPassword`, `deleteStaffMember`) call `requireAdmin()` internally and return `{ data: null, error: "Unauthorized" }` if the session role isn't `"admin"`. `getStaffDirectory` (backs `/team`) and `getCurrentUser` only require a valid session — any authenticated staff member, not just admins.
 
 > **Never export a plain constant (or a re-exported type) from a `"use server"` file for a
 > client component to import.** Every export of a `"use server"` module is rewritten into a

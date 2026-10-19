@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1792411750.9799385,
-    "ast_hash": "c8d0f9b404f7d11fe1f77b92be74b8c9",
+    "mtime": 1792413025.1113186,
+    "ast_hash": "a6194a9c06ed026651004dd869015ead",
     "semantic_hash": ""
   },
   "README.md": {
@@ -940,8 +940,8 @@
     "semantic_hash": ""
   },
   "lib/nav.ts": {
-    "mtime": 1792411434.2129118,
-    "ast_hash": "c71919c001bd28be129e86d1b7b06ce9",
+    "mtime": 1792413025.1103177,
+    "ast_hash": "aae97c07c59bc6492db41af914524e59",
     "semantic_hash": ""
   },
   "sql/nav_restructure_migration.sql": {

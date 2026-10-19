@@ -1,7 +1,7 @@
 {
   "app/(portal)/admin/users/page.tsx": {
-    "mtime": 1792411677.1165662,
-    "ast_hash": "3a1eb5ac8c6bec99f19c2cd6f4ed4bd6",
+    "mtime": 1792416635.4860244,
+    "ast_hash": "c650f8f84c2c5ae157e88726e687bfea",
     "semantic_hash": ""
   },
   "app/(portal)/dashboard/page.tsx": {
@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/layout.tsx": {
-    "mtime": 1785392747.6596155,
-    "ast_hash": "33072d74478531798696ffb5d88baa7e",
+    "mtime": 1792416614.6750512,
+    "ast_hash": "8d127d33ccb610cfacbe103cbd405f03",
     "semantic_hash": ""
   },
   "app/(portal)/team/page.tsx": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "lib/actions/staff.ts": {
-    "mtime": 1786000353.6373937,
-    "ast_hash": "52486ad6f61bedb7c446eb204d9dc750",
+    "mtime": 1792416596.2207282,
+    "ast_hash": "a5974026892d66c2c8de78c645c19305",
     "semantic_hash": ""
   },
   "lib/ppc-daily-cap-constants.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1792413025.1113186,
-    "ast_hash": "a6194a9c06ed026651004dd869015ead",
+    "mtime": 1792416653.356309,
+    "ast_hash": "5602e66bcc391d0b7cd50986a15a4324",
     "semantic_hash": ""
   },
   "README.md": {
@@ -355,8 +355,8 @@
     "semantic_hash": ""
   },
   "lib/permissions.ts": {
-    "mtime": 1792411677.1347225,
-    "ast_hash": "7d1c084405e5c0dd537771c0b07d554e",
+    "mtime": 1792416621.3011942,
+    "ast_hash": "4bed72067d4ad607d16d4f36a26e94a4",
     "semantic_hash": ""
   },
   "lib/roles.ts": {
@@ -947,6 +947,11 @@
   "sql/nav_restructure_migration.sql": {
     "mtime": 1792411722.0682778,
     "ast_hash": "696b366eb0a4daa51872345d58d1cca2",
+    "semantic_hash": ""
+  },
+  "sql/staff_rename_cascade_migration.sql": {
+    "mtime": 1792416600.7738805,
+    "ast_hash": "b978b023b694f3dafe1da6a34bd25abe",
     "semantic_hash": ""
   }
 }

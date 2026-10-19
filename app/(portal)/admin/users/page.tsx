@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { ShieldCheck, UserPlus, KeyRound, Trash2, SlidersHorizontal } from "lucide-react";
+import { ShieldCheck, UserPlus, KeyRound, Trash2, SlidersHorizontal, PencilLine } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -9,6 +9,7 @@ import {
   createStaffMember,
   updateStaffMember,
   updatePermissions,
+  renameStaffMember,
   resetPassword,
   deleteStaffMember,
   getCurrentUser,
@@ -65,6 +66,11 @@ export default function ManageUsersPage() {
   const [resetTarget, setResetTarget] = useState<StaffMember | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [resetError, setResetError] = useState<string | null>(null);
+
+  // Rename dialog
+  const [renameTarget, setRenameTarget] = useState<StaffMember | null>(null);
+  const [newUsername, setNewUsername] = useState("");
+  const [renameError, setRenameError] = useState<string | null>(null);
 
   // Delete dialog
   const [deleteTarget, setDeleteTarget] = useState<StaffMember | null>(null);
@@ -125,6 +131,21 @@ export default function ManageUsersPage() {
       } else {
         setResetTarget(null);
         setNewPassword("");
+      }
+    });
+  }
+
+  function handleRename() {
+    if (!renameTarget) return;
+    setRenameError(null);
+    startTransition(async () => {
+      const { error } = await renameStaffMember(renameTarget.id, newUsername);
+      if (error) {
+        setRenameError(error);
+      } else {
+        setRenameTarget(null);
+        setNewUsername("");
+        reload();
       }
     });
   }
@@ -266,6 +287,7 @@ export default function ManageUsersPage() {
                       const canEditRole = isAdmin && member.role !== "admin" && !isSelf;
                       const canManageAccess = isAdmin && member.role !== "admin";
                       const canResetThis = member.role === "user";
+                      const canRename = isAdmin && member.role !== "admin";
                       return (
                         <tr
                           key={member.id}
@@ -322,6 +344,19 @@ export default function ManageUsersPage() {
                                   title="Manage access"
                                 >
                                   <SlidersHorizontal className="size-4" />
+                                </button>
+                              )}
+                              {canRename && (
+                                <button
+                                  onClick={() => {
+                                    setRenameTarget(member);
+                                    setNewUsername(member.username);
+                                    setRenameError(null);
+                                  }}
+                                  className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                                  title="Change username"
+                                >
+                                  <PencilLine className="size-4" />
                                 </button>
                               )}
                               {canResetThis && (
@@ -466,6 +501,58 @@ export default function ManageUsersPage() {
                 className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
                 {isPending ? "Saving…" : "Save Password"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rename Dialog */}
+      {renameTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
+            <h2 className="mb-1 text-lg font-semibold">Change Username</h2>
+            <p className="mb-4 text-sm text-muted-foreground">
+              Rename{" "}
+              <span className="font-medium text-foreground">
+                {renameTarget.username}
+              </span>
+            </p>
+            <input
+              type="text"
+              autoFocus
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && newUsername.trim()) handleRename();
+              }}
+              placeholder="New username"
+            />
+            <p className="mt-2 text-xs text-muted-foreground">
+              Their tasks, calendars and access move with them. They&apos;ll be signed out
+              and must log in with the new username (same password).
+            </p>
+            {renameError && (
+              <p className="mt-2 text-sm text-destructive">{renameError}</p>
+            )}
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                onClick={() => setRenameTarget(null)}
+                className="rounded-md px-4 py-2 text-sm font-medium hover:bg-accent"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRename}
+                disabled={
+                  isPending ||
+                  !newUsername.trim() ||
+                  newUsername.trim().toLowerCase() === renameTarget.username
+                }
+                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              >
+                {isPending ? "Saving…" : "Save Username"}
               </button>
             </div>
           </div>

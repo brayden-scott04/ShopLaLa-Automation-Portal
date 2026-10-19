@@ -125,6 +125,66 @@ export async function updateStaffMember(
   return { data, error: dbError?.message ?? null };
 }
 
+/**
+ * Admin-only: rename a user or moderator. Admin accounts are managed directly
+ * in the database, like their role and password.
+ *
+ * Rows that reference staff.username by foreign key (tasks, task assignees and
+ * updates, calendars and their members/assignees/creators) follow the rename via
+ * ON UPDATE CASCADE (see sql/staff_rename_cascade_migration.sql). Free-text
+ * audit columns (e.g. price_change_plans.created_by, *_by_username) keep the
+ * name that was current when the row was written.
+ *
+ * The renamed person's session still carries the old username, so the portal
+ * layout signs them out and they log in again with the new one.
+ */
+export async function renameStaffMember(id: string, newUsername: string) {
+  const { client, error } = await requireAdmin();
+  if (error) return { data: null, error };
+
+  const normalized = newUsername.trim().toLowerCase();
+  if (!USERNAME_PATTERN.test(normalized)) {
+    return {
+      data: null,
+      error: "Username must be 3-32 characters: lowercase letters, numbers, - or _",
+    };
+  }
+
+  const { data: target } = await client!
+    .from("staff")
+    .select("username, role")
+    .eq("id", id)
+    .single();
+  if (!target) {
+    return { data: null, error: "Staff member not found" };
+  }
+  if (target.role === "admin") {
+    return { data: null, error: "Admin usernames can only be changed directly in the database" };
+  }
+  if (target.username === normalized) {
+    return { data: null, error: "That is already their username" };
+  }
+
+  const { data, error: dbError } = await client!
+    .from("staff")
+    .update({ username: normalized })
+    .eq("id", id)
+    .select("id, username, role, created_at, permissions")
+    .single();
+
+  if (dbError) {
+    const message =
+      dbError.code === "23505"
+        ? "Username already taken"
+        : dbError.code === "23503"
+          ? "Their calendar data blocks the rename. Apply sql/staff_rename_cascade_migration.sql first."
+          : dbError.message;
+    return { data: null, error: message };
+  }
+
+  return { data, error: null };
+}
+
 /** Admin-only: assign which section items a user or moderator may access. */
 export async function updatePermissions(id: string, permissions: PermissionSet) {
   const { client, error } = await requireAdmin();

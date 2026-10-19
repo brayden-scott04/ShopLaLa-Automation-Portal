@@ -39,26 +39,38 @@ export function sanitizePermissions(input: unknown): PermissionSet {
  * from the JWT), so an admin's grant/revoke takes effect immediately. Admins
  * report every known item id (implicit full access). Returns empty permissions
  * for a missing session so callers can gate safely.
+ *
+ * `accountExists` is false when the session's username no longer matches a
+ * staff row (renamed or deleted since they logged in); the portal layout sends
+ * them back to /login. Admin sessions skip the lookup, and admin accounts can't
+ * be renamed from the portal.
  */
 export async function getMyPermissions(): Promise<{
   role: Role;
   permissions: PermissionSet;
+  accountExists: boolean;
 }> {
   const session = await getSession();
-  if (!session) return { role: "user", permissions: EMPTY_PERMISSIONS };
+  if (!session) return { role: "user", permissions: EMPTY_PERMISSIONS, accountExists: false };
 
   if (session.role === "admin") {
-    return { role: "admin", permissions: { ...ALL_ITEM_IDS } };
+    return { role: "admin", permissions: { ...ALL_ITEM_IDS }, accountExists: true };
   }
 
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("staff")
     .select("permissions")
     .eq("username", session.username)
     .single();
 
-  return { role: session.role, permissions: sanitizePermissions(data?.permissions) };
+  return {
+    role: session.role,
+    permissions: sanitizePermissions(data?.permissions),
+    // PGRST116 = .single() matched zero rows. Any other error (network, etc.)
+    // shouldn't sign someone out.
+    accountExists: Boolean(data) || error?.code !== "PGRST116",
+  };
 }
 
 /**

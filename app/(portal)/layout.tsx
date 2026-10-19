@@ -15,7 +15,13 @@ export default async function PortalLayout({
     redirect("/login");
   }
 
-  const { role, permissions } = await getMyPermissions();
+  const { role, permissions, accountExists } = await getMyPermissions();
+
+  // Their username was changed (or account deleted) since they logged in —
+  // logging in again replaces the stale session cookie.
+  if (!accountExists) {
+    redirect("/login");
+  }
 
   return (
     <div className="flex min-h-screen">
