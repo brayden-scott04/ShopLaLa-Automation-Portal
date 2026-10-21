@@ -29,7 +29,7 @@ automation-portal/
 │       ├── dashboard/page.tsx              # Home: "Your access" grid (auto-populated)
 │       ├── dashboard/<id>/                 # Dashboard group pages (e.g. profit-analytics)
 │       ├── supply-chain/<id>/              # Supply Chain group pages
-│       ├── market-ops/<id>/                # Market Ops pages; market-ops/automations/<id>/ for its Automations fold
+│       ├── market-ops/<id>/                # Market Ops pages; market-ops/automations/<id>/ for its Automations & Tools fold
 │       ├── visual/<id>/                    # Visual group pages
 │       ├── others/<id>/                    # Others group pages (calendar, tasks, company-inbox, …)
 │       ├── team/page.tsx                   # Read-only staff directory (username + role), visible to all staff
@@ -64,7 +64,7 @@ automation-portal/
 - Cookie is valid for **7 days**, secure in production, `sameSite=lax`
 - `middleware.ts` runs on every request, redirects to `/login` if no valid session
 - Staff accounts are stored in the Supabase `staff` table, identified by **username** (no email); passwords are bcrypt-hashed (cost 10)
-- Roles: `"admin"` or `"user"` — only admins can access `/admin/*`. There are exactly two admins today (Brayden, Dobie); every other account is `"user"`
+- Roles (`lib/roles.ts`): `"admin"`, `"manager"`, `"moderator"`, `"user"` (displayed as "User"). Admins can access all of `/admin/*`; managers and moderators only `/admin/users`, where they can create users and reset `"user"` passwords. **Manager currently has exactly the same abilities as Moderator** — a separate role so the two can diverge later. Only admins change roles (user ↔ moderator ↔ manager), rename, delete and assign access. There are exactly two admins today (Brayden, Dobie)
 - There is no self-service signup or email/invite flow — admins create every account directly from `/admin/users`
 - **Admins can only create `"user"` accounts.** Granting `"admin"` (whether creating a new account or promoting an existing one) is blocked in `createStaffMember`/`updateStaffMember` and must be done directly in the Supabase `staff` table — this is intentional, not a bug. The UI only ever offers demoting an admin to user, never the reverse
 
@@ -147,7 +147,7 @@ Project ID: `fuynizhfhfnvbdzwihgp`
 | `id` | `uuid` | PK, auto-generated |
 | `username` | `text` | Unique, lowercase, `^[a-z0-9_-]{3,32}$` |
 | `password_hash` | `text` | bcrypt, cost 10 |
-| `role` | `text` | `"admin"` or `"user"` |
+| `role` | `text` | `"admin"` \| `"manager"` \| `"moderator"` \| `"user"` (CHECK `staff_role_check`; `manager` added by `sql/staff_manager_role_migration.sql`) |
 | `created_at` | `timestamptz` | Auto |
 
 ### PPC ACOS Top-Up tables
@@ -432,7 +432,7 @@ period's figures are not trustworthy (surfaced as an amber banner on the page).
 
 ### Ads Bulk Generator tables
 
-Backs `/market-ops/automations/ads-bulk-generator` (Market Ops → Automations → "Ads Bulk Generator") (ported from the standalone `pdp-bulk-generator` app). It
+Backs `/market-ops/automations/ads-bulk-generator` (Market Ops → Automations & Tools → "Ads Bulk Generator") (ported from the standalone `pdp-bulk-generator` app). It
 **shares** `bulk_campaign_brands` / `_video_assets` / `_keyword_themes` with Sponsored Brands
 Upload (the Library cards for those live in `components/bulk-campaign/library-sections.tsx`,
 used by both pages) and adds three tables of its own — DDL in
@@ -511,6 +511,32 @@ The portal writes to these tables in only two ways, both in `lib/actions/fba-fee
 > - The page self-checks by running the calculator on *Amazon's* dimensions and comparing the result with Amazon's fee.
 > - If that match rate falls below 80%, the page shows a warning. That usually means the rate card or peak card is stale.
 
+### Trends (Best Sellers Rank) tables
+
+These back `/market-ops/automations/trends`. It records each ASIN's daily Best Sellers Rank,
+both the top-level rank ("#156,251 in Patio, Lawn & Garden") and every subcategory rank
+("#47 in Rail Planters"), and alerts when Amazon silently moves a product between categories.
+US only. The DDL is in `sql/bsr_trends_migration.sql` and is run by hand.
+
+**The daily data comes from the sibling `LaLaGreen-Daily-Report` repo.**
+- `reportlib/bsr_sync.py` calls Catalog Items 2022-04-01 (`includedData=salesRanks`) once per ASIN.
+- The ASIN list is the latest US `fba_fee_snapshots`, so it runs at 05:00 SGT, after the FBA fee
+  sync, from n8n (`n8n/bsr-sync.json`) via `POST /sync-bsr`.
+- It sends Telegram messages only for new alerts, errors and timeouts. Deployed to the VPS by hand.
+
+The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/trends.ts`).
+
+- **`bsr_snapshots`**: one row per `(snapshot_date SGT, country_code, asin, classification_id)`.
+  `rank_type` is `display_group` (top-level), `classification` (subcategory, keyed by browse-node
+  id) or `none`: a single sentinel row (`classification_id = ''`) for an ASIN that fetched fine but
+  has no rank. An ASIN whose API call failed has **no rows** that day, so it is never compared.
+  Pruned after 400 days.
+- **`bsr_alerts`**: `category_removed`, `category_added`, `ranks_lost`, or `rank_drop` (at least
+  `RANK_DROP_PCT` = 50% **and** `RANK_DROP_MIN_POSITIONS` = 20 places worse in the same category;
+  `lib/trends-constants.ts` must match `bsr_sync.py`). Same statuses as FBA alerts. Unique on
+  `(country_code, asin, detected_date, kind, classification_id)`.
+- **`bsr_sync_runs`**: append-only run log, with `asins_failed` for per-ASIN call failures.
+
 ### Supabase clients
 
 ```typescript
@@ -566,7 +592,7 @@ also feeds the dashboard's "Your access" grid, the Manage Users access editor, t
 |---|---|
 | Dashboard (`dashboard` / `/dashboard`) | Goal vs Performance\*, Profit Analytics |
 | Supply Chain (`supplyChain` / `/supply-chain`) | Partners\*, Sourcing\*, Orders\*, Shipments\*, Automations\* |
-| Market Ops (`marketOps` / `/market-ops`) | Products\*, Inventory\*, Advertisements\*, Master List, and an **Automations** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker |
+| Market Ops (`marketOps` / `/market-ops`) | Products\*, Inventory\*, Advertisements\*, Master List, and an **Automations & Tools** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`; only the label was renamed on 2026-10-21, the key and URLs stayed): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker, Trends |
 | Visual (`visual` / `/visual`) | Listing Score\* |
 | Others (`others` / `/others`) | Calendar, Finance\*, Tasks, Company Inbox |
 
@@ -575,7 +601,7 @@ also feeds the dashboard's "Your access" grid, the Manage Users access editor, t
 The sidebar renders **no icons** for Layer 1/2. Each group header is a coloured "pin" whose
 colour is a CSS var (`--nav-dashboard`, `--nav-supply-chain`, `--nav-market-ops`, `--nav-visual`,
 `--nav-others` in `app/globals.css`, with dark-mode variants), referenced by `NavGroup.colorVar`.
-Groups and the Automations fold are collapsible, open by default, with fold state in
+Groups and the Automations & Tools fold are collapsible, open by default, with fold state in
 `localStorage` (`sidebar-folded`). Items still carry an `icon` — it's used by `<PageHeader>` and
 the dashboard cards.
 

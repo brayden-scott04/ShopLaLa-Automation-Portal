@@ -67,9 +67,11 @@ export default function TeamPage() {
                           className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                             member.role === "admin"
                               ? "bg-primary/10 text-primary"
-                              : member.role === "moderator"
-                                ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                                : "bg-muted text-muted-foreground"
+                              : member.role === "manager"
+                                ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
+                                : member.role === "moderator"
+                                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                  : "bg-muted text-muted-foreground"
                           }`}
                         >
                           {ROLE_LABELS[member.role]}

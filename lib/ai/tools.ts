@@ -17,7 +17,7 @@ export const chatToolDefinitions: Anthropic.Tool[] = [
   {
     name: "list_portal_pages",
     description:
-      "List the pages available in the portal, grouped by sidebar section (Dashboard, Supply Chain, Market Ops, Visual, Others), with their names, descriptions and URLs. Market Ops pages under the Automations sub-group are the portal's automations and generators.",
+      "List the pages available in the portal, grouped by sidebar section (Dashboard, Supply Chain, Market Ops, Visual, Others), with their names, descriptions and URLs. Market Ops pages under the Automations & Tools sub-group are the portal's automations, generators and monitoring tools.",
     input_schema: { type: "object", properties: {}, additionalProperties: false },
   },
 ];

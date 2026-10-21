@@ -17,6 +17,7 @@ import {
   PackageSearch,
   Tag,
   Target,
+  TrendingUp,
   Truck,
   Wallet,
   Workflow,
@@ -36,11 +37,11 @@ import type { Section } from "@/lib/roles";
  * stops a direct URL visit, not the hidden sidebar link.
  */
 
-/** A nested fold inside a Layer-1 group (currently only Market Ops › Automations). */
+/** A nested fold inside a Layer-1 group (currently only Market Ops › Automations & Tools). */
 export type NavSubgroup = "automations";
 
 export const SUBGROUP_LABELS: Record<NavSubgroup, string> = {
-  automations: "Automations",
+  automations: "Automations & Tools",
 };
 
 export interface NavItem {
@@ -222,6 +223,14 @@ export const fbaFeeTracker = defineNavItem({
   subgroup: "automations",
 });
 
+export const trends = defineNavItem({
+  name: "Trends",
+  description: "Daily Best Sellers Rank per ASIN, with alerts when Amazon changes a product's category or its rank drops sharply",
+  icon: TrendingUp,
+  section: "marketOps",
+  subgroup: "automations",
+});
+
 // ── Visual ───────────────────────────────────────────────────────────────────
 export const listingScore = defineNavItem({
   name: "Listing Score",
@@ -289,6 +298,7 @@ export const NAV_GROUPS: NavGroup[] = [
       bulkCampaignUpload,
       adsBulkGenerator,
       fbaFeeTracker,
+      trends,
     ],
   },
   {

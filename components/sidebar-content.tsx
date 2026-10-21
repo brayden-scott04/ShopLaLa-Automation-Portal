@@ -25,6 +25,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   type Role,
   type PermissionSet,
+  ROLE_LABELS,
   canManageUsers,
   filterItems,
 } from "@/lib/roles";
@@ -369,7 +370,7 @@ export function SidebarContent({
             <Separator className="my-2" />
           ) : (
             <p className="px-3 pt-4 pb-1 text-xs font-medium text-muted-foreground">
-              {role === "admin" ? "Admin" : "Moderator"}
+              {ROLE_LABELS[role]}
             </p>
           )}
           <Link

@@ -307,6 +307,7 @@ export default function ManageUsersPage() {
                               >
                                 <option value="user">{ROLE_LABELS.user}</option>
                                 <option value="moderator">{ROLE_LABELS.moderator}</option>
+                                <option value="manager">{ROLE_LABELS.manager}</option>
                               </select>
                             ) : (
                               <span
@@ -438,10 +439,10 @@ export default function ManageUsersPage() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                New accounts are created as Staff with no tool access.{" "}
+                New accounts are created as Users with no tool access.{" "}
                 {isAdmin
-                  ? "Grant access and promote to Moderator after creating. Admin access can only be granted directly in the database."
-                  : "An admin can grant access and promote to Moderator."}
+                  ? "Grant access and promote to Moderator or Manager after creating. Admin access can only be granted directly in the database."
+                  : "An admin can grant access and promote to Moderator or Manager."}
               </p>
               {createError && (
                 <p className="text-sm text-destructive">{createError}</p>

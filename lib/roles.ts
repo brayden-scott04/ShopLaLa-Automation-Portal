@@ -1,10 +1,12 @@
 /**
  * Single source of truth for staff roles and the per-account access model.
  *
- * There are three roles:
+ * There are four roles:
  *  - "admin"     — full access to everything; the only role that can promote/
  *                  demote, delete accounts, and assign per-user access. Admin
  *                  accounts can only be created/edited directly in the database.
+ *  - "manager"   — currently identical to "moderator" (kept separate so the two
+ *                  can diverge later).
  *  - "moderator" — can create regular users and reset their passwords, and has
  *                  whatever section access an admin granted.
  *  - "user"      — has only the section access an admin granted.
@@ -13,13 +15,14 @@
  * shaped as {@link PermissionSet}. Admins bypass it entirely (implicit full access).
  */
 
-export type Role = "admin" | "moderator" | "user";
+export type Role = "admin" | "manager" | "moderator" | "user";
 
-export const ROLES: Role[] = ["admin", "moderator", "user"];
+export const ROLES: Role[] = ["admin", "manager", "moderator", "user"];
 
 /** Display labels for each role. */
 export const ROLE_LABELS: Record<Role, string> = {
   admin: "Admin",
+  manager: "Manager",
   moderator: "Moderator",
   user: "User",
 };
@@ -56,7 +59,7 @@ const LEGACY_SECTIONS: Record<string, Section> = {
   communications: "others",
 };
 
-/** Admins + moderators can create users and reset user passwords. */
+/** Admins, managers and moderators can create users and reset user passwords. */
 export function canManageUsers(role: Role): boolean {
   return role !== "user";
 }
@@ -68,7 +71,7 @@ export function canAdminister(role: Role): boolean {
 
 /** Normalizes an unknown value (e.g. from a JWT claim or DB row) to a valid Role. */
 export function toRole(value: unknown): Role {
-  return value === "admin" || value === "moderator" ? value : "user";
+  return value === "admin" || value === "manager" || value === "moderator" ? value : "user";
 }
 
 /** Admins are always allowed; otherwise the id must be in the granted set. */

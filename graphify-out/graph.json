@@ -60,7 +60,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_chat_page",
-      "community": 47,
+      "community": 57,
       "norm_label": "page.tsx"
     },
     {
@@ -70,7 +70,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_portal_chat_page_chatpage",
-      "community": 47,
+      "community": 57,
       "norm_label": "chatpage()"
     },
     {
@@ -500,7 +500,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_page_adsbulkgeneratorpage",
-      "community": 25,
+      "community": 50,
       "norm_label": "adsbulkgeneratorpage()"
     },
     {
@@ -510,7 +510,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_product_block",
-      "community": 57,
+      "community": 25,
       "norm_label": "product-block.tsx"
     },
     {
@@ -530,7 +530,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_product_block_block",
-      "community": 57,
+      "community": 25,
       "norm_label": "block"
     },
     {
@@ -570,7 +570,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_product_block_field",
-      "community": 57,
+      "community": 25,
       "norm_label": "field()"
     },
     {
@@ -990,7 +990,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page",
-      "community": 24,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -1000,7 +1000,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_price_types",
-      "community": 24,
+      "community": 46,
       "norm_label": "price_types"
     },
     {
@@ -1010,7 +1010,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_pricetypeoption",
-      "community": 24,
+      "community": 46,
       "norm_label": "pricetypeoption"
     },
     {
@@ -1020,7 +1020,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_pricetypelabel",
-      "community": 24,
+      "community": 46,
       "norm_label": "pricetypelabel()"
     },
     {
@@ -1030,7 +1030,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_formatprice",
-      "community": 24,
+      "community": 46,
       "norm_label": "formatprice()"
     },
     {
@@ -1040,7 +1040,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_formatdate",
-      "community": 24,
+      "community": 46,
       "norm_label": "formatdate()"
     },
     {
@@ -1050,7 +1050,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_daysremaining",
-      "community": 24,
+      "community": 46,
       "norm_label": "daysremaining()"
     },
     {
@@ -1060,7 +1060,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_progresspercent",
-      "community": 24,
+      "community": 46,
       "norm_label": "progresspercent()"
     },
     {
@@ -1070,7 +1070,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_nextstepprice",
-      "community": 24,
+      "community": 46,
       "norm_label": "nextstepprice()"
     },
     {
@@ -1080,7 +1080,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_pricechangeplanspage",
-      "community": 24,
+      "community": 46,
       "norm_label": "pricechangeplanspage()"
     },
     {
@@ -1090,7 +1090,7 @@
       "source_location": "L328",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_planslist",
-      "community": 24,
+      "community": 46,
       "norm_label": "planslist()"
     },
     {
@@ -1100,7 +1100,7 @@
       "source_location": "L500",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_marketplaceoptions",
-      "community": 24,
+      "community": 49,
       "norm_label": "marketplaceoptions()"
     },
     {
@@ -1110,7 +1110,7 @@
       "source_location": "L518",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_testingbadge",
-      "community": 24,
+      "community": 46,
       "norm_label": "testingbadge()"
     },
     {
@@ -1120,7 +1120,7 @@
       "source_location": "L527",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_marketplacebadge",
-      "community": 24,
+      "community": 46,
       "norm_label": "marketplacebadge()"
     },
     {
@@ -1130,7 +1130,7 @@
       "source_location": "L535",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_directionbadge",
-      "community": 24,
+      "community": 46,
       "norm_label": "directionbadge()"
     },
     {
@@ -1140,7 +1140,7 @@
       "source_location": "L549",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_historytable",
-      "community": 24,
+      "community": 46,
       "norm_label": "historytable()"
     },
     {
@@ -1150,7 +1150,7 @@
       "source_location": "L586",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_plancard",
-      "community": 24,
+      "community": 46,
       "norm_label": "plancard()"
     },
     {
@@ -1160,7 +1160,7 @@
       "source_location": "L686",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_skudetailpanel",
-      "community": 24,
+      "community": 46,
       "norm_label": "skudetailpanel()"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_location": "L736",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_newpriceplansheet",
-      "community": 24,
+      "community": 46,
       "norm_label": "newpriceplansheet()"
     },
     {
@@ -1180,7 +1180,7 @@
       "source_location": "L1033",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_newbulkpriceplansheet",
-      "community": 24,
+      "community": 46,
       "norm_label": "newbulkpriceplansheet()"
     },
     {
@@ -1190,7 +1190,7 @@
       "source_location": "L1468",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_editpriceplansheet",
-      "community": 24,
+      "community": 46,
       "norm_label": "editpriceplansheet()"
     },
     {
@@ -1200,7 +1200,7 @@
       "source_location": "L1487",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_editpriceplanform",
-      "community": 24,
+      "community": 46,
       "norm_label": "editpriceplanform()"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block",
-      "community": 26,
+      "community": 41,
       "norm_label": "product-block.tsx"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_asset",
-      "community": 26,
+      "community": 41,
       "norm_label": "asset"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_theme",
-      "community": 26,
+      "community": 41,
       "norm_label": "theme"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_block",
-      "community": 26,
+      "community": 41,
       "norm_label": "block"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_preset",
-      "community": 26,
+      "community": 57,
       "norm_label": "preset"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_newblock",
-      "community": 26,
+      "community": 41,
       "norm_label": "newblock()"
     },
     {
@@ -1500,7 +1500,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_tolines",
-      "community": 26,
+      "community": 41,
       "norm_label": "tolines()"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_sectiontitle",
-      "community": 26,
+      "community": 41,
       "norm_label": "sectiontitle()"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_section",
-      "community": 26,
+      "community": 41,
       "norm_label": "section()"
     },
     {
@@ -1530,8 +1530,198 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_productblock",
-      "community": 26,
+      "community": 41,
       "norm_label": "productblock()"
+    },
+    {
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/layout.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_layout",
+      "community": 52,
+      "norm_label": "layout.tsx"
+    },
+    {
+      "label": "TrendsLayout()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/layout.tsx",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_layout_trendslayout",
+      "community": 52,
+      "norm_label": "trendslayout()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_page",
+      "community": 8,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "TrendsPage()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_page_trendspage",
+      "community": 8,
+      "norm_label": "trendspage()"
+    },
+    {
+      "label": "trends-view.tsx",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view",
+      "community": 42,
+      "norm_label": "trends-view.tsx"
+    },
+    {
+      "label": "CategoryRank",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_categoryrank",
+      "community": 42,
+      "norm_label": "categoryrank"
+    },
+    {
+      "label": "Row",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_row",
+      "community": 42,
+      "norm_label": "row"
+    },
+    {
+      "label": "SortKey",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L68",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_sortkey",
+      "community": 42,
+      "norm_label": "sortkey"
+    },
+    {
+      "label": "Filter",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L69",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_filter",
+      "community": 42,
+      "norm_label": "filter"
+    },
+    {
+      "label": "KIND_SEVERITY",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_kind_severity",
+      "community": 42,
+      "norm_label": "kind_severity"
+    },
+    {
+      "label": "rankText()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L78",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_ranktext",
+      "community": 42,
+      "norm_label": "ranktext()"
+    },
+    {
+      "label": "relativeTime()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_relativetime",
+      "community": 42,
+      "norm_label": "relativetime()"
+    },
+    {
+      "label": "buildRows()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_buildrows",
+      "community": 42,
+      "norm_label": "buildrows()"
+    },
+    {
+      "label": "TrendsView()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_trendsview",
+      "community": 42,
+      "norm_label": "trendsview()"
+    },
+    {
+      "label": "StatTile()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L579",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_stattile",
+      "community": 42,
+      "norm_label": "stattile()"
+    },
+    {
+      "label": "SortTh()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L609",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_sortth",
+      "community": 42,
+      "norm_label": "sortth()"
+    },
+    {
+      "label": "Delta()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L637",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_delta",
+      "community": 42,
+      "norm_label": "delta()"
+    },
+    {
+      "label": "AsinDetail()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L652",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_asindetail",
+      "community": 42,
+      "norm_label": "asindetail()"
+    },
+    {
+      "label": "CaseRaisedDialog()",
+      "file_type": "code",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L814",
+      "_origin": "ast",
+      "id": "app_portal_market_ops_automations_trends_trends_view_caseraiseddialog",
+      "community": 42,
+      "norm_label": "caseraiseddialog()"
     },
     {
       "label": "layout.tsx",
@@ -1610,7 +1800,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "app_portal_market_ops_master_list_page_formatprice",
-      "community": 24,
+      "community": 49,
       "norm_label": "formatprice()"
     },
     {
@@ -1660,7 +1850,7 @@
       "source_location": "L571",
       "_origin": "ast",
       "id": "app_portal_market_ops_master_list_page_skudetaildialog",
-      "community": 24,
+      "community": 49,
       "norm_label": "skudetaildialog()"
     },
     {
@@ -1810,7 +2000,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_manage_access_dialog_manageaccessdialog",
-      "community": 50,
+      "community": 0,
       "norm_label": "manageaccessdialog()"
     },
     {
@@ -2330,7 +2520,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_prioritypill",
-      "community": 26,
+      "community": 11,
       "norm_label": "prioritypill()"
     },
     {
@@ -2680,7 +2870,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_portal_team_page_teampage",
-      "community": 43,
+      "community": 54,
       "norm_label": "teampage()"
     },
     {
@@ -2790,7 +2980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_ads_bulk_generator_generate_route",
-      "community": 62,
+      "community": 51,
       "norm_label": "route.ts"
     },
     {
@@ -2800,7 +2990,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_api_tools_ads_bulk_generator_generate_route_incomingcampaign",
-      "community": 62,
+      "community": 51,
       "norm_label": "incomingcampaign"
     },
     {
@@ -2810,7 +3000,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_api_tools_ads_bulk_generator_generate_route_post",
-      "community": 62,
+      "community": 51,
       "norm_label": "post()"
     },
     {
@@ -2820,7 +3010,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve",
-      "community": 42,
+      "community": 2,
       "norm_label": "_resolve.ts"
     },
     {
@@ -2830,7 +3020,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_incomingcampaign",
-      "community": 42,
+      "community": 2,
       "norm_label": "incomingcampaign"
     },
     {
@@ -2840,7 +3030,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_brandrow",
-      "community": 42,
+      "community": 2,
       "norm_label": "brandrow"
     },
     {
@@ -2850,7 +3040,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolveok",
-      "community": 42,
+      "community": 2,
       "norm_label": "resolveok"
     },
     {
@@ -2860,7 +3050,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolveerr",
-      "community": 42,
+      "community": 2,
       "norm_label": "resolveerr"
     },
     {
@@ -2870,7 +3060,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolvemarketplace",
-      "community": 42,
+      "community": 2,
       "norm_label": "resolvemarketplace()"
     },
     {
@@ -2880,7 +3070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route",
-      "community": 42,
+      "community": 62,
       "norm_label": "route.ts"
     },
     {
@@ -2890,7 +3080,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route_post",
-      "community": 42,
+      "community": 62,
       "norm_label": "post()"
     },
     {
@@ -3230,7 +3420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel",
-      "community": 47,
+      "community": 26,
       "norm_label": "chat-panel.tsx"
     },
     {
@@ -3240,7 +3430,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_markdowncomponents",
-      "community": 47,
+      "community": 26,
       "norm_label": "markdowncomponents"
     },
     {
@@ -3250,7 +3440,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_composer",
-      "community": 47,
+      "community": 26,
       "norm_label": "composer()"
     },
     {
@@ -3260,7 +3450,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_chatpanel",
-      "community": 47,
+      "community": 57,
       "norm_label": "chatpanel()"
     },
     {
@@ -3270,7 +3460,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections",
-      "community": 57,
+      "community": 49,
       "norm_label": "library-sections.tsx"
     },
     {
@@ -3280,7 +3470,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections_countries",
-      "community": 57,
+      "community": 49,
       "norm_label": "countries"
     },
     {
@@ -3320,7 +3510,7 @@
       "source_location": "L775",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections_deleteconfirm",
-      "community": 25,
+      "community": 49,
       "norm_label": "deleteconfirm()"
     },
     {
@@ -3330,7 +3520,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_login_form",
-      "community": 57,
+      "community": 26,
       "norm_label": "login-form.tsx"
     },
     {
@@ -3340,7 +3530,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_login_form_loginform",
-      "community": 57,
+      "community": 26,
       "norm_label": "loginform()"
     },
     {
@@ -3350,7 +3540,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_page_header",
-      "community": 47,
+      "community": 57,
       "norm_label": "page-header.tsx"
     },
     {
@@ -3360,7 +3550,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_page_header_pageheader",
-      "community": 47,
+      "community": 57,
       "norm_label": "pageheader()"
     },
     {
@@ -3467,7 +3657,7 @@
       "label": "isActive()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L34",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "components_sidebar_content_isactive",
       "community": 43,
@@ -3477,7 +3667,7 @@
       "label": "foldKey()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L39",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "components_sidebar_content_foldkey",
       "community": 43,
@@ -3487,7 +3677,7 @@
       "label": "foldListeners",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L45",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "components_sidebar_content_foldlisteners",
       "community": 43,
@@ -3497,7 +3687,7 @@
       "label": "readFolds()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L48",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "components_sidebar_content_readfolds",
       "community": 43,
@@ -3507,7 +3697,7 @@
       "label": "writeFolds()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L56",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "components_sidebar_content_writefolds",
       "community": 43,
@@ -3517,7 +3707,7 @@
       "label": "parseFolds()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L66",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "components_sidebar_content_parsefolds",
       "community": 43,
@@ -3527,7 +3717,7 @@
       "label": "subscribeFolds()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L75",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "components_sidebar_content_subscribefolds",
       "community": 43,
@@ -3537,7 +3727,7 @@
       "label": "useFoldState()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L86",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "components_sidebar_content_usefoldstate",
       "community": 43,
@@ -3547,7 +3737,7 @@
       "label": "initials()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L112",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "components_sidebar_content_initials",
       "community": 43,
@@ -3557,17 +3747,17 @@
       "label": "Pin()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L122",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "components_sidebar_content_pin",
-      "community": 11,
+      "community": 43,
       "norm_label": "pin()"
     },
     {
       "label": "NavGroupSection()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L135",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "components_sidebar_content_navgroupsection",
       "community": 43,
@@ -3577,17 +3767,17 @@
       "label": "NavLeaf()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L241",
+      "source_location": "L242",
       "_origin": "ast",
       "id": "components_sidebar_content_navleaf",
-      "community": 11,
+      "community": 43,
       "norm_label": "navleaf()"
     },
     {
       "label": "SidebarContent()",
       "file_type": "code",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L255",
+      "source_location": "L256",
       "_origin": "ast",
       "id": "components_sidebar_content_sidebarcontent",
       "community": 43,
@@ -3620,7 +3810,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_tasks_task_form_dialog",
-      "community": 0,
+      "community": 26,
       "norm_label": "task-form-dialog.tsx"
     },
     {
@@ -3630,7 +3820,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "components_tasks_task_form_dialog_taskformdialogprops",
-      "community": 0,
+      "community": 26,
       "norm_label": "taskformdialogprops"
     },
     {
@@ -3640,7 +3830,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "components_tasks_task_form_dialog_todaylocal",
-      "community": 0,
+      "community": 26,
       "norm_label": "todaylocal()"
     },
     {
@@ -3660,7 +3850,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "components_tasks_task_form_dialog_taskforminner",
-      "community": 0,
+      "community": 26,
       "norm_label": "taskforminner()"
     },
     {
@@ -3670,7 +3860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_tasks_task_updates",
-      "community": 0,
+      "community": 26,
       "norm_label": "task-updates.tsx"
     },
     {
@@ -3720,7 +3910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_alert_dialog",
-      "community": 26,
+      "community": 49,
       "norm_label": "alert-dialog.tsx"
     },
     {
@@ -3730,7 +3920,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialog",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialog()"
     },
     {
@@ -3740,7 +3930,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogtrigger",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogtrigger()"
     },
     {
@@ -3750,7 +3940,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogportal",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogportal()"
     },
     {
@@ -3760,7 +3950,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogoverlay",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogoverlay()"
     },
     {
@@ -3770,7 +3960,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogcontent",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogcontent()"
     },
     {
@@ -3780,7 +3970,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogheader",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogheader()"
     },
     {
@@ -3790,7 +3980,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogfooter",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogfooter()"
     },
     {
@@ -3800,7 +3990,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogmedia",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogmedia()"
     },
     {
@@ -3820,7 +4010,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogdescription",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogdescription()"
     },
     {
@@ -3830,7 +4020,7 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogaction",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogaction()"
     },
     {
@@ -3840,7 +4030,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogcancel",
-      "community": 26,
+      "community": 49,
       "norm_label": "alertdialogcancel()"
     },
     {
@@ -3920,7 +4110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_badge",
-      "community": 49,
+      "community": 11,
       "norm_label": "badge.tsx"
     },
     {
@@ -3930,7 +4120,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_badge_badgevariants",
-      "community": 49,
+      "community": 11,
       "norm_label": "badgevariants"
     },
     {
@@ -3940,7 +4130,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "components_ui_badge_badge",
-      "community": 49,
+      "community": 11,
       "norm_label": "badge()"
     },
     {
@@ -3950,7 +4140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_button",
-      "community": 0,
+      "community": 26,
       "norm_label": "button.tsx"
     },
     {
@@ -3960,7 +4150,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_ui_button_buttonvariants",
-      "community": 0,
+      "community": 26,
       "norm_label": "buttonvariants"
     },
     {
@@ -3970,7 +4160,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "components_ui_button_button",
-      "community": 0,
+      "community": 26,
       "norm_label": "button()"
     },
     {
@@ -4260,7 +4450,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "components_ui_dialog_dialogoverlay",
-      "community": 11,
+      "community": 0,
       "norm_label": "dialogoverlay()"
     },
     {
@@ -4490,7 +4680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_input",
-      "community": 57,
+      "community": 49,
       "norm_label": "input.tsx"
     },
     {
@@ -4500,7 +4690,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_ui_input_input",
-      "community": 57,
+      "community": 49,
       "norm_label": "input()"
     },
     {
@@ -4510,7 +4700,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_label",
-      "community": 0,
+      "community": 26,
       "norm_label": "label.tsx"
     },
     {
@@ -4520,7 +4710,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_label_label",
-      "community": 0,
+      "community": 26,
       "norm_label": "label()"
     },
     {
@@ -4530,7 +4720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_segmented_control",
-      "community": 11,
+      "community": 46,
       "norm_label": "segmented-control.tsx"
     },
     {
@@ -4540,7 +4730,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentoption",
-      "community": 11,
+      "community": 46,
       "norm_label": "segmentoption"
     },
     {
@@ -4550,7 +4740,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentedcontrol",
-      "community": 57,
+      "community": 25,
       "norm_label": "segmentedcontrol()"
     },
     {
@@ -4630,7 +4820,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "components_ui_sheet_sheetoverlay",
-      "community": 49,
+      "community": 11,
       "norm_label": "sheetoverlay()"
     },
     {
@@ -4690,7 +4880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_skeleton",
-      "community": 47,
+      "community": 26,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -4700,7 +4890,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_ui_skeleton_skeleton",
-      "community": 47,
+      "community": 26,
       "norm_label": "skeleton()"
     },
     {
@@ -4730,7 +4920,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_tabs",
-      "community": 11,
+      "community": 46,
       "norm_label": "tabs.tsx"
     },
     {
@@ -4740,7 +4930,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_tabs_tabs",
-      "community": 11,
+      "community": 46,
       "norm_label": "tabs()"
     },
     {
@@ -4750,7 +4940,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "components_ui_tabs_tabslistvariants",
-      "community": 11,
+      "community": 46,
       "norm_label": "tabslistvariants"
     },
     {
@@ -4760,7 +4950,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "components_ui_tabs_tabslist",
-      "community": 11,
+      "community": 46,
       "norm_label": "tabslist()"
     },
     {
@@ -4770,7 +4960,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "components_ui_tabs_tabstrigger",
-      "community": 11,
+      "community": 46,
       "norm_label": "tabstrigger()"
     },
     {
@@ -4780,7 +4970,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ui_tabs_tabscontent",
-      "community": 24,
+      "community": 46,
       "norm_label": "tabscontent()"
     },
     {
@@ -4790,7 +4980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_textarea",
-      "community": 57,
+      "community": 26,
       "norm_label": "textarea.tsx"
     },
     {
@@ -4800,7 +4990,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_ui_textarea_textarea",
-      "community": 57,
+      "community": 26,
       "norm_label": "textarea()"
     },
     {
@@ -4850,7 +5040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_ai_chat",
-      "community": 8,
+      "community": 54,
       "norm_label": "ai-chat.ts"
     },
     {
@@ -4860,7 +5050,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "lib_actions_ai_chat_sendaichatmessage",
-      "community": 8,
+      "community": 54,
       "norm_label": "sendaichatmessage()"
     },
     {
@@ -4900,7 +5090,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_brand",
-      "community": 57,
+      "community": 25,
       "norm_label": "brand"
     },
     {
@@ -4910,7 +5100,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_videoasset",
-      "community": 57,
+      "community": 25,
       "norm_label": "videoasset"
     },
     {
@@ -4920,7 +5110,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_keywordtheme",
-      "community": 57,
+      "community": 25,
       "norm_label": "keywordtheme"
     },
     {
@@ -5120,7 +5310,7 @@
       "source_location": "L402",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_campaignproduct",
-      "community": 50,
+      "community": 57,
       "norm_label": "campaignproduct"
     },
     {
@@ -5170,7 +5360,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_calendar",
-      "community": 50,
+      "community": 0,
       "norm_label": "calendar.ts"
     },
     {
@@ -5190,7 +5380,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_actions_calendar_calendarmember",
-      "community": 50,
+      "community": 0,
       "norm_label": "calendarmember"
     },
     {
@@ -5210,7 +5400,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "lib_actions_calendar_deletescope",
-      "community": 50,
+      "community": 0,
       "norm_label": "deletescope"
     },
     {
@@ -5220,7 +5410,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "lib_actions_calendar_occurrenceupdate",
-      "community": 50,
+      "community": 0,
       "norm_label": "occurrenceupdate"
     },
     {
@@ -5250,7 +5440,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "lib_actions_calendar_validatetimes",
-      "community": 50,
+      "community": 0,
       "norm_label": "validatetimes()"
     },
     {
@@ -5260,7 +5450,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "lib_actions_calendar_validaterepeat",
-      "community": 50,
+      "community": 0,
       "norm_label": "validaterepeat()"
     },
     {
@@ -5270,7 +5460,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "lib_actions_calendar_repeatcolumns",
-      "community": 50,
+      "community": 0,
       "norm_label": "repeatcolumns()"
     },
     {
@@ -5280,7 +5470,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "lib_actions_calendar_accessresult",
-      "community": 50,
+      "community": 0,
       "norm_label": "accessresult"
     },
     {
@@ -5290,7 +5480,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "lib_actions_calendar_supabaseserverclient",
-      "community": 50,
+      "community": 0,
       "norm_label": "supabaseserverclient"
     },
     {
@@ -5300,7 +5490,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "lib_actions_calendar_requirecalendaraccess",
-      "community": 50,
+      "community": 0,
       "norm_label": "requirecalendaraccess()"
     },
     {
@@ -5310,7 +5500,7 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "lib_actions_calendar_requireeditoraccess",
-      "community": 50,
+      "community": 0,
       "norm_label": "requireeditoraccess()"
     },
     {
@@ -5320,7 +5510,7 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "lib_actions_calendar_accessiblecalendar",
-      "community": 50,
+      "community": 0,
       "norm_label": "accessiblecalendar"
     },
     {
@@ -5330,7 +5520,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "lib_actions_calendar_getaccessiblecalendarmap",
-      "community": 50,
+      "community": 0,
       "norm_label": "getaccessiblecalendarmap()"
     },
     {
@@ -5340,7 +5530,7 @@
       "source_location": "L240",
       "_origin": "ast",
       "id": "lib_actions_calendar_loadassignees",
-      "community": 50,
+      "community": 0,
       "norm_label": "loadassignees()"
     },
     {
@@ -5350,7 +5540,7 @@
       "source_location": "L262",
       "_origin": "ast",
       "id": "lib_actions_calendar_loadexceptions",
-      "community": 50,
+      "community": 0,
       "norm_label": "loadexceptions()"
     },
     {
@@ -5360,7 +5550,7 @@
       "source_location": "L292",
       "_origin": "ast",
       "id": "lib_actions_calendar_getmycalendars",
-      "community": 50,
+      "community": 0,
       "norm_label": "getmycalendars()"
     },
     {
@@ -5370,7 +5560,7 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "lib_actions_calendar_createcalendar",
-      "community": 50,
+      "community": 0,
       "norm_label": "createcalendar()"
     },
     {
@@ -5380,7 +5570,7 @@
       "source_location": "L346",
       "_origin": "ast",
       "id": "lib_actions_calendar_renamecalendar",
-      "community": 50,
+      "community": 0,
       "norm_label": "renamecalendar()"
     },
     {
@@ -5400,7 +5590,7 @@
       "source_location": "L393",
       "_origin": "ast",
       "id": "lib_actions_calendar_getcalendarmembers",
-      "community": 50,
+      "community": 0,
       "norm_label": "getcalendarmembers()"
     },
     {
@@ -5410,7 +5600,7 @@
       "source_location": "L420",
       "_origin": "ast",
       "id": "lib_actions_calendar_addcalendarmember",
-      "community": 50,
+      "community": 0,
       "norm_label": "addcalendarmember()"
     },
     {
@@ -5420,7 +5610,7 @@
       "source_location": "L467",
       "_origin": "ast",
       "id": "lib_actions_calendar_addcalendarmembers",
-      "community": 50,
+      "community": 0,
       "norm_label": "addcalendarmembers()"
     },
     {
@@ -5430,7 +5620,7 @@
       "source_location": "L513",
       "_origin": "ast",
       "id": "lib_actions_calendar_updatecalendarmemberrole",
-      "community": 50,
+      "community": 0,
       "norm_label": "updatecalendarmemberrole()"
     },
     {
@@ -5440,7 +5630,7 @@
       "source_location": "L547",
       "_origin": "ast",
       "id": "lib_actions_calendar_removecalendarmember",
-      "community": 50,
+      "community": 0,
       "norm_label": "removecalendarmember()"
     },
     {
@@ -5450,7 +5640,7 @@
       "source_location": "L578",
       "_origin": "ast",
       "id": "lib_actions_calendar_tocalendartask",
-      "community": 50,
+      "community": 0,
       "norm_label": "tocalendartask()"
     },
     {
@@ -5460,7 +5650,7 @@
       "source_location": "L628",
       "_origin": "ast",
       "id": "lib_actions_calendar_gettasksforrange",
-      "community": 50,
+      "community": 0,
       "norm_label": "gettasksforrange()"
     },
     {
@@ -5470,7 +5660,7 @@
       "source_location": "L667",
       "_origin": "ast",
       "id": "lib_actions_calendar_getupcomingtasks",
-      "community": 50,
+      "community": 0,
       "norm_label": "getupcomingtasks()"
     },
     {
@@ -5480,7 +5670,7 @@
       "source_location": "L725",
       "_origin": "ast",
       "id": "lib_actions_calendar_assertassigneesallowed",
-      "community": 50,
+      "community": 0,
       "norm_label": "assertassigneesallowed()"
     },
     {
@@ -5490,7 +5680,7 @@
       "source_location": "L743",
       "_origin": "ast",
       "id": "lib_actions_calendar_createtask",
-      "community": 50,
+      "community": 0,
       "norm_label": "createtask()"
     },
     {
@@ -5500,7 +5690,7 @@
       "source_location": "L799",
       "_origin": "ast",
       "id": "lib_actions_calendar_updatetask",
-      "community": 50,
+      "community": 0,
       "norm_label": "updatetask()"
     },
     {
@@ -5510,7 +5700,7 @@
       "source_location": "L882",
       "_origin": "ast",
       "id": "lib_actions_calendar_copytasktodates",
-      "community": 50,
+      "community": 0,
       "norm_label": "copytasktodates()"
     },
     {
@@ -5520,7 +5710,7 @@
       "source_location": "L938",
       "_origin": "ast",
       "id": "lib_actions_calendar_deletetask",
-      "community": 50,
+      "community": 0,
       "norm_label": "deletetask()"
     },
     {
@@ -5530,7 +5720,7 @@
       "source_location": "L964",
       "_origin": "ast",
       "id": "lib_actions_calendar_loadoccurrencetarget",
-      "community": 50,
+      "community": 0,
       "norm_label": "loadoccurrencetarget()"
     },
     {
@@ -5540,7 +5730,7 @@
       "source_location": "L992",
       "_origin": "ast",
       "id": "lib_actions_calendar_updateoccurrence",
-      "community": 50,
+      "community": 0,
       "norm_label": "updateoccurrence()"
     },
     {
@@ -5550,7 +5740,7 @@
       "source_location": "L1059",
       "_origin": "ast",
       "id": "lib_actions_calendar_resetoccurrence",
-      "community": 50,
+      "community": 0,
       "norm_label": "resetoccurrence()"
     },
     {
@@ -5560,7 +5750,7 @@
       "source_location": "L1085",
       "_origin": "ast",
       "id": "lib_actions_calendar_deleteoccurrences",
-      "community": 50,
+      "community": 0,
       "norm_label": "deleteoccurrences()"
     },
     {
@@ -5570,7 +5760,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker",
-      "community": 48,
+      "community": 47,
       "norm_label": "fba-fee-tracker.ts"
     },
     {
@@ -5600,7 +5790,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_feealert",
-      "community": 48,
+      "community": 58,
       "norm_label": "feealert"
     },
     {
@@ -5610,7 +5800,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_dimsjson",
-      "community": 48,
+      "community": 47,
       "norm_label": "dimsjson"
     },
     {
@@ -5620,7 +5810,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_syncrun",
-      "community": 48,
+      "community": 47,
       "norm_label": "syncrun"
     },
     {
@@ -5630,7 +5820,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_fbafeeoverview",
-      "community": 48,
+      "community": 47,
       "norm_label": "fbafeeoverview"
     },
     {
@@ -5640,7 +5830,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_requirestaff",
-      "community": 48,
+      "community": 47,
       "norm_label": "requirestaff()"
     },
     {
@@ -5650,7 +5840,7 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_selectall",
-      "community": 48,
+      "community": 47,
       "norm_label": "selectall()"
     },
     {
@@ -5660,7 +5850,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_snapshotson",
-      "community": 48,
+      "community": 47,
       "norm_label": "snapshotson()"
     },
     {
@@ -5670,7 +5860,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_daysbefore",
-      "community": 48,
+      "community": 47,
       "norm_label": "daysbefore()"
     },
     {
@@ -5680,7 +5870,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_getfbafeeoverview",
-      "community": 48,
+      "community": 47,
       "norm_label": "getfbafeeoverview()"
     },
     {
@@ -5690,7 +5880,7 @@
       "source_location": "L258",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_skuhistory",
-      "community": 48,
+      "community": 47,
       "norm_label": "skuhistory"
     },
     {
@@ -5700,7 +5890,7 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_getskufeehistory",
-      "community": 48,
+      "community": 47,
       "norm_label": "getskufeehistory()"
     },
     {
@@ -5710,7 +5900,7 @@
       "source_location": "L298",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_dimsinput",
-      "community": 48,
+      "community": 47,
       "norm_label": "dimsinput"
     },
     {
@@ -5720,7 +5910,7 @@
       "source_location": "L305",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_validatedims",
-      "community": 48,
+      "community": 47,
       "norm_label": "validatedims()"
     },
     {
@@ -5730,7 +5920,7 @@
       "source_location": "L314",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_updatetruedims",
-      "community": 48,
+      "community": 47,
       "norm_label": "updatetruedims()"
     },
     {
@@ -5740,7 +5930,7 @@
       "source_location": "L345",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_resettruedimstoamazon",
-      "community": 48,
+      "community": 47,
       "norm_label": "resettruedimstoamazon()"
     },
     {
@@ -5750,7 +5940,7 @@
       "source_location": "L384",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_bulkdimsresult",
-      "community": 48,
+      "community": 47,
       "norm_label": "bulkdimsresult"
     },
     {
@@ -5760,7 +5950,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_bulkupdatetruedims",
-      "community": 48,
+      "community": 47,
       "norm_label": "bulkupdatetruedims()"
     },
     {
@@ -5770,7 +5960,7 @@
       "source_location": "L511",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_updatealertstatus",
-      "community": 48,
+      "community": 47,
       "norm_label": "updatealertstatus()"
     },
     {
@@ -6380,7 +6570,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator",
-      "community": 25,
+      "community": 50,
       "norm_label": "pdp-bulk-generator.ts"
     },
     {
@@ -6390,7 +6580,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_requirestaff",
-      "community": 25,
+      "community": 50,
       "norm_label": "requirestaff()"
     },
     {
@@ -6430,7 +6620,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_listbrandlogos",
-      "community": 25,
+      "community": 50,
       "norm_label": "listbrandlogos()"
     },
     {
@@ -6440,7 +6630,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_createbrandlogo",
-      "community": 25,
+      "community": 50,
       "norm_label": "createbrandlogo()"
     },
     {
@@ -6450,7 +6640,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_updatebrandlogo",
-      "community": 25,
+      "community": 50,
       "norm_label": "updatebrandlogo()"
     },
     {
@@ -6460,7 +6650,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_deletebrandlogo",
-      "community": 25,
+      "community": 50,
       "norm_label": "deletebrandlogo()"
     },
     {
@@ -6470,7 +6660,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_liststoreurls",
-      "community": 25,
+      "community": 50,
       "norm_label": "liststoreurls()"
     },
     {
@@ -6480,7 +6670,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_createstoreurl",
-      "community": 25,
+      "community": 50,
       "norm_label": "createstoreurl()"
     },
     {
@@ -6490,7 +6680,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_updatestoreurl",
-      "community": 25,
+      "community": 50,
       "norm_label": "updatestoreurl()"
     },
     {
@@ -6500,7 +6690,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_deletestoreurl",
-      "community": 25,
+      "community": 50,
       "norm_label": "deletestoreurl()"
     },
     {
@@ -6510,7 +6700,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_listpdppresets",
-      "community": 25,
+      "community": 50,
       "norm_label": "listpdppresets()"
     },
     {
@@ -6520,7 +6710,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_savepdppreset",
-      "community": 25,
+      "community": 50,
       "norm_label": "savepdppreset()"
     },
     {
@@ -6530,7 +6720,7 @@
       "source_location": "L212",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_deletepdppreset",
-      "community": 25,
+      "community": 50,
       "norm_label": "deletepdppreset()"
     },
     {
@@ -7790,7 +7980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_sku_list",
-      "community": 46,
+      "community": 50,
       "norm_label": "sku-list.ts"
     },
     {
@@ -7800,7 +7990,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_actions_sku_list_requirestaff",
-      "community": 46,
+      "community": 50,
       "norm_label": "requirestaff()"
     },
     {
@@ -7810,7 +8000,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "lib_actions_sku_list_sku",
-      "community": 46,
+      "community": 49,
       "norm_label": "sku"
     },
     {
@@ -7820,7 +8010,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_actions_sku_list_listskus",
-      "community": 24,
+      "community": 50,
       "norm_label": "listskus()"
     },
     {
@@ -7830,7 +8020,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "lib_actions_sku_list_addskus",
-      "community": 46,
+      "community": 50,
       "norm_label": "addskus()"
     },
     {
@@ -7840,7 +8030,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "lib_actions_sku_list_replaceskus",
-      "community": 46,
+      "community": 50,
       "norm_label": "replaceskus()"
     },
     {
@@ -7850,7 +8040,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "lib_actions_sku_list_reorderskus",
-      "community": 46,
+      "community": 50,
       "norm_label": "reorderskus()"
     },
     {
@@ -7860,7 +8050,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "lib_actions_sku_list_deletesku",
-      "community": 46,
+      "community": 50,
       "norm_label": "deletesku()"
     },
     {
@@ -7870,7 +8060,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "lib_actions_sku_list_sku_hints",
-      "community": 46,
+      "community": 50,
       "norm_label": "sku_hints"
     },
     {
@@ -7880,7 +8070,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "lib_actions_sku_list_status_hints",
-      "community": 46,
+      "community": 50,
       "norm_label": "status_hints"
     },
     {
@@ -7890,7 +8080,7 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "lib_actions_sku_list_inactive_keywords",
-      "community": 46,
+      "community": 50,
       "norm_label": "inactive_keywords"
     },
     {
@@ -7900,7 +8090,7 @@
       "source_location": "L186",
       "_origin": "ast",
       "id": "lib_actions_sku_list_normalizeheader",
-      "community": 46,
+      "community": 50,
       "norm_label": "normalizeheader()"
     },
     {
@@ -7910,7 +8100,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "lib_actions_sku_list_findcolumn",
-      "community": 46,
+      "community": 50,
       "norm_label": "findcolumn()"
     },
     {
@@ -7920,7 +8110,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "lib_actions_sku_list_isinactive",
-      "community": 46,
+      "community": 50,
       "norm_label": "isinactive()"
     },
     {
@@ -7930,7 +8120,7 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "lib_actions_sku_list_columnmapping",
-      "community": 46,
+      "community": 50,
       "norm_label": "columnmapping"
     },
     {
@@ -7940,7 +8130,7 @@
       "source_location": "L212",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectcolumnheuristically",
-      "community": 46,
+      "community": 50,
       "norm_label": "detectcolumnheuristically()"
     },
     {
@@ -7950,7 +8140,7 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectstatuscolumnheuristically",
-      "community": 46,
+      "community": 50,
       "norm_label": "detectstatuscolumnheuristically()"
     },
     {
@@ -7960,7 +8150,7 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "lib_actions_sku_list_columndetectschema",
-      "community": 46,
+      "community": 50,
       "norm_label": "columndetectschema"
     },
     {
@@ -7970,7 +8160,7 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectcolumnwithai",
-      "community": 46,
+      "community": 50,
       "norm_label": "detectcolumnwithai()"
     },
     {
@@ -7980,7 +8170,7 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectedskusheet",
-      "community": 46,
+      "community": 50,
       "norm_label": "detectedskusheet"
     },
     {
@@ -7990,7 +8180,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "lib_actions_sku_list_extractskusfromsheet",
-      "community": 46,
+      "community": 50,
       "norm_label": "extractskusfromsheet()"
     },
     {
@@ -8000,7 +8190,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "lib_actions_sku_list_parseskuexcel",
-      "community": 46,
+      "community": 50,
       "norm_label": "parseskuexcel()"
     },
     {
@@ -8050,7 +8240,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_actions_staff_getstaffdirectory",
-      "community": 50,
+      "community": 54,
       "norm_label": "getstaffdirectory()"
     },
     {
@@ -8087,7 +8277,7 @@
       "label": "renameStaffMember()",
       "file_type": "code",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L141",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "lib_actions_staff_renamestaffmember",
       "community": 4,
@@ -8097,7 +8287,7 @@
       "label": "updatePermissions()",
       "file_type": "code",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L189",
+      "source_location": "L190",
       "_origin": "ast",
       "id": "lib_actions_staff_updatepermissions",
       "community": 4,
@@ -8107,7 +8297,7 @@
       "label": "resetPassword()",
       "file_type": "code",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L205",
+      "source_location": "L206",
       "_origin": "ast",
       "id": "lib_actions_staff_resetpassword",
       "community": 4,
@@ -8117,17 +8307,17 @@
       "label": "changeOwnPassword()",
       "file_type": "code",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L245",
+      "source_location": "L246",
       "_origin": "ast",
       "id": "lib_actions_staff_changeownpassword",
-      "community": 50,
+      "community": 4,
       "norm_label": "changeownpassword()"
     },
     {
       "label": "deleteStaffMember()",
       "file_type": "code",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L286",
+      "source_location": "L287",
       "_origin": "ast",
       "id": "lib_actions_staff_deletestaffmember",
       "community": 4,
@@ -8150,7 +8340,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "lib_actions_tasks_task",
-      "community": 0,
+      "community": 26,
       "norm_label": "task"
     },
     {
@@ -8170,7 +8360,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_actions_tasks_taskprogressupdate",
-      "community": 0,
+      "community": 26,
       "norm_label": "taskprogressupdate"
     },
     {
@@ -8180,7 +8370,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_actions_tasks_trackedtaskinput",
-      "community": 0,
+      "community": 26,
       "norm_label": "trackedtaskinput"
     },
     {
@@ -8344,13 +8534,143 @@
       "norm_label": "deletetrackedtask()"
     },
     {
+      "label": "trends.ts",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "lib_actions_trends",
+      "community": 42,
+      "norm_label": "trends.ts"
+    },
+    {
+      "label": "BsrSnapshot",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "lib_actions_trends_bsrsnapshot",
+      "community": 42,
+      "norm_label": "bsrsnapshot"
+    },
+    {
+      "label": "BsrAlert",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "lib_actions_trends_bsralert",
+      "community": 42,
+      "norm_label": "bsralert"
+    },
+    {
+      "label": "BsrSyncRun",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "lib_actions_trends_bsrsyncrun",
+      "community": 42,
+      "norm_label": "bsrsyncrun"
+    },
+    {
+      "label": "TrendsOverview",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L64",
+      "_origin": "ast",
+      "id": "lib_actions_trends_trendsoverview",
+      "community": 42,
+      "norm_label": "trendsoverview"
+    },
+    {
+      "label": "requireStaff()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L81",
+      "_origin": "ast",
+      "id": "lib_actions_trends_requirestaff",
+      "community": 42,
+      "norm_label": "requirestaff()"
+    },
+    {
+      "label": "selectAll()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "lib_actions_trends_selectall",
+      "community": 42,
+      "norm_label": "selectall()"
+    },
+    {
+      "label": "snapshotsOn()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "lib_actions_trends_snapshotson",
+      "community": 42,
+      "norm_label": "snapshotson()"
+    },
+    {
+      "label": "daysBefore()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L114",
+      "_origin": "ast",
+      "id": "lib_actions_trends_daysbefore",
+      "community": 42,
+      "norm_label": "daysbefore()"
+    },
+    {
+      "label": "getTrendsOverview()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "lib_actions_trends_gettrendsoverview",
+      "community": 42,
+      "norm_label": "gettrendsoverview()"
+    },
+    {
+      "label": "AsinBsrHistory",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L200",
+      "_origin": "ast",
+      "id": "lib_actions_trends_asinbsrhistory",
+      "community": 42,
+      "norm_label": "asinbsrhistory"
+    },
+    {
+      "label": "getAsinBsrHistory()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L205",
+      "_origin": "ast",
+      "id": "lib_actions_trends_getasinbsrhistory",
+      "community": 42,
+      "norm_label": "getasinbsrhistory()"
+    },
+    {
+      "label": "updateBsrAlertStatus()",
+      "file_type": "code",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L242",
+      "_origin": "ast",
+      "id": "lib_actions_trends_updatebsralertstatus",
+      "community": 42,
+      "norm_label": "updatebsralertstatus()"
+    },
+    {
       "label": "chat-provider.ts",
       "file_type": "code",
       "source_file": "lib/ai/chat-provider.ts",
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_ai_chat_provider",
-      "community": 8,
+      "community": 54,
       "norm_label": "chat-provider.ts"
     },
     {
@@ -8360,7 +8680,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_ai_chat_provider_chatmessage",
-      "community": 8,
+      "community": 54,
       "norm_label": "chatmessage"
     },
     {
@@ -8370,7 +8690,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_ai_chat_provider_generateassistantreply",
-      "community": 8,
+      "community": 54,
       "norm_label": "generateassistantreply()"
     },
     {
@@ -8380,7 +8700,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_ai_tools",
-      "community": 8,
+      "community": 54,
       "norm_label": "tools.ts"
     },
     {
@@ -8390,7 +8710,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_ai_tools_chattooldefinitions",
-      "community": 8,
+      "community": 54,
       "norm_label": "chattooldefinitions"
     },
     {
@@ -8400,7 +8720,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_ai_tools_runchattool",
-      "community": 8,
+      "community": 54,
       "norm_label": "runchattool()"
     },
     {
@@ -8770,7 +9090,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplacesbyregion",
-      "community": 24,
+      "community": 49,
       "norm_label": "marketplacesbyregion()"
     },
     {
@@ -8780,7 +9100,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_formatmoney",
-      "community": 24,
+      "community": 49,
       "norm_label": "formatmoney()"
     },
     {
@@ -8820,7 +9140,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "lib_amazon_sp_api_skudetail",
-      "community": 24,
+      "community": 49,
       "norm_label": "skudetail"
     },
     {
@@ -9070,7 +9390,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_calendar_constants_task_colors",
-      "community": 50,
+      "community": 0,
       "norm_label": "task_colors"
     },
     {
@@ -9100,7 +9420,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "lib_calendar_constants_repeat_freqs",
-      "community": 50,
+      "community": 0,
       "norm_label": "repeat_freqs"
     },
     {
@@ -9150,7 +9470,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_calendar_constants_calendar_member_roles",
-      "community": 50,
+      "community": 0,
       "norm_label": "calendar_member_roles"
     },
     {
@@ -9160,7 +9480,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "lib_calendar_constants_calendarmemberrole",
-      "community": 50,
+      "community": 0,
       "norm_label": "calendarmemberrole"
     },
     {
@@ -9170,7 +9490,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "lib_calendar_constants_calendarrole",
-      "community": 50,
+      "community": 0,
       "norm_label": "calendarrole"
     },
     {
@@ -9500,7 +9820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator",
-      "community": 48,
+      "community": 53,
       "norm_label": "fba-fee-calculator.ts"
     },
     {
@@ -9510,7 +9830,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_sizetier",
-      "community": 48,
+      "community": 53,
       "norm_label": "sizetier"
     },
     {
@@ -9530,7 +9850,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_banded",
-      "community": 48,
+      "community": 53,
       "norm_label": "banded"
     },
     {
@@ -9540,7 +9860,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_weightrow",
-      "community": 48,
+      "community": 53,
       "norm_label": "weightrow"
     },
     {
@@ -9550,7 +9870,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_incrementalrate",
-      "community": 48,
+      "community": 53,
       "norm_label": "incrementalrate"
     },
     {
@@ -9560,7 +9880,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_ratetables",
-      "community": 48,
+      "community": 53,
       "norm_label": "ratetables"
     },
     {
@@ -9570,7 +9890,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_us_peak_2026",
-      "community": 48,
+      "community": 53,
       "norm_label": "us_peak_2026"
     },
     {
@@ -9580,7 +9900,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_us_rate_card",
-      "community": 48,
+      "community": 53,
       "norm_label": "us_rate_card"
     },
     {
@@ -9590,7 +9910,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_tier_limits",
-      "community": 48,
+      "community": 53,
       "norm_label": "tier_limits"
     },
     {
@@ -9600,7 +9920,7 @@
       "source_location": "L168",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_feeinput",
-      "community": 48,
+      "community": 53,
       "norm_label": "feeinput"
     },
     {
@@ -9620,7 +9940,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_round2",
-      "community": 48,
+      "community": 53,
       "norm_label": "round2()"
     },
     {
@@ -9630,7 +9950,7 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_pricebandof",
-      "community": 48,
+      "community": 53,
       "norm_label": "pricebandof()"
     },
     {
@@ -9640,7 +9960,7 @@
       "source_location": "L201",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_sortsides",
-      "community": 48,
+      "community": 53,
       "norm_label": "sortsides()"
     },
     {
@@ -9650,7 +9970,7 @@
       "source_location": "L206",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_sizetierfor",
-      "community": 48,
+      "community": 53,
       "norm_label": "sizetierfor()"
     },
     {
@@ -9660,7 +9980,7 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_incremental",
-      "community": 48,
+      "community": 53,
       "norm_label": "incremental()"
     },
     {
@@ -9670,7 +9990,7 @@
       "source_location": "L233",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_fromrows",
-      "community": 48,
+      "community": 53,
       "norm_label": "fromrows()"
     },
     {
@@ -9680,7 +10000,7 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "lib_fba_fee_calculator_expectedfbafee",
-      "community": 48,
+      "community": 53,
       "norm_label": "expectedfbafee()"
     },
     {
@@ -9710,7 +10030,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants",
-      "community": 48,
+      "community": 58,
       "norm_label": "fba-fee-tracker-constants.ts"
     },
     {
@@ -9720,7 +10040,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alert_kinds",
-      "community": 48,
+      "community": 58,
       "norm_label": "alert_kinds"
     },
     {
@@ -9730,7 +10050,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alertkind",
-      "community": 48,
+      "community": 58,
       "norm_label": "alertkind"
     },
     {
@@ -9740,7 +10060,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alert_causes",
-      "community": 48,
+      "community": 58,
       "norm_label": "alert_causes"
     },
     {
@@ -9750,7 +10070,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alertcause",
-      "community": 48,
+      "community": 58,
       "norm_label": "alertcause"
     },
     {
@@ -9760,7 +10080,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alert_statuses",
-      "community": 48,
+      "community": 47,
       "norm_label": "alert_statuses"
     },
     {
@@ -9770,7 +10090,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alertstatus",
-      "community": 48,
+      "community": 42,
       "norm_label": "alertstatus"
     },
     {
@@ -9780,7 +10100,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alert_kind_labels",
-      "community": 48,
+      "community": 58,
       "norm_label": "alert_kind_labels"
     },
     {
@@ -9790,7 +10110,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "lib_fba_fee_tracker_constants_alert_status_labels",
-      "community": 48,
+      "community": 58,
       "norm_label": "alert_status_labels"
     },
     {
@@ -9807,27 +10127,27 @@
       "label": "NavSubgroup",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L40",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "lib_nav_navsubgroup",
-      "community": 8,
+      "community": 43,
       "norm_label": "navsubgroup"
     },
     {
       "label": "SUBGROUP_LABELS",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L42",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "lib_nav_subgroup_labels",
-      "community": 8,
+      "community": 54,
       "norm_label": "subgroup_labels"
     },
     {
       "label": "NavItem",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "lib_nav_navitem",
       "community": 8,
@@ -9837,7 +10157,7 @@
       "label": "NavGroup",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L59",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "lib_nav_navgroup",
       "community": 8,
@@ -9847,7 +10167,7 @@
       "label": "BASE_PATHS",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L69",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "lib_nav_base_paths",
       "community": 8,
@@ -9857,7 +10177,7 @@
       "label": "slugify()",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L77",
+      "source_location": "L78",
       "_origin": "ast",
       "id": "lib_nav_slugify",
       "community": 8,
@@ -9867,7 +10187,7 @@
       "label": "NavItemInput",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L84",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "lib_nav_naviteminput",
       "community": 8,
@@ -9877,7 +10197,7 @@
       "label": "defineNavItem()",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L95",
+      "source_location": "L96",
       "_origin": "ast",
       "id": "lib_nav_definenavitem",
       "community": 8,
@@ -9887,7 +10207,7 @@
       "label": "goalVsPerformance",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L106",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "lib_nav_goalvsperformance",
       "community": 8,
@@ -9897,17 +10217,17 @@
       "label": "profitAnalytics",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L113",
+      "source_location": "L114",
       "_origin": "ast",
       "id": "lib_nav_profitanalytics",
-      "community": 8,
+      "community": 44,
       "norm_label": "profitanalytics"
     },
     {
       "label": "partners",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L121",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "lib_nav_partners",
       "community": 8,
@@ -9917,7 +10237,7 @@
       "label": "sourcing",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L128",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "lib_nav_sourcing",
       "community": 8,
@@ -9927,7 +10247,7 @@
       "label": "orders",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L135",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "lib_nav_orders",
       "community": 8,
@@ -9937,7 +10257,7 @@
       "label": "shipments",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L142",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "lib_nav_shipments",
       "community": 8,
@@ -9947,7 +10267,7 @@
       "label": "supplyChainAutomations",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L149",
+      "source_location": "L150",
       "_origin": "ast",
       "id": "lib_nav_supplychainautomations",
       "community": 8,
@@ -9957,7 +10277,7 @@
       "label": "products",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L157",
+      "source_location": "L158",
       "_origin": "ast",
       "id": "lib_nav_products",
       "community": 8,
@@ -9967,7 +10287,7 @@
       "label": "inventory",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L164",
+      "source_location": "L165",
       "_origin": "ast",
       "id": "lib_nav_inventory",
       "community": 8,
@@ -9977,7 +10297,7 @@
       "label": "advertisements",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L171",
+      "source_location": "L172",
       "_origin": "ast",
       "id": "lib_nav_advertisements",
       "community": 8,
@@ -9987,7 +10307,7 @@
       "label": "masterList",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L178",
+      "source_location": "L179",
       "_origin": "ast",
       "id": "lib_nav_masterlist",
       "community": 8,
@@ -9997,7 +10317,7 @@
       "label": "ppcTopUp",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L185",
+      "source_location": "L186",
       "_origin": "ast",
       "id": "lib_nav_ppctopup",
       "community": 1,
@@ -10007,7 +10327,7 @@
       "label": "priceChangePlans",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L193",
+      "source_location": "L194",
       "_origin": "ast",
       "id": "lib_nav_pricechangeplans",
       "community": 8,
@@ -10017,7 +10337,7 @@
       "label": "bulkCampaignUpload",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L201",
+      "source_location": "L202",
       "_origin": "ast",
       "id": "lib_nav_bulkcampaignupload",
       "community": 8,
@@ -10027,7 +10347,7 @@
       "label": "adsBulkGenerator",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L209",
+      "source_location": "L210",
       "_origin": "ast",
       "id": "lib_nav_adsbulkgenerator",
       "community": 8,
@@ -10037,17 +10357,27 @@
       "label": "fbaFeeTracker",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L217",
+      "source_location": "L218",
       "_origin": "ast",
       "id": "lib_nav_fbafeetracker",
       "community": 8,
       "norm_label": "fbafeetracker"
     },
     {
-      "label": "listingScore",
+      "label": "trends",
       "file_type": "code",
       "source_file": "lib/nav.ts",
       "source_location": "L226",
+      "_origin": "ast",
+      "id": "lib_nav_trends",
+      "community": 8,
+      "norm_label": "trends"
+    },
+    {
+      "label": "listingScore",
+      "file_type": "code",
+      "source_file": "lib/nav.ts",
+      "source_location": "L235",
       "_origin": "ast",
       "id": "lib_nav_listingscore",
       "community": 8,
@@ -10057,7 +10387,7 @@
       "label": "calendar",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L234",
+      "source_location": "L243",
       "_origin": "ast",
       "id": "lib_nav_calendar",
       "community": 8,
@@ -10067,7 +10397,7 @@
       "label": "finance",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L241",
+      "source_location": "L250",
       "_origin": "ast",
       "id": "lib_nav_finance",
       "community": 8,
@@ -10077,7 +10407,7 @@
       "label": "tasks",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L248",
+      "source_location": "L257",
       "_origin": "ast",
       "id": "lib_nav_tasks",
       "community": 8,
@@ -10087,17 +10417,17 @@
       "label": "companyInbox",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L255",
+      "source_location": "L264",
       "_origin": "ast",
       "id": "lib_nav_companyinbox",
-      "community": 8,
+      "community": 45,
       "norm_label": "companyinbox"
     },
     {
       "label": "NAV_GROUPS",
       "file_type": "code",
       "source_file": "lib/nav.ts",
-      "source_location": "L262",
+      "source_location": "L271",
       "_origin": "ast",
       "id": "lib_nav_nav_groups",
       "community": 43,
@@ -10547,7 +10877,7 @@
       "label": "Role",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L16",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "lib_roles_role",
       "community": 43,
@@ -10557,7 +10887,7 @@
       "label": "ROLES",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L18",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "lib_roles_roles",
       "community": 43,
@@ -10567,7 +10897,7 @@
       "label": "ROLE_LABELS",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L21",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "lib_roles_role_labels",
       "community": 43,
@@ -10577,7 +10907,7 @@
       "label": "Section",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L31",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "lib_roles_section",
       "community": 8,
@@ -10587,7 +10917,7 @@
       "label": "SECTIONS",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L33",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "lib_roles_sections",
       "community": 4,
@@ -10597,7 +10927,7 @@
       "label": "PermissionSet",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L36",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "lib_roles_permissionset",
       "community": 43,
@@ -10607,17 +10937,17 @@
       "label": "EMPTY_PERMISSIONS",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L38",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "lib_roles_empty_permissions",
-      "community": 52,
+      "community": 4,
       "norm_label": "empty_permissions"
     },
     {
       "label": "LEGACY_SECTIONS",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L51",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "lib_roles_legacy_sections",
       "community": 43,
@@ -10627,7 +10957,7 @@
       "label": "canManageUsers()",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L60",
+      "source_location": "L63",
       "_origin": "ast",
       "id": "lib_roles_canmanageusers",
       "community": 43,
@@ -10637,7 +10967,7 @@
       "label": "canAdminister()",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L65",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "lib_roles_canadminister",
       "community": 43,
@@ -10647,7 +10977,7 @@
       "label": "toRole()",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L70",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "lib_roles_torole",
       "community": 9,
@@ -10657,7 +10987,7 @@
       "label": "isAllowed()",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L75",
+      "source_location": "L78",
       "_origin": "ast",
       "id": "lib_roles_isallowed",
       "community": 62,
@@ -10667,20 +10997,20 @@
       "label": "filterItems()",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L85",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "lib_roles_filteritems",
-      "community": 43,
+      "community": 62,
       "norm_label": "filteritems()"
     },
     {
       "label": "toPermissionSet()",
       "file_type": "code",
       "source_file": "lib/roles.ts",
-      "source_location": "L99",
+      "source_location": "L102",
       "_origin": "ast",
       "id": "lib_roles_topermissionset",
-      "community": 4,
+      "community": 52,
       "norm_label": "topermissionset()"
     },
     {
@@ -10740,7 +11070,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "lib_session_getsession",
-      "community": 50,
+      "community": 62,
       "norm_label": "getsession()"
     },
     {
@@ -10800,7 +11130,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_supabase_server_createclient",
-      "community": 50,
+      "community": 0,
       "norm_label": "createclient()"
     },
     {
@@ -10830,7 +11160,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_tasks_constants",
-      "community": 0,
+      "community": 26,
       "norm_label": "tasks-constants.ts"
     },
     {
@@ -10840,7 +11170,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_tasks_constants_priorities",
-      "community": 0,
+      "community": 26,
       "norm_label": "priorities"
     },
     {
@@ -10850,7 +11180,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "lib_tasks_constants_priority_labels",
-      "community": 0,
+      "community": 26,
       "norm_label": "priority_labels"
     },
     {
@@ -10860,8 +11190,58 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_tasks_constants_priority_classes",
-      "community": 0,
+      "community": 26,
       "norm_label": "priority_classes"
+    },
+    {
+      "label": "trends-constants.ts",
+      "file_type": "code",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "lib_trends_constants",
+      "community": 42,
+      "norm_label": "trends-constants.ts"
+    },
+    {
+      "label": "BSR_ALERT_KINDS",
+      "file_type": "code",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "lib_trends_constants_bsr_alert_kinds",
+      "community": 42,
+      "norm_label": "bsr_alert_kinds"
+    },
+    {
+      "label": "BsrAlertKind",
+      "file_type": "code",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "lib_trends_constants_bsralertkind",
+      "community": 42,
+      "norm_label": "bsralertkind"
+    },
+    {
+      "label": "BSR_ALERT_KIND_LABELS",
+      "file_type": "code",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "lib_trends_constants_bsr_alert_kind_labels",
+      "community": 42,
+      "norm_label": "bsr_alert_kind_labels"
+    },
+    {
+      "label": "BsrRankType",
+      "file_type": "code",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "lib_trends_constants_bsrranktype",
+      "community": 42,
+      "norm_label": "bsrranktype"
     },
     {
       "label": "utils.ts",
@@ -10890,7 +11270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_xlsx_assetid",
-      "community": 41,
+      "community": 25,
       "norm_label": "assetid.ts"
     },
     {
@@ -10900,7 +11280,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_xlsx_assetid_extractassetid",
-      "community": 41,
+      "community": 25,
       "norm_label": "extractassetid()"
     },
     {
@@ -10970,7 +11350,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk",
-      "community": 42,
+      "community": 2,
       "norm_label": "buildsponsoredbrandsbulk.ts"
     },
     {
@@ -10980,7 +11360,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_country",
-      "community": 42,
+      "community": 2,
       "norm_label": "country"
     },
     {
@@ -10990,7 +11370,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_us_header",
-      "community": 42,
+      "community": 2,
       "norm_label": "us_header"
     },
     {
@@ -11000,7 +11380,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_header",
-      "community": 42,
+      "community": 2,
       "norm_label": "header"
     },
     {
@@ -11010,7 +11390,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_basecampaigninput",
-      "community": 42,
+      "community": 2,
       "norm_label": "basecampaigninput"
     },
     {
@@ -11020,7 +11400,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_campaigninput",
-      "community": 42,
+      "community": 2,
       "norm_label": "campaigninput"
     },
     {
@@ -11030,7 +11410,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_sheet_name",
-      "community": 42,
+      "community": 2,
       "norm_label": "sheet_name"
     },
     {
@@ -11040,7 +11420,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_toamazondate",
-      "community": 42,
+      "community": 2,
       "norm_label": "toamazondate()"
     },
     {
@@ -11050,7 +11430,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_budgetfor",
-      "community": 42,
+      "community": 2,
       "norm_label": "budgetfor()"
     },
     {
@@ -11060,7 +11440,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_emptyrow",
-      "community": 42,
+      "community": 2,
       "norm_label": "emptyrow()"
     },
     {
@@ -11070,7 +11450,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_dedupekeywords",
-      "community": 42,
+      "community": 2,
       "norm_label": "dedupekeywords()"
     },
     {
@@ -11080,7 +11460,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_buildsponsoredbrandsbulk",
-      "community": 42,
+      "community": 2,
       "norm_label": "buildsponsoredbrandsbulk()"
     },
     {
@@ -11700,7 +12080,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "package_dependencies_xlsx",
-      "community": 48,
+      "community": 47,
       "norm_label": "xlsx"
     },
     {
@@ -11887,7 +12267,7 @@
       "label": "config",
       "file_type": "code",
       "source_file": "proxy.ts",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "proxy_config",
       "community": 9,
@@ -12334,10 +12714,20 @@
       "norm_label": "fba fee tracker tables"
     },
     {
-      "label": "Supabase clients",
+      "label": "Trends (Best Sellers Rank) tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L514",
+      "_origin": "ast",
+      "id": "claude_trends_best_sellers_rank_tables",
+      "community": 23,
+      "norm_label": "trends (best sellers rank) tables"
+    },
+    {
+      "label": "Supabase clients",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L540",
       "_origin": "ast",
       "id": "claude_supabase_clients",
       "community": 23,
@@ -12347,7 +12737,7 @@
       "label": "Server Actions",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L528",
+      "source_location": "L554",
       "_origin": "ast",
       "id": "claude_server_actions",
       "community": 23,
@@ -12357,7 +12747,7 @@
       "label": "Navigation & Adding a Page",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L558",
+      "source_location": "L584",
       "_origin": "ast",
       "id": "claude_navigation_adding_a_page",
       "community": 23,
@@ -12367,7 +12757,7 @@
       "label": "Adding a page to an existing group",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L589",
+      "source_location": "L615",
       "_origin": "ast",
       "id": "claude_adding_a_page_to_an_existing_group",
       "community": 23,
@@ -12377,7 +12767,7 @@
       "label": "Adding a Layer-1 group",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L602",
+      "source_location": "L628",
       "_origin": "ast",
       "id": "claude_adding_a_layer_1_group",
       "community": 23,
@@ -12387,7 +12777,7 @@
       "label": "Adding an API route",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L610",
+      "source_location": "L636",
       "_origin": "ast",
       "id": "claude_adding_an_api_route",
       "community": 23,
@@ -12397,7 +12787,7 @@
       "label": "Page Header Component",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L627",
+      "source_location": "L653",
       "_origin": "ast",
       "id": "claude_page_header_component",
       "community": 23,
@@ -12407,7 +12797,7 @@
       "label": "Key Conventions",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L645",
+      "source_location": "L671",
       "_origin": "ast",
       "id": "claude_key_conventions",
       "community": 23,
@@ -12417,7 +12807,7 @@
       "label": "Key File Reference",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L659",
+      "source_location": "L685",
       "_origin": "ast",
       "id": "claude_key_file_reference",
       "community": 23,
@@ -12427,7 +12817,7 @@
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L676",
+      "source_location": "L702",
       "_origin": "ast",
       "id": "claude_graphify",
       "community": 23,
@@ -13030,7 +13420,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/admin/users/page.tsx",
-      "source_location": "L329",
+      "source_location": "L330",
       "weight": 1.0,
       "source": "app_portal_admin_users_page_manageuserspage",
       "target": "app_portal_admin_users_page_accesssummary",
@@ -22011,6 +22401,859 @@
       "source": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_productblock",
       "target": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_tolines",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/layout.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_layout",
+      "target": "app_portal_market_ops_automations_trends_layout_trendslayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_layout",
+      "target": "lib_permissions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_layout",
+      "target": "lib_permissions_assertitemaccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/market-ops/automations/trends/layout.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_layout_trendslayout",
+      "target": "lib_permissions_assertitemaccess"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_page",
+      "target": "app_portal_market_ops_automations_trends_page_trendspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_page",
+      "target": "app_portal_market_ops_automations_trends_trends_view",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_page",
+      "target": "components_page_header",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_page",
+      "target": "components_page_header_pageheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_page",
+      "target": "lib_nav",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_page",
+      "target": "lib_nav_trends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L652",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_asindetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_buildrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L814",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_caseraiseddialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_categoryrank",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L637",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_delta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_filter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_kind_severity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_ranktext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_relativetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_sortkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L609",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_sortth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L579",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_stattile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "app_portal_market_ops_automations_trends_trends_view_trendsview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_badge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_badge_badge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_button",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_button_button",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_card",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_card_card",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_card_cardcontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_card_carddescription",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_card_cardheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_card_cardtitle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_chart",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_chart_chartconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_chart_chartcontainer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_chart_charttooltipcontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogclose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogcontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogdescription",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogfooter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_dialog_dialogtitle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_skeleton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_skeleton_skeleton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_tabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_tabs_tabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_tabs_tabslist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "components_ui_tabs_tabstrigger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_asinbsrhistory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_bsralert",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_bsrsnapshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_getasinbsrhistory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_gettrendsoverview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_trendsoverview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_actions_trends_updatebsralertstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_fba_fee_tracker_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_fba_fee_tracker_constants_alert_status_labels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_fba_fee_tracker_constants_alertstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_trends_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_trends_constants_bsr_alert_kind_labels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_trends_constants_bsralertkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_utils",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view",
+      "target": "lib_utils_cn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_row",
+      "target": "lib_actions_trends_bsralert",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L737",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_asindetail",
+      "target": "app_portal_market_ops_automations_trends_trends_view_ranktext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L384",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_trendsview",
+      "target": "app_portal_market_ops_automations_trends_trends_view_ranktext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L291",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_trendsview",
+      "target": "app_portal_market_ops_automations_trends_trends_view_relativetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L179",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_trendsview",
+      "target": "app_portal_market_ops_automations_trends_trends_view_buildrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L358",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_trendsview",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L591",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_stattile",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L627",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_sortth",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L641",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_delta",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/market-ops/automations/trends/trends-view.tsx",
+      "source_location": "L657",
+      "weight": 1.0,
+      "source": "app_portal_market_ops_automations_trends_trends_view_asindetail",
+      "target": "lib_actions_trends_getasinbsrhistory"
     },
     {
       "relation": "contains",
@@ -31938,7 +33181,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_foldkey",
@@ -31948,7 +33191,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_foldlisteners",
@@ -31958,7 +33201,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L112",
+      "source_location": "L113",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_initials",
@@ -31968,7 +33211,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_isactive",
@@ -31978,7 +33221,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L135",
+      "source_location": "L136",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_navgroupsection",
@@ -31988,7 +33231,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L241",
+      "source_location": "L242",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_navleaf",
@@ -31998,7 +33241,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L66",
+      "source_location": "L67",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_parsefolds",
@@ -32008,7 +33251,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_pin",
@@ -32018,7 +33261,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_readfolds",
@@ -32028,7 +33271,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L255",
+      "source_location": "L256",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_sidebarcontent",
@@ -32038,7 +33281,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L75",
+      "source_location": "L76",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_subscribefolds",
@@ -32048,7 +33291,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L86",
+      "source_location": "L87",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_usefoldstate",
@@ -32058,7 +33301,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L56",
+      "source_location": "L57",
       "weight": 1.0,
       "source": "components_sidebar_content",
       "target": "components_sidebar_content_writefolds",
@@ -32230,6 +33473,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/sidebar-content.tsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "components_sidebar_content",
+      "target": "lib_roles_role_labels",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -32267,7 +33521,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L161",
+      "source_location": "L162",
       "weight": 1.0,
       "source": "components_sidebar_content_navgroupsection",
       "target": "components_sidebar_content_isactive",
@@ -32278,7 +33532,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L93",
+      "source_location": "L94",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "components_sidebar_content_isactive",
@@ -32289,7 +33543,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L172",
+      "source_location": "L173",
       "weight": 1.0,
       "source": "components_sidebar_content_navgroupsection",
       "target": "components_sidebar_content_foldkey",
@@ -32300,7 +33554,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L96",
+      "source_location": "L97",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "components_sidebar_content_foldkey",
@@ -32311,7 +33565,7 @@
       "context": "argument",
       "confidence": "INFERRED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L89",
+      "source_location": "L90",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "components_sidebar_content_readfolds",
@@ -32322,7 +33576,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L101",
+      "source_location": "L102",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "components_sidebar_content_writefolds",
@@ -32333,7 +33587,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "components_sidebar_content_parsefolds",
@@ -32344,7 +33598,7 @@
       "context": "argument",
       "confidence": "INFERRED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L89",
+      "source_location": "L90",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "components_sidebar_content_subscribefolds",
@@ -32355,7 +33609,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L269",
+      "source_location": "L270",
       "weight": 1.0,
       "source": "components_sidebar_content_sidebarcontent",
       "target": "components_sidebar_content_usefoldstate",
@@ -32367,7 +33621,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L93",
+      "source_location": "L94",
       "weight": 1.0,
       "source": "components_sidebar_content_usefoldstate",
       "target": "lib_nav_nav_groups"
@@ -32377,7 +33631,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L165",
+      "source_location": "L166",
       "weight": 1.0,
       "source": "components_sidebar_content_navgroupsection",
       "target": "components_sidebar_content_initials",
@@ -32389,7 +33643,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L126",
+      "source_location": "L127",
       "weight": 1.0,
       "source": "components_sidebar_content_pin",
       "target": "lib_utils_cn"
@@ -32400,7 +33654,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L159",
+      "source_location": "L160",
       "weight": 1.0,
       "source": "components_sidebar_content_navgroupsection",
       "target": "lib_utils_cn"
@@ -32411,7 +33665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L245",
+      "source_location": "L246",
       "weight": 1.0,
       "source": "components_sidebar_content_navleaf",
       "target": "lib_utils_cn"
@@ -32433,7 +33687,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L366",
+      "source_location": "L367",
       "weight": 1.0,
       "source": "components_sidebar_content_sidebarcontent",
       "target": "lib_roles_canmanageusers"
@@ -32444,7 +33698,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L273",
+      "source_location": "L274",
       "weight": 1.0,
       "source": "components_sidebar_content_sidebarcontent",
       "target": "lib_roles_filteritems"
@@ -32455,7 +33709,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/sidebar-content.tsx",
-      "source_location": "L279",
+      "source_location": "L280",
       "weight": 1.0,
       "source": "components_sidebar_content_sidebarcontent",
       "target": "lib_utils_cn"
@@ -45959,7 +47213,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L245",
+      "source_location": "L246",
       "weight": 1.0,
       "source": "lib_actions_staff",
       "target": "lib_actions_staff_changeownpassword",
@@ -45979,7 +47233,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L286",
+      "source_location": "L287",
       "weight": 1.0,
       "source": "lib_actions_staff",
       "target": "lib_actions_staff_deletestaffmember",
@@ -46019,7 +47273,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L141",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "lib_actions_staff",
       "target": "lib_actions_staff_renamestaffmember",
@@ -46049,7 +47303,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L205",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "lib_actions_staff",
       "target": "lib_actions_staff_resetpassword",
@@ -46059,7 +47313,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L189",
+      "source_location": "L190",
       "weight": 1.0,
       "source": "lib_actions_staff",
       "target": "lib_actions_staff_updatepermissions",
@@ -46201,7 +47455,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L287",
+      "source_location": "L288",
       "weight": 1.0,
       "source": "lib_actions_staff_deletestaffmember",
       "target": "lib_actions_staff_requireadmin",
@@ -46212,7 +47466,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L142",
+      "source_location": "L143",
       "weight": 1.0,
       "source": "lib_actions_staff_renamestaffmember",
       "target": "lib_actions_staff_requireadmin",
@@ -46245,7 +47499,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L190",
+      "source_location": "L191",
       "weight": 1.0,
       "source": "lib_actions_staff_updatepermissions",
       "target": "lib_actions_staff_requireadmin",
@@ -46322,7 +47576,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L206",
+      "source_location": "L207",
       "weight": 1.0,
       "source": "lib_actions_staff_resetpassword",
       "target": "lib_actions_staff_requireadminormoderator",
@@ -46389,7 +47643,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L193",
+      "source_location": "L194",
       "weight": 1.0,
       "source": "lib_actions_staff_updatepermissions",
       "target": "lib_permissions_sanitizepermissions"
@@ -46400,7 +47654,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L249",
+      "source_location": "L250",
       "weight": 1.0,
       "source": "lib_actions_staff_changeownpassword",
       "target": "lib_session_getsession"
@@ -46411,7 +47665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/staff.ts",
-      "source_location": "L265",
+      "source_location": "L266",
       "weight": 1.0,
       "source": "lib_actions_staff_changeownpassword",
       "target": "lib_supabase_server_createclient"
@@ -47054,6 +48308,445 @@
       "source_location": "L336",
       "weight": 1.0,
       "source": "lib_actions_tasks_deletetrackedtask",
+      "target": "lib_supabase_service_createserviceclient"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L200",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_asinbsrhistory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_bsralert",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_bsrsnapshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_bsrsyncrun",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_daysbefore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L205",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_getasinbsrhistory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_gettrendsoverview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_requirestaff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_selectall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_snapshotson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_trendsoverview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L242",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_actions_trends_updatebsralertstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_fba_fee_tracker_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_fba_fee_tracker_constants_alert_statuses",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_fba_fee_tracker_constants_alertstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_supabase_server",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_supabase_server_createclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_supabase_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_supabase_service_createserviceclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_trends_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_trends_constants_bsralertkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "lib_actions_trends",
+      "target": "lib_trends_constants_bsrranktype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "lib_actions_trends_bsrsnapshot",
+      "target": "lib_trends_constants_bsrranktype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "lib_actions_trends_bsralert",
+      "target": "lib_fba_fee_tracker_constants_alertstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "lib_actions_trends_bsralert",
+      "target": "lib_trends_constants_bsralertkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "lib_actions_trends_bsralert",
+      "target": "lib_trends_constants_bsrranktype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L206",
+      "weight": 1.0,
+      "source": "lib_actions_trends_getasinbsrhistory",
+      "target": "lib_actions_trends_requirestaff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L121",
+      "weight": 1.0,
+      "source": "lib_actions_trends_gettrendsoverview",
+      "target": "lib_actions_trends_requirestaff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "lib_actions_trends_requirestaff",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L248",
+      "weight": 1.0,
+      "source": "lib_actions_trends_updatebsralertstatus",
+      "target": "lib_actions_trends_requirestaff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L213",
+      "weight": 1.0,
+      "source": "lib_actions_trends_getasinbsrhistory",
+      "target": "lib_actions_trends_selectall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "lib_actions_trends_gettrendsoverview",
+      "target": "lib_actions_trends_selectall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "lib_actions_trends_snapshotson",
+      "target": "lib_actions_trends_selectall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "lib_actions_trends_gettrendsoverview",
+      "target": "lib_actions_trends_snapshotson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L210",
+      "weight": 1.0,
+      "source": "lib_actions_trends_getasinbsrhistory",
+      "target": "lib_actions_trends_daysbefore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "lib_actions_trends_gettrendsoverview",
+      "target": "lib_supabase_server_createclient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L209",
+      "weight": 1.0,
+      "source": "lib_actions_trends_getasinbsrhistory",
+      "target": "lib_supabase_server_createclient"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L250",
+      "weight": 1.0,
+      "source": "lib_actions_trends_updatebsralertstatus",
+      "target": "lib_fba_fee_tracker_constants_alert_statuses"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/trends.ts",
+      "source_location": "L263",
+      "weight": 1.0,
+      "source": "lib_actions_trends_updatebsralertstatus",
       "target": "lib_supabase_service_createserviceclient"
     },
     {
@@ -49566,7 +51259,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L209",
+      "source_location": "L210",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_adsbulkgenerator",
@@ -49576,7 +51269,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L171",
+      "source_location": "L172",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_advertisements",
@@ -49586,7 +51279,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L69",
+      "source_location": "L70",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_base_paths",
@@ -49596,7 +51289,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L201",
+      "source_location": "L202",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_bulkcampaignupload",
@@ -49606,7 +51299,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L234",
+      "source_location": "L243",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_calendar",
@@ -49616,7 +51309,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L255",
+      "source_location": "L264",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_companyinbox",
@@ -49626,7 +51319,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L95",
+      "source_location": "L96",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_definenavitem",
@@ -49636,7 +51329,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L217",
+      "source_location": "L218",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_fbafeetracker",
@@ -49646,7 +51339,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L241",
+      "source_location": "L250",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_finance",
@@ -49656,7 +51349,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L106",
+      "source_location": "L107",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_goalvsperformance",
@@ -49666,7 +51359,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L164",
+      "source_location": "L165",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_inventory",
@@ -49676,7 +51369,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L226",
+      "source_location": "L235",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_listingscore",
@@ -49686,7 +51379,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L178",
+      "source_location": "L179",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_masterlist",
@@ -49696,7 +51389,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L262",
+      "source_location": "L271",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_nav_groups",
@@ -49706,7 +51399,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L59",
+      "source_location": "L60",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_navgroup",
@@ -49716,7 +51409,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L46",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_navitem",
@@ -49726,7 +51419,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L84",
+      "source_location": "L85",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_naviteminput",
@@ -49736,7 +51429,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L40",
+      "source_location": "L41",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_navsubgroup",
@@ -49746,7 +51439,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L135",
+      "source_location": "L136",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_orders",
@@ -49756,7 +51449,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L121",
+      "source_location": "L122",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_partners",
@@ -49766,7 +51459,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L185",
+      "source_location": "L186",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_ppctopup",
@@ -49776,7 +51469,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L193",
+      "source_location": "L194",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_pricechangeplans",
@@ -49786,7 +51479,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L157",
+      "source_location": "L158",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_products",
@@ -49796,7 +51489,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L113",
+      "source_location": "L114",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_profitanalytics",
@@ -49806,7 +51499,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L142",
+      "source_location": "L143",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_shipments",
@@ -49816,7 +51509,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L77",
+      "source_location": "L78",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_slugify",
@@ -49826,7 +51519,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L128",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_sourcing",
@@ -49836,7 +51529,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_subgroup_labels",
@@ -49846,7 +51539,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L149",
+      "source_location": "L150",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_supplychainautomations",
@@ -49856,10 +51549,20 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L248",
+      "source_location": "L257",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_nav_tasks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/nav.ts",
+      "source_location": "L226",
+      "weight": 1.0,
+      "source": "lib_nav",
+      "target": "lib_nav_trends",
       "confidence_score": 1.0
     },
     {
@@ -49867,7 +51570,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_roles",
@@ -49878,7 +51581,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "lib_nav",
       "target": "lib_roles_section",
@@ -49900,7 +51603,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L53",
+      "source_location": "L54",
       "weight": 1.0,
       "source": "lib_nav_navitem",
       "target": "lib_roles_section",
@@ -49911,7 +51614,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "lib_nav_navgroup",
       "target": "lib_roles_section",
@@ -49922,7 +51625,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L96",
+      "source_location": "L97",
       "weight": 1.0,
       "source": "lib_nav_definenavitem",
       "target": "lib_nav_slugify",
@@ -49933,7 +51636,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/nav.ts",
-      "source_location": "L88",
+      "source_location": "L89",
       "weight": 1.0,
       "source": "lib_nav_naviteminput",
       "target": "lib_roles_section",
@@ -50742,7 +52445,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L65",
+      "source_location": "L68",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_canadminister",
@@ -50752,7 +52455,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L60",
+      "source_location": "L63",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_canmanageusers",
@@ -50762,7 +52465,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L38",
+      "source_location": "L41",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_empty_permissions",
@@ -50772,7 +52475,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L85",
+      "source_location": "L88",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_filteritems",
@@ -50782,7 +52485,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L75",
+      "source_location": "L78",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_isallowed",
@@ -50792,7 +52495,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_legacy_sections",
@@ -50802,7 +52505,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L36",
+      "source_location": "L39",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_permissionset",
@@ -50812,7 +52515,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_role",
@@ -50822,7 +52525,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L21",
+      "source_location": "L23",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_role_labels",
@@ -50832,7 +52535,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L18",
+      "source_location": "L20",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_roles",
@@ -50842,7 +52545,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L31",
+      "source_location": "L34",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_section",
@@ -50852,7 +52555,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L33",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_sections",
@@ -50862,7 +52565,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L99",
+      "source_location": "L102",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_topermissionset",
@@ -50872,7 +52575,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/roles.ts",
-      "source_location": "L70",
+      "source_location": "L73",
       "weight": 1.0,
       "source": "lib_roles",
       "target": "lib_roles_torole",
@@ -51127,6 +52830,46 @@
       "weight": 1.0,
       "source": "lib_tasks_constants",
       "target": "lib_tasks_constants_priority_labels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "lib_trends_constants",
+      "target": "lib_trends_constants_bsr_alert_kind_labels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "lib_trends_constants",
+      "target": "lib_trends_constants_bsr_alert_kinds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "lib_trends_constants",
+      "target": "lib_trends_constants_bsralertkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/trends-constants.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "lib_trends_constants",
+      "target": "lib_trends_constants_bsrranktype",
       "confidence_score": 1.0
     },
     {
@@ -52241,7 +53984,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "proxy.ts",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "proxy",
       "target": "proxy_config",
@@ -52511,7 +54254,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L676",
+      "source_location": "L702",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_graphify",
@@ -52521,7 +54264,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L645",
+      "source_location": "L671",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_key_conventions",
@@ -52531,7 +54274,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L659",
+      "source_location": "L685",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_key_file_reference",
@@ -52541,7 +54284,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L558",
+      "source_location": "L584",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_navigation_adding_a_page",
@@ -52551,7 +54294,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L627",
+      "source_location": "L653",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_page_header_component",
@@ -52571,7 +54314,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L528",
+      "source_location": "L554",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_server_actions",
@@ -52711,7 +54454,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L514",
+      "source_location": "L540",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_supabase_clients",
@@ -52731,7 +54474,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L602",
+      "source_location": "L514",
+      "weight": 1.0,
+      "source": "claude_database_supabase",
+      "target": "claude_trends_best_sellers_rank_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L628",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_a_layer_1_group",
@@ -52741,7 +54494,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L589",
+      "source_location": "L615",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_a_page_to_an_existing_group",
@@ -52751,7 +54504,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L610",
+      "source_location": "L636",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_an_api_route",
@@ -52789,5 +54542,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cb012803d10f05759ec56d531f7e1c9435551186"
+  "built_at_commit": "bf6688acf64ef619d1d70a60fea68dd8de390e7e"
 }

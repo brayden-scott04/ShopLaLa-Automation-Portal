@@ -1,7 +1,7 @@
 {
   "app/(portal)/admin/users/page.tsx": {
-    "mtime": 1792416635.4860244,
-    "ast_hash": "c650f8f84c2c5ae157e88726e687bfea",
+    "mtime": 1792553958.3104422,
+    "ast_hash": "8f66f02e1e74d64e96cf62089559a28f",
     "semantic_hash": ""
   },
   "app/(portal)/dashboard/page.tsx": {
@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/team/page.tsx": {
-    "mtime": 1785392747.6596155,
-    "ast_hash": "7cac53149bb0fddba16de6c08d56d507",
+    "mtime": 1792553959.351386,
+    "ast_hash": "cc9e38aa3d1d3776e2249daa52793cbb",
     "semantic_hash": ""
   },
   "app/api/auth/login/route.ts": {
@@ -70,8 +70,8 @@
     "semantic_hash": ""
   },
   "components/sidebar-content.tsx": {
-    "mtime": 1792411677.1337223,
-    "ast_hash": "92170abae12819e231a7fef81f38ac2b",
+    "mtime": 1792553956.2450502,
+    "ast_hash": "8032e3851f1f57b3571fcaa362e207e8",
     "semantic_hash": ""
   },
   "components/sidebar.tsx": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "lib/actions/staff.ts": {
-    "mtime": 1792416596.2207282,
-    "ast_hash": "a5974026892d66c2c8de78c645c19305",
+    "mtime": 1792553962.4429717,
+    "ast_hash": "f8a16b6f2a8b95ba1506c310b7009639",
     "semantic_hash": ""
   },
   "lib/ppc-daily-cap-constants.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1792423404.8230047,
-    "ast_hash": "fcb068e2b5519b973bf3b856cee66715",
+    "mtime": 1792584874.3614283,
+    "ast_hash": "b1b39c249cdc697a6d57cb39ef9896a7",
     "semantic_hash": ""
   },
   "README.md": {
@@ -335,8 +335,8 @@
     "semantic_hash": ""
   },
   "lib/ai/tools.ts": {
-    "mtime": 1792411677.1347225,
-    "ast_hash": "65438287efd6f533de80bcaa705b37a2",
+    "mtime": 1792584581.1166904,
+    "ast_hash": "ad84fa06731a0f02343497f362fe8e7a",
     "semantic_hash": ""
   },
   "lib/amazon/sp-api.ts": {
@@ -360,8 +360,8 @@
     "semantic_hash": ""
   },
   "lib/roles.ts": {
-    "mtime": 1792424021.1681545,
-    "ast_hash": "f9d0a2b192b6e0fdc8d8bea9af98a68f",
+    "mtime": 1792553953.1259518,
+    "ast_hash": "d74820e5c36bec38039547a5244f9370",
     "semantic_hash": ""
   },
   "components/ui/segmented-control.tsx": {
@@ -405,8 +405,8 @@
     "semantic_hash": ""
   },
   "proxy.ts": {
-    "mtime": 1785392747.7228184,
-    "ast_hash": "697f2a1114a8f813a07b472f271bdd65",
+    "mtime": 1792553954.1670568,
+    "ast_hash": "f9f451c4d6eb2507aa0c0bdcd21b2322",
     "semantic_hash": ""
   },
   "app/(portal)/settings/page.tsx": {
@@ -940,8 +940,8 @@
     "semantic_hash": ""
   },
   "lib/nav.ts": {
-    "mtime": 1792413025.1103177,
-    "ast_hash": "aae97c07c59bc6492db41af914524e59",
+    "mtime": 1792584581.1166904,
+    "ast_hash": "cfb631e2ddd517d5a832c24676626406",
     "semantic_hash": ""
   },
   "sql/nav_restructure_migration.sql": {
@@ -952,6 +952,41 @@
   "sql/staff_rename_cascade_migration.sql": {
     "mtime": 1792416600.7738805,
     "ast_hash": "b978b023b694f3dafe1da6a34bd25abe",
+    "semantic_hash": ""
+  },
+  "sql/staff_manager_role_migration.sql": {
+    "mtime": 1792553963.4700487,
+    "ast_hash": "3760b16bbe9c9dc02cfe27e5dba1e2c4",
+    "semantic_hash": ""
+  },
+  "app/(portal)/market-ops/automations/trends/layout.tsx": {
+    "mtime": 1792584633.331913,
+    "ast_hash": "0549dc796c661d6f36128708b1b5625f",
+    "semantic_hash": ""
+  },
+  "app/(portal)/market-ops/automations/trends/page.tsx": {
+    "mtime": 1792584634.3694723,
+    "ast_hash": "21e4fd612a037ec6ccf50a579e895651",
+    "semantic_hash": ""
+  },
+  "app/(portal)/market-ops/automations/trends/trends-view.tsx": {
+    "mtime": 1792584740.2737024,
+    "ast_hash": "ed9b57e4a0663cb636c29239e634ba4a",
+    "semantic_hash": ""
+  },
+  "lib/actions/trends.ts": {
+    "mtime": 1792584739.230078,
+    "ast_hash": "294cc08f4f2799dfc468711439ee6536",
+    "semantic_hash": ""
+  },
+  "lib/trends-constants.ts": {
+    "mtime": 1792584600.2680297,
+    "ast_hash": "3f9a49797ef3af1e46edb0dc0a2c141b",
+    "semantic_hash": ""
+  },
+  "sql/bsr_trends_migration.sql": {
+    "mtime": 1792584599.2270248,
+    "ast_hash": "49eb5ef40aecf3a6b279e32722b3d1fe",
     "semantic_hash": ""
   }
 }

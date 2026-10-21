@@ -12,11 +12,12 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   if (pathname.startsWith("/admin")) {
-    // Admins can reach any /admin route. Moderators can reach only /admin/users
-    // (to create users and reset user passwords). Everyone else is bounced.
+    // Admins can reach any /admin route. Managers and moderators can reach only
+    // /admin/users (to create users and reset user passwords). Everyone else is bounced.
     const allowed =
       session.role === "admin" ||
-      (session.role === "moderator" && pathname === "/admin/users");
+      ((session.role === "manager" || session.role === "moderator") &&
+        pathname === "/admin/users");
     if (!allowed) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
