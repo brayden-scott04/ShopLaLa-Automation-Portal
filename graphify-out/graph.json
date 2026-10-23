@@ -60,7 +60,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_chat_page",
-      "community": 57,
+      "community": 54,
       "norm_label": "page.tsx"
     },
     {
@@ -70,7 +70,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_portal_chat_page_chatpage",
-      "community": 57,
+      "community": 54,
       "norm_label": "chatpage()"
     },
     {
@@ -120,7 +120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_dashboard_page",
-      "community": 62,
+      "community": 2,
       "norm_label": "page.tsx"
     },
     {
@@ -130,7 +130,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_portal_dashboard_page_dashboardpage",
-      "community": 62,
+      "community": 2,
       "norm_label": "dashboardpage()"
     },
     {
@@ -280,7 +280,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_layout",
-      "community": 62,
+      "community": 43,
       "norm_label": "layout.tsx"
     },
     {
@@ -290,7 +290,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "app_portal_layout_portallayout",
-      "community": 62,
+      "community": 2,
       "norm_label": "portallayout()"
     },
     {
@@ -340,7 +340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_brand_library_section",
-      "community": 49,
+      "community": 57,
       "norm_label": "brand-library-section.tsx"
     },
     {
@@ -350,7 +350,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_brand_library_section_actionresult",
-      "community": 49,
+      "community": 57,
       "norm_label": "actionresult"
     },
     {
@@ -360,7 +360,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_brand_library_section_brandlibraryitem",
-      "community": 49,
+      "community": 57,
       "norm_label": "brandlibraryitem"
     },
     {
@@ -370,7 +370,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_brand_library_section_brandlibrarysection",
-      "community": 25,
+      "community": 50,
       "norm_label": "brandlibrarysection()"
     },
     {
@@ -480,7 +480,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_page",
-      "community": 25,
+      "community": 50,
       "norm_label": "page.tsx"
     },
     {
@@ -490,7 +490,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_page_step",
-      "community": 25,
+      "community": 50,
       "norm_label": "step"
     },
     {
@@ -590,7 +590,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_searchable_select",
-      "community": 11,
+      "community": 26,
       "norm_label": "searchable-select.tsx"
     },
     {
@@ -600,7 +600,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_searchable_select_option",
-      "community": 11,
+      "community": 26,
       "norm_label": "option"
     },
     {
@@ -610,7 +610,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_ads_bulk_generator_searchable_select_searchableselect",
-      "community": 11,
+      "community": 26,
       "norm_label": "searchableselect()"
     },
     {
@@ -990,7 +990,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page",
-      "community": 46,
+      "community": 49,
       "norm_label": "page.tsx"
     },
     {
@@ -1000,7 +1000,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_price_types",
-      "community": 46,
+      "community": 49,
       "norm_label": "price_types"
     },
     {
@@ -1010,7 +1010,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_pricetypeoption",
-      "community": 46,
+      "community": 49,
       "norm_label": "pricetypeoption"
     },
     {
@@ -1110,7 +1110,7 @@
       "source_location": "L518",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_testingbadge",
-      "community": 46,
+      "community": 49,
       "norm_label": "testingbadge()"
     },
     {
@@ -1120,7 +1120,7 @@
       "source_location": "L527",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_marketplacebadge",
-      "community": 46,
+      "community": 49,
       "norm_label": "marketplacebadge()"
     },
     {
@@ -1130,7 +1130,7 @@
       "source_location": "L535",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_directionbadge",
-      "community": 46,
+      "community": 49,
       "norm_label": "directionbadge()"
     },
     {
@@ -1190,7 +1190,7 @@
       "source_location": "L1468",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_editpriceplansheet",
-      "community": 46,
+      "community": 49,
       "norm_label": "editpriceplansheet()"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_product_block_preset",
-      "community": 57,
+      "community": 41,
       "norm_label": "preset"
     },
     {
@@ -1907,10 +1907,10 @@
       "label": "CalendarSidebar()",
       "file_type": "code",
       "source_file": "app/(portal)/others/calendar/_components/calendar-sidebar.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_calendar_sidebar_calendarsidebar",
-      "community": 11,
+      "community": 0,
       "norm_label": "calendarsidebar()"
     },
     {
@@ -2107,7 +2107,7 @@
       "label": "WEEKDAY_SHORT",
       "file_type": "code",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L40",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_task_form_dialog_weekday_short",
       "community": 0,
@@ -2117,7 +2117,7 @@
       "label": "WEEKDAY_FULL",
       "file_type": "code",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L41",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_task_form_dialog_weekday_full",
       "community": 0,
@@ -2127,7 +2127,7 @@
       "label": "TaskFormDialog()",
       "file_type": "code",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L43",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "community": 0,
@@ -2500,7 +2500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page",
-      "community": 26,
+      "community": 54,
       "norm_label": "page.tsx"
     },
     {
@@ -2510,7 +2510,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_priority_icons",
-      "community": 26,
+      "community": 54,
       "norm_label": "priority_icons"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_prioritypill",
-      "community": 11,
+      "community": 54,
       "norm_label": "prioritypill()"
     },
     {
@@ -2530,7 +2530,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_sortkey",
-      "community": 26,
+      "community": 54,
       "norm_label": "sortkey"
     },
     {
@@ -2540,7 +2540,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_columns",
-      "community": 26,
+      "community": 54,
       "norm_label": "columns"
     },
     {
@@ -2550,7 +2550,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_scope",
-      "community": 26,
+      "community": 54,
       "norm_label": "scope"
     },
     {
@@ -2560,7 +2560,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_todayiso",
-      "community": 26,
+      "community": 54,
       "norm_label": "todayiso()"
     },
     {
@@ -2570,7 +2570,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_notestooltip",
-      "community": 26,
+      "community": 54,
       "norm_label": "notestooltip()"
     },
     {
@@ -2580,7 +2580,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_formatdatetime",
-      "community": 26,
+      "community": 54,
       "norm_label": "formatdatetime()"
     },
     {
@@ -2590,7 +2590,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_acknowledgedcell",
-      "community": 26,
+      "community": 54,
       "norm_label": "acknowledgedcell()"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_formatdate",
-      "community": 26,
+      "community": 54,
       "norm_label": "formatdate()"
     },
     {
@@ -2610,7 +2610,7 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "app_portal_others_tasks_page_taskspage",
-      "community": 26,
+      "community": 54,
       "norm_label": "taskspage()"
     },
     {
@@ -2870,7 +2870,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_portal_team_page_teampage",
-      "community": 54,
+      "community": 43,
       "norm_label": "teampage()"
     },
     {
@@ -3000,7 +3000,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_api_tools_ads_bulk_generator_generate_route_post",
-      "community": 51,
+      "community": 2,
       "norm_label": "post()"
     },
     {
@@ -3070,7 +3070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route",
-      "community": 62,
+      "community": 2,
       "norm_label": "route.ts"
     },
     {
@@ -3080,7 +3080,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route_post",
-      "community": 62,
+      "community": 2,
       "norm_label": "post()"
     },
     {
@@ -3420,7 +3420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel",
-      "community": 26,
+      "community": 54,
       "norm_label": "chat-panel.tsx"
     },
     {
@@ -3430,7 +3430,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_markdowncomponents",
-      "community": 26,
+      "community": 54,
       "norm_label": "markdowncomponents"
     },
     {
@@ -3440,7 +3440,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_composer",
-      "community": 26,
+      "community": 54,
       "norm_label": "composer()"
     },
     {
@@ -3450,7 +3450,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_chatpanel",
-      "community": 57,
+      "community": 54,
       "norm_label": "chatpanel()"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_location": "L775",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections_deleteconfirm",
-      "community": 49,
+      "community": 25,
       "norm_label": "deleteconfirm()"
     },
     {
@@ -3540,7 +3540,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_page_header",
-      "community": 57,
+      "community": 54,
       "norm_label": "page-header.tsx"
     },
     {
@@ -3550,7 +3550,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_page_header_pageheader",
-      "community": 57,
+      "community": 54,
       "norm_label": "pageheader()"
     },
     {
@@ -3600,7 +3600,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_resizable_columns",
-      "community": 26,
+      "community": 54,
       "norm_label": "resizable-columns.tsx"
     },
     {
@@ -3610,7 +3610,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_resizable_columns_readstored",
-      "community": 26,
+      "community": 54,
       "norm_label": "readstored()"
     },
     {
@@ -3620,7 +3620,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "components_resizable_columns_writestored",
-      "community": 26,
+      "community": 54,
       "norm_label": "writestored()"
     },
     {
@@ -3630,7 +3630,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "components_resizable_columns_useresizablecolumns",
-      "community": 26,
+      "community": 54,
       "norm_label": "useresizablecolumns()"
     },
     {
@@ -3640,7 +3640,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "components_resizable_columns_columnresizehandle",
-      "community": 26,
+      "community": 54,
       "norm_label": "columnresizehandle()"
     },
     {
@@ -3800,7 +3800,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_sidebar_sidebar",
-      "community": 62,
+      "community": 43,
       "norm_label": "sidebar()"
     },
     {
@@ -3900,7 +3900,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_topbar_topbar",
-      "community": 62,
+      "community": 43,
       "norm_label": "topbar()"
     },
     {
@@ -3950,7 +3950,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogoverlay",
-      "community": 49,
+      "community": 11,
       "norm_label": "alertdialogoverlay()"
     },
     {
@@ -3990,7 +3990,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogmedia",
-      "community": 49,
+      "community": 11,
       "norm_label": "alertdialogmedia()"
     },
     {
@@ -4110,7 +4110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_badge",
-      "community": 11,
+      "community": 57,
       "norm_label": "badge.tsx"
     },
     {
@@ -4120,7 +4120,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_badge_badgevariants",
-      "community": 11,
+      "community": 57,
       "norm_label": "badgevariants"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "components_ui_badge_badge",
-      "community": 11,
+      "community": 57,
       "norm_label": "badge()"
     },
     {
@@ -4220,7 +4220,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "components_ui_card_cardaction",
-      "community": 49,
+      "community": 57,
       "norm_label": "cardaction()"
     },
     {
@@ -4380,7 +4380,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_checkbox",
-      "community": 11,
+      "community": 49,
       "norm_label": "checkbox.tsx"
     },
     {
@@ -4390,7 +4390,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_checkbox_checkbox",
-      "community": 11,
+      "community": 49,
       "norm_label": "checkbox()"
     },
     {
@@ -4680,7 +4680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_input",
-      "community": 49,
+      "community": 26,
       "norm_label": "input.tsx"
     },
     {
@@ -4690,7 +4690,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_ui_input_input",
-      "community": 49,
+      "community": 26,
       "norm_label": "input()"
     },
     {
@@ -4720,7 +4720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_segmented_control",
-      "community": 46,
+      "community": 11,
       "norm_label": "segmented-control.tsx"
     },
     {
@@ -4730,7 +4730,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentoption",
-      "community": 46,
+      "community": 11,
       "norm_label": "segmentoption"
     },
     {
@@ -4740,7 +4740,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentedcontrol",
-      "community": 25,
+      "community": 11,
       "norm_label": "segmentedcontrol()"
     },
     {
@@ -4880,7 +4880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_skeleton",
-      "community": 26,
+      "community": 54,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -4890,7 +4890,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_ui_skeleton_skeleton",
-      "community": 26,
+      "community": 54,
       "norm_label": "skeleton()"
     },
     {
@@ -4920,7 +4920,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_tabs",
-      "community": 46,
+      "community": 11,
       "norm_label": "tabs.tsx"
     },
     {
@@ -4930,7 +4930,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_ui_tabs_tabs",
-      "community": 46,
+      "community": 11,
       "norm_label": "tabs()"
     },
     {
@@ -4940,7 +4940,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "components_ui_tabs_tabslistvariants",
-      "community": 46,
+      "community": 11,
       "norm_label": "tabslistvariants"
     },
     {
@@ -4950,7 +4950,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "components_ui_tabs_tabslist",
-      "community": 46,
+      "community": 11,
       "norm_label": "tabslist()"
     },
     {
@@ -4960,7 +4960,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "components_ui_tabs_tabstrigger",
-      "community": 46,
+      "community": 11,
       "norm_label": "tabstrigger()"
     },
     {
@@ -4970,7 +4970,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ui_tabs_tabscontent",
-      "community": 46,
+      "community": 11,
       "norm_label": "tabscontent()"
     },
     {
@@ -5040,7 +5040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_ai_chat",
-      "community": 54,
+      "community": 8,
       "norm_label": "ai-chat.ts"
     },
     {
@@ -5050,7 +5050,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "lib_actions_ai_chat_sendaichatmessage",
-      "community": 54,
+      "community": 8,
       "norm_label": "sendaichatmessage()"
     },
     {
@@ -5090,7 +5090,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_brand",
-      "community": 25,
+      "community": 57,
       "norm_label": "brand"
     },
     {
@@ -5100,7 +5100,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_videoasset",
-      "community": 25,
+      "community": 57,
       "norm_label": "videoasset"
     },
     {
@@ -5367,7 +5367,7 @@
       "label": "CalendarSummary",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "lib_actions_calendar_calendarsummary",
       "community": 0,
@@ -5377,7 +5377,7 @@
       "label": "CalendarMember",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L32",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "lib_actions_calendar_calendarmember",
       "community": 0,
@@ -5387,7 +5387,7 @@
       "label": "CalendarTask",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L38",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "lib_actions_calendar_calendartask",
       "community": 0,
@@ -5397,7 +5397,7 @@
       "label": "DeleteScope",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L65",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "lib_actions_calendar_deletescope",
       "community": 0,
@@ -5407,7 +5407,7 @@
       "label": "OccurrenceUpdate",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L67",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "lib_actions_calendar_occurrenceupdate",
       "community": 0,
@@ -5417,7 +5417,7 @@
       "label": "TaskInput",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L74",
+      "source_location": "L77",
       "_origin": "ast",
       "id": "lib_actions_calendar_taskinput",
       "community": 0,
@@ -5427,7 +5427,7 @@
       "label": "TaskUpdate",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L87",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "lib_actions_calendar_taskupdate",
       "community": 0,
@@ -5437,7 +5437,7 @@
       "label": "validateTimes()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L101",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "lib_actions_calendar_validatetimes",
       "community": 0,
@@ -5447,7 +5447,7 @@
       "label": "validateRepeat()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L115",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "lib_actions_calendar_validaterepeat",
       "community": 0,
@@ -5457,7 +5457,7 @@
       "label": "repeatColumns()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L135",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "lib_actions_calendar_repeatcolumns",
       "community": 0,
@@ -5467,7 +5467,7 @@
       "label": "AccessResult",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L157",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "lib_actions_calendar_accessresult",
       "community": 0,
@@ -5477,7 +5477,7 @@
       "label": "SupabaseServerClient",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L159",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "lib_actions_calendar_supabaseserverclient",
       "community": 0,
@@ -5487,7 +5487,7 @@
       "label": "requireCalendarAccess()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L161",
+      "source_location": "L168",
       "_origin": "ast",
       "id": "lib_actions_calendar_requirecalendaraccess",
       "community": 0,
@@ -5497,7 +5497,7 @@
       "label": "requireEditorAccess()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L189",
+      "source_location": "L196",
       "_origin": "ast",
       "id": "lib_actions_calendar_requireeditoraccess",
       "community": 0,
@@ -5507,7 +5507,7 @@
       "label": "AccessibleCalendar",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L200",
+      "source_location": "L207",
       "_origin": "ast",
       "id": "lib_actions_calendar_accessiblecalendar",
       "community": 0,
@@ -5517,7 +5517,7 @@
       "label": "getAccessibleCalendarMap()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L208",
+      "source_location": "L215",
       "_origin": "ast",
       "id": "lib_actions_calendar_getaccessiblecalendarmap",
       "community": 0,
@@ -5527,7 +5527,7 @@
       "label": "loadAssignees()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L240",
+      "source_location": "L247",
       "_origin": "ast",
       "id": "lib_actions_calendar_loadassignees",
       "community": 0,
@@ -5537,17 +5537,57 @@
       "label": "loadExceptions()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L262",
+      "source_location": "L269",
       "_origin": "ast",
       "id": "lib_actions_calendar_loadexceptions",
       "community": 0,
       "norm_label": "loadexceptions()"
     },
     {
+      "label": "loadShares()",
+      "file_type": "code",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L297",
+      "_origin": "ast",
+      "id": "lib_actions_calendar_loadshares",
+      "community": 0,
+      "norm_label": "loadshares()"
+    },
+    {
+      "label": "loadSharedInTaskRows()",
+      "file_type": "code",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L319",
+      "_origin": "ast",
+      "id": "lib_actions_calendar_loadsharedintaskrows",
+      "community": 0,
+      "norm_label": "loadsharedintaskrows()"
+    },
+    {
+      "label": "rowTouchesRange()",
+      "file_type": "code",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L336",
+      "_origin": "ast",
+      "id": "lib_actions_calendar_rowtouchesrange",
+      "community": 0,
+      "norm_label": "rowtouchesrange()"
+    },
+    {
+      "label": "resolveShares()",
+      "file_type": "code",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L350",
+      "_origin": "ast",
+      "id": "lib_actions_calendar_resolveshares",
+      "community": 0,
+      "norm_label": "resolveshares()"
+    },
+    {
       "label": "getMyCalendars()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L292",
+      "source_location": "L374",
       "_origin": "ast",
       "id": "lib_actions_calendar_getmycalendars",
       "community": 0,
@@ -5557,7 +5597,7 @@
       "label": "createCalendar()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L316",
+      "source_location": "L410",
       "_origin": "ast",
       "id": "lib_actions_calendar_createcalendar",
       "community": 0,
@@ -5567,7 +5607,7 @@
       "label": "renameCalendar()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L346",
+      "source_location": "L440",
       "_origin": "ast",
       "id": "lib_actions_calendar_renamecalendar",
       "community": 0,
@@ -5577,17 +5617,17 @@
       "label": "deleteCalendar()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L371",
+      "source_location": "L465",
       "_origin": "ast",
       "id": "lib_actions_calendar_deletecalendar",
-      "community": 50,
+      "community": 0,
       "norm_label": "deletecalendar()"
     },
     {
       "label": "getCalendarMembers()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L393",
+      "source_location": "L487",
       "_origin": "ast",
       "id": "lib_actions_calendar_getcalendarmembers",
       "community": 0,
@@ -5597,7 +5637,7 @@
       "label": "addCalendarMember()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L420",
+      "source_location": "L514",
       "_origin": "ast",
       "id": "lib_actions_calendar_addcalendarmember",
       "community": 0,
@@ -5607,7 +5647,7 @@
       "label": "addCalendarMembers()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L467",
+      "source_location": "L561",
       "_origin": "ast",
       "id": "lib_actions_calendar_addcalendarmembers",
       "community": 0,
@@ -5617,7 +5657,7 @@
       "label": "updateCalendarMemberRole()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L513",
+      "source_location": "L607",
       "_origin": "ast",
       "id": "lib_actions_calendar_updatecalendarmemberrole",
       "community": 0,
@@ -5627,7 +5667,7 @@
       "label": "removeCalendarMember()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L547",
+      "source_location": "L641",
       "_origin": "ast",
       "id": "lib_actions_calendar_removecalendarmember",
       "community": 0,
@@ -5637,17 +5677,37 @@
       "label": "toCalendarTask()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L578",
+      "source_location": "L672",
       "_origin": "ast",
       "id": "lib_actions_calendar_tocalendartask",
       "community": 0,
       "norm_label": "tocalendartask()"
     },
     {
+      "label": "TaskRow",
+      "file_type": "code",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L724",
+      "_origin": "ast",
+      "id": "lib_actions_calendar_taskrow",
+      "community": 0,
+      "norm_label": "taskrow"
+    },
+    {
+      "label": "hydrateTasks()",
+      "file_type": "code",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L731",
+      "_origin": "ast",
+      "id": "lib_actions_calendar_hydratetasks",
+      "community": 0,
+      "norm_label": "hydratetasks()"
+    },
+    {
       "label": "getTasksForRange()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L628",
+      "source_location": "L755",
       "_origin": "ast",
       "id": "lib_actions_calendar_gettasksforrange",
       "community": 0,
@@ -5657,7 +5717,7 @@
       "label": "getUpcomingTasks()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L667",
+      "source_location": "L792",
       "_origin": "ast",
       "id": "lib_actions_calendar_getupcomingtasks",
       "community": 0,
@@ -5667,7 +5727,7 @@
       "label": "assertAssigneesAllowed()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L725",
+      "source_location": "L846",
       "_origin": "ast",
       "id": "lib_actions_calendar_assertassigneesallowed",
       "community": 0,
@@ -5677,7 +5737,7 @@
       "label": "createTask()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L743",
+      "source_location": "L864",
       "_origin": "ast",
       "id": "lib_actions_calendar_createtask",
       "community": 0,
@@ -5687,7 +5747,7 @@
       "label": "updateTask()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L799",
+      "source_location": "L936",
       "_origin": "ast",
       "id": "lib_actions_calendar_updatetask",
       "community": 0,
@@ -5697,7 +5757,7 @@
       "label": "copyTaskToDates()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L882",
+      "source_location": "L1058",
       "_origin": "ast",
       "id": "lib_actions_calendar_copytasktodates",
       "community": 0,
@@ -5707,7 +5767,7 @@
       "label": "deleteTask()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L938",
+      "source_location": "L1114",
       "_origin": "ast",
       "id": "lib_actions_calendar_deletetask",
       "community": 0,
@@ -5717,7 +5777,7 @@
       "label": "loadOccurrenceTarget()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L964",
+      "source_location": "L1140",
       "_origin": "ast",
       "id": "lib_actions_calendar_loadoccurrencetarget",
       "community": 0,
@@ -5727,7 +5787,7 @@
       "label": "updateOccurrence()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L992",
+      "source_location": "L1168",
       "_origin": "ast",
       "id": "lib_actions_calendar_updateoccurrence",
       "community": 0,
@@ -5737,7 +5797,7 @@
       "label": "resetOccurrence()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1059",
+      "source_location": "L1235",
       "_origin": "ast",
       "id": "lib_actions_calendar_resetoccurrence",
       "community": 0,
@@ -5747,7 +5807,7 @@
       "label": "deleteOccurrences()",
       "file_type": "code",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1085",
+      "source_location": "L1261",
       "_origin": "ast",
       "id": "lib_actions_calendar_deleteoccurrences",
       "community": 0,
@@ -6590,7 +6650,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_brandlogo",
-      "community": 25,
+      "community": 50,
       "norm_label": "brandlogo"
     },
     {
@@ -6600,7 +6660,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_storeurl",
-      "community": 25,
+      "community": 50,
       "norm_label": "storeurl"
     },
     {
@@ -6610,7 +6670,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_pdppreset",
-      "community": 25,
+      "community": 50,
       "norm_label": "pdppreset"
     },
     {
@@ -7980,7 +8040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_sku_list",
-      "community": 50,
+      "community": 46,
       "norm_label": "sku-list.ts"
     },
     {
@@ -7990,7 +8050,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_actions_sku_list_requirestaff",
-      "community": 50,
+      "community": 46,
       "norm_label": "requirestaff()"
     },
     {
@@ -8010,7 +8070,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_actions_sku_list_listskus",
-      "community": 50,
+      "community": 46,
       "norm_label": "listskus()"
     },
     {
@@ -8020,7 +8080,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "lib_actions_sku_list_addskus",
-      "community": 50,
+      "community": 46,
       "norm_label": "addskus()"
     },
     {
@@ -8030,7 +8090,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "lib_actions_sku_list_replaceskus",
-      "community": 50,
+      "community": 46,
       "norm_label": "replaceskus()"
     },
     {
@@ -8040,7 +8100,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "lib_actions_sku_list_reorderskus",
-      "community": 50,
+      "community": 46,
       "norm_label": "reorderskus()"
     },
     {
@@ -8050,7 +8110,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "lib_actions_sku_list_deletesku",
-      "community": 50,
+      "community": 46,
       "norm_label": "deletesku()"
     },
     {
@@ -8060,7 +8120,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "lib_actions_sku_list_sku_hints",
-      "community": 50,
+      "community": 46,
       "norm_label": "sku_hints"
     },
     {
@@ -8070,7 +8130,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "lib_actions_sku_list_status_hints",
-      "community": 50,
+      "community": 46,
       "norm_label": "status_hints"
     },
     {
@@ -8080,7 +8140,7 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "lib_actions_sku_list_inactive_keywords",
-      "community": 50,
+      "community": 46,
       "norm_label": "inactive_keywords"
     },
     {
@@ -8090,7 +8150,7 @@
       "source_location": "L186",
       "_origin": "ast",
       "id": "lib_actions_sku_list_normalizeheader",
-      "community": 50,
+      "community": 46,
       "norm_label": "normalizeheader()"
     },
     {
@@ -8100,7 +8160,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "lib_actions_sku_list_findcolumn",
-      "community": 50,
+      "community": 46,
       "norm_label": "findcolumn()"
     },
     {
@@ -8110,7 +8170,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "lib_actions_sku_list_isinactive",
-      "community": 50,
+      "community": 46,
       "norm_label": "isinactive()"
     },
     {
@@ -8120,7 +8180,7 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "lib_actions_sku_list_columnmapping",
-      "community": 50,
+      "community": 46,
       "norm_label": "columnmapping"
     },
     {
@@ -8130,7 +8190,7 @@
       "source_location": "L212",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectcolumnheuristically",
-      "community": 50,
+      "community": 46,
       "norm_label": "detectcolumnheuristically()"
     },
     {
@@ -8140,7 +8200,7 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectstatuscolumnheuristically",
-      "community": 50,
+      "community": 46,
       "norm_label": "detectstatuscolumnheuristically()"
     },
     {
@@ -8150,7 +8210,7 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "lib_actions_sku_list_columndetectschema",
-      "community": 50,
+      "community": 46,
       "norm_label": "columndetectschema"
     },
     {
@@ -8160,7 +8220,7 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectcolumnwithai",
-      "community": 50,
+      "community": 46,
       "norm_label": "detectcolumnwithai()"
     },
     {
@@ -8170,7 +8230,7 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "lib_actions_sku_list_detectedskusheet",
-      "community": 50,
+      "community": 46,
       "norm_label": "detectedskusheet"
     },
     {
@@ -8180,7 +8240,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "lib_actions_sku_list_extractskusfromsheet",
-      "community": 50,
+      "community": 46,
       "norm_label": "extractskusfromsheet()"
     },
     {
@@ -8190,7 +8250,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "lib_actions_sku_list_parseskuexcel",
-      "community": 50,
+      "community": 46,
       "norm_label": "parseskuexcel()"
     },
     {
@@ -8240,7 +8300,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "lib_actions_staff_getstaffdirectory",
-      "community": 54,
+      "community": 0,
       "norm_label": "getstaffdirectory()"
     },
     {
@@ -8310,7 +8370,7 @@
       "source_location": "L246",
       "_origin": "ast",
       "id": "lib_actions_staff_changeownpassword",
-      "community": 4,
+      "community": 0,
       "norm_label": "changeownpassword()"
     },
     {
@@ -8670,7 +8730,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_ai_chat_provider",
-      "community": 54,
+      "community": 8,
       "norm_label": "chat-provider.ts"
     },
     {
@@ -8680,7 +8740,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_ai_chat_provider_chatmessage",
-      "community": 54,
+      "community": 8,
       "norm_label": "chatmessage"
     },
     {
@@ -8690,7 +8750,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_ai_chat_provider_generateassistantreply",
-      "community": 54,
+      "community": 8,
       "norm_label": "generateassistantreply()"
     },
     {
@@ -8700,7 +8760,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_ai_tools",
-      "community": 54,
+      "community": 8,
       "norm_label": "tools.ts"
     },
     {
@@ -8710,7 +8770,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_ai_tools_chattooldefinitions",
-      "community": 54,
+      "community": 8,
       "norm_label": "chattooldefinitions"
     },
     {
@@ -8720,7 +8780,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_ai_tools_runchattool",
-      "community": 54,
+      "community": 8,
       "norm_label": "runchattool()"
     },
     {
@@ -8730,7 +8790,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_amazon_ads_api",
-      "community": 2,
+      "community": 56,
       "norm_label": "ads-api.ts"
     },
     {
@@ -8740,7 +8800,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_retryable_statuses",
-      "community": 2,
+      "community": 56,
       "norm_label": "retryable_statuses"
     },
     {
@@ -8750,7 +8810,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_uploadable_countries",
-      "community": 2,
+      "community": 56,
       "norm_label": "uploadable_countries"
     },
     {
@@ -8760,7 +8820,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_adscountry",
-      "community": 2,
+      "community": 56,
       "norm_label": "adscountry"
     },
     {
@@ -8780,7 +8840,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_adsprofile",
-      "community": 2,
+      "community": 56,
       "norm_label": "adsprofile"
     },
     {
@@ -8790,7 +8850,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_listprofiles",
-      "community": 2,
+      "community": 56,
       "norm_label": "listprofiles()"
     },
     {
@@ -8810,7 +8870,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_getaccesstoken",
-      "community": 2,
+      "community": 56,
       "norm_label": "getaccesstoken()"
     },
     {
@@ -8830,7 +8890,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_adsheaders",
-      "community": 2,
+      "community": 56,
       "norm_label": "adsheaders()"
     },
     {
@@ -8840,7 +8900,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_adspost",
-      "community": 2,
+      "community": 56,
       "norm_label": "adspost()"
     },
     {
@@ -8850,7 +8910,7 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_sbbatchresponse",
-      "community": 2,
+      "community": 56,
       "norm_label": "sbbatchresponse"
     },
     {
@@ -8860,7 +8920,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_firstresult",
-      "community": 2,
+      "community": 56,
       "norm_label": "firstresult()"
     },
     {
@@ -8870,7 +8930,7 @@
       "source_location": "L210",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_campaign_media",
-      "community": 2,
+      "community": 56,
       "norm_label": "campaign_media"
     },
     {
@@ -8880,7 +8940,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_ad_group_media",
-      "community": 2,
+      "community": 56,
       "norm_label": "ad_group_media"
     },
     {
@@ -8890,7 +8950,7 @@
       "source_location": "L218",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_ad_media",
-      "community": 2,
+      "community": 56,
       "norm_label": "ad_media"
     },
     {
@@ -8900,7 +8960,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_keyword_media",
-      "community": 2,
+      "community": 56,
       "norm_label": "keyword_media"
     },
     {
@@ -8910,7 +8970,7 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_createsbcampaign",
-      "community": 2,
+      "community": 56,
       "norm_label": "createsbcampaign()"
     },
     {
@@ -8920,7 +8980,7 @@
       "source_location": "L251",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_createsbadgroup",
-      "community": 2,
+      "community": 56,
       "norm_label": "createsbadgroup()"
     },
     {
@@ -8930,7 +8990,7 @@
       "source_location": "L268",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_createsbmanualcollectionad",
-      "community": 2,
+      "community": 56,
       "norm_label": "createsbmanualcollectionad()"
     },
     {
@@ -8940,7 +9000,7 @@
       "source_location": "L298",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_createsbvideoad",
-      "community": 2,
+      "community": 56,
       "norm_label": "createsbvideoad()"
     },
     {
@@ -8950,7 +9010,7 @@
       "source_location": "L324",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_createsbkeywords",
-      "community": 2,
+      "community": 56,
       "norm_label": "createsbkeywords()"
     },
     {
@@ -8960,7 +9020,7 @@
       "source_location": "L351",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_createsbnegativekeywords",
-      "community": 2,
+      "community": 56,
       "norm_label": "createsbnegativekeywords()"
     },
     {
@@ -8970,7 +9030,7 @@
       "source_location": "L371",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_uploadcampaign",
-      "community": 2,
+      "community": 56,
       "norm_label": "uploadcampaign"
     },
     {
@@ -8980,7 +9040,7 @@
       "source_location": "L388",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_uploadresult",
-      "community": 2,
+      "community": 56,
       "norm_label": "uploadresult"
     },
     {
@@ -8990,7 +9050,7 @@
       "source_location": "L402",
       "_origin": "ast",
       "id": "lib_amazon_ads_api_uploadsbcampaign",
-      "community": 2,
+      "community": 56,
       "norm_label": "uploadsbcampaign()"
     },
     {
@@ -10140,7 +10200,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "lib_nav_subgroup_labels",
-      "community": 54,
+      "community": 8,
       "norm_label": "subgroup_labels"
     },
     {
@@ -10350,7 +10410,7 @@
       "source_location": "L210",
       "_origin": "ast",
       "id": "lib_nav_adsbulkgenerator",
-      "community": 8,
+      "community": 50,
       "norm_label": "adsbulkgenerator"
     },
     {
@@ -10390,7 +10450,7 @@
       "source_location": "L243",
       "_origin": "ast",
       "id": "lib_nav_calendar",
-      "community": 8,
+      "community": 0,
       "norm_label": "calendar"
     },
     {
@@ -10460,7 +10520,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_permissions_sanitizepermissions",
-      "community": 4,
+      "community": 52,
       "norm_label": "sanitizepermissions()"
     },
     {
@@ -10470,7 +10530,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_permissions_getmypermissions",
-      "community": 62,
+      "community": 2,
       "norm_label": "getmypermissions()"
     },
     {
@@ -10940,7 +11000,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "lib_roles_empty_permissions",
-      "community": 4,
+      "community": 43,
       "norm_label": "empty_permissions"
     },
     {
@@ -10990,7 +11050,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "lib_roles_isallowed",
-      "community": 62,
+      "community": 2,
       "norm_label": "isallowed()"
     },
     {
@@ -11000,7 +11060,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "lib_roles_filteritems",
-      "community": 62,
+      "community": 2,
       "norm_label": "filteritems()"
     },
     {
@@ -11040,7 +11100,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_session_sessionpayload",
-      "community": 9,
+      "community": 43,
       "norm_label": "sessionpayload"
     },
     {
@@ -11070,7 +11130,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "lib_session_getsession",
-      "community": 62,
+      "community": 0,
       "norm_label": "getsession()"
     },
     {
@@ -11120,7 +11180,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_supabase_server",
-      "community": 62,
+      "community": 51,
       "norm_label": "server.ts"
     },
     {
@@ -11250,7 +11310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_utils",
-      "community": 11,
+      "community": 26,
       "norm_label": "utils.ts"
     },
     {
@@ -12274,26 +12334,6 @@
       "norm_label": "config"
     },
     {
-      "label": "hash-password.ts",
-      "file_type": "code",
-      "source_file": "scripts/hash-password.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "scripts_hash_password",
-      "community": 56,
-      "norm_label": "hash-password.ts"
-    },
-    {
-      "label": "hash",
-      "file_type": "code",
-      "source_file": "scripts/hash-password.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "scripts_hash_password_hash",
-      "community": 56,
-      "norm_label": "hash"
-    },
-    {
       "label": "tsconfig.json",
       "file_type": "code",
       "source_file": "tsconfig.json",
@@ -12707,7 +12747,7 @@
       "label": "FBA Fee Tracker tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L485",
+      "source_location": "L492",
       "_origin": "ast",
       "id": "claude_fba_fee_tracker_tables",
       "community": 23,
@@ -12717,7 +12757,7 @@
       "label": "Trends (Best Sellers Rank) tables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L514",
+      "source_location": "L521",
       "_origin": "ast",
       "id": "claude_trends_best_sellers_rank_tables",
       "community": 23,
@@ -12727,7 +12767,7 @@
       "label": "Supabase clients",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L540",
+      "source_location": "L547",
       "_origin": "ast",
       "id": "claude_supabase_clients",
       "community": 23,
@@ -12737,7 +12777,7 @@
       "label": "Server Actions",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L554",
+      "source_location": "L561",
       "_origin": "ast",
       "id": "claude_server_actions",
       "community": 23,
@@ -12747,7 +12787,7 @@
       "label": "Navigation & Adding a Page",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L584",
+      "source_location": "L591",
       "_origin": "ast",
       "id": "claude_navigation_adding_a_page",
       "community": 23,
@@ -12757,7 +12797,7 @@
       "label": "Adding a page to an existing group",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L615",
+      "source_location": "L622",
       "_origin": "ast",
       "id": "claude_adding_a_page_to_an_existing_group",
       "community": 23,
@@ -12767,7 +12807,7 @@
       "label": "Adding a Layer-1 group",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L628",
+      "source_location": "L635",
       "_origin": "ast",
       "id": "claude_adding_a_layer_1_group",
       "community": 23,
@@ -12777,7 +12817,7 @@
       "label": "Adding an API route",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L636",
+      "source_location": "L643",
       "_origin": "ast",
       "id": "claude_adding_an_api_route",
       "community": 23,
@@ -12787,7 +12827,7 @@
       "label": "Page Header Component",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L653",
+      "source_location": "L660",
       "_origin": "ast",
       "id": "claude_page_header_component",
       "community": 23,
@@ -12797,7 +12837,7 @@
       "label": "Key Conventions",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L671",
+      "source_location": "L678",
       "_origin": "ast",
       "id": "claude_key_conventions",
       "community": 23,
@@ -12807,7 +12847,7 @@
       "label": "Key File Reference",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L685",
+      "source_location": "L692",
       "_origin": "ast",
       "id": "claude_key_file_reference",
       "community": 23,
@@ -12817,7 +12857,7 @@
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L702",
+      "source_location": "L709",
       "_origin": "ast",
       "id": "claude_graphify",
       "community": 23,
@@ -24117,7 +24157,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/calendar-sidebar.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_calendar_sidebar",
       "target": "app_portal_others_calendar_components_calendar_sidebar_calendarsidebar",
@@ -24264,6 +24304,17 @@
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_calendar_sidebar",
       "target": "lib_actions_calendar_calendarsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/calendar/_components/calendar-sidebar.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "app_portal_others_calendar_components_calendar_sidebar",
+      "target": "lib_calendar_constants",
       "confidence_score": 1.0
     },
     {
@@ -25898,7 +25949,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
@@ -25908,7 +25959,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L41",
+      "source_location": "L42",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "app_portal_others_calendar_components_task_form_dialog_weekday_full",
@@ -25918,7 +25969,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L40",
+      "source_location": "L41",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "app_portal_others_calendar_components_task_form_dialog_weekday_short",
@@ -26127,7 +26178,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_actions_calendar",
@@ -26138,7 +26189,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_actions_calendar_calendarsummary",
@@ -26149,7 +26200,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_actions_calendar_calendartask",
@@ -26226,6 +26277,28 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "app_portal_others_calendar_components_task_form_dialog",
+      "target": "lib_actions_staff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "app_portal_others_calendar_components_task_form_dialog",
+      "target": "lib_actions_staff_getstaffdirectory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
       "source_location": "L19",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
@@ -26292,7 +26365,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_date_utils",
@@ -26303,7 +26376,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_date_utils_adddays",
@@ -26314,7 +26387,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_date_utils_formatdaylabel",
@@ -26325,7 +26398,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_recurrence",
@@ -26336,7 +26409,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_recurrence_describerecurrence",
@@ -26347,7 +26420,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_recurrence_nthweekofmonth",
@@ -26358,7 +26431,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_calendar_recurrence_weekdayindex",
@@ -26369,7 +26442,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_utils",
@@ -26380,7 +26453,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog",
       "target": "lib_utils_cn",
@@ -26403,7 +26476,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L153",
+      "source_location": "L158",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_actions_calendar_getcalendarmembers"
@@ -26414,7 +26487,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L202",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
+      "target": "lib_actions_staff_getstaffdirectory"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
+      "source_location": "L233",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_calendar_date_utils_adddays"
@@ -26425,7 +26509,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L345",
+      "source_location": "L380",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_calendar_date_utils_formatdaylabel"
@@ -26436,7 +26520,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L562",
+      "source_location": "L598",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_calendar_recurrence_describerecurrence"
@@ -26447,7 +26531,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L119",
+      "source_location": "L122",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_calendar_recurrence_nthweekofmonth"
@@ -26458,7 +26542,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L120",
+      "source_location": "L123",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_calendar_recurrence_weekdayindex"
@@ -26469,7 +26553,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/_components/task-form-dialog.tsx",
-      "source_location": "L483",
+      "source_location": "L519",
       "weight": 1.0,
       "source": "app_portal_others_calendar_components_task_form_dialog_taskformdialog",
       "target": "lib_utils_cn"
@@ -27483,7 +27567,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/page.tsx",
-      "source_location": "L385",
+      "source_location": "L391",
       "weight": 1.0,
       "source": "app_portal_others_calendar_page_calendarpage",
       "target": "lib_actions_calendar_createcalendar"
@@ -27527,7 +27611,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/calendar/page.tsx",
-      "source_location": "L398",
+      "source_location": "L404",
       "weight": 1.0,
       "source": "app_portal_others_calendar_page_calendarpage",
       "target": "lib_actions_calendar_renamecalendar"
@@ -37855,7 +37939,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L200",
+      "source_location": "L207",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_accessiblecalendar",
@@ -37865,7 +37949,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L157",
+      "source_location": "L164",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_accessresult",
@@ -37875,7 +37959,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L420",
+      "source_location": "L514",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_addcalendarmember",
@@ -37885,7 +37969,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L467",
+      "source_location": "L561",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_addcalendarmembers",
@@ -37895,7 +37979,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L725",
+      "source_location": "L846",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_assertassigneesallowed",
@@ -37905,7 +37989,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_calendarmember",
@@ -37915,7 +37999,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_calendarsummary",
@@ -37925,7 +38009,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_calendartask",
@@ -37935,7 +38019,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L882",
+      "source_location": "L1058",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_copytasktodates",
@@ -37945,7 +38029,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L316",
+      "source_location": "L410",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_createcalendar",
@@ -37955,7 +38039,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L743",
+      "source_location": "L864",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_createtask",
@@ -37965,7 +38049,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L371",
+      "source_location": "L465",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_deletecalendar",
@@ -37975,7 +38059,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1085",
+      "source_location": "L1261",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_deleteoccurrences",
@@ -37985,7 +38069,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L65",
+      "source_location": "L68",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_deletescope",
@@ -37995,7 +38079,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L938",
+      "source_location": "L1114",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_deletetask",
@@ -38005,7 +38089,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L208",
+      "source_location": "L215",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_getaccessiblecalendarmap",
@@ -38015,7 +38099,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L393",
+      "source_location": "L487",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_getcalendarmembers",
@@ -38025,7 +38109,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L292",
+      "source_location": "L374",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_getmycalendars",
@@ -38035,7 +38119,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L628",
+      "source_location": "L755",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_gettasksforrange",
@@ -38045,7 +38129,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L667",
+      "source_location": "L792",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_getupcomingtasks",
@@ -38055,7 +38139,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L240",
+      "source_location": "L731",
+      "weight": 1.0,
+      "source": "lib_actions_calendar",
+      "target": "lib_actions_calendar_hydratetasks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L247",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_loadassignees",
@@ -38065,7 +38159,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L262",
+      "source_location": "L269",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_loadexceptions",
@@ -38075,7 +38169,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L964",
+      "source_location": "L1140",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_loadoccurrencetarget",
@@ -38085,7 +38179,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L67",
+      "source_location": "L319",
+      "weight": 1.0,
+      "source": "lib_actions_calendar",
+      "target": "lib_actions_calendar_loadsharedintaskrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L297",
+      "weight": 1.0,
+      "source": "lib_actions_calendar",
+      "target": "lib_actions_calendar_loadshares",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L70",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_occurrenceupdate",
@@ -38095,7 +38209,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L547",
+      "source_location": "L641",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_removecalendarmember",
@@ -38105,7 +38219,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L346",
+      "source_location": "L440",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_renamecalendar",
@@ -38115,7 +38229,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L135",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_repeatcolumns",
@@ -38125,7 +38239,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L161",
+      "source_location": "L168",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_requirecalendaraccess",
@@ -38135,7 +38249,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L189",
+      "source_location": "L196",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_requireeditoraccess",
@@ -38145,7 +38259,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1059",
+      "source_location": "L1235",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_resetoccurrence",
@@ -38155,7 +38269,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L159",
+      "source_location": "L350",
+      "weight": 1.0,
+      "source": "lib_actions_calendar",
+      "target": "lib_actions_calendar_resolveshares",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L336",
+      "weight": 1.0,
+      "source": "lib_actions_calendar",
+      "target": "lib_actions_calendar_rowtouchesrange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L166",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_supabaseserverclient",
@@ -38165,7 +38299,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L74",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_taskinput",
@@ -38175,7 +38309,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L87",
+      "source_location": "L724",
+      "weight": 1.0,
+      "source": "lib_actions_calendar",
+      "target": "lib_actions_calendar_taskrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L91",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_taskupdate",
@@ -38185,7 +38329,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L578",
+      "source_location": "L672",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_tocalendartask",
@@ -38195,7 +38339,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L513",
+      "source_location": "L607",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_updatecalendarmemberrole",
@@ -38205,7 +38349,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L992",
+      "source_location": "L1168",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_updateoccurrence",
@@ -38215,7 +38359,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L799",
+      "source_location": "L936",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_updatetask",
@@ -38225,7 +38369,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L115",
+      "source_location": "L122",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_validaterepeat",
@@ -38235,7 +38379,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L101",
+      "source_location": "L108",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_actions_calendar_validatetimes",
@@ -38345,7 +38489,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_calendar_date_utils",
@@ -38356,7 +38500,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_calendar_date_utils_adddays",
@@ -38367,7 +38511,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_calendar_date_utils_diffdays",
@@ -38378,7 +38522,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_calendar_recurrence",
@@ -38389,7 +38533,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "lib_actions_calendar",
       "target": "lib_calendar_recurrence_expandtask",
@@ -38477,7 +38621,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "lib_actions_calendar_calendarsummary",
       "target": "lib_calendar_constants_calendarrole",
@@ -38488,7 +38632,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0,
       "source": "lib_actions_calendar_calendarmember",
       "target": "lib_calendar_constants_calendarmemberrole",
@@ -38499,7 +38643,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0,
       "source": "lib_actions_calendar_calendartask",
       "target": "lib_calendar_constants_repeatrule",
@@ -38510,7 +38654,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L46",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "lib_actions_calendar_calendartask",
       "target": "lib_calendar_constants_taskcolorkey",
@@ -38521,7 +38665,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L60",
+      "source_location": "L63",
       "weight": 1.0,
       "source": "lib_actions_calendar_calendartask",
       "target": "lib_calendar_constants_taskexception",
@@ -38543,7 +38687,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L82",
+      "source_location": "L86",
       "weight": 1.0,
       "source": "lib_actions_calendar_taskinput",
       "target": "lib_calendar_constants_repeatrule",
@@ -38554,7 +38698,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L80",
+      "source_location": "L83",
       "weight": 1.0,
       "source": "lib_actions_calendar_taskinput",
       "target": "lib_calendar_constants_taskcolorkey",
@@ -38565,7 +38709,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L94",
+      "source_location": "L101",
       "weight": 1.0,
       "source": "lib_actions_calendar_taskupdate",
       "target": "lib_calendar_constants_repeatrule",
@@ -38576,7 +38720,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L92",
+      "source_location": "L98",
       "weight": 1.0,
       "source": "lib_actions_calendar_taskupdate",
       "target": "lib_calendar_constants_taskcolorkey",
@@ -38587,7 +38731,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L759",
+      "source_location": "L880",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_actions_calendar_validatetimes",
@@ -38598,7 +38742,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1008",
+      "source_location": "L1184",
       "weight": 1.0,
       "source": "lib_actions_calendar_updateoccurrence",
       "target": "lib_actions_calendar_validatetimes",
@@ -38609,7 +38753,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L832",
+      "source_location": "L980",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_actions_calendar_validatetimes",
@@ -38620,7 +38764,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L757",
+      "source_location": "L878",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_actions_calendar_validaterepeat",
@@ -38631,7 +38775,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L827",
+      "source_location": "L975",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_actions_calendar_validaterepeat",
@@ -38643,7 +38787,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L117",
+      "source_location": "L124",
       "weight": 1.0,
       "source": "lib_actions_calendar_validaterepeat",
       "target": "lib_calendar_constants_repeat_freqs"
@@ -38653,7 +38797,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L783",
+      "source_location": "L913",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_actions_calendar_repeatcolumns",
@@ -38664,7 +38808,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L840",
+      "source_location": "L1014",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_actions_calendar_repeatcolumns",
@@ -38676,7 +38820,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L436",
+      "source_location": "L530",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmember",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38687,7 +38831,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L482",
+      "source_location": "L576",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmembers",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38698,7 +38842,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L732",
+      "source_location": "L853",
       "weight": 1.0,
       "source": "lib_actions_calendar_assertassigneesallowed",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38709,7 +38853,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L894",
+      "source_location": "L1070",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38720,7 +38864,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L945",
+      "source_location": "L1121",
       "weight": 1.0,
       "source": "lib_actions_calendar_deletetask",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38731,7 +38875,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L215",
+      "source_location": "L222",
       "weight": 1.0,
       "source": "lib_actions_calendar_getaccessiblecalendarmap",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38742,7 +38886,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L403",
+      "source_location": "L497",
       "weight": 1.0,
       "source": "lib_actions_calendar_getcalendarmembers",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38753,7 +38897,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L641",
+      "source_location": "L771",
       "weight": 1.0,
       "source": "lib_actions_calendar_gettasksforrange",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38764,7 +38908,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L682",
+      "source_location": "L808",
       "weight": 1.0,
       "source": "lib_actions_calendar_getupcomingtasks",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38775,7 +38919,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L247",
+      "source_location": "L254",
       "weight": 1.0,
       "source": "lib_actions_calendar_loadassignees",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38786,7 +38930,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L269",
+      "source_location": "L276",
       "weight": 1.0,
       "source": "lib_actions_calendar_loadexceptions",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38797,7 +38941,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L972",
+      "source_location": "L1148",
       "weight": 1.0,
       "source": "lib_actions_calendar_loadoccurrencetarget",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38808,7 +38952,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L555",
+      "source_location": "L324",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_loadsharedintaskrows",
+      "target": "lib_actions_calendar_supabaseserverclient"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L304",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_loadshares",
+      "target": "lib_actions_calendar_supabaseserverclient"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L649",
       "weight": 1.0,
       "source": "lib_actions_calendar_removecalendarmember",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38819,7 +38985,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L166",
+      "source_location": "L173",
       "weight": 1.0,
       "source": "lib_actions_calendar_requirecalendaraccess",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38830,7 +38996,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L523",
+      "source_location": "L361",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_resolveshares",
+      "target": "lib_actions_calendar_supabaseserverclient"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L617",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatecalendarmemberrole",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38841,7 +39018,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L807",
+      "source_location": "L944",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_actions_calendar_supabaseserverclient"
@@ -38851,7 +39028,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L400",
+      "source_location": "L494",
       "weight": 1.0,
       "source": "lib_actions_calendar_getcalendarmembers",
       "target": "lib_actions_calendar_requirecalendaraccess",
@@ -38862,7 +39039,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L194",
+      "source_location": "L201",
       "weight": 1.0,
       "source": "lib_actions_calendar_requireeditoraccess",
       "target": "lib_actions_calendar_requirecalendaraccess",
@@ -38873,7 +39050,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L902",
+      "source_location": "L1078",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_actions_calendar_requireeditoraccess",
@@ -38884,7 +39061,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L763",
+      "source_location": "L884",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_actions_calendar_requireeditoraccess",
@@ -38895,7 +39072,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L953",
+      "source_location": "L1129",
       "weight": 1.0,
       "source": "lib_actions_calendar_deletetask",
       "target": "lib_actions_calendar_requireeditoraccess",
@@ -38906,7 +39083,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L981",
+      "source_location": "L1157",
       "weight": 1.0,
       "source": "lib_actions_calendar_loadoccurrencetarget",
       "target": "lib_actions_calendar_requireeditoraccess",
@@ -38917,7 +39094,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L815",
+      "source_location": "L952",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_actions_calendar_requireeditoraccess",
@@ -38928,7 +39105,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L201",
+      "source_location": "L208",
       "weight": 1.0,
       "source": "lib_actions_calendar_accessiblecalendar",
       "target": "lib_calendar_constants_calendarrole",
@@ -38939,7 +39116,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L297",
+      "source_location": "L379",
       "weight": 1.0,
       "source": "lib_actions_calendar_getmycalendars",
       "target": "lib_actions_calendar_getaccessiblecalendarmap",
@@ -38950,7 +39127,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L637",
+      "source_location": "L764",
       "weight": 1.0,
       "source": "lib_actions_calendar_gettasksforrange",
       "target": "lib_actions_calendar_getaccessiblecalendarmap",
@@ -38961,7 +39138,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L672",
+      "source_location": "L797",
       "weight": 1.0,
       "source": "lib_actions_calendar_getupcomingtasks",
       "target": "lib_actions_calendar_getaccessiblecalendarmap",
@@ -38972,7 +39149,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L906",
+      "source_location": "L1082",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_actions_calendar_loadassignees",
@@ -38983,18 +39160,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L651",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_gettasksforrange",
-      "target": "lib_actions_calendar_loadassignees",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L691",
+      "source_location": "L817",
       "weight": 1.0,
       "source": "lib_actions_calendar_getupcomingtasks",
       "target": "lib_actions_calendar_loadassignees",
@@ -39005,9 +39171,31 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L652",
+      "source_location": "L739",
       "weight": 1.0,
-      "source": "lib_actions_calendar_gettasksforrange",
+      "source": "lib_actions_calendar_hydratetasks",
+      "target": "lib_actions_calendar_loadassignees",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L989",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_updatetask",
+      "target": "lib_actions_calendar_loadassignees",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L741",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_hydratetasks",
       "target": "lib_actions_calendar_loadexceptions",
       "confidence_score": 1.0
     },
@@ -39016,108 +39204,196 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L697",
+      "source_location": "L740",
       "weight": 1.0,
-      "source": "lib_actions_calendar_getupcomingtasks",
-      "target": "lib_actions_calendar_loadexceptions",
+      "source": "lib_actions_calendar_hydratetasks",
+      "target": "lib_actions_calendar_loadshares",
       "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L293",
+      "source_location": "L1001",
       "weight": 1.0,
-      "source": "lib_actions_calendar_getmycalendars",
-      "target": "lib_session_getsession"
+      "source": "lib_actions_calendar_updatetask",
+      "target": "lib_actions_calendar_loadshares",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L296",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_getmycalendars",
-      "target": "lib_supabase_server_createclient"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L319",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_createcalendar",
-      "target": "lib_session_getsession"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L326",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_createcalendar",
-      "target": "lib_supabase_service_createserviceclient"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L350",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_renamecalendar",
-      "target": "lib_session_getsession"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L357",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_renamecalendar",
-      "target": "lib_supabase_service_createserviceclient"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L374",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_deletecalendar",
-      "target": "lib_session_getsession"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L377",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_deletecalendar",
-      "target": "lib_supabase_service_createserviceclient"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
       "source_location": "L396",
       "weight": 1.0,
+      "source": "lib_actions_calendar_getmycalendars",
+      "target": "lib_actions_calendar_loadsharedintaskrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L783",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_gettasksforrange",
+      "target": "lib_actions_calendar_loadsharedintaskrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L823",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_getupcomingtasks",
+      "target": "lib_actions_calendar_loadsharedintaskrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L784",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_gettasksforrange",
+      "target": "lib_actions_calendar_rowtouchesrange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L824",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_getupcomingtasks",
+      "target": "lib_actions_calendar_rowtouchesrange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L891",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_createtask",
+      "target": "lib_actions_calendar_resolveshares",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L997",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_updatetask",
+      "target": "lib_actions_calendar_resolveshares",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L375",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_getmycalendars",
+      "target": "lib_session_getsession"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L378",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_getmycalendars",
+      "target": "lib_supabase_server_createclient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L413",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_createcalendar",
+      "target": "lib_session_getsession"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L420",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_createcalendar",
+      "target": "lib_supabase_service_createserviceclient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L444",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_renamecalendar",
+      "target": "lib_session_getsession"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L451",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_renamecalendar",
+      "target": "lib_supabase_service_createserviceclient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L468",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_deletecalendar",
+      "target": "lib_session_getsession"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L471",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_deletecalendar",
+      "target": "lib_supabase_service_createserviceclient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L490",
+      "weight": 1.0,
       "source": "lib_actions_calendar_getcalendarmembers",
       "target": "lib_session_getsession"
     },
@@ -39127,7 +39403,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L399",
+      "source_location": "L493",
       "weight": 1.0,
       "source": "lib_actions_calendar_getcalendarmembers",
       "target": "lib_supabase_server_createclient"
@@ -39138,7 +39414,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L430",
+      "source_location": "L524",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmember",
       "target": "lib_calendar_constants_calendar_member_roles"
@@ -39149,7 +39425,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L425",
+      "source_location": "L519",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmember",
       "target": "lib_session_getsession"
@@ -39160,7 +39436,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L435",
+      "source_location": "L529",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmember",
       "target": "lib_supabase_server_createclient"
@@ -39171,7 +39447,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L455",
+      "source_location": "L549",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmember",
       "target": "lib_supabase_service_createserviceclient"
@@ -39182,7 +39458,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L474",
+      "source_location": "L568",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmembers",
       "target": "lib_calendar_constants_calendar_member_roles"
@@ -39193,7 +39469,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L472",
+      "source_location": "L566",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmembers",
       "target": "lib_session_getsession"
@@ -39204,7 +39480,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L481",
+      "source_location": "L575",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmembers",
       "target": "lib_supabase_server_createclient"
@@ -39215,7 +39491,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L501",
+      "source_location": "L595",
       "weight": 1.0,
       "source": "lib_actions_calendar_addcalendarmembers",
       "target": "lib_supabase_service_createserviceclient"
@@ -39226,7 +39502,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L520",
+      "source_location": "L614",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatecalendarmemberrole",
       "target": "lib_calendar_constants_calendar_member_roles"
@@ -39237,7 +39513,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L518",
+      "source_location": "L612",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatecalendarmemberrole",
       "target": "lib_session_getsession"
@@ -39248,7 +39524,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L522",
+      "source_location": "L616",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatecalendarmemberrole",
       "target": "lib_supabase_server_createclient"
@@ -39259,7 +39535,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L533",
+      "source_location": "L627",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatecalendarmemberrole",
       "target": "lib_supabase_service_createserviceclient"
@@ -39270,7 +39546,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L551",
+      "source_location": "L645",
       "weight": 1.0,
       "source": "lib_actions_calendar_removecalendarmember",
       "target": "lib_session_getsession"
@@ -39281,7 +39557,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L554",
+      "source_location": "L648",
       "weight": 1.0,
       "source": "lib_actions_calendar_removecalendarmember",
       "target": "lib_supabase_server_createclient"
@@ -39292,7 +39568,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L565",
+      "source_location": "L659",
       "weight": 1.0,
       "source": "lib_actions_calendar_removecalendarmember",
       "target": "lib_supabase_service_createserviceclient"
@@ -39302,7 +39578,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L796",
+      "source_location": "L933",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_actions_calendar_tocalendartask",
@@ -39313,9 +39589,9 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L658",
+      "source_location": "L748",
       "weight": 1.0,
-      "source": "lib_actions_calendar_gettasksforrange",
+      "source": "lib_actions_calendar_hydratetasks",
       "target": "lib_actions_calendar_tocalendartask",
       "confidence_score": 1.0
     },
@@ -39324,18 +39600,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L704",
-      "weight": 1.0,
-      "source": "lib_actions_calendar_getupcomingtasks",
-      "target": "lib_actions_calendar_tocalendartask",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/calendar.ts",
-      "source_location": "L984",
+      "source_location": "L1160",
       "weight": 1.0,
       "source": "lib_actions_calendar_loadoccurrencetarget",
       "target": "lib_actions_calendar_tocalendartask",
@@ -39345,9 +39610,31 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L788",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_gettasksforrange",
+      "target": "lib_actions_calendar_hydratetasks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/calendar.ts",
+      "source_location": "L828",
+      "weight": 1.0,
+      "source": "lib_actions_calendar_getupcomingtasks",
+      "target": "lib_actions_calendar_hydratetasks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L633",
+      "source_location": "L760",
       "weight": 1.0,
       "source": "lib_actions_calendar_gettasksforrange",
       "target": "lib_session_getsession"
@@ -39358,7 +39645,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L636",
+      "source_location": "L763",
       "weight": 1.0,
       "source": "lib_actions_calendar_gettasksforrange",
       "target": "lib_supabase_server_createclient"
@@ -39369,7 +39656,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L708",
+      "source_location": "L829",
       "weight": 1.0,
       "source": "lib_actions_calendar_getupcomingtasks",
       "target": "lib_calendar_recurrence_expandtask"
@@ -39380,7 +39667,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L668",
+      "source_location": "L793",
       "weight": 1.0,
       "source": "lib_actions_calendar_getupcomingtasks",
       "target": "lib_session_getsession"
@@ -39391,7 +39678,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L671",
+      "source_location": "L796",
       "weight": 1.0,
       "source": "lib_actions_calendar_getupcomingtasks",
       "target": "lib_supabase_server_createclient"
@@ -39401,7 +39688,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L767",
+      "source_location": "L888",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_actions_calendar_assertassigneesallowed",
@@ -39412,7 +39699,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L860",
+      "source_location": "L990",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_actions_calendar_assertassigneesallowed",
@@ -39424,7 +39711,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L752",
+      "source_location": "L873",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_calendar_constants_task_colors"
@@ -39435,7 +39722,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L746",
+      "source_location": "L867",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_session_getsession"
@@ -39446,7 +39733,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L762",
+      "source_location": "L883",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_supabase_server_createclient"
@@ -39457,7 +39744,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L770",
+      "source_location": "L900",
       "weight": 1.0,
       "source": "lib_actions_calendar_createtask",
       "target": "lib_supabase_service_createserviceclient"
@@ -39468,7 +39755,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L823",
+      "source_location": "L971",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_calendar_constants_task_colors"
@@ -39479,7 +39766,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L803",
+      "source_location": "L940",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_session_getsession"
@@ -39490,7 +39777,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L806",
+      "source_location": "L943",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_supabase_server_createclient"
@@ -39501,7 +39788,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L851",
+      "source_location": "L1025",
       "weight": 1.0,
       "source": "lib_actions_calendar_updatetask",
       "target": "lib_supabase_service_createserviceclient"
@@ -39512,7 +39799,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L918",
+      "source_location": "L1094",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_calendar_date_utils_adddays"
@@ -39523,7 +39810,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L905",
+      "source_location": "L1081",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_calendar_date_utils_diffdays"
@@ -39534,7 +39821,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L886",
+      "source_location": "L1062",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_session_getsession"
@@ -39545,7 +39832,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L893",
+      "source_location": "L1069",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_supabase_server_createclient"
@@ -39556,7 +39843,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L909",
+      "source_location": "L1085",
       "weight": 1.0,
       "source": "lib_actions_calendar_copytasktodates",
       "target": "lib_supabase_service_createserviceclient"
@@ -39566,7 +39853,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1090",
+      "source_location": "L1266",
       "weight": 1.0,
       "source": "lib_actions_calendar_deleteoccurrences",
       "target": "lib_actions_calendar_deletetask",
@@ -39578,7 +39865,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L941",
+      "source_location": "L1117",
       "weight": 1.0,
       "source": "lib_actions_calendar_deletetask",
       "target": "lib_session_getsession"
@@ -39589,7 +39876,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L944",
+      "source_location": "L1120",
       "weight": 1.0,
       "source": "lib_actions_calendar_deletetask",
       "target": "lib_supabase_server_createclient"
@@ -39600,7 +39887,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L956",
+      "source_location": "L1132",
       "weight": 1.0,
       "source": "lib_actions_calendar_deletetask",
       "target": "lib_supabase_service_createserviceclient"
@@ -39610,7 +39897,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1097",
+      "source_location": "L1273",
       "weight": 1.0,
       "source": "lib_actions_calendar_deleteoccurrences",
       "target": "lib_actions_calendar_loadoccurrencetarget",
@@ -39621,7 +39908,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L985",
+      "source_location": "L1161",
       "weight": 1.0,
       "source": "lib_actions_calendar_loadoccurrencetarget",
       "target": "lib_calendar_recurrence_expandtask",
@@ -39632,7 +39919,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1067",
+      "source_location": "L1243",
       "weight": 1.0,
       "source": "lib_actions_calendar_resetoccurrence",
       "target": "lib_actions_calendar_loadoccurrencetarget",
@@ -39643,7 +39930,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1004",
+      "source_location": "L1180",
       "weight": 1.0,
       "source": "lib_actions_calendar_updateoccurrence",
       "target": "lib_actions_calendar_loadoccurrencetarget",
@@ -39655,7 +39942,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L997",
+      "source_location": "L1173",
       "weight": 1.0,
       "source": "lib_actions_calendar_updateoccurrence",
       "target": "lib_session_getsession"
@@ -39666,7 +39953,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1003",
+      "source_location": "L1179",
       "weight": 1.0,
       "source": "lib_actions_calendar_updateoccurrence",
       "target": "lib_supabase_server_createclient"
@@ -39677,7 +39964,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1027",
+      "source_location": "L1203",
       "weight": 1.0,
       "source": "lib_actions_calendar_updateoccurrence",
       "target": "lib_supabase_service_createserviceclient"
@@ -39688,7 +39975,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1063",
+      "source_location": "L1239",
       "weight": 1.0,
       "source": "lib_actions_calendar_resetoccurrence",
       "target": "lib_session_getsession"
@@ -39699,7 +39986,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1066",
+      "source_location": "L1242",
       "weight": 1.0,
       "source": "lib_actions_calendar_resetoccurrence",
       "target": "lib_supabase_server_createclient"
@@ -39710,7 +39997,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1070",
+      "source_location": "L1246",
       "weight": 1.0,
       "source": "lib_actions_calendar_resetoccurrence",
       "target": "lib_supabase_service_createserviceclient"
@@ -39721,7 +40008,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1121",
+      "source_location": "L1297",
       "weight": 1.0,
       "source": "lib_actions_calendar_deleteoccurrences",
       "target": "lib_calendar_date_utils_adddays"
@@ -39732,7 +40019,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1093",
+      "source_location": "L1269",
       "weight": 1.0,
       "source": "lib_actions_calendar_deleteoccurrences",
       "target": "lib_session_getsession"
@@ -39743,7 +40030,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1096",
+      "source_location": "L1272",
       "weight": 1.0,
       "source": "lib_actions_calendar_deleteoccurrences",
       "target": "lib_supabase_server_createclient"
@@ -39754,7 +40041,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/calendar.ts",
-      "source_location": "L1100",
+      "source_location": "L1276",
       "weight": 1.0,
       "source": "lib_actions_calendar_deleteoccurrences",
       "target": "lib_supabase_service_createserviceclient"
@@ -54003,16 +54290,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "scripts/hash-password.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "source": "scripts_hash_password",
-      "target": "scripts_hash_password_hash",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
@@ -54254,7 +54531,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L702",
+      "source_location": "L709",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_graphify",
@@ -54264,7 +54541,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L671",
+      "source_location": "L678",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_key_conventions",
@@ -54274,7 +54551,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L685",
+      "source_location": "L692",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_key_file_reference",
@@ -54284,7 +54561,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L584",
+      "source_location": "L591",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_navigation_adding_a_page",
@@ -54294,7 +54571,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L653",
+      "source_location": "L660",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_page_header_component",
@@ -54314,7 +54591,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L554",
+      "source_location": "L561",
       "weight": 1.0,
       "source": "claude_lalagreen_automation_portal_developer_guide",
       "target": "claude_server_actions",
@@ -54414,7 +54691,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L485",
+      "source_location": "L492",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_fba_fee_tracker_tables",
@@ -54454,7 +54731,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L540",
+      "source_location": "L547",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_supabase_clients",
@@ -54474,7 +54751,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L514",
+      "source_location": "L521",
       "weight": 1.0,
       "source": "claude_database_supabase",
       "target": "claude_trends_best_sellers_rank_tables",
@@ -54484,7 +54761,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L628",
+      "source_location": "L635",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_a_layer_1_group",
@@ -54494,7 +54771,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L615",
+      "source_location": "L622",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_a_page_to_an_existing_group",
@@ -54504,7 +54781,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L636",
+      "source_location": "L643",
       "weight": 1.0,
       "source": "claude_navigation_adding_a_page",
       "target": "claude_adding_an_api_route",
@@ -54542,5 +54819,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bf6688acf64ef619d1d70a60fea68dd8de390e7e"
+  "built_at_commit": "8b38f09403af4c3ada6afec59835c758233793a0"
 }

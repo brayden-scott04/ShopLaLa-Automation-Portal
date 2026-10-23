@@ -481,6 +481,13 @@ A task is one `calendar_tasks` row; recurring ones are expanded client-side by `
 - **Delete scope**: every delete goes through `DeleteScopeDialog`. Repeating tasks offer this occurrence
   (exception row), this and following (sets `repeat_until` to the day before; deletes the whole row if
   nothing would remain), or all (`deleteTask`).
+- **Moving a task**: the edit form's Calendar picker passes `calendarId` to `updateTask`, which needs
+  editor access on both calendars and re-checks assignees/shares against the destination.
+- **Per-task sharing** (`calendar_task_shares`, DDL `sql/calendar_task_shares_migration.sql`): a task
+  can be shared with staff outside its calendar ("Also share with"). They get it read-only under a
+  virtual "Shared with me" calendar (`SHARED_CALENDAR_ID`, no `calendars` row, only listed when they
+  have at least one share) and can't see who else it's shared with. Shares for people who already
+  see the calendar are dropped by `resolveShares()`.
 
 ### FBA Fee Tracker tables
 

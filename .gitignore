@@ -45,4 +45,6 @@ next-env.d.ts
 # vscode
 .vscode/settings.json
 
-/sql
+sql/
+
+scripts/

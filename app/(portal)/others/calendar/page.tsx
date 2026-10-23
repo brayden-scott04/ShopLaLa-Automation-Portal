@@ -218,6 +218,12 @@ export default function CalendarPage() {
 
   const dayActiveTasks = dayDialogDate ? activeByDate.get(dayDialogDate) ?? [] : [];
 
+  // Tasks you can't edit (view-only calendars, Shared with me) open the read-only day list instead.
+  function openTask(task: CalendarTask) {
+    if (editableCalendarIds.has(task.calendarId)) setTaskForm({ open: true, task, date: task.eventDate });
+    else setDayDialogDate(task.occurrenceDate ?? task.eventDate);
+  }
+
   function handleDeleteCalendar(cal: CalendarSummary) {
     if (!window.confirm(`Delete "${cal.name}" and everything pinned to it? This can't be undone.`)) return;
     startTransition(async () => {
@@ -298,7 +304,7 @@ export default function CalendarPage() {
                 dueByDate={dueByDate}
                 spanningTasks={spanningTasks}
                 onDayClick={(dateKey) => setDayDialogDate(dateKey)}
-                onEditTask={(task) => setTaskForm({ open: true, task, date: task.eventDate })}
+                onEditTask={openTask}
               />
             )}
             {view === "week" && (
@@ -311,7 +317,7 @@ export default function CalendarPage() {
                   changeView("day");
                 }}
                 onAddTask={(dateKey) => setTaskForm({ open: true, task: null, date: dateKey })}
-                onEditTask={(task) => setTaskForm({ open: true, task, date: task.eventDate })}
+                onEditTask={openTask}
               />
             )}
             {view === "day" && (
@@ -320,7 +326,7 @@ export default function CalendarPage() {
                 tasks={activeByDate.get(anchor) ?? []}
                 canAdd={editableCalendarIds.size > 0}
                 onAddTask={() => setTaskForm({ open: true, task: null, date: anchor })}
-                onEditTask={(task) => setTaskForm({ open: true, task, date: task.eventDate })}
+                onEditTask={openTask}
               />
             )}
             {view === "year" && (
@@ -349,7 +355,7 @@ export default function CalendarPage() {
         onAddTask={() =>
           setTaskForm({ open: true, task: null, date: dayDialogDate ?? "", calendarId: undefined })
         }
-        onEditTask={(task) => setTaskForm({ open: true, task, date: task.eventDate })}
+        onEditTask={openTask}
         onDeleteTask={handleDeleteTask}
       />
 

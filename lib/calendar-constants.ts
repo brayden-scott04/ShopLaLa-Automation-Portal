@@ -70,3 +70,9 @@ export interface TaskException {
 export const CALENDAR_MEMBER_ROLES =["editor", "viewer"] as const;
 export type CalendarMemberRole = (typeof CALENDAR_MEMBER_ROLES)[number];
 export type CalendarRole = "owner" | CalendarMemberRole;
+
+/**
+ * Id of the virtual calendar that holds tasks other people shared with you one by one
+ * (calendar_task_shares). It has no row in `calendars` and is always read-only.
+ */
+export const SHARED_CALENDAR_ID = "shared-with-me";

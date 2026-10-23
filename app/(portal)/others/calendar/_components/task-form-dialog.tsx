@@ -32,6 +32,7 @@ import {
   resetOccurrence,
   copyTaskToDates,
 } from "@/lib/actions/calendar";
+import { getStaffDirectory } from "@/lib/actions/staff";
 import type { CalendarSummary, CalendarTask } from "@/lib/actions/calendar";
 import { addDays, formatDayLabel } from "@/lib/calendar-date-utils";
 import { describeRecurrence, nthWeekOfMonth, weekdayIndex } from "@/lib/calendar-recurrence";
@@ -69,6 +70,8 @@ export function TaskFormDialog({
   const [color, setColor] = useState<TaskColorKey>(DEFAULT_TASK_COLOR);
   const [assignees, setAssignees] = useState<Set<string>>(new Set());
   const [members, setMembers] = useState<{ username: string; label: string }[]>([]);
+  const [sharedWith, setSharedWith] = useState<Set<string>>(new Set());
+  const [staffUsernames, setStaffUsernames] = useState<string[]>([]);
   const [allDay, setAllDay] = useState(true);
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("");
@@ -130,6 +133,7 @@ export function TaskFormDialog({
         setDueDate(seriesDue ?? "");
         setColor(task.color);
         setAssignees(new Set(task.assignees));
+        setSharedWith(new Set(task.sharedWith));
       } else {
         setCalendarId(defaultCalendarId ?? calendars[0]?.id ?? "");
         setTitle("");
@@ -139,6 +143,7 @@ export function TaskFormDialog({
         setDueDate("");
         setColor(DEFAULT_TASK_COLOR);
         setAssignees(new Set());
+        setSharedWith(new Set());
       }
     }
   }
@@ -157,8 +162,34 @@ export function TaskFormDialog({
       }
       (data ?? []).forEach((m) => list.push({ username: m.username, label: `${m.username} (${m.role})` }));
       setMembers(list);
+      // After switching calendars, only people with access to the new one can stay assigned.
+      if (data) {
+        const allowed = new Set(list.map((m) => m.username));
+        setAssignees((prev) => new Set(Array.from(prev).filter((u) => allowed.has(u))));
+      }
     });
   }, [open, calendarId, calendars]);
+
+  useEffect(() => {
+    if (!open) return;
+    startTransition(async () => {
+      const { data } = await getStaffDirectory();
+      setStaffUsernames((data ?? []).map((s) => s.username).sort());
+    });
+  }, [open]);
+
+  // Sharing is for people outside the calendar; members (you included) already see the task.
+  const memberUsernames = new Set(members.map((m) => m.username));
+  const shareCandidates = staffUsernames.filter((u) => !memberUsernames.has(u));
+
+  function toggleShare(username: string) {
+    setSharedWith((prev) => {
+      const next = new Set(prev);
+      if (next.has(username)) next.delete(username);
+      else next.add(username);
+      return next;
+    });
+  }
 
   function toggleAssignee(username: string) {
     setAssignees((prev) => {
@@ -289,14 +320,17 @@ export function TaskFormDialog({
     const repeat = buildRepeat();
 
     startTransition(async () => {
+      const shares = Array.from(sharedWith).filter((u) => !memberUsernames.has(u));
       const result = isEdit
         ? await updateTask(task!.id, {
+            calendarId,
             title,
             notes,
             eventDate,
             dueDate: hasDueDate ? dueDate || null : null,
             color,
             assigneeUsernames: Array.from(assignees),
+            sharedWithUsernames: shares,
             repeat,
             startTime: allDay ? null : startTime,
             endTime: allDay ? null : endTime || null,
@@ -309,6 +343,7 @@ export function TaskFormDialog({
             dueDate: hasDueDate ? dueDate || null : null,
             color,
             assigneeUsernames: Array.from(assignees),
+            sharedWithUsernames: shares,
             repeat,
             startTime: allDay ? null : startTime,
             endTime: allDay ? null : endTime || null,
@@ -361,11 +396,12 @@ export function TaskFormDialog({
             </div>
           )}
 
-          {!isEdit && calendars.length > 1 && (
+          {calendars.length > 1 && (
             <div>
               <Label className="mb-1">Calendar</Label>
               <select
                 value={calendarId}
+                disabled={occurrenceOnly}
                 onChange={(e) => setCalendarId(e.target.value)}
                 className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               >
@@ -641,6 +677,28 @@ export function TaskFormDialog({
                       onCheckedChange={() => toggleAssignee(m.username)}
                     />
                     {m.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {shareCandidates.length > 0 && (
+            <div>
+              <Label className="mb-0.5">Also share with</Label>
+              <p className="mb-1.5 text-xs text-muted-foreground">
+                People outside this calendar. They see only this task, read-only, under
+                &ldquo;Shared with me&rdquo;.
+              </p>
+              <div className="max-h-36 space-y-1.5 overflow-y-auto rounded-md border border-border p-2">
+                {shareCandidates.map((username) => (
+                  <label key={username} className="flex cursor-pointer items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={sharedWith.has(username)}
+                      disabled={occurrenceOnly}
+                      onCheckedChange={() => toggleShare(username)}
+                    />
+                    {username}
                   </label>
                 ))}
               </div>

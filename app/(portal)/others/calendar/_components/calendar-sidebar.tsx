@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import type { CalendarSummary } from "@/lib/actions/calendar";
+import { SHARED_CALENDAR_ID } from "@/lib/calendar-constants";
 
 export function CalendarSidebar({
   calendars,
@@ -54,7 +55,7 @@ export function CalendarSidebar({
                 onCheckedChange={() => onToggle(cal.id)}
               />
               <span className="min-w-0 flex-1 truncate text-sm text-foreground">{cal.name}</span>
-              {cal.myRole !== "owner" && (
+              {cal.myRole !== "owner" && cal.id !== SHARED_CALENDAR_ID && (
                 <Badge variant="secondary" className="shrink-0 text-[10px]">
                   {cal.myRole === "editor" ? "Shared · Editor" : "Shared · View"}
                 </Badge>

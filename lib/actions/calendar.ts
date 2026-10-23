@@ -12,6 +12,7 @@ import {
   type RepeatRule,
   type TaskException,
   CALENDAR_MEMBER_ROLES,
+  SHARED_CALENDAR_ID,
 } from "@/lib/calendar-constants";
 import { addDays, diffDays } from "@/lib/calendar-date-utils";
 import { expandTask } from "@/lib/calendar-recurrence";
@@ -46,6 +47,8 @@ export interface CalendarTask {
   color: TaskColorKey;
   createdBy: string;
   assignees: string[];
+  /** People outside the calendar this one task is shared with. Empty on tasks shared with you. */
+  sharedWith: string[];
   createdAt: string;
   repeat: RepeatRule | null;
   /** "HH:MM"; null start = all-day. End time is only ever set alongside a start time. */
@@ -79,18 +82,22 @@ export interface TaskInput {
   dueDate?: string | null;
   color: TaskColorKey;
   assigneeUsernames?: string[];
+  sharedWithUsernames?: string[];
   repeat?: RepeatRule | null;
   startTime?: string | null;
   endTime?: string | null;
 }
 
 export interface TaskUpdate {
+  /** Moves the task (with its exceptions and shares) to another calendar. */
+  calendarId?: string;
   title?: string;
   notes?: string | null;
   eventDate?: string;
   dueDate?: string | null;
   color?: TaskColorKey;
   assigneeUsernames?: string[];
+  sharedWithUsernames?: string[];
   repeat?: RepeatRule | null;
   startTime?: string | null;
   endTime?: string | null;
@@ -287,6 +294,81 @@ async function loadExceptions(
   return byTask;
 }
 
+async function loadShares(
+  client: SupabaseServerClient,
+  taskIds: string[]
+): Promise<Map<string, string[]>> {
+  const sharesByTask = new Map<string, string[]>();
+  if (taskIds.length === 0) return sharesByTask;
+
+  const { data } = await client
+    .from("calendar_task_shares")
+    .select("task_id, username")
+    .in("task_id", taskIds);
+
+  (data ?? []).forEach((row) => {
+    const list = sharesByTask.get(row.task_id) ?? [];
+    list.push(row.username);
+    sharesByTask.set(row.task_id, list);
+  });
+
+  return sharesByTask;
+}
+
+/** Tasks shared with the user one by one, from calendars they can't otherwise see. */
+async function loadSharedInTaskRows(
+  client: SupabaseServerClient,
+  username: string,
+  accessible: Map<string, AccessibleCalendar>
+) {
+  const { data: shareRows } = await client
+    .from("calendar_task_shares")
+    .select("task_id")
+    .eq("username", username);
+  const ids = (shareRows ?? []).map((r) => r.task_id);
+  if (ids.length === 0) return [];
+
+  const { data } = await client.from("calendar_tasks").select(TASK_COLUMNS).in("id", ids);
+  return (data ?? []).filter((t) => !accessible.has(t.calendar_id));
+}
+
+/** Same window test the range queries run in SQL, for rows fetched by id. */
+function rowTouchesRange(
+  row: { event_date: string; due_date: string | null; repeat_freq: string | null; repeat_until: string | null },
+  startDate: string,
+  endDate: string
+): boolean {
+  if (row.event_date > endDate) return false;
+  if (row.repeat_freq) return !row.repeat_until || row.repeat_until >= startDate;
+  return row.event_date >= startDate || (!!row.due_date && row.due_date >= startDate);
+}
+
+/**
+ * Cleans a share list for a task in `calendarId`: drops the caller and anyone who
+ * already sees the calendar, and rejects usernames that aren't staff.
+ */
+async function resolveShares(
+  client: SupabaseServerClient,
+  calendarId: string,
+  ownerUsername: string,
+  usernames: string[],
+  self: string
+): Promise<{ usernames: string[] } | { error: string }> {
+  const wanted = Array.from(new Set(usernames.map((u) => u.trim().toLowerCase()).filter(Boolean)));
+  if (wanted.length === 0) return { usernames: [] };
+
+  const [{ data: members }, { data: staffRows, error: staffError }] = await Promise.all([
+    client.from("calendar_members").select("username").eq("calendar_id", calendarId),
+    client.from("staff").select("username").in("username", wanted),
+  ]);
+  if (staffError) return { error: staffError.message };
+  const known = new Set((staffRows ?? []).map((s) => s.username));
+  if (wanted.some((u) => !known.has(u))) return { error: "Can only share with existing staff members" };
+
+  const hasAccess = new Set([self, ownerUsername, ...(members ?? []).map((m) => m.username)]);
+  return { usernames: wanted.filter((u) => !hasAccess.has(u)) };
+}
+
 // ---- Calendars ----
 
 export async function getMyCalendars(): Promise<{ data: CalendarSummary[] | null; error: string | null }> {
@@ -309,6 +391,18 @@ export async function getMyCalendars(): Promise<{ data: CalendarSummary[] | null
     if (a.myRole !== "owner" && b.myRole === "owner") return 1;
     return a.createdAt.localeCompare(b.createdAt);
   });
+
+  // Tasks shared one by one show under a read-only virtual calendar, listed last.
+  const sharedIn = await loadSharedInTaskRows(client, session.username, accessible);
+  if (sharedIn.length > 0) {
+    data.push({
+      id: SHARED_CALENDAR_ID,
+      name: "Shared with me",
+      ownerUsername: "",
+      myRole: "viewer",
+      createdAt: "",
+    });
+  }
 
   return { data, error: null };
 }
@@ -596,7 +690,8 @@ function toCalendarTask(
     end_time: string | null;
   },
   calendarName: string,
-  assignees: string[]
+  assignees: string[],
+  sharedWith: string[] = []
 ): CalendarTask {
   return {
     id: row.id,
@@ -609,6 +704,7 @@ function toCalendarTask(
     color: row.color as TaskColorKey,
     createdBy: row.created_by,
     assignees,
+    sharedWith,
     createdAt: row.created_at,
     startTime: row.start_time ? row.start_time.slice(0, 5) : null,
     endTime: row.end_time ? row.end_time.slice(0, 5) : null,
@@ -625,6 +721,37 @@ function toCalendarTask(
   };
 }
 
+type TaskRow = Awaited<ReturnType<typeof loadSharedInTaskRows>>[number];
+
+/**
+ * Turns task rows into CalendarTasks with assignees, shares and exceptions. `sharedRows`
+ * (tasks shared with the caller one by one) land on the virtual Shared-with-me calendar
+ * and don't reveal who else they're shared with.
+ */
+async function hydrateTasks(
+  client: SupabaseServerClient,
+  ownRows: TaskRow[],
+  sharedRows: TaskRow[],
+  accessible: Map<string, AccessibleCalendar>
+): Promise<CalendarTask[]> {
+  const all = [...ownRows, ...sharedRows];
+  const [assigneesByTask, sharesByTask, exceptionsByTask] = await Promise.all([
+    loadAssignees(client, all.map((t) => t.id)),
+    loadShares(client, ownRows.map((t) => t.id)),
+    loadExceptions(client, all.filter((t) => t.repeat_freq).map((t) => t.id)),
+  ]);
+
+  const sharedIds = new Set(sharedRows.map((t) => t.id));
+  return all.map((t) => {
+    const assignees = assigneesByTask.get(t.id) ?? [];
+    const task = sharedIds.has(t.id)
+      ? { ...toCalendarTask(t, `Shared by ${t.created_by}`, assignees), calendarId: SHARED_CALENDAR_ID }
+      : toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assignees, sharesByTask.get(t.id) ?? []);
+    const exceptions = exceptionsByTask.get(t.id);
+    return exceptions ? { ...task, exceptions } : task;
+  });
+}
+
 export async function getTasksForRange(
   calendarIds: string[],
   startDate: string,
@@ -636,34 +763,32 @@ export async function getTasksForRange(
   const client = await createClient();
   const accessible = await getAccessibleCalendarMap(client, session.username);
   const targetIds = calendarIds.filter((id) => accessible.has(id));
-  if (targetIds.length === 0) return { data: [], error: null };
+  const wantShared = calendarIds.includes(SHARED_CALENDAR_ID);
+  if (targetIds.length === 0 && !wantShared) return { data: [], error: null };
 
-  const { data: tasks, error } = await client
-    .from("calendar_tasks")
-    .select(TASK_COLUMNS)
-    .in("calendar_id", targetIds)
-    .or(
-      `and(event_date.gte.${startDate},event_date.lte.${endDate}),and(event_date.lte.${endDate},due_date.gte.${startDate}),and(repeat_freq.not.is.null,event_date.lte.${endDate})`
-    );
-  if (error) return { data: null, error: error.message };
+  let rows: TaskRow[] = [];
+  if (targetIds.length > 0) {
+    const { data: tasks, error } = await client
+      .from("calendar_tasks")
+      .select(TASK_COLUMNS)
+      .in("calendar_id", targetIds)
+      .or(
+        `and(event_date.gte.${startDate},event_date.lte.${endDate}),and(event_date.lte.${endDate},due_date.gte.${startDate}),and(repeat_freq.not.is.null,event_date.lte.${endDate})`
+      );
+    if (error) return { data: null, error: error.message };
+    rows = (tasks ?? []).filter((t) => !t.repeat_freq || !t.repeat_until || t.repeat_until >= startDate);
+  }
 
-  const rows = (tasks ?? []).filter((t) => !t.repeat_freq || !t.repeat_until || t.repeat_until >= startDate);
-  const assigneesByTask = await loadAssignees(client, rows.map((t) => t.id));
-  const exceptionsByTask = await loadExceptions(
-    client,
-    rows.filter((t) => t.repeat_freq).map((t) => t.id)
-  );
+  const sharedRows = wantShared
+    ? (await loadSharedInTaskRows(client, session.username, accessible)).filter((t) =>
+        rowTouchesRange(t, startDate, endDate)
+      )
+    : [];
 
-  const result = rows.map((t) => {
-    const task = toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? []);
-    const exceptions = exceptionsByTask.get(t.id);
-    return exceptions ? { ...task, exceptions } : task;
-  });
-
-  return { data: result, error: null };
+  return { data: await hydrateTasks(client, rows, sharedRows, accessible), error: null };
 }
 
-/** Tasks in the next 7 days, either created by or assigned to the caller. */
+/** Tasks in the next 7 days: created by or assigned to the caller, or shared with them. */
 export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null; error: string | null }> {
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized" };
@@ -671,7 +796,6 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
   const client = await createClient();
   const accessible = await getAccessibleCalendarMap(client, session.username);
   const calendarIds = Array.from(accessible.keys());
-  if (calendarIds.length === 0) return { data: [], error: null };
 
   const now = new Date();
   const start = now.toISOString().slice(0, 10);
@@ -679,32 +803,29 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
   endDate.setDate(endDate.getDate() + 7);
   const end = endDate.toISOString().slice(0, 10);
 
-  const { data: tasks, error } = await client
-    .from("calendar_tasks")
-    .select(TASK_COLUMNS)
-    .in("calendar_id", calendarIds)
-    .or(
-      `and(event_date.gte.${start},event_date.lte.${end}),and(due_date.gte.${start},due_date.lte.${end}),and(repeat_freq.not.is.null,event_date.lte.${end})`
+  let relevant: TaskRow[] = [];
+  if (calendarIds.length > 0) {
+    const { data: tasks, error } = await client
+      .from("calendar_tasks")
+      .select(TASK_COLUMNS)
+      .in("calendar_id", calendarIds)
+      .or(
+        `and(event_date.gte.${start},event_date.lte.${end}),and(due_date.gte.${start},due_date.lte.${end}),and(repeat_freq.not.is.null,event_date.lte.${end})`
+      );
+    if (error) return { data: null, error: error.message };
+
+    const assigneesByTask = await loadAssignees(client, (tasks ?? []).map((t) => t.id));
+    relevant = (tasks ?? []).filter(
+      (t) => t.created_by === session.username || (assigneesByTask.get(t.id) ?? []).includes(session.username)
     );
-  if (error) return { data: null, error: error.message };
+  }
 
-  const assigneesByTask = await loadAssignees(client, (tasks ?? []).map((t) => t.id));
-
-  const relevant = (tasks ?? []).filter(
-    (t) => t.created_by === session.username || (assigneesByTask.get(t.id) ?? []).includes(session.username)
+  const sharedRows = (await loadSharedInTaskRows(client, session.username, accessible)).filter((t) =>
+    rowTouchesRange(t, start, end)
   );
+  if (relevant.length === 0 && sharedRows.length === 0) return { data: [], error: null };
 
-  const exceptionsByTask = await loadExceptions(
-    client,
-    relevant.filter((t) => t.repeat_freq).map((t) => t.id)
-  );
-
-  const result = relevant
-    .map((t) => {
-      const task = toCalendarTask(t, accessible.get(t.calendar_id)?.name ?? "", assigneesByTask.get(t.id) ?? []);
-      const exceptions = exceptionsByTask.get(t.id);
-      return exceptions ? { ...task, exceptions } : task;
-    })
+  const result = (await hydrateTasks(client, relevant, sharedRows, accessible))
     .flatMap((t) => expandTask(t, start, end))
     .filter((t) => (t.dueDate ?? t.eventDate) >= start && t.eventDate <= end);
 
@@ -767,6 +888,15 @@ export async function createTask(
   const assigneeError = await assertAssigneesAllowed(client, input.calendarId, access.ownerUsername, assignees);
   if (assigneeError) return { data: null, error: assigneeError };
 
+  const shares = await resolveShares(
+    client,
+    input.calendarId,
+    access.ownerUsername,
+    input.sharedWithUsernames ?? [],
+    session.username
+  );
+  if ("error" in shares) return { data: null, error: shares.error };
+
   const service = createServiceClient();
   const { data: task, error } = await service
     .from("calendar_tasks")
@@ -793,7 +923,14 @@ export async function createTask(
     if (assigneeInsertError) return { data: null, error: assigneeInsertError.message };
   }
 
-  return { data: toCalendarTask(task, "", assignees), error: null };
+  if (shares.usernames.length > 0) {
+    const { error: shareInsertError } = await service
+      .from("calendar_task_shares")
+      .insert(shares.usernames.map((username) => ({ task_id: task.id, username })));
+    if (shareInsertError) return { data: null, error: shareInsertError.message };
+  }
+
+  return { data: toCalendarTask(task, "", assignees, shares.usernames), error: null };
 }
 
 export async function updateTask(
@@ -815,6 +952,17 @@ export async function updateTask(
   const access = await requireEditorAccess(client, existing.calendar_id, session.username);
   if ("error" in access) return { data: null, error: access.error };
 
+  // Moving needs edit rights on both ends; assignees and shares are then checked
+  // against the destination calendar.
+  const nextCalendarId = updates.calendarId ?? existing.calendar_id;
+  const moving = nextCalendarId !== existing.calendar_id;
+  let targetAccess = access;
+  if (moving) {
+    const destination = await requireEditorAccess(client, nextCalendarId, session.username);
+    if ("error" in destination) return { data: null, error: destination.error };
+    targetAccess = destination;
+  }
+
   const nextEventDate = updates.eventDate ?? existing.event_date;
   const nextDueDate = updates.dueDate === undefined ? existing.due_date : updates.dueDate;
   if (nextDueDate && nextDueDate < nextEventDate) {
@@ -832,7 +980,33 @@ export async function updateTask(
   const timeError = validateTimes(nextStart, nextEnd, nextEventDate, nextDueDate);
   if (timeError) return { data: null, error: timeError };
 
+  // When moving without a new list, the current assignees must still fit the destination.
+  let assignees: string[] | null = null;
+  if (updates.assigneeUsernames !== undefined || moving) {
+    assignees =
+      updates.assigneeUsernames !== undefined
+        ? Array.from(new Set(updates.assigneeUsernames))
+        : (await loadAssignees(client, [taskId])).get(taskId) ?? [];
+    const assigneeError = await assertAssigneesAllowed(client, nextCalendarId, targetAccess.ownerUsername, assignees);
+    if (assigneeError) return { data: null, error: assigneeError };
+  }
+
+  // Same for shares: anyone who now sees the destination calendar no longer needs one.
+  let shares: string[] | null = null;
+  if (updates.sharedWithUsernames !== undefined || moving) {
+    const resolved = await resolveShares(
+      client,
+      nextCalendarId,
+      targetAccess.ownerUsername,
+      updates.sharedWithUsernames ?? (await loadShares(client, [taskId])).get(taskId) ?? [],
+      session.username
+    );
+    if ("error" in resolved) return { data: null, error: resolved.error };
+    shares = resolved.usernames;
+  }
+
   const patch: Record<string, unknown> = {};
+  if (moving) patch.calendar_id = nextCalendarId;
   if (updates.startTime !== undefined || updates.endTime !== undefined) {
     patch.start_time = nextStart || null;
     patch.end_time = nextStart ? nextEnd || null : null;
@@ -855,22 +1029,24 @@ export async function updateTask(
     if (updateError) return { data: null, error: updateError.message };
   }
 
-  if (updates.assigneeUsernames !== undefined) {
-    const assignees = Array.from(new Set(updates.assigneeUsernames));
-    const assigneeError = await assertAssigneesAllowed(
-      client,
-      existing.calendar_id,
-      access.ownerUsername,
-      assignees
-    );
-    if (assigneeError) return { data: null, error: assigneeError };
-
+  if (assignees !== null && updates.assigneeUsernames !== undefined) {
     const { error: deleteError } = await service.from("calendar_task_assignees").delete().eq("task_id", taskId);
     if (deleteError) return { data: null, error: deleteError.message };
     if (assignees.length > 0) {
       const { error: insertError } = await service
         .from("calendar_task_assignees")
         .insert(assignees.map((username) => ({ task_id: taskId, username })));
+      if (insertError) return { data: null, error: insertError.message };
+    }
+  }
+
+  if (shares !== null) {
+    const { error: deleteError } = await service.from("calendar_task_shares").delete().eq("task_id", taskId);
+    if (deleteError) return { data: null, error: deleteError.message };
+    if (shares.length > 0) {
+      const { error: insertError } = await service
+        .from("calendar_task_shares")
+        .insert(shares.map((username) => ({ task_id: taskId, username })));
       if (insertError) return { data: null, error: insertError.message };
     }
   }
