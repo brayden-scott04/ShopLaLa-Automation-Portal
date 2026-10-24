@@ -541,7 +541,11 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
 - **`bsr_alerts`**: `category_removed`, `category_added`, `ranks_lost`, or `rank_drop` (at least
   `RANK_DROP_PCT` = 50% **and** `RANK_DROP_MIN_POSITIONS` = 20 places worse in the same category;
   `lib/trends-constants.ts` must match `bsr_sync.py`). Same statuses as FBA alerts. Unique on
-  `(country_code, asin, detected_date, kind, classification_id)`.
+  `(country_code, asin, detected_date, kind, classification_id)`. Every alert also carries rank
+  context, `top_title`/`top_old_rank`/`top_new_rank` and `sub_title`/`sub_old_rank`/`sub_new_rank`
+  (the alert's own subcategory, else the product's best-ranked one), which feeds the alert table's
+  "Top-level rank" / "Subcategory rank" columns (`sql/bsr_alert_rank_context_migration.sql`,
+  applied 2026-10-24 with a backfill).
 - **`bsr_sync_runs`**: append-only run log, with `asins_failed` for per-ASIN call failures.
 
 ### Supabase clients

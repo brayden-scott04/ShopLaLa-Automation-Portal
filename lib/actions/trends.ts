@@ -44,6 +44,14 @@ export interface BsrAlert {
   old_rank: number | null;
   new_rank: number | null;
   pct_change: number | null;
+  /** The product's top-level rank, previous → current. Null on alerts before the context migration. */
+  top_title: string | null;
+  top_old_rank: number | null;
+  top_new_rank: number | null;
+  /** The alert's own subcategory, else the product's best-ranked one, previous → current. */
+  sub_title: string | null;
+  sub_old_rank: number | null;
+  sub_new_rank: number | null;
   status: AlertStatus;
   case_id: string | null;
   notes: string | null;
@@ -75,7 +83,7 @@ export interface TrendsOverview {
 
 const SNAPSHOT_COLUMNS = "snapshot_date, asin, classification_id, rank_type, title, rank, link, sku, product_name";
 const ALERT_COLUMNS =
-  "id, asin, sku, product_name, detected_date, previous_snapshot_date, kind, rank_type, classification_id, category_title, old_rank, new_rank, pct_change, status, case_id, notes, updated_by, updated_at";
+  "id, asin, sku, product_name, detected_date, previous_snapshot_date, kind, rank_type, classification_id, category_title, old_rank, new_rank, pct_change, top_title, top_old_rank, top_new_rank, sub_title, sub_old_rank, sub_new_rank, status, case_id, notes, updated_by, updated_at";
 const RUN_COLUMNS = "status, snapshot_date, asins_seen, asins_failed, alerts_created, error, created_at";
 
 async function requireStaff() {

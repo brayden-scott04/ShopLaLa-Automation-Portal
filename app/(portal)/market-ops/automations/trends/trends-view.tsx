@@ -346,7 +346,8 @@ export default function TrendsView() {
                         <th className="px-3 py-2 text-left font-medium">ASIN</th>
                         <th className="px-3 py-2 text-left font-medium">What changed</th>
                         <th className="px-3 py-2 text-left font-medium">Category</th>
-                        <th className="px-3 py-2 text-right font-medium">Rank</th>
+                        <th className="px-3 py-2 text-right font-medium">Top-level rank</th>
+                        <th className="px-3 py-2 text-right font-medium">Subcategory rank</th>
                         <th className="px-3 py-2 text-left font-medium">Status</th>
                         <th className="px-3 py-2"></th>
                       </tr>
@@ -380,12 +381,8 @@ export default function TrendsView() {
                               <div className="text-xs text-muted-foreground">Top-level</div>
                             )}
                           </td>
-                          <td className="px-3 py-2 text-right whitespace-nowrap tabular-nums">
-                            {rankText(a.old_rank)} → <span className="font-medium">{rankText(a.new_rank)}</span>
-                            {a.kind === "rank_drop" && a.pct_change != null && (
-                              <div className="text-xs text-destructive">{a.pct_change.toFixed(0)}% worse</div>
-                            )}
-                          </td>
+                          <AlertRankCell alert={a} level="top" />
+                          <AlertRankCell alert={a} level="sub" />
                           <td className="px-3 py-2">
                             <Badge variant={a.status === "open" ? "destructive" : "secondary"}>
                               {ALERT_STATUS_LABELS[a.status]}
@@ -575,6 +572,33 @@ export default function TrendsView() {
 }
 
 // ── Pieces ─────────────────────────────────────────────────────────────────
+
+/** One of the alert table's two rank columns. The column the alert is about gets the bold
+ *  value and the drop %; alerts from before the rank-context columns fall back to the
+ *  alert's own old/new rank in whichever column matches its rank_type. */
+function AlertRankCell({ alert: a, level }: { alert: BsrAlert; level: "top" | "sub" }) {
+  const hasContext = a.top_title != null || a.sub_title != null;
+  const isSubject =
+    level === "top" ? a.rank_type === "display_group" : a.rank_type === "classification";
+  const title = level === "top" ? a.top_title : a.sub_title;
+  let oldRank = level === "top" ? a.top_old_rank : a.sub_old_rank;
+  let newRank = level === "top" ? a.top_new_rank : a.sub_new_rank;
+  if (!hasContext) {
+    if (!isSubject) return <td className="px-3 py-2 text-right text-muted-foreground">—</td>;
+    oldRank = a.old_rank;
+    newRank = a.new_rank;
+  }
+
+  return (
+    <td className="px-3 py-2 text-right whitespace-nowrap tabular-nums">
+      {rankText(oldRank)} → <span className={cn(isSubject && "font-medium")}>{rankText(newRank)}</span>
+      {title && <div className="max-w-40 truncate text-xs text-muted-foreground ml-auto">{title}</div>}
+      {isSubject && a.kind === "rank_drop" && a.pct_change != null && (
+        <div className="text-xs text-destructive">{a.pct_change.toFixed(0)}% worse</div>
+      )}
+    </td>
+  );
+}
 
 function StatTile({
   label,
