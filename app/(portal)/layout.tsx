@@ -3,6 +3,7 @@ import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { Sidebar } from "@/components/sidebar";
 import { Topbar } from "@/components/topbar";
+import { DashboardLink } from "@/components/dashboard-link";
 
 export default async function PortalLayout({
   children,
@@ -36,7 +37,10 @@ export default async function PortalLayout({
           role={role}
           permissions={permissions}
         />
-        <main className="flex-1 bg-background">{children}</main>
+        <main className="flex-1 bg-background">
+          <DashboardLink />
+          {children}
+        </main>
       </div>
     </div>
   );

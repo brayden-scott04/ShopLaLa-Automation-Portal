@@ -4,6 +4,7 @@ import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { filterItems, isAllowed } from "@/lib/roles";
 import PpcTopUpCharts from "@/components/ppc-top-up-chart";
+import { DashboardAccessGrid } from "@/components/dashboard-access-grid";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -32,49 +33,19 @@ export default async function DashboardPage() {
       {/* Your access — shows every item across all sections the signed-in user
           may open. Admins see everything. */}
       <div className="mt-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-foreground">Your access</h3>
-          {role === "admin" && (
-            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-              Full access
-            </span>
-          )}
-        </div>
-
         {hasAnyAccess ? (
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {accessGroups
-              .flatMap((g) =>
-                g.items.map((item) => ({ ...item, group: g.group, colorVar: g.colorVar }))
-              )
-              .map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:bg-accent"
-                  >
-                    <Icon className="size-5 shrink-0 text-muted-foreground" />
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium text-foreground">{item.name}</span>
-                      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-muted-foreground">
-                        <span
-                          aria-hidden
-                          className="size-1.5 rounded-[2px]"
-                          style={{ backgroundColor: `var(${item.colorVar})` }}
-                        />
-                        {item.group}
-                      </span>
-                    </span>
-                  </Link>
-                );
-              })}
-          </div>
+          <DashboardAccessGrid
+            username={session?.username ?? ""}
+            hrefs={accessGroups.flatMap((g) => g.items.map((item) => item.href))}
+            fullAccess={role === "admin"}
+          />
         ) : (
-          <p className="mt-3 text-sm text-muted-foreground">
-            You don&apos;t have access to any tools yet. Ask an admin to grant you access.
-          </p>
+          <>
+            <h3 className="text-sm font-semibold text-foreground">Your access</h3>
+            <p className="mt-3 text-sm text-muted-foreground">
+              You don&apos;t have access to any tools yet. Ask an admin to grant you access.
+            </p>
+          </>
         )}
       </div>
 

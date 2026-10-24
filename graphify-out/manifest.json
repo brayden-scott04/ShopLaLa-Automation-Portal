@@ -5,13 +5,13 @@
     "semantic_hash": ""
   },
   "app/(portal)/dashboard/page.tsx": {
-    "mtime": 1792411677.1165662,
-    "ast_hash": "38e427b78ccf2cd61659f94b81029606",
+    "mtime": 1792836541.245911,
+    "ast_hash": "6a0d40db31697b7add9eb39796a3b553",
     "semantic_hash": ""
   },
   "app/(portal)/layout.tsx": {
-    "mtime": 1792416614.6750512,
-    "ast_hash": "8d127d33ccb610cfacbe103cbd405f03",
+    "mtime": 1792836542.8258293,
+    "ast_hash": "e89f3c07861974b9075916c6d7429a56",
     "semantic_hash": ""
   },
   "app/(portal)/team/page.tsx": {
@@ -987,6 +987,16 @@
   "sql/bsr_trends_migration.sql": {
     "mtime": 1792584599.2270248,
     "ast_hash": "49eb5ef40aecf3a6b279e32722b3d1fe",
+    "semantic_hash": ""
+  },
+  "components/dashboard-access-grid.tsx": {
+    "mtime": 1792836539.6737578,
+    "ast_hash": "f5e19a80a7587ab2b24091e40a52411e",
+    "semantic_hash": ""
+  },
+  "components/dashboard-link.tsx": {
+    "mtime": 1792836517.9502976,
+    "ast_hash": "7fc11aa0ad804762c120e12541767a9b",
     "semantic_hash": ""
   }
 }
