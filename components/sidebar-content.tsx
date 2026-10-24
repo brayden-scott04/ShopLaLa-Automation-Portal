@@ -8,6 +8,8 @@ import {
   ChevronsLeft,
   ChevronsRight,
   LayoutGrid,
+  Pin as PinIcon,
+  PinOff,
   Sparkles,
   Users,
   Users2,
@@ -109,6 +111,67 @@ function useFoldState(
   return [folded, setFolded];
 }
 
+// Pinned pages (hrefs, in pin order) live in localStorage per username, the
+// same way as the fold state and the dashboard layout.
+const pinListeners = new Set<() => void>();
+const memoryPins = new Map<string, string>();
+
+function pinsKey(username: string): string {
+  return `sidebar-pins:${username}`;
+}
+
+function readPins(username: string): string {
+  try {
+    return localStorage.getItem(pinsKey(username)) ?? "[]";
+  } catch {
+    return memoryPins.get(username) ?? "[]";
+  }
+}
+
+function writePins(username: string, next: string[]) {
+  const raw = JSON.stringify(next);
+  memoryPins.set(username, raw);
+  try {
+    localStorage.setItem(pinsKey(username), raw);
+  } catch {
+    // Private window / blocked storage: pins just won't persist.
+  }
+  pinListeners.forEach((listener) => listener());
+}
+
+function parsePins(raw: string): string[] {
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function subscribePins(listener: () => void) {
+  pinListeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    pinListeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+function usePins(username: string): [string[], (href: string) => void] {
+  const raw = useSyncExternalStore(subscribePins, () => readPins(username), () => "[]");
+  const pins = useMemo(() => parsePins(raw), [raw]);
+
+  function togglePin(href: string) {
+    const current = parsePins(readPins(username));
+    writePins(
+      username,
+      current.includes(href) ? current.filter((h) => h !== href) : [...current, href]
+    );
+  }
+
+  return [pins, togglePin];
+}
+
 /** Up to two initials, shown in place of an item when the sidebar is collapsed. */
 function initials(name: string): string {
   return name
@@ -139,12 +202,16 @@ function NavGroupSection({
   collapsed,
   folded,
   onToggle,
+  pinnedHrefs,
+  onPin,
 }: {
   group: NavGroup;
   pathname: string;
   collapsed: boolean;
   folded: Record<string, boolean>;
   onToggle: (key: string) => void;
+  pinnedHrefs: Set<string>;
+  onPin: (href: string) => void;
 }) {
   const style = { "--pin": `var(${group.colorVar})` } as CSSProperties;
 
@@ -202,7 +269,13 @@ function NavGroupSection({
       {!isFolded && (
         <div className="mt-0.5 ml-[15px] border-l border-[color-mix(in_srgb,var(--pin)_30%,transparent)]">
           {topItems.map((item) => (
-            <NavLeaf key={item.id} item={item} active={isActive(pathname, item.href)} />
+            <NavLeaf
+              key={item.id}
+              item={item}
+              active={isActive(pathname, item.href)}
+              pinned={pinnedHrefs.has(item.href)}
+              onPin={() => onPin(item.href)}
+            />
           ))}
           {subgroups.map((subgroup) => {
             const key = foldKey(group, subgroup);
@@ -225,7 +298,13 @@ function NavGroupSection({
                     {group.items
                       .filter((item) => item.subgroup === subgroup)
                       .map((item) => (
-                        <NavLeaf key={item.id} item={item} active={isActive(pathname, item.href)} />
+                        <NavLeaf
+                          key={item.id}
+                          item={item}
+                          active={isActive(pathname, item.href)}
+                          pinned={pinnedHrefs.has(item.href)}
+                          onPin={() => onPin(item.href)}
+                        />
                       ))}
                   </div>
                 )}
@@ -238,18 +317,119 @@ function NavGroupSection({
   );
 }
 
-/** A Layer-2 page link. The active one lights up its stretch of the rail. */
-function NavLeaf({ item, active }: { item: NavItem; active: boolean }) {
+/** Hover-revealed pin / unpin button that sits over the right edge of a nav link. */
+function PinToggle({ pinned, name, onClick }: { pinned: boolean; name: string; onClick: () => void }) {
+  const Icon = pinned ? PinOff : PinIcon;
+  const label = pinned ? `Unpin ${name}` : `Pin ${name} to top`;
   return (
-    <Link
-      href={item.href}
-      className={cn(
-        "-ml-px block truncate rounded-r-md border-l-2 border-transparent py-1.5 pr-2 pl-3.5 text-sm text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-        active && "border-[var(--pin)] bg-accent font-medium text-foreground hover:bg-accent"
-      )}
+    <button
+      type="button"
+      onClick={onClick}
+      title={label}
+      aria-label={label}
+      className="absolute top-1/2 right-1 -translate-y-1/2 rounded p-1 text-muted-foreground opacity-0 group-hover/leaf:opacity-100 hover:bg-background hover:text-foreground focus-visible:opacity-100"
     >
-      {item.name}
-    </Link>
+      <Icon className="size-3.5" />
+    </button>
+  );
+}
+
+/** A Layer-2 page link. The active one lights up its stretch of the rail. */
+function NavLeaf({
+  item,
+  active,
+  pinned,
+  onPin,
+}: {
+  item: NavItem;
+  active: boolean;
+  pinned: boolean;
+  onPin: () => void;
+}) {
+  return (
+    <div className="group/leaf relative">
+      <Link
+        href={item.href}
+        className={cn(
+          "-ml-px block truncate rounded-r-md border-l-2 border-transparent py-1.5 pr-7 pl-3.5 text-sm text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+          active && "border-[var(--pin)] bg-accent font-medium text-foreground hover:bg-accent"
+        )}
+      >
+        {item.name}
+      </Link>
+      <PinToggle pinned={pinned} name={item.name} onClick={onPin} />
+    </div>
+  );
+}
+
+/** Pinned pages, listed under Dashboard / Chat / Team, each tagged with its group's colour. */
+function PinnedSection({
+  items,
+  pathname,
+  collapsed,
+  onUnpin,
+}: {
+  items: (NavItem & { colorVar: string })[];
+  pathname: string;
+  collapsed: boolean;
+  onUnpin: (href: string) => void;
+}) {
+  if (items.length === 0) return null;
+
+  if (collapsed) {
+    return (
+      <div className="flex flex-col items-center gap-1 pt-3" title="Pinned">
+        <PinIcon className="mb-1 size-3 text-muted-foreground" />
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            title={item.name}
+            style={{ "--pin": `var(${item.colorVar})` } as CSSProperties}
+            className={cn(
+              "flex size-8 items-center justify-center rounded-md text-[10px] font-semibold tracking-wide text-muted-foreground hover:bg-accent hover:text-foreground",
+              isActive(pathname, item.href) &&
+                "bg-accent text-foreground ring-1 ring-[color-mix(in_srgb,var(--pin)_60%,transparent)]"
+            )}
+          >
+            {initials(item.name)}
+          </Link>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="pt-3">
+      <div className="flex items-center gap-2.5 px-3 py-1.5">
+        <PinIcon className="size-3 shrink-0 text-muted-foreground" />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground/80">
+          Pinned
+        </span>
+        <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
+      </div>
+      <div className="mt-0.5 space-y-px">
+        {items.map((item) => (
+          <div
+            key={item.href}
+            style={{ "--pin": `var(${item.colorVar})` } as CSSProperties}
+            className="group/leaf relative"
+          >
+            <Link
+              href={item.href}
+              className={cn(
+                "flex items-center gap-2.5 rounded-md py-1.5 pr-7 pl-3 text-sm text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                isActive(pathname, item.href) && "bg-accent font-medium text-foreground hover:bg-accent"
+              )}
+            >
+              <Pin />
+              <span className="truncate">{item.name}</span>
+            </Link>
+            <PinToggle pinned name={item.name} onClick={() => onUnpin(item.href)} />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -268,11 +448,25 @@ export function SidebarContent({
 }) {
   const pathname = usePathname();
   const [folded, setFolded] = useFoldState(pathname);
+  const [pins, togglePin] = usePins(username);
 
-  const visibleGroups = NAV_GROUPS.map((group) => ({
+  const allowedGroups = NAV_GROUPS.map((group) => ({
     ...group,
     items: filterItems(group.section, group.items, role, permissions),
-  })).filter((group) => group.items.length > 0);
+  }));
+
+  // Pins the user no longer has access to simply don't show (they're kept in
+  // storage, so they come back if access is restored).
+  const allowedByHref = new Map(
+    allowedGroups.flatMap((group) =>
+      group.items.map((item) => [item.href, { ...item, colorVar: group.colorVar }] as const)
+    )
+  );
+  const pinnedItems = pins.flatMap((href) => allowedByHref.get(href) ?? []);
+  const pinnedHrefs = new Set(pinnedItems.map((item) => item.href));
+
+  // Pinning is a quick link: the page also stays where it is in its group.
+  const visibleGroups = allowedGroups.filter((group) => group.items.length > 0);
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -352,6 +546,13 @@ export function SidebarContent({
           {!collapsed && "Team"}
         </Link>
 
+        <PinnedSection
+          items={pinnedItems}
+          pathname={pathname}
+          collapsed={collapsed}
+          onUnpin={togglePin}
+        />
+
         {visibleGroups.map((group) => (
           <NavGroupSection
             key={group.section}
@@ -360,6 +561,8 @@ export function SidebarContent({
             collapsed={collapsed}
             folded={folded}
             onToggle={(key) => setFolded(key, !folded[key])}
+            pinnedHrefs={pinnedHrefs}
+            onPin={togglePin}
           />
         ))}
       </nav>
