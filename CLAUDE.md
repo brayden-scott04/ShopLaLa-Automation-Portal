@@ -548,6 +548,19 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
   applied 2026-10-24 with a backfill).
 - **`bsr_sync_runs`**: append-only run log, with `asins_failed` for per-ASIN call failures.
 
+### Supply Partners tables
+
+These back `/supply-chain/partners`, which has two views: **Factories** and **Forwarders**. Large colour-coded tiles switch between them (`?view=forwarders`).
+Each view is a spreadsheet-style grid that mirrors the original Excel sheets: field labels down the left, one column per partner, and every cell editable inline by anyone with access to the page.
+The DDL and seed are in `sql/supply_partners_migration.sql`, which is run by hand.
+
+- **`supply_partners`**: `kind` (`factory` | `forwarder`), `short_name` (unique per kind, case-insensitive) and `sort_order`.
+- **`supply_partner_fields`**: one row per cell, `(partner_id, field_key, value)`. Clearing a cell deletes its row.
+- **Field keys live in code** (`lib/partners-constants.ts`), so adding a row needs no migration.
+  - Forwarder lane rows are stored as `<lane>.<field>` (e.g. `us.ref_price_ss`), and the UI shows one lane at a time.
+  - `setPartnerField` rejects any key that is not in the registry.
+- Server actions are in `lib/actions/partners.ts`. Reads use the RLS client and writes use the service client, gated by `isAllowed(…, "supplyChain", "partners")`.
+
 ### Supabase clients
 
 ```typescript
@@ -602,7 +615,7 @@ also feeds the dashboard's "Your access" grid, the Manage Users access editor, t
 | Layer 1 (permission `Section` / route prefix) | Layer 2 pages |
 |---|---|
 | Dashboard (`dashboard` / `/dashboard`) | Goal vs Performance\*, Profit Analytics |
-| Supply Chain (`supplyChain` / `/supply-chain`) | Partners\*, Sourcing\*, Orders\*, Shipments\*, Automations\* |
+| Supply Chain (`supplyChain` / `/supply-chain`) | Partners, Sourcing\*, Orders\*, Shipments\*, Automations\* |
 | Market Ops (`marketOps` / `/market-ops`) | Products\*, Inventory\*, Advertisements\*, Master List, and an **Automations & Tools** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`; only the label was renamed on 2026-10-21, the key and URLs stayed): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker, Trends |
 | Visual (`visual` / `/visual`) | Listing Score\* |
 | Others (`others` / `/others`) | Calendar, Finance\*, Tasks, Company Inbox |

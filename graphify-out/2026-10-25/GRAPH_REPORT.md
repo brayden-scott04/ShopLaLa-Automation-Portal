@@ -1,7 +1,7 @@
 # Graph Report - LaLaGreen-Automation-Portal  (2026-10-25)
 
 ## Corpus Check
-- 180 files · ~125,185 words
+- 180 files · ~125,186 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
