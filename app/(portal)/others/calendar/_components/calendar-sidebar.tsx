@@ -17,6 +17,7 @@ export function CalendarSidebar({
   calendars,
   selectedIds,
   onToggle,
+  onSetAll,
   onCreateNew,
   onRename,
   onDelete,
@@ -25,18 +26,28 @@ export function CalendarSidebar({
   calendars: CalendarSummary[];
   selectedIds: Set<string>;
   onToggle: (id: string) => void;
+  onSetAll: (selected: boolean) => void;
   onCreateNew: () => void;
   onRename: (cal: CalendarSummary) => void;
   onDelete: (cal: CalendarSummary) => void;
   onManageAccess: (cal: CalendarSummary) => void;
 }) {
+  const allSelected = calendars.length > 0 && calendars.every((c) => selectedIds.has(c.id));
+
   return (
     <div className="flex w-64 shrink-0 flex-col gap-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <h3 className="text-sm font-semibold text-foreground">My Calendars</h3>
-        <Button size="icon-sm" variant="outline" onClick={onCreateNew} title="New calendar">
-          <Plus />
-        </Button>
+        <div className="flex items-center gap-1">
+          {calendars.length > 1 && (
+            <Button size="xs" variant="ghost" onClick={() => onSetAll(!allSelected)}>
+              {allSelected ? "Clear all" : "Select all"}
+            </Button>
+          )}
+          <Button size="icon-sm" variant="outline" onClick={onCreateNew} title="New calendar">
+            <Plus />
+          </Button>
+        </div>
       </div>
 
       {calendars.length === 0 ? (

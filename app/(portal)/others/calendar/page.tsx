@@ -160,6 +160,10 @@ export default function CalendarPage() {
     });
   }
 
+  function setAllCalendars(selected: boolean) {
+    setSelectedIds(selected ? new Set(calendars.map((c) => c.id)) : new Set());
+  }
+
   function step(delta: number) {
     setAnchor((a) => {
       if (view === "month") return addMonths(a, delta);
@@ -260,6 +264,7 @@ export default function CalendarPage() {
             calendars={calendars}
             selectedIds={selectedIds}
             onToggle={toggleCalendar}
+            onSetAll={setAllCalendars}
             onCreateNew={() => setNewCalendarOpen(true)}
             onRename={(cal) => setRenameTarget(cal)}
             onDelete={handleDeleteCalendar}
