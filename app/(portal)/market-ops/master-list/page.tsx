@@ -48,8 +48,11 @@ import {
   deleteSku,
   reorderSkus,
   parseSkuExcel,
+  fetchAmazonMissingSkus,
+  addSkusGrouped,
   type Sku,
   type DetectedSkuSheet,
+  type MissingAmazonSku,
 } from "@/lib/actions/sku-list";
 import { fetchSkuDetail } from "@/lib/actions/pricing-update";
 import type { MarketplaceCode, SkuDetail } from "@/lib/amazon/sp-api";
@@ -73,6 +76,7 @@ export default function MasterListPage() {
   const [search, setSearch] = useState("");
   const [addOpen, setAddOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [pullOpen, setPullOpen] = useState(false);
   const [selected, setSelected] = useState<Sku | null>(null);
 
   const sensors = useSensors(
@@ -135,6 +139,9 @@ export default function MasterListPage() {
               {skus ? `${skus.length} SKU${skus.length === 1 ? "" : "s"} in the master list` : "Loading…"}
             </CardDescription>
             <CardAction className="flex gap-2">
+              <button onClick={() => setPullOpen(true)} className={secondaryBtn}>
+                Pull from Amazon
+              </button>
               <button onClick={() => setImportOpen(true)} className={secondaryBtn}>
                 Import from Excel
               </button>
@@ -207,6 +214,7 @@ export default function MasterListPage() {
         existingSkus={(skus ?? []).map((s) => s.sku)}
         onApplied={refresh}
       />
+      <PullFromAmazonSheet open={pullOpen} onOpenChange={setPullOpen} onApplied={refresh} />
       <SkuDetailDialog sku={selected} onOpenChange={(open) => !open && setSelected(null)} />
     </>
   );
@@ -561,6 +569,200 @@ function ImportSkusSheet({
               : mode === "overwrite"
                 ? `Overwrite with ${selected.size || ""} SKU${selected.size === 1 ? "" : "s"}`
                 : `Add ${selected.size || ""} SKU${selected.size === 1 ? "" : "s"}`}
+          </button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+interface PullResult {
+  missing: MissingAmazonSku[];
+  buyableCount: number;
+  alreadyInList: number;
+  resaleSkipped: number;
+}
+
+function PullFromAmazonSheet({
+  open,
+  onOpenChange,
+  onApplied,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onApplied: () => void;
+}) {
+  const [marketplace, setMarketplace] = useState<MarketplaceCode>("US");
+  const [result, setResult] = useState<PullResult | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
+  const [isFetching, startFetch] = useTransition();
+  const [isAdding, startAdd] = useTransition();
+
+  function reset() {
+    setResult(null);
+    setSelected(new Set());
+    setError(null);
+  }
+
+  function handleOpenChange(next: boolean) {
+    if (!next) {
+      reset();
+      setMarketplace("US");
+    }
+    onOpenChange(next);
+  }
+
+  function handleFetch() {
+    reset();
+    startFetch(async () => {
+      const { data, error } = await fetchAmazonMissingSkus(marketplace);
+      if (error) setError(error);
+      else if (data) {
+        setResult(data);
+        // Case clashes start unticked — they're probably an existing SKU typed differently.
+        setSelected(new Set(data.missing.filter((m) => !m.caseClash).map((m) => m.sku)));
+      }
+    });
+  }
+
+  function toggle(sku: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(sku)) next.delete(sku);
+      else next.add(sku);
+      return next;
+    });
+  }
+
+  function handleAdd() {
+    if (!result || selected.size === 0) return;
+    startAdd(async () => {
+      const { error } = await addSkusGrouped(result.missing.filter((m) => selected.has(m.sku)).map((m) => m.sku));
+      if (error) {
+        setError(error);
+        onApplied(); // a partial failure may still have added rows
+        return;
+      }
+      handleOpenChange(false);
+      onApplied();
+    });
+  }
+
+  const busy = isFetching || isAdding;
+
+  return (
+    <Sheet open={open} onOpenChange={handleOpenChange}>
+      <SheetContent side="right" className="flex flex-col sm:max-w-lg">
+        <SheetHeader>
+          <SheetTitle>Pull SKUs from Amazon</SheetTitle>
+          <SheetDescription>
+            Finds buyable listings that aren&apos;t in the master list yet. Each new SKU goes right below its
+            letter group (e.g. a new PHW… after the last PHW…). Nothing already in the list is removed or reordered.
+          </SheetDescription>
+        </SheetHeader>
+
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4">
+          <div className="flex gap-2">
+            <select
+              value={marketplace}
+              onChange={(e) => {
+                setMarketplace(e.target.value as MarketplaceCode);
+                reset();
+              }}
+              disabled={busy}
+              className="rounded-md border border-input bg-background px-2.5 py-1.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              {marketplacesByRegion().map((group) => (
+                <optgroup key={group.region} label={group.label}>
+                  {group.codes.map((code) => (
+                    <option key={code} value={code}>
+                      {code} — {MARKETPLACES[code].label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+            <button onClick={handleFetch} disabled={busy} className={primaryBtn}>
+              {isFetching ? "Fetching…" : "Fetch"}
+            </button>
+          </div>
+
+          {isFetching && (
+            <p className="text-xs text-muted-foreground">
+              Pulling listings from Amazon… this can take up to half a minute.
+            </p>
+          )}
+
+          {error && (
+            <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {error}
+            </div>
+          )}
+
+          {result && (
+            <div className="rounded-md border border-border bg-muted/30 px-4 py-3 text-xs text-muted-foreground">
+              {result.buyableCount} buyable on Amazon {marketplace} · {result.alreadyInList} already in master list ·{" "}
+              <span className="font-medium text-foreground">{result.missing.length} new</span>
+              {result.resaleSkipped > 0 &&
+                ` · ${result.resaleSkipped} Amazon resale (amzn.gr) listings skipped`}
+            </div>
+          )}
+
+          {result && result.missing.length === 0 && (
+            <p className="text-sm text-muted-foreground">Every buyable SKU is already in the master list.</p>
+          )}
+
+          {result && result.missing.length > 0 && (
+            <div className="space-y-1.5">
+              <p className="text-xs font-medium text-muted-foreground">
+                {selected.size} of {result.missing.length} selected — uncheck any that shouldn&apos;t be added
+              </p>
+              <div className="max-h-[50vh] space-y-1 overflow-y-auto rounded-md border border-border p-2">
+                {result.missing.map((m) => (
+                  <label
+                    key={m.sku}
+                    className="flex items-start gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-accent"
+                  >
+                    <Checkbox
+                      className="mt-0.5"
+                      checked={selected.has(m.sku)}
+                      onCheckedChange={() => toggle(m.sku)}
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-mono">{m.sku}</span>
+                      {m.itemName && (
+                        <span className="block truncate text-xs text-muted-foreground">{m.itemName}</span>
+                      )}
+                      <span className="block text-xs text-muted-foreground">
+                        {m.anchor ? (
+                          <>
+                            after <span className="font-mono">{m.anchor}</span>
+                          </>
+                        ) : (
+                          "new group, at end"
+                        )}
+                      </span>
+                      {m.caseClash && (
+                        <span className="block text-xs text-amber-700 dark:text-amber-400">
+                          Only differs in letter case from <span className="font-mono">{m.caseClash}</span>
+                        </span>
+                      )}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <SheetFooter className="flex-row flex-wrap justify-end gap-2">
+          <button
+            onClick={handleAdd}
+            disabled={!result || selected.size === 0 || busy}
+            className={primaryBtn}
+          >
+            {isAdding ? "Adding…" : `Add ${selected.size || ""} SKU${selected.size === 1 ? "" : "s"}`}
           </button>
         </SheetFooter>
       </SheetContent>

@@ -439,3 +439,98 @@ export async function getSkuDetail(sku: string, code: MarketplaceCode): Promise<
 
   return detail;
 }
+
+export interface SellerSkuListing {
+  sku: string;
+  asin: string | null;
+  itemName: string | null;
+  /** Amazon reports the listing as BUYABLE in this marketplace. */
+  buyable: boolean;
+}
+
+interface SearchListingsResponse {
+  items?: {
+    sku: string;
+    summaries?: {
+      marketplaceId?: string;
+      asin?: string;
+      itemName?: string;
+      status?: string[];
+      createdDate?: string;
+    }[];
+  }[];
+  numberOfResults?: number;
+  pagination?: { nextToken?: string };
+}
+
+const SEARCH_PAGE_SIZE = "20";
+const SEARCH_PAGE_DELAY_MS = 250;
+
+/**
+ * Every SKU the seller has in one marketplace, via searchListingsItems (paginated, 20 per page,
+ * 5 req/s). Unlike getSkuPricing this needs no SKU list up front — it's how new Amazon listings
+ * are discovered for the master list.
+ */
+export async function listSellerSkus(
+  code: MarketplaceCode,
+  opts: { buyableOnly?: boolean } = {}
+): Promise<SellerSkuListing[]> {
+  const { id: marketplaceId, region } = marketplace(code);
+  const { sellerId } = credentialsFor(region);
+
+  const bySku = new Map<string, SellerSkuListing>();
+  // A search stops paginating after 1000 items (this account has more than that buyable on US
+  // alone), so walk it in createdDate windows: oldest first, and when a window is cut off,
+  // start the next one at the last createdDate reached. Dedupe by SKU covers the boundary item.
+  let createdAfter: string | undefined;
+  for (;;) {
+    let pageToken: string | undefined;
+    let total = 0;
+    let fetched = 0;
+    let added = 0;
+    let lastCreated: string | undefined;
+    do {
+      const params: Record<string, string> = {
+        marketplaceIds: marketplaceId,
+        includedData: "summaries",
+        pageSize: SEARCH_PAGE_SIZE,
+        sortBy: "createdDate",
+        sortOrder: "ASC",
+      };
+      if (opts.buyableOnly) params.withStatus = "BUYABLE";
+      if (createdAfter) params.createdAfter = createdAfter;
+      if (pageToken) params.pageToken = pageToken;
+
+      const page = await callSpApiJson<SearchListingsResponse>(
+        `/listings/2021-08-01/items/${sellerId}`,
+        params,
+        region
+      );
+      total = page.numberOfResults ?? 0;
+      for (const item of page.items ?? []) {
+        fetched++;
+        const summary =
+          item.summaries?.find((s) => s.marketplaceId === marketplaceId) ?? item.summaries?.[0];
+        if (summary?.createdDate) lastCreated = summary.createdDate;
+        if (bySku.has(item.sku)) continue;
+        added++;
+        bySku.set(item.sku, {
+          sku: item.sku,
+          asin: summary?.asin ?? null,
+          itemName: summary?.itemName ?? null,
+          buyable: summary?.status?.includes("BUYABLE") ?? false,
+        });
+      }
+
+      pageToken = page.pagination?.nextToken;
+      if (pageToken) await sleep(SEARCH_PAGE_DELAY_MS);
+    } while (pageToken);
+
+    // Done when the window held everything; stop too if it made no progress, so it can't loop.
+    if (fetched >= total || !lastCreated || added === 0) break;
+    createdAfter = lastCreated;
+    await sleep(SEARCH_PAGE_DELAY_MS);
+  }
+
+  return [...bySku.values()];
+}

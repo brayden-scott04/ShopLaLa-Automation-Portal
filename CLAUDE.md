@@ -561,6 +561,15 @@ The DDL and seed are in `sql/supply_partners_migration.sql`, which is run by han
   - `setPartnerField` rejects any key that is not in the registry.
 - Server actions are in `lib/actions/partners.ts`. Reads use the RLS client and writes use the service client, gated by `isAllowed(…, "supplyChain", "partners")`.
 
+### Master List (`sku_master_list`)
+
+Backs `/market-ops/master-list`: `id`, `sku` (UNIQUE, case-sensitive), `position` (hand order, drag to reorder). Actions in `lib/actions/sku-list.ts`.
+
+**Pull from Amazon** (`fetchAmazonMissingSkus` → preview → `addSkusGrouped`) is additive only. It never deletes anything, and existing rows keep their relative order.
+- `listSellerSkus()` in `lib/amazon/sp-api.ts` uses searchListingsItems with `withStatus=BUYABLE`. That search stops after 1000 items, and US alone has more than that, so it walks `createdDate` windows.
+- `amzn.gr.*` SKUs (Amazon Grade & Resell, 500+ on US) are skipped.
+- Each new SKU goes directly below the last row of its prefix group, meaning its leading capital letters (`skuPrefix` / `planInsertions` in `lib/sku-grouping.ts`). With no exact group, it goes with the longest shared prefix of 2+ letters; otherwise at the end.
+
 ### Supabase clients
 
 ```typescript

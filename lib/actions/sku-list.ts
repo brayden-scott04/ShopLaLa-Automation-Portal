@@ -7,6 +7,9 @@ import * as XLSX from "xlsx";
 import { getSession } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
+import { listSellerSkus } from "@/lib/amazon/sp-api";
+import type { MarketplaceCode } from "@/lib/amazon/marketplaces";
+import { planInsertions } from "@/lib/sku-grouping";
 
 async function requireStaff() {
   const session = await getSession();
@@ -146,6 +149,147 @@ export async function reorderSkus(orderedIds: string[]) {
     .upsert(rows, { onConflict: "id" });
 
   return { data: dbError ? null : { ok: true }, error: dbError?.message ?? null };
+}
+
+// --- Pull from Amazon ---
+
+const PAGE_SIZE = 1000;
+const AMAZON_GENERATED_SKU = /^amzn\./i;
+
+/** Whole table in position order, paged past PostgREST's 1000-row cap — a truncated read here would mis-order the rewrite. */
+async function readAllSkusOrdered(service: ReturnType<typeof createServiceClient>) {
+  const rows: { id: string; sku: string }[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await service
+      .from("sku_master_list")
+      .select("id, sku")
+      .order("position", { ascending: true })
+      .order("created_at", { ascending: true })
+      .order("id", { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) return { data: null, error: error.message };
+    rows.push(...((data ?? []) as { id: string; sku: string }[]));
+    if (!data || data.length < PAGE_SIZE) return { data: rows, error: null };
+  }
+}
+
+export interface MissingAmazonSku {
+  sku: string;
+  asin: string | null;
+  itemName: string | null;
+  /** Existing SKU this one would land directly below; null = new group, appended at the end. */
+  anchor: string | null;
+  /** Existing SKU that differs from this one only in letter case — likely the same product. */
+  caseClash: string | null;
+}
+
+/**
+ * Read-only: buyable SKUs in one marketplace that aren't in the master list yet, each with where
+ * `addSkusGrouped` would put it. Nothing is written.
+ */
+export async function fetchAmazonMissingSkus(code: MarketplaceCode) {
+  const { error } = await requireStaff();
+  if (error) return { data: null, error };
+
+  let listings;
+  try {
+    listings = await listSellerSkus(code, { buyableOnly: true });
+  } catch (e) {
+    return { data: null, error: e instanceof Error ? e.message : "Amazon listings lookup failed" };
+  }
+
+  const { data: existing, error: readError } = await readAllSkusOrdered(createServiceClient());
+  if (readError || !existing) return { data: null, error: readError ?? "Couldn't read the master list" };
+
+  const existingSkus = existing.map((r) => r.sku);
+  const existingSet = new Set(existingSkus);
+  const byLower = new Map(existingSkus.map((s) => [s.toLowerCase(), s]));
+
+  const buyable = listings.filter((l) => l.buyable);
+  // "amzn.gr.<sku>-<id>" listings are Amazon-generated Grade & Resell (returned/used) offers of
+  // our products, not products of our own — 500+ of them on US alone.
+  const resale = buyable.filter((l) => AMAZON_GENERATED_SKU.test(l.sku));
+  const missingListings = buyable.filter(
+    (l) => !existingSet.has(l.sku) && !AMAZON_GENERATED_SKU.test(l.sku)
+  );
+  const { order, anchors } = planInsertions(
+    existingSkus,
+    missingListings.map((l) => l.sku)
+  );
+
+  // Show them in the order they'll appear in the list.
+  const rank = new Map(order.map((sku, i) => [sku, i]));
+  const missing: MissingAmazonSku[] = missingListings
+    .map((l) => ({
+      sku: l.sku,
+      asin: l.asin,
+      itemName: l.itemName,
+      anchor: anchors.get(l.sku) ?? null,
+      caseClash: byLower.get(l.sku.toLowerCase()) ?? null,
+    }))
+    .sort((a, b) => (rank.get(a.sku) ?? 0) - (rank.get(b.sku) ?? 0));
+
+  return {
+    data: {
+      missing,
+      buyableCount: buyable.length,
+      alreadyInList: buyable.length - resale.length - missingListings.length,
+      resaleSkipped: resale.length,
+    },
+    error: null,
+  };
+}
+
+/**
+ * Add SKUs, each placed directly below the last row of its prefix group (see `planInsertions`).
+ * Additive only: never deletes, and existing rows keep their relative order — only their
+ * `position` numbers shift to make room. Placement is planned from a fresh DB read, not the
+ * client's copy of the list.
+ */
+export async function addSkusGrouped(skus: string[]) {
+  const { error } = await requireStaff();
+  if (error) return { data: null, error };
+
+  const service = createServiceClient();
+  const { data: existing, error: readError } = await readAllSkusOrdered(service);
+  if (readError || !existing) return { data: null, error: readError ?? "Couldn't read the master list" };
+
+  const { order, anchors } = planInsertions(
+    existing.map((r) => r.sku),
+    skus
+  );
+  const fresh = [...anchors.keys()];
+  if (fresh.length === 0) return { data: { added: 0 }, error: null };
+
+  // 1. Insert at the bottom first. If step 2 fails the SKUs are still saved, just unsorted.
+  const start = existing.length;
+  const { data: inserted, error: insertError } = await service
+    .from("sku_master_list")
+    .upsert(
+      fresh.map((sku, i) => ({ sku, position: start + i })),
+      { onConflict: "sku", ignoreDuplicates: true }
+    )
+    .select("id, sku");
+  if (insertError) return { data: null, error: insertError.message };
+
+  // 2. Renumber every row to the merged order (upsert on id, as reorderSkus does).
+  const idBySku = new Map(
+    [...existing, ...((inserted ?? []) as { id: string; sku: string }[])].map((r) => [r.sku, r.id])
+  );
+  const rows = order
+    .filter((sku) => idBySku.has(sku))
+    .map((sku, position) => ({ id: idBySku.get(sku)!, sku, position }));
+  const { error: positionError } = await service
+    .from("sku_master_list")
+    .upsert(rows, { onConflict: "id" });
+  if (positionError) {
+    return {
+      data: null,
+      error: `Added ${inserted?.length ?? 0} SKUs, but couldn't move them into their groups (${positionError.message}) — they're at the bottom of the list.`,
+    };
+  }
+
+  return { data: { added: inserted?.length ?? 0 }, error: null };
 }
 
 export async function deleteSku(id: string) {
