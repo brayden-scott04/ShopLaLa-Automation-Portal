@@ -1,4 +1,4 @@
-﻿"use server";
+"use server";
 
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
@@ -20,6 +20,8 @@ export interface Task {
   acknowledgements: TaskAcknowledgement[];
   createdAt: string;
   canEdit: boolean;
+  /** Only the owner ticks a task done. */
+  canMarkDone: boolean;
   canDelete: boolean;
 }
 
@@ -106,6 +108,7 @@ function toTask(
     createdAt: row.created_at,
     // Visible only to owner + assignees — admins included, no override — so "can see" == "can edit".
     canEdit: isOwner || assignees.includes(username),
+    canMarkDone: isOwner,
     canDelete: isOwner,
   };
 }
@@ -257,7 +260,9 @@ export async function updateTrackedTask(id: string, input: TrackedTaskInput): Pr
 export async function setTaskDone(id: string, done: boolean): Promise<{ error: string | null }> {
   const session = await getSession();
   if (!session) return { error: "Unauthorized" };
-  if (!(await loadVisible(id, session.username))) return { error: "Task not found" };
+  const task = await loadVisible(id, session.username);
+  if (!task) return { error: "Task not found" };
+  if (!task.canMarkDone) return { error: "Only the owner can mark this task done" };
 
   const db = createServiceClient();
   const { error } = await db

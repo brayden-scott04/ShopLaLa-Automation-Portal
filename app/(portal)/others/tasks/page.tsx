@@ -452,9 +452,10 @@ export default function TasksPage() {
                       <td className="px-3 py-2">
                         <Checkbox
                           checked={t.done}
-                          disabled={!t.canEdit}
+                          disabled={!t.canMarkDone}
                           onCheckedChange={(c) => handleToggleDone(t, c === true)}
                           aria-label="Mark done"
+                          title={t.canMarkDone ? undefined : `Only ${t.owner} can mark this done`}
                         />
                       </td>
                       <td className="px-3 py-2">
