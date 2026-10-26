@@ -77,6 +77,7 @@ const COLUMNS: { label: string; sort?: SortKey; className?: string }[] = [
   { label: "Assignees" },
   { label: "Acknowledged" },
   { label: "Notes" },
+  { label: "Update" },
   { label: "", className: "w-20" },
 ];
 type Scope = "all" | "mine" | "assigned";
@@ -100,6 +101,12 @@ function notesTooltip(task: Task): string | undefined {
 
 function formatDateTime(iso: string): string {
   return new Date(iso).toLocaleString(undefined, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+}
+
+/** Hover text for the Update cell: every update as "user (when) - text", newest first. */
+function updatesTooltip(task: Task): string | undefined {
+  if (!task.updates.length) return undefined;
+  return task.updates.map((u) => `${u.username} (${formatDateTime(u.createdAt)}) - ${u.body}`).join("\n");
 }
 
 /**
@@ -477,8 +484,22 @@ export default function TasksPage() {
                         <AcknowledgedCell task={t} me={me} onToggle={(a) => handleToggleAcknowledged(t, a)} />
                       </td>
                       <td
-                        className={cn("truncate px-3 py-2 text-muted-foreground", !columns.widths && "max-w-xs")} title={notesTooltip(t)}>
+                        className={cn("truncate px-3 py-2 text-muted-foreground", !columns.widths && "max-w-xs")}
+                        title={notesTooltip(t)}
+                      >
                         {t.notes ?? "—"}
+                      </td>
+                      <td className={cn("px-3 py-2", !columns.widths && "max-w-xs")} title={updatesTooltip(t)}>
+                        {t.updates[0] ? (
+                          <>
+                            <div className="truncate">{t.updates[0].body}</div>
+                            <div className="truncate text-xs text-muted-foreground">
+                              {t.updates[0].username} · {formatDateTime(t.updates[0].createdAt)}
+                            </div>
+                          </>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
                       </td>
                       <td className="px-3 py-2">
                         <div className="flex justify-end gap-1">
