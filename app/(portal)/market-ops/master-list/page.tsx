@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-import { GripVertical } from "lucide-react";
+import { ChevronDown, GripVertical } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -40,6 +40,13 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import { masterList } from "@/lib/nav";
 import {
   listSkus,
@@ -50,13 +57,22 @@ import {
   parseSkuExcel,
   fetchAmazonMissingSkus,
   addSkusGrouped,
+  setSkuRegions,
   type Sku,
   type DetectedSkuSheet,
   type MissingAmazonSku,
+  type ExistingAmazonSku,
 } from "@/lib/actions/sku-list";
 import { fetchSkuDetail } from "@/lib/actions/pricing-update";
 import type { MarketplaceCode, SkuDetail } from "@/lib/amazon/sp-api";
 import { MARKETPLACES, marketplacesByRegion, formatMoney } from "@/lib/amazon/marketplaces";
+import {
+  SKU_REGIONS,
+  SKU_REGION_LABELS,
+  regionForMarketplace,
+  cleanRegions,
+  type SkuRegion,
+} from "@/lib/sku-regions";
 
 /** Prices carry their marketplace's currency — this used to hardcode "$". */
 function formatPrice(amount: number | null, code: MarketplaceCode): string {
@@ -70,6 +86,50 @@ const primaryBtn =
 const secondaryBtn =
   "rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50";
 
+type RegionFilter = "all" | SkuRegion | "none";
+
+function matchesRegion(sku: Sku, filter: RegionFilter): boolean {
+  if (filter === "all") return true;
+  if (filter === "none") return sku.regions.length === 0;
+  return sku.regions.includes(filter);
+}
+
+/** Two region checkboxes — used by the Add and Pull sheets. None ticked = Uncategorised. */
+function RegionPicker({
+  value,
+  onChange,
+  disabled,
+}: {
+  value: SkuRegion[];
+  onChange: (regions: SkuRegion[]) => void;
+  disabled?: boolean;
+}) {
+  return (
+    <div className="space-y-1">
+      <p className="text-xs font-medium text-muted-foreground">Region</p>
+      <div className="flex flex-wrap gap-4">
+        {SKU_REGIONS.map((r) => (
+          <label key={r.key} className="flex items-center gap-2 text-sm">
+            <Checkbox
+              checked={value.includes(r.key)}
+              disabled={disabled}
+              onCheckedChange={(checked) =>
+                onChange(
+                  cleanRegions(checked ? [...value, r.key] : value.filter((k) => k !== r.key))
+                )
+              }
+            />
+            {r.label}
+          </label>
+        ))}
+      </div>
+      {value.length === 0 && (
+        <p className="text-xs text-muted-foreground">No region ticked — these will be Uncategorised.</p>
+      )}
+    </div>
+  );
+}
+
 export default function MasterListPage() {
   const [skus, setSkus] = useState<Sku[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -78,6 +138,9 @@ export default function MasterListPage() {
   const [importOpen, setImportOpen] = useState(false);
   const [pullOpen, setPullOpen] = useState(false);
   const [selected, setSelected] = useState<Sku | null>(null);
+  const [regionFilter, setRegionFilter] = useState<RegionFilter>("all");
+  // Bumped on every open so the Add sheet remounts with the current tab's default regions.
+  const [addSession, setAddSession] = useState(0);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -106,17 +169,60 @@ export default function MasterListPage() {
   const isFiltering = search.trim() !== "";
   // SKUs are stored case-sensitively, but search stays case-insensitive for usability.
   const query = search.trim().toLowerCase();
-  const filtered = (skus ?? []).filter((s) => s.sku.toLowerCase().includes(query));
+  const inRegion = (skus ?? []).filter((s) => matchesRegion(s, regionFilter));
+  const filtered = inRegion.filter((s) => s.sku.toLowerCase().includes(query));
+
+  const regionCounts: Record<RegionFilter, number> = {
+    all: skus?.length ?? 0,
+    na: 0,
+    apac_eu: 0,
+    none: 0,
+  };
+  for (const s of skus ?? []) {
+    if (s.regions.length === 0) regionCounts.none++;
+    for (const r of s.regions) regionCounts[r]++;
+  }
+  const baseOptions: { value: RegionFilter; label: string }[] = [
+    { value: "all", label: "All SKUs" },
+    ...SKU_REGIONS.map((r) => ({ value: r.key, label: r.label })),
+    { value: "none", label: "Uncategorised" },
+  ];
+  const regionOptions = baseOptions.map((o) => ({
+    ...o,
+    label: `${o.label} (${regionCounts[o.value]})`,
+  }));
+
+  function openAdd() {
+    setAddSession((n) => n + 1);
+    setAddOpen(true);
+  }
+
+  async function handleRegionsChange(sku: Sku, regions: SkuRegion[]) {
+    const previous = skus;
+    setSkus((list) => list?.map((s) => (s.id === sku.id ? { ...s, regions } : s)) ?? list); // optimistic
+    const { error } = await setSkuRegions(sku.id, regions);
+    if (error) {
+      setError(error);
+      setSkus(previous);
+    } else {
+      setError(null);
+    }
+  }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id || !skus) return;
-    const oldIndex = skus.findIndex((s) => s.id === active.id);
-    const newIndex = skus.findIndex((s) => s.id === over.id);
+    // Reorder within what's visible (one region tab), then write that subset back into the
+    // slots it already occupied in the full list — SKUs hidden by the tab never move.
+    const oldIndex = inRegion.findIndex((s) => s.id === active.id);
+    const newIndex = inRegion.findIndex((s) => s.id === over.id);
     if (oldIndex === -1 || newIndex === -1) return;
 
+    const moved = arrayMove(inRegion, oldIndex, newIndex);
+    const visibleIds = new Set(inRegion.map((s) => s.id));
+    let k = 0;
     const previous = skus;
-    const next = arrayMove(skus, oldIndex, newIndex);
+    const next = skus.map((s) => (visibleIds.has(s.id) ? moved[k++] : s));
     setSkus(next); // optimistic
     reorderSkus(next.map((s) => s.id)).then(({ error }) => {
       if (error) {
@@ -136,7 +242,11 @@ export default function MasterListPage() {
           <CardHeader className="grid-cols-1! sm:grid-cols-[1fr_auto]!">
             <CardTitle>SKUs</CardTitle>
             <CardDescription>
-              {skus ? `${skus.length} SKU${skus.length === 1 ? "" : "s"} in the master list` : "Loading…"}
+              {!skus
+                ? "Loading…"
+                : regionFilter === "all"
+                  ? `${skus.length} SKU${skus.length === 1 ? "" : "s"} in the master list`
+                  : `${inRegion.length} of ${skus.length} SKUs`}
             </CardDescription>
             <CardAction className="flex gap-2">
               <button onClick={() => setPullOpen(true)} className={secondaryBtn}>
@@ -145,7 +255,7 @@ export default function MasterListPage() {
               <button onClick={() => setImportOpen(true)} className={secondaryBtn}>
                 Import from Excel
               </button>
-              <button onClick={() => setAddOpen(true)} className={primaryBtn}>
+              <button onClick={openAdd} className={primaryBtn}>
                 + Add SKUs
               </button>
             </CardAction>
@@ -163,6 +273,12 @@ export default function MasterListPage() {
               <p className="text-sm text-muted-foreground">No SKUs yet — add some manually or import an Excel file.</p>
             ) : (
               <>
+                <SegmentedControl
+                  value={regionFilter}
+                  onValueChange={setRegionFilter}
+                  options={regionOptions}
+                  className="mb-3"
+                />
                 <div className="mb-3 space-y-1">
                   <input
                     className={inputClass}
@@ -193,13 +309,16 @@ export default function MasterListPage() {
                           dragDisabled={isFiltering}
                           onSelect={() => setSelected(s)}
                           onDelete={() => handleDelete(s)}
+                          onRegionsChange={(regions) => handleRegionsChange(s, regions)}
                         />
                       ))}
                     </div>
                   </SortableContext>
                 </DndContext>
                 {filtered.length === 0 && (
-                  <p className="text-sm text-muted-foreground">No SKUs match &quot;{search}&quot;.</p>
+                  <p className="text-sm text-muted-foreground">
+                    {isFiltering ? <>No SKUs match &quot;{search}&quot;.</> : "No SKUs in this region yet."}
+                  </p>
                 )}
               </>
             )}
@@ -207,7 +326,13 @@ export default function MasterListPage() {
         </Card>
       </div>
 
-      <AddSkusSheet open={addOpen} onOpenChange={setAddOpen} onApplied={refresh} />
+      <AddSkusSheet
+        key={addSession}
+        open={addOpen}
+        onOpenChange={setAddOpen}
+        onApplied={refresh}
+        defaultRegions={regionFilter === "apac_eu" ? ["apac_eu"] : regionFilter === "none" ? [] : ["na"]}
+      />
       <ImportSkusSheet
         open={importOpen}
         onOpenChange={setImportOpen}
@@ -225,11 +350,13 @@ function SortableSkuRow({
   dragDisabled,
   onSelect,
   onDelete,
+  onRegionsChange,
 }: {
   sku: Sku;
   dragDisabled: boolean;
   onSelect: () => void;
   onDelete: () => void;
+  onRegionsChange: (regions: SkuRegion[]) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: sku.id,
@@ -269,6 +396,7 @@ function SortableSkuRow({
       >
         {sku.sku}
       </button>
+      <RegionTag regions={sku.regions} onChange={onRegionsChange} />
       <button onClick={onDelete} className="ml-1 shrink-0 text-destructive hover:underline">
         Remove
       </button>
@@ -276,16 +404,67 @@ function SortableSkuRow({
   );
 }
 
+/** The row's region badges; click to tick/untick regions. */
+function RegionTag({
+  regions,
+  onChange,
+}: {
+  regions: SkuRegion[];
+  onChange: (regions: SkuRegion[]) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        aria-label="Change region"
+        className="flex shrink-0 items-center gap-1 rounded-md px-1 py-0.5 hover:bg-accent"
+      >
+        {regions.length === 0 ? (
+          <span className="rounded border border-dashed border-border px-1.5 py-0.5 text-xs text-muted-foreground">
+            Uncategorised
+          </span>
+        ) : (
+          regions.map((r) => (
+            <span
+              key={r}
+              className="rounded bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground"
+            >
+              {SKU_REGION_LABELS[r]}
+            </span>
+          ))
+        )}
+        <ChevronDown className="size-3 text-muted-foreground" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-40">
+        {SKU_REGIONS.map((r) => (
+          <DropdownMenuCheckboxItem
+            key={r.key}
+            checked={regions.includes(r.key)}
+            closeOnClick={false}
+            onCheckedChange={(checked) =>
+              onChange(cleanRegions(checked ? [...regions, r.key] : regions.filter((k) => k !== r.key)))
+            }
+          >
+            {r.label}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function AddSkusSheet({
   open,
   onOpenChange,
   onApplied,
+  defaultRegions,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onApplied: () => void;
+  defaultRegions: SkuRegion[];
 }) {
   const [text, setText] = useState("");
+  const [regions, setRegions] = useState<SkuRegion[]>(defaultRegions);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -305,7 +484,7 @@ function AddSkusSheet({
     }
     setBusy(true);
     setError(null);
-    const { error } = await addSkus(skus);
+    const { error } = await addSkus(skus, regions);
     setBusy(false);
     if (error) {
       setError(error);
@@ -320,9 +499,12 @@ function AddSkusSheet({
       <SheetContent side="right">
         <SheetHeader>
           <SheetTitle>Add SKUs</SheetTitle>
-          <SheetDescription>One per line, or separated by commas.</SheetDescription>
+          <SheetDescription>
+            One per line, or separated by commas. SKUs already in the list gain the ticked region(s).
+          </SheetDescription>
         </SheetHeader>
         <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4">
+          <RegionPicker value={regions} onChange={setRegions} disabled={busy} />
           <textarea
             className={`${inputClass} min-h-40 font-mono`}
             placeholder={"SKU-0001\nSKU-0002"}
@@ -578,6 +760,7 @@ function ImportSkusSheet({
 
 interface PullResult {
   missing: MissingAmazonSku[];
+  existingMatches: ExistingAmazonSku[];
   buyableCount: number;
   alreadyInList: number;
   resaleSkipped: number;
@@ -593,8 +776,12 @@ function PullFromAmazonSheet({
   onApplied: () => void;
 }) {
   const [marketplace, setMarketplace] = useState<MarketplaceCode>("US");
+  const [regions, setRegions] = useState<SkuRegion[]>([regionForMarketplace("US")]);
   const [result, setResult] = useState<PullResult | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  // Existing SKUs the user unticked from "add region" — stored as opt-outs so the list can
+  // follow the region checkboxes without losing the user's choices.
+  const [skipTag, setSkipTag] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [isFetching, startFetch] = useTransition();
   const [isAdding, startAdd] = useTransition();
@@ -602,6 +789,7 @@ function PullFromAmazonSheet({
   function reset() {
     setResult(null);
     setSelected(new Set());
+    setSkipTag(new Set());
     setError(null);
   }
 
@@ -609,6 +797,7 @@ function PullFromAmazonSheet({
     if (!next) {
       reset();
       setMarketplace("US");
+      setRegions([regionForMarketplace("US")]);
     }
     onOpenChange(next);
   }
@@ -635,10 +824,29 @@ function PullFromAmazonSheet({
     });
   }
 
+  // Already-listed SKUs that lack one of the ticked regions.
+  const needsTag = (result?.existingMatches ?? []).filter((m) =>
+    regions.some((r) => !m.regions.includes(r))
+  );
+  const toTag = needsTag.filter((m) => !skipTag.has(m.sku));
+  const toAdd = (result?.missing ?? []).filter((m) => selected.has(m.sku));
+
+  function toggleTag(sku: string) {
+    setSkipTag((prev) => {
+      const next = new Set(prev);
+      if (next.has(sku)) next.delete(sku);
+      else next.add(sku);
+      return next;
+    });
+  }
+
   function handleAdd() {
-    if (!result || selected.size === 0) return;
+    if (!result || toAdd.length + toTag.length === 0) return;
     startAdd(async () => {
-      const { error } = await addSkusGrouped(result.missing.filter((m) => selected.has(m.sku)).map((m) => m.sku));
+      const { error } = await addSkusGrouped(
+        [...toAdd.map((m) => m.sku), ...toTag.map((m) => m.sku)],
+        regions
+      );
       if (error) {
         setError(error);
         onApplied(); // a partial failure may still have added rows
@@ -658,7 +866,8 @@ function PullFromAmazonSheet({
           <SheetTitle>Pull SKUs from Amazon</SheetTitle>
           <SheetDescription>
             Finds buyable listings that aren&apos;t in the master list yet. Each new SKU goes right below its
-            letter group (e.g. a new PHW… after the last PHW…). Nothing already in the list is removed or reordered.
+            letter group (e.g. a new PHW… after the last PHW…). Nothing already in the list is removed or reordered;
+            existing SKUs can only gain the ticked region(s).
           </SheetDescription>
         </SheetHeader>
 
@@ -667,7 +876,9 @@ function PullFromAmazonSheet({
             <select
               value={marketplace}
               onChange={(e) => {
-                setMarketplace(e.target.value as MarketplaceCode);
+                const code = e.target.value as MarketplaceCode;
+                setMarketplace(code);
+                setRegions([regionForMarketplace(code)]);
                 reset();
               }}
               disabled={busy}
@@ -687,6 +898,8 @@ function PullFromAmazonSheet({
               {isFetching ? "Fetching…" : "Fetch"}
             </button>
           </div>
+
+          <RegionPicker value={regions} onChange={setRegions} disabled={busy} />
 
           {isFetching && (
             <p className="text-xs text-muted-foreground">
@@ -709,8 +922,10 @@ function PullFromAmazonSheet({
             </div>
           )}
 
-          {result && result.missing.length === 0 && (
-            <p className="text-sm text-muted-foreground">Every buyable SKU is already in the master list.</p>
+          {result && result.missing.length === 0 && needsTag.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              Every buyable SKU is already in the master list with the ticked region(s).
+            </p>
           )}
 
           {result && result.missing.length > 0 && (
@@ -754,15 +969,58 @@ function PullFromAmazonSheet({
               </div>
             </div>
           )}
+
+          {needsTag.length > 0 && (
+            <div className="space-y-1.5">
+              <p className="text-xs font-medium text-muted-foreground">
+                Already in list: add region — {toTag.length} of {needsTag.length} selected
+              </p>
+              <div className="max-h-[40vh] space-y-1 overflow-y-auto rounded-md border border-border p-2">
+                {needsTag.map((m) => {
+                  const adds = regions.filter((r) => !m.regions.includes(r));
+                  return (
+                    <label
+                      key={m.sku}
+                      className="flex items-start gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-accent"
+                    >
+                      <Checkbox
+                        className="mt-0.5"
+                        checked={!skipTag.has(m.sku)}
+                        onCheckedChange={() => toggleTag(m.sku)}
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate font-mono">{m.sku}</span>
+                        {m.itemName && (
+                          <span className="block truncate text-xs text-muted-foreground">{m.itemName}</span>
+                        )}
+                        <span className="block text-xs text-muted-foreground">
+                          already in list, adds {adds.map((r) => SKU_REGION_LABELS[r]).join(" + ")}
+                        </span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         <SheetFooter className="flex-row flex-wrap justify-end gap-2">
           <button
             onClick={handleAdd}
-            disabled={!result || selected.size === 0 || busy}
+            disabled={!result || toAdd.length + toTag.length === 0 || busy}
             className={primaryBtn}
           >
-            {isAdding ? "Adding…" : `Add ${selected.size || ""} SKU${selected.size === 1 ? "" : "s"}`}
+            {isAdding
+              ? "Adding…"
+              : [
+                  toAdd.length > 0 || toTag.length === 0
+                    ? `Add ${toAdd.length || ""} SKU${toAdd.length === 1 ? "" : "s"}`
+                    : null,
+                  toTag.length > 0 ? `Tag ${toTag.length}` : null,
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
           </button>
         </SheetFooter>
       </SheetContent>

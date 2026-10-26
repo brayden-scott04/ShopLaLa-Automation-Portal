@@ -10,6 +10,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { listSellerSkus } from "@/lib/amazon/sp-api";
 import type { MarketplaceCode } from "@/lib/amazon/marketplaces";
 import { planInsertions } from "@/lib/sku-grouping";
+import { cleanRegions, type SkuRegion } from "@/lib/sku-regions";
 
 async function requireStaff() {
   const session = await getSession();
@@ -21,6 +22,8 @@ export interface Sku {
   id: string;
   sku: string;
   position: number;
+  /** Empty = Uncategorised. See lib/sku-regions.ts. */
+  regions: SkuRegion[];
   created_at: string;
 }
 
@@ -31,20 +34,62 @@ export async function listSkus() {
   const client = await createClient();
   const { data, error: dbError } = await client
     .from("sku_master_list")
-    .select("id, sku, position, created_at")
+    .select("id, sku, position, regions, created_at")
     .order("position", { ascending: true })
     .order("created_at", { ascending: true });
 
   return { data: data as Sku[] | null, error: dbError?.message ?? null };
 }
 
-export async function addSkus(skus: string[]) {
+type ServiceClient = ReturnType<typeof createServiceClient>;
+
+/**
+ * Add `regions` to every row in `rows` that lacks one of them. Additive — never removes a region.
+ * Rows are grouped by their resulting region set so it's one UPDATE per distinct set, not per row.
+ */
+async function addRegionsTo(
+  service: ServiceClient,
+  rows: { id: string; regions: string[] | null }[],
+  regions: SkuRegion[]
+): Promise<{ tagged: number; error: string | null }> {
+  if (regions.length === 0) return { tagged: 0, error: null };
+
+  const idsByRegions = new Map<string, string[]>();
+  for (const row of rows) {
+    const current = cleanRegions(row.regions);
+    const next = cleanRegions([...current, ...regions]);
+    if (next.length === current.length) continue;
+    const key = next.join(",");
+    idsByRegions.set(key, [...(idsByRegions.get(key) ?? []), row.id]);
+  }
+
+  let tagged = 0;
+  for (const [key, ids] of idsByRegions) {
+    for (let i = 0; i < ids.length; i += 200) {
+      const chunk = ids.slice(i, i + 200);
+      const { error } = await service
+        .from("sku_master_list")
+        .update({ regions: key.split(",") })
+        .in("id", chunk);
+      if (error) return { tagged, error: error.message };
+      tagged += chunk.length;
+    }
+  }
+  return { tagged, error: null };
+}
+
+/**
+ * Append SKUs to the end of the list, tagged with `regions` (empty = Uncategorised). SKUs that
+ * already exist keep their position; when `regions` is non-empty they gain those regions.
+ */
+export async function addSkus(skus: string[], regionsInput: string[] = []) {
   const { error } = await requireStaff();
   if (error) return { data: null, error };
 
   // SKUs are case-sensitive — preserve original case, only trim. Dedupe keeps first occurrence.
   const cleaned = [...new Set(skus.map((s) => s.trim()).filter(Boolean))];
   if (cleaned.length === 0) return { data: null, error: "No SKUs provided" };
+  const regions = cleanRegions(regionsInput);
 
   const service = createServiceClient();
 
@@ -60,12 +105,42 @@ export async function addSkus(skus: string[]) {
   const { data, error: dbError } = await service
     .from("sku_master_list")
     .upsert(
-      cleaned.map((sku, i) => ({ sku, position: start + i })),
+      cleaned.map((sku, i) => ({ sku, position: start + i, regions })),
       { onConflict: "sku", ignoreDuplicates: true }
     )
-    .select("id, sku, position, created_at");
+    .select("id, sku, position, regions, created_at");
+  if (dbError) return { data: null, error: dbError.message };
 
-  return { data: data as Sku[] | null, error: dbError?.message ?? null };
+  if (regions.length > 0) {
+    const insertedSet = new Set((data ?? []).map((r) => r.sku as string));
+    const existingSkus = cleaned.filter((s) => !insertedSet.has(s));
+    if (existingSkus.length > 0) {
+      const { data: existingRows, error: readError } = await service
+        .from("sku_master_list")
+        .select("id, regions")
+        .in("sku", existingSkus);
+      if (readError) return { data: null, error: readError.message };
+      const { error: tagError } = await addRegionsTo(service, existingRows ?? [], regions);
+      if (tagError) return { data: null, error: tagError };
+    }
+  }
+
+  return { data: data as Sku[] | null, error: null };
+}
+
+/** Set one SKU's regions outright (the row tag on the master list). Empty = Uncategorised. */
+export async function setSkuRegions(id: string, regionsInput: string[]) {
+  const { error } = await requireStaff();
+  if (error) return { data: null, error };
+
+  const regions = cleanRegions(regionsInput);
+  const service = createServiceClient();
+  const { error: dbError } = await service
+    .from("sku_master_list")
+    .update({ regions })
+    .eq("id", id);
+
+  return { data: dbError ? null : { regions }, error: dbError?.message ?? null };
 }
 
 /**
@@ -157,18 +232,18 @@ const PAGE_SIZE = 1000;
 const AMAZON_GENERATED_SKU = /^amzn\./i;
 
 /** Whole table in position order, paged past PostgREST's 1000-row cap — a truncated read here would mis-order the rewrite. */
-async function readAllSkusOrdered(service: ReturnType<typeof createServiceClient>) {
-  const rows: { id: string; sku: string }[] = [];
+async function readAllSkusOrdered(service: ServiceClient) {
+  const rows: { id: string; sku: string; regions: string[] | null }[] = [];
   for (let from = 0; ; from += PAGE_SIZE) {
     const { data, error } = await service
       .from("sku_master_list")
-      .select("id, sku")
+      .select("id, sku, regions")
       .order("position", { ascending: true })
       .order("created_at", { ascending: true })
       .order("id", { ascending: true })
       .range(from, from + PAGE_SIZE - 1);
     if (error) return { data: null, error: error.message };
-    rows.push(...((data ?? []) as { id: string; sku: string }[]));
+    rows.push(...((data ?? []) as { id: string; sku: string; regions: string[] | null }[]));
     if (!data || data.length < PAGE_SIZE) return { data: rows, error: null };
   }
 }
@@ -181,6 +256,13 @@ export interface MissingAmazonSku {
   anchor: string | null;
   /** Existing SKU that differs from this one only in letter case — likely the same product. */
   caseClash: string | null;
+}
+
+/** A buyable Amazon SKU that's already in the master list, with the regions it has today. */
+export interface ExistingAmazonSku {
+  sku: string;
+  itemName: string | null;
+  regions: SkuRegion[];
 }
 
 /**
@@ -203,6 +285,7 @@ export async function fetchAmazonMissingSkus(code: MarketplaceCode) {
 
   const existingSkus = existing.map((r) => r.sku);
   const existingSet = new Set(existingSkus);
+  const regionsBySku = new Map(existing.map((r) => [r.sku, cleanRegions(r.regions)]));
   const byLower = new Map(existingSkus.map((s) => [s.toLowerCase(), s]));
 
   const buyable = listings.filter((l) => l.buyable);
@@ -229,9 +312,17 @@ export async function fetchAmazonMissingSkus(code: MarketplaceCode) {
     }))
     .sort((a, b) => (rank.get(a.sku) ?? 0) - (rank.get(b.sku) ?? 0));
 
+  // The client decides which of these lack the region(s) being pulled; list order = master list order.
+  const existingRank = new Map(existingSkus.map((sku, i) => [sku, i]));
+  const existingMatches: ExistingAmazonSku[] = buyable
+    .filter((l) => existingSet.has(l.sku))
+    .map((l) => ({ sku: l.sku, itemName: l.itemName, regions: regionsBySku.get(l.sku) ?? [] }))
+    .sort((a, b) => (existingRank.get(a.sku) ?? 0) - (existingRank.get(b.sku) ?? 0));
+
   return {
     data: {
       missing,
+      existingMatches,
       buyableCount: buyable.length,
       alreadyInList: buyable.length - resale.length - missingListings.length,
       resaleSkipped: resale.length,
@@ -244,29 +335,39 @@ export async function fetchAmazonMissingSkus(code: MarketplaceCode) {
  * Add SKUs, each placed directly below the last row of its prefix group (see `planInsertions`).
  * Additive only: never deletes, and existing rows keep their relative order — only their
  * `position` numbers shift to make room. Placement is planned from a fresh DB read, not the
- * client's copy of the list.
+ * client's copy of the list. New SKUs get `regions`; SKUs in `skus` that already exist gain
+ * `regions` (union) without moving.
  */
-export async function addSkusGrouped(skus: string[]) {
+export async function addSkusGrouped(skus: string[], regionsInput: string[] = []) {
   const { error } = await requireStaff();
   if (error) return { data: null, error };
+  const regions = cleanRegions(regionsInput);
 
   const service = createServiceClient();
   const { data: existing, error: readError } = await readAllSkusOrdered(service);
   if (readError || !existing) return { data: null, error: readError ?? "Couldn't read the master list" };
+
+  const requested = new Set(skus.map((s) => s.trim()).filter(Boolean));
+  const { tagged, error: tagError } = await addRegionsTo(
+    service,
+    existing.filter((r) => requested.has(r.sku)),
+    regions
+  );
+  if (tagError) return { data: null, error: tagError };
 
   const { order, anchors } = planInsertions(
     existing.map((r) => r.sku),
     skus
   );
   const fresh = [...anchors.keys()];
-  if (fresh.length === 0) return { data: { added: 0 }, error: null };
+  if (fresh.length === 0) return { data: { added: 0, tagged }, error: null };
 
   // 1. Insert at the bottom first. If step 2 fails the SKUs are still saved, just unsorted.
   const start = existing.length;
   const { data: inserted, error: insertError } = await service
     .from("sku_master_list")
     .upsert(
-      fresh.map((sku, i) => ({ sku, position: start + i })),
+      fresh.map((sku, i) => ({ sku, position: start + i, regions })),
       { onConflict: "sku", ignoreDuplicates: true }
     )
     .select("id, sku");
@@ -289,7 +390,7 @@ export async function addSkusGrouped(skus: string[]) {
     };
   }
 
-  return { data: { added: inserted?.length ?? 0 }, error: null };
+  return { data: { added: inserted?.length ?? 0, tagged }, error: null };
 }
 
 export async function deleteSku(id: string) {

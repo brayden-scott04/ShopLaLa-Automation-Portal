@@ -563,7 +563,16 @@ The DDL and seed are in `sql/supply_partners_migration.sql`, which is run by han
 
 ### Master List (`sku_master_list`)
 
-Backs `/market-ops/master-list`: `id`, `sku` (UNIQUE, case-sensitive), `position` (hand order, drag to reorder). Actions in `lib/actions/sku-list.ts`.
+Backs `/market-ops/master-list`: `id`, `sku` (UNIQUE, case-sensitive), `position` (hand order, drag to reorder), `regions`. Actions in `lib/actions/sku-list.ts`.
+
+**`regions text[]`** holds `na` (US/CA/MX) and/or `apac_eu` (AU/EU/UK). Both are allowed; `{}` means Uncategorised. Keys, labels and `regionForMarketplace()` live in `lib/sku-regions.ts`, and must match the CHECK in `sql/sku_regions_migration.sql` (applied 2026-10-26, which backfilled every existing SKU to `{na}`).
+- **Filter:** the page's region tabs filter the base list only. The SKU detail dialog's marketplace picker is unaffected.
+- **Drag:** dragging inside a tab reorders that subset within the slots it already holds, so hidden SKUs never move.
+- **Adding SKUs:**
+  - + Add SKUs and Pull from Amazon tag new SKUs with the ticked regions, and only ever *add* regions to SKUs that are already listed.
+  - Excel import adds SKUs as Uncategorised.
+- **Changing a SKU's regions:** use the row tag (`setSkuRegions`).
+- `replaceSkus` and `reorderSkus` never write `regions`.
 
 **Pull from Amazon** (`fetchAmazonMissingSkus` → preview → `addSkusGrouped`) is additive only. It never deletes anything, and existing rows keep their relative order.
 - `listSellerSkus()` in `lib/amazon/sp-api.ts` uses searchListingsItems with `withStatus=BUYABLE`. That search stops after 1000 items, and US alone has more than that, so it walks `createdDate` windows.
