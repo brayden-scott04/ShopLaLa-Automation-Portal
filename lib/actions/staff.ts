@@ -49,9 +49,31 @@ export async function getStaffDirectory() {
   const client = await createClient();
   const { data, error: dbError } = await client
     .from("staff")
-    .select("id, username, role")
+    .select("id, username, role, job_role")
     .order("role", { ascending: true })
     .order("username", { ascending: true });
+
+  return { data, error: dbError?.message ?? null };
+}
+
+const MAX_JOB_ROLE_LENGTH = 60;
+
+/** Admin-only: set the free-text job title shown on /team. Blank clears it. */
+export async function updateJobRole(id: string, jobRole: string) {
+  const { client, error } = await requireAdmin();
+  if (error) return { data: null, error };
+
+  const trimmed = jobRole.trim();
+  if (trimmed.length > MAX_JOB_ROLE_LENGTH) {
+    return { data: null, error: `Job role must be ${MAX_JOB_ROLE_LENGTH} characters or fewer` };
+  }
+
+  const { data, error: dbError } = await client!
+    .from("staff")
+    .update({ job_role: trimmed || null })
+    .eq("id", id)
+    .select("id, username, role, job_role")
+    .single();
 
   return { data, error: dbError?.message ?? null };
 }

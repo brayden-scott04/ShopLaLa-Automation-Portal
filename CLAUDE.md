@@ -148,6 +148,7 @@ Project ID: `fuynizhfhfnvbdzwihgp`
 | `username` | `text` | Unique, lowercase, `^[a-z0-9_-]{3,32}$` |
 | `password_hash` | `text` | bcrypt, cost 10 |
 | `role` | `text` | `"admin"` \| `"manager"` \| `"moderator"` \| `"user"` (CHECK `staff_role_check`; `manager` added by `sql/staff_manager_role_migration.sql`) |
+| `job_role` | `text \| null` | Free-text job title shown on `/team` ("Job Role" column), ≤60 chars, display only. Admins edit it inline there (`updateJobRole`); everyone else sees plain text. `sql/staff_job_role_migration.sql`, applied 2026-10-26 |
 | `created_at` | `timestamptz` | Auto |
 
 ### PPC ACOS Top-Up tables

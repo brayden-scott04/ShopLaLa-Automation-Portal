@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/team/page.tsx": {
-    "mtime": 1792553959.351386,
-    "ast_hash": "cc9e38aa3d1d3776e2249daa52793cbb",
+    "mtime": 1793024960.3563683,
+    "ast_hash": "58961718d9954fcb2b8314e384bca2b3",
     "semantic_hash": ""
   },
   "app/api/auth/login/route.ts": {
@@ -70,8 +70,8 @@
     "semantic_hash": ""
   },
   "components/sidebar-content.tsx": {
-    "mtime": 1792860816.2801566,
-    "ast_hash": "b16a147f272066abdd5bc7a2dad05171",
+    "mtime": 1793018943.1519837,
+    "ast_hash": "0ae7658b3e524826dfe9a5dac444c92d",
     "semantic_hash": ""
   },
   "components/sidebar.tsx": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "lib/actions/staff.ts": {
-    "mtime": 1792553962.4429717,
-    "ast_hash": "f8a16b6f2a8b95ba1506c310b7009639",
+    "mtime": 1793023791.9161983,
+    "ast_hash": "54f5a2c3af7e855313f5c903d9f26f13",
     "semantic_hash": ""
   },
   "lib/ppc-daily-cap-constants.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793010748.0839756,
-    "ast_hash": "fb783637834aa5e5f49cb1f9e90d3cfb",
+    "mtime": 1793023824.4595625,
+    "ast_hash": "21aaadec2427e842a4533a9c82eb313f",
     "semantic_hash": ""
   },
   "README.md": {
@@ -295,8 +295,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/chat/page.tsx": {
-    "mtime": 1785999092.4547362,
-    "ast_hash": "d54d6d172c7f344457980b22f87ef1c8",
+    "mtime": 1793018945.3572855,
+    "ast_hash": "ef193e205047a1d3b5281f1be6405238",
     "semantic_hash": ""
   },
   "components/ai-chat/chat-panel.tsx": {
@@ -310,8 +310,8 @@
     "semantic_hash": ""
   },
   "lib/actions/ai-chat.ts": {
-    "mtime": 1785392747.705771,
-    "ast_hash": "7baf4e7e3aa0eaf3bc26b205cc9afb40",
+    "mtime": 1793018948.2334893,
+    "ast_hash": "dc60a6d4a763e093e1f94e085367409d",
     "semantic_hash": ""
   },
   "lib/actions/price-change-plans.ts": {
@@ -1022,6 +1022,11 @@
   "lib/sku-regions.ts": {
     "mtime": 1793010549.8175495,
     "ast_hash": "13f1304415058daff14455a9c4928d12",
+    "semantic_hash": ""
+  },
+  "lib/features.ts": {
+    "mtime": 1793018935.9303546,
+    "ast_hash": "6a38d49908fe5a2be4a0aa3d80534f7f",
     "semantic_hash": ""
   }
 }
