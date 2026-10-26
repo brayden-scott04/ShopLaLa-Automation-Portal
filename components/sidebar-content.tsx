@@ -22,6 +22,7 @@ import {
   type NavSubgroup,
 } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import { CHAT_ENABLED } from "@/lib/features";
 import { UserMenu } from "@/components/user-menu";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -520,18 +521,20 @@ export function SidebarContent({
           {!collapsed && "Dashboard"}
         </Link>
 
-        <Link
-          href="/chat"
-          title={collapsed ? "Chat" : undefined}
-          className={cn(
-            "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
-            collapsed && "justify-center px-2",
-            pathname === "/chat" && "bg-accent text-primary"
-          )}
-        >
-          <Sparkles className="size-4 shrink-0" />
-          {!collapsed && "Chat"}
-        </Link>
+        {CHAT_ENABLED && (
+          <Link
+            href="/chat"
+            title={collapsed ? "Chat" : undefined}
+            className={cn(
+              "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
+              collapsed && "justify-center px-2",
+              pathname === "/chat" && "bg-accent text-primary"
+            )}
+          >
+            <Sparkles className="size-4 shrink-0" />
+            {!collapsed && "Chat"}
+          </Link>
+        )}
 
         <Link
           href="/team"

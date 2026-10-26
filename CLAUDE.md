@@ -625,7 +625,9 @@ Admin-only actions (`listStaff`, `createStaffMember`, `updateStaffMember`, `rena
 
 ## Navigation & Adding a Page
 
-The sidebar has a fixed top block (Dashboard, Chat, Team), then five **Layer-1 groups**, each
+The sidebar has a fixed top block (Dashboard, Chat, Team — Chat is currently switched off by
+`CHAT_ENABLED` in `lib/features.ts`, which hides the link, 404s `/chat` and blocks its server
+action; the code is kept), then five **Layer-1 groups**, each
 with its **Layer-2 pages**. Everything comes from one registry, `lib/nav.ts` (`NAV_GROUPS`), which
 also feeds the dashboard's "Your access" grid, the Manage Users access editor, the AI chat's
 `list_portal_pages` tool, and the permission universe (`ALL_ITEM_IDS` in `lib/permissions.ts`).

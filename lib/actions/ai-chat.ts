@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/session";
 import { generateAssistantReply, type ChatMessage } from "@/lib/ai/chat-provider";
+import { CHAT_ENABLED } from "@/lib/features";
 
 const MAX_MESSAGES = 40;
 const MAX_MESSAGE_LENGTH = 4000;
@@ -9,6 +10,7 @@ const MAX_MESSAGE_LENGTH = 4000;
 export async function sendAiChatMessage(messages: ChatMessage[]) {
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized" };
+  if (!CHAT_ENABLED) return { data: null, error: "Chat is currently disabled" };
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return { data: null, error: "No message provided" };
