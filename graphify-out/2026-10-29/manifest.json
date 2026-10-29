@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793284370.410346,
-    "ast_hash": "ab5371ddfe0d335a0c544e92da9a7f61",
+    "mtime": 1793284912.989765,
+    "ast_hash": "f8ef703da0927d04750722acc8a0713d",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1070,18 +1070,18 @@
     "semantic_hash": ""
   },
   "components/team/staff-profile-view.tsx": {
-    "mtime": 1793284343.6425662,
-    "ast_hash": "abc10a9b148408c29eec56e4cf8af9fa",
+    "mtime": 1793284909.4719167,
+    "ast_hash": "c9e8330282e74a4958cc9cdcd734b2f7",
     "semantic_hash": ""
   },
   "lib/actions/staff-profile.ts": {
-    "mtime": 1793284255.0059533,
-    "ast_hash": "dcb90abc74d8550db4239f6752597e65",
+    "mtime": 1793284848.1427763,
+    "ast_hash": "d2167be45e10893ceb2ac9f1949a4c1e",
     "semantic_hash": ""
   },
   "lib/staff-profile-constants.ts": {
-    "mtime": 1793284222.7105348,
-    "ast_hash": "27c3fb1e19dcd8fe65325839c77eae60",
+    "mtime": 1793284796.3104663,
+    "ast_hash": "290463865bc1daa13e4ed13a06b1808a",
     "semantic_hash": ""
   }
 }

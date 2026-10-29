@@ -5,6 +5,7 @@ import { getMyPermissions } from "@/lib/permissions";
 import { filterItems, isAllowed } from "@/lib/roles";
 import PpcTopUpCharts from "@/components/ppc-top-up-chart";
 import { DashboardAccessGrid } from "@/components/dashboard-access-grid";
+import { CoreValues } from "@/components/core-values";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -62,6 +63,9 @@ export default async function DashboardPage() {
           </div>
         </>
       )}
+
+      {/* Shown to everyone, whatever their access, so the values are always one click from login. */}
+      <CoreValues />
     </div>
   );
 }
