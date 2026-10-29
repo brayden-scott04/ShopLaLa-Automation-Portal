@@ -157,7 +157,7 @@ export const supplyChainAutomations = defineNavItem({
 // ── Market Ops ───────────────────────────────────────────────────────────────
 export const products = defineNavItem({
   name: "Products",
-  description: "Product catalogue across marketplaces",
+  description: "Factory price list (RMB) by SKU",
   icon: Package,
   section: "marketOps",
 });

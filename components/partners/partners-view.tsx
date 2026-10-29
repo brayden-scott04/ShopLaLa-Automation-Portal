@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, MoreHorizontal, Pencil, Plus, Tags, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SegmentedControl } from "@/components/ui/segmented-control";
@@ -175,6 +176,11 @@ export function PartnersView({ initialView }: { initialView: PartnerKind }) {
   );
 }
 
+/** A factory's prices on /market-ops/products, which resolves the name case-insensitively. */
+function pricesHref(partner: Partner) {
+  return `/market-ops/products?factory=${encodeURIComponent(partner.short_name)}`;
+}
+
 function withField(fields: Record<string, string>, key: string, value: string) {
   const next = { ...fields };
   if (value) next[key] = value;
@@ -197,6 +203,7 @@ function PartnerGrid({
   onChanged: () => void;
   onCellSaved: (id: string, key: string, value: string) => void;
 }) {
+  const router = useRouter();
   const [nameDialog, setNameDialog] = useState<{ mode: "add" } | { mode: "rename"; partner: Partner } | null>(null);
   const [toDelete, setToDelete] = useState<Partner | null>(null);
   const [busy, setBusy] = useState(false);
@@ -242,7 +249,17 @@ function PartnerGrid({
               {partners.map((p, i) => (
                 <th key={p.id} className="min-w-44 border-r border-b border-border px-2 py-1.5">
                   <div className="flex items-center justify-center gap-1">
-                    <span className="truncate text-base font-semibold">{p.short_name}</span>
+                    {kind === "factory" ? (
+                      <Link
+                        href={pricesHref(p)}
+                        title={`View ${p.short_name} prices`}
+                        className="truncate text-base font-semibold underline-offset-4 hover:text-primary hover:underline"
+                      >
+                        {p.short_name}
+                      </Link>
+                    ) : (
+                      <span className="truncate text-base font-semibold">{p.short_name}</span>
+                    )}
                     <DropdownMenu>
                       <DropdownMenuTrigger
                         aria-label={`Actions for ${p.short_name}`}
@@ -251,6 +268,15 @@ function PartnerGrid({
                         <MoreHorizontal className="size-4" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-40">
+                        {kind === "factory" && (
+                          <>
+                            <DropdownMenuItem onClick={() => router.push(pricesHref(p))}>
+                              <Tags />
+                              View prices
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                          </>
+                        )}
                         <DropdownMenuItem onClick={() => setNameDialog({ mode: "rename", partner: p })}>
                           <Pencil />
                           Rename

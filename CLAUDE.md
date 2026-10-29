@@ -562,6 +562,23 @@ The DDL and seed are in `sql/supply_partners_migration.sql`, which is run by han
   - `setPartnerField` rejects any key that is not in the registry.
 - Server actions are in `lib/actions/partners.ts`. Reads use the RLS client and writes use the service client, gated by `isAllowed(…, "supplyChain", "partners")`.
 
+### Product prices (`product_prices`)
+
+Backs `/market-ops/products`: the factory price list, in RMB, grouped by factory. DDL is in `sql/product_prices_migration.sql`.
+
+- Columns: `sku` (UNIQUE, case-sensitive), `partner_id` → `supply_partners(id)`, `price_rmb numeric(12,2)` (nullable), and `position` (sheet order).
+- `partner_id` uses `on delete set null`. Deleting a factory in Partners keeps its prices, which then show under "Unassigned".
+- This table is independent of `sku_master_list`. A SKU can be in one without the other.
+- Server actions are in `lib/actions/product-prices.ts`. Shared types, `formatRmb` and the sheet parser (`parsePriceMatrix`) are in `lib/product-prices.ts`.
+- Writes need `isAllowed(…, "marketOps", "products")`. `getPriceForSku` only needs a session, because the Master List SKU dialog shows the price to everyone.
+- **Excel import** (`parsePriceExcel` → preview → `importProductPrices`):
+  - It upserts by SKU and **never deletes**.
+  - A blank factory cell inherits the factory above it.
+  - Factories that aren't in Partners are **created there automatically**, matched to `short_name` case-insensitively.
+- **Deep links:**
+  - `?factory=<short_name>` (or `unassigned`). Partners' factory column headers link here.
+  - `?sku=<sku>` highlights that row. The Master List dialog's "Go to price list" links here. A SKU with no price shows an "Add it" banner.
+
 ### Master List (`sku_master_list`)
 
 Backs `/market-ops/master-list`: `id`, `sku` (UNIQUE, case-sensitive), `position` (hand order, drag to reorder), `regions`. Actions in `lib/actions/sku-list.ts`.
@@ -637,7 +654,7 @@ also feeds the dashboard's "Your access" grid, the Manage Users access editor, t
 |---|---|
 | Dashboard (`dashboard` / `/dashboard`) | Goal vs Performance\*, Profit Analytics |
 | Supply Chain (`supplyChain` / `/supply-chain`) | Partners, Sourcing\*, Orders\*, Shipments\*, Automations\* |
-| Market Ops (`marketOps` / `/market-ops`) | Products\*, Inventory\*, Advertisements\*, Master List, and an **Automations & Tools** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`; only the label was renamed on 2026-10-21, the key and URLs stayed): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker, Trends |
+| Market Ops (`marketOps` / `/market-ops`) | Products, Inventory\*, Advertisements\*, Master List, and an **Automations & Tools** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`; only the label was renamed on 2026-10-21, the key and URLs stayed): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker, Trends |
 | Visual (`visual` / `/visual`) | Listing Score\* |
 | Others (`others` / `/others`) | Calendar, Finance\*, Tasks, Company Inbox |
 

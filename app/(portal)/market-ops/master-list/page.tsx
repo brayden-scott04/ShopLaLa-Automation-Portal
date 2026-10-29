@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import Link from "next/link";
 import { ChevronDown, GripVertical } from "lucide-react";
 import {
   DndContext,
@@ -64,6 +65,8 @@ import {
   type ExistingAmazonSku,
 } from "@/lib/actions/sku-list";
 import { fetchSkuDetail } from "@/lib/actions/pricing-update";
+import { getPriceForSku } from "@/lib/actions/product-prices";
+import { formatRmb } from "@/lib/product-prices";
 import type { MarketplaceCode, SkuDetail } from "@/lib/amazon/sp-api";
 import { MARKETPLACES, marketplacesByRegion, formatMoney } from "@/lib/amazon/marketplaces";
 import {
@@ -1042,6 +1045,18 @@ function SkuDetailDialog({
 
   const skuValue = sku?.sku ?? null;
 
+  // Factory price comes from our own price list, not Amazon, so it doesn't follow the marketplace.
+  // Keyed by SKU so a stale answer reads as loading; undefined = loading, null = no entry.
+  const [priceLookup, setPriceLookup] = useState<{
+    sku: string;
+    result: { price_rmb: number | null; factory: string | null } | null;
+  } | null>(null);
+  useEffect(() => {
+    if (!skuValue) return;
+    getPriceForSku(skuValue).then(({ data }) => setPriceLookup({ sku: skuValue, result: data ?? null }));
+  }, [skuValue]);
+  const factoryPrice = priceLookup?.sku === skuValue ? priceLookup.result : undefined;
+
   // Reset the marketplace back to US each time a different SKU is opened.
   useEffect(() => {
     if (sku) setMarketplace("US");
@@ -1154,7 +1169,30 @@ function SkuDetailDialog({
           ) : null}
         </div>
 
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/30 px-3 py-2">
+          <div>
+            <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">Factory price</p>
+            {factoryPrice === undefined ? (
+              <Skeleton className="mt-1 h-5 w-24" />
+            ) : factoryPrice === null ? (
+              <p className="text-sm text-muted-foreground">Not in the price list</p>
+            ) : (
+              <p className="font-medium tabular-nums">
+                {formatRmb(factoryPrice.price_rmb)}
+                {factoryPrice.factory && (
+                  <span className="ml-1.5 text-sm font-normal text-muted-foreground">· {factoryPrice.factory}</span>
+                )}
+              </p>
+            )}
+          </div>
+        </div>
+
         <AlertDialogFooter>
+          {skuValue && (
+            <Link href={`/market-ops/products?sku=${encodeURIComponent(skuValue)}`} className={secondaryBtn}>
+              Go to price list
+            </Link>
+          )}
           <AlertDialogCancel>Close</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

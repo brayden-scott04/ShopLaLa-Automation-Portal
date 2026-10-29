@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793033922.6416554,
-    "ast_hash": "5f662cfaa824b92cbc94034aed4309a0",
+    "mtime": 1793115335.8127062,
+    "ast_hash": "4020005a65f75f5c236fdee2e30d7f01",
     "semantic_hash": ""
   },
   "README.md": {
@@ -830,8 +830,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/market-ops/master-list/page.tsx": {
-    "mtime": 1793010728.6849165,
-    "ast_hash": "88bb45cbe475941f21fbd0bc2dc2ebb7",
+    "mtime": 1793115295.989654,
+    "ast_hash": "5a108571715aaf603ba72e95de746670",
     "semantic_hash": ""
   },
   "app/(portal)/market-ops/products/layout.tsx": {
@@ -840,8 +840,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/market-ops/products/page.tsx": {
-    "mtime": 1792411524.7673252,
-    "ast_hash": "17801864219ca8bae225a5457b791db3",
+    "mtime": 1793115295.9914346,
+    "ast_hash": "326814a8c6609abd0a879b7f6b3e2e81",
     "semantic_hash": ""
   },
   "app/(portal)/others/company-inbox/compose-dialog.tsx": {
@@ -940,8 +940,8 @@
     "semantic_hash": ""
   },
   "lib/nav.ts": {
-    "mtime": 1792584581.1166904,
-    "ast_hash": "cfb631e2ddd517d5a832c24676626406",
+    "mtime": 1793115295.9914346,
+    "ast_hash": "9fac4c83e102312f0d4cf28f96339b85",
     "semantic_hash": ""
   },
   "sql/nav_restructure_migration.sql": {
@@ -1000,8 +1000,8 @@
     "semantic_hash": ""
   },
   "components/partners/partners-view.tsx": {
-    "mtime": 1792861573.493735,
-    "ast_hash": "4521822bedb993aca184676c6de9c945",
+    "mtime": 1793115295.9914346,
+    "ast_hash": "aeb5ea47d435074a7a04d7f9a2ec2f6c",
     "semantic_hash": ""
   },
   "lib/actions/partners.ts": {
@@ -1027,6 +1027,21 @@
   "lib/features.ts": {
     "mtime": 1793018935.9303546,
     "ast_hash": "6a38d49908fe5a2be4a0aa3d80534f7f",
+    "semantic_hash": ""
+  },
+  "components/products/products-view.tsx": {
+    "mtime": 1793115314.3436525,
+    "ast_hash": "e38f3f189015c3915eeee334eb355db7",
+    "semantic_hash": ""
+  },
+  "lib/actions/product-prices.ts": {
+    "mtime": 1793115111.924899,
+    "ast_hash": "740d420bf06bb8fc103372cf1cef723b",
+    "semantic_hash": ""
+  },
+  "lib/product-prices.ts": {
+    "mtime": 1793153821.2618246,
+    "ast_hash": "16fc9e43e3285a0202e99d5516f95aec",
     "semantic_hash": ""
   }
 }
