@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Pencil, Users } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Input } from "@/components/ui/input";
@@ -141,7 +142,15 @@ export default function TeamPage() {
                 <>
                   {staff.map((member) => (
                     <tr key={member.id} className="border-b border-border last:border-0">
-                      <td className="px-4 py-3 font-medium">{member.username}</td>
+                      <td className="px-4 py-3 font-medium">
+                        <Link
+                          href={`/team/${encodeURIComponent(member.username)}`}
+                          title="View skills"
+                          className="underline-offset-4 hover:text-primary hover:underline"
+                        >
+                          {member.username}
+                        </Link>
+                      </td>
                       <td className="px-4 py-3">
                         {isAdmin ? (
                           <JobRoleEditor

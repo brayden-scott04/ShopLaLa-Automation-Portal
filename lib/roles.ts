@@ -64,6 +64,11 @@ export function canManageUsers(role: Role): boolean {
   return role !== "user";
 }
 
+/** Admins and managers set staff skill levels and extend the skills catalogue (/team/<username>). */
+export function canManageSkills(role: Role): boolean {
+  return role === "admin" || role === "manager";
+}
+
 /** Only admins can promote/demote, delete accounts, and assign per-user access. */
 export function canAdminister(role: Role): boolean {
   return role === "admin";

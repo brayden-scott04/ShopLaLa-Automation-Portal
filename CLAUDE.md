@@ -549,6 +549,22 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
   applied 2026-10-24 with a backfill).
 - **`bsr_sync_runs`**: append-only run log, with `asins_failed` for per-ASIN call failures.
 
+### Staff skills (`skills`, `staff_skills`)
+
+These back `/team/<username>`, the per-person drilldown opened by clicking a name on `/team`. They replace the `# Skills` sheet of the "Performance and Development" workbook. The DDL and seed are in `sql/staff_skills_migration.sql`, which is run by hand.
+
+- **`skills`**: the shared catalogue. Columns are `team` (one of `SKILL_TEAMS`), `task`, `market` (free text such as `US/CA/MX`, nullable), `description` and `position`.
+  - The same task repeats per market, and under Others per description, so it is unique on all four columns.
+- **`staff_skills`**: one row per `(username, skill_id)`. `level` is `in_charge`, `can_do` or `learning`.
+  - **No row means not applicable.**
+  - "Total skills" is in charge + can do, matching the sheet's count of 1s.
+  - `username` follows staff renames via `ON UPDATE CASCADE`.
+- **Seed:** the sheet's font colour carried the level (red 1 = in charge, black 1 = can do, blue 0 = learning).
+  - Sheet columns for people without a portal account (Jimmy, Rita, Sunny, Le Qi, Shaelmy) are dropped by the join on `staff`.
+  - Their levels are still listed in the seed, so they can be re-run by hand once those accounts exist.
+- **Who can edit:** everyone can view. Only **admins and managers** (`canManageSkills` in `lib/roles.ts`, which excludes moderators) can change levels or add catalogue skills.
+  - Server actions are in `lib/actions/skills.ts`. Constants and types are in `lib/skills-constants.ts`.
+
 ### Supply Partners tables
 
 These back `/supply-chain/partners`, which has two views: **Factories** and **Forwarders**. Large colour-coded tiles switch between them (`?view=forwarders`).
