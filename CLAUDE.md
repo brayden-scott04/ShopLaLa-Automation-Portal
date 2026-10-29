@@ -64,7 +64,7 @@ automation-portal/
 - Cookie is valid for **7 days**, secure in production, `sameSite=lax`
 - `middleware.ts` runs on every request, redirects to `/login` if no valid session
 - Staff accounts are stored in the Supabase `staff` table, identified by **username** (no email); passwords are bcrypt-hashed (cost 10)
-- Roles (`lib/roles.ts`): `"admin"`, `"manager"`, `"moderator"`, `"user"` (displayed as "User"). Admins can access all of `/admin/*`; managers and moderators only `/admin/users`, where they can create users and reset `"user"` passwords. **Manager currently has exactly the same abilities as Moderator** — a separate role so the two can diverge later. Only admins change roles (user ↔ moderator ↔ manager), rename, delete and assign access. There are exactly two admins today (Brayden, Dobie)
+- Roles (`lib/roles.ts`): `"admin"`, `"leader"`, `"moderator"`, `"user"` (displayed as "User"). Admins can access all of `/admin/*`; leaders and moderators only `/admin/users`, where they can create users and reset `"user"` passwords. **Leader = Moderator plus editing staff profiles and skills on `/team/<username>`** (`canManageProfiles`). Leader was called `"manager"` until `sql/staff_profiles_migration.sql` renamed it; `toRole()` still maps a legacy `"manager"` JWT claim to `"leader"`, so nobody has to log in again. Only admins change roles (user ↔ moderator ↔ leader), rename, delete and assign access. There are exactly two admins today (Brayden, Dobie)
 - There is no self-service signup or email/invite flow — admins create every account directly from `/admin/users`
 - **Admins can only create `"user"` accounts.** Granting `"admin"` (whether creating a new account or promoting an existing one) is blocked in `createStaffMember`/`updateStaffMember` and must be done directly in the Supabase `staff` table — this is intentional, not a bug. The UI only ever offers demoting an admin to user, never the reverse
 
@@ -147,7 +147,7 @@ Project ID: `fuynizhfhfnvbdzwihgp`
 | `id` | `uuid` | PK, auto-generated |
 | `username` | `text` | Unique, lowercase, `^[a-z0-9_-]{3,32}$` |
 | `password_hash` | `text` | bcrypt, cost 10 |
-| `role` | `text` | `"admin"` \| `"manager"` \| `"moderator"` \| `"user"` (CHECK `staff_role_check`; `manager` added by `sql/staff_manager_role_migration.sql`) |
+| `role` | `text` | `"admin"` \| `"leader"` \| `"moderator"` \| `"user"` (CHECK `staff_role_check`; added as `manager` by `sql/staff_manager_role_migration.sql`, renamed to `leader` by `sql/staff_profiles_migration.sql`) |
 | `job_role` | `text \| null` | Free-text job title shown on `/team` ("Job Role" column), ≤60 chars, display only. Admins edit it inline there (`updateJobRole`); everyone else sees plain text. `sql/staff_job_role_migration.sql`, applied 2026-10-26 |
 | `created_at` | `timestamptz` | Auto |
 
@@ -549,9 +549,28 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
   applied 2026-10-24 with a backfill).
 - **`bsr_sync_runs`**: append-only run log, with `asins_failed` for per-ASIN call failures.
 
+### Staff profiles (Reporting & Responsibility)
+
+`/team/<username>` is the per-person drilldown opened by clicking a name on `/team`. It has two tabs: **Profile** (the default) and **Skills** (`?tab=skills`). `components/team/staff-drilldown.tsx` owns the header and the tabs. The Profile tab replaces the "Reporting & Responsibility" sheet of the same workbook. The DDL and a seed of Stewie's sheet are in `sql/staff_profiles_migration.sql`, which is run by hand **before** deploying (it also renames the `manager` role to `leader`).
+
+- **People Manager**: `staff.people_manager`, one per person. Covers salary, performance review, attendance, leave and career development.
+- **Functional Managers**: `staff_functional_managers`, any number. Covers main work, priorities, targets, projects and daily direction.
+- **Teams**: `teams` and `team_members`. A person can be in several teams. Removing a team's last member deletes the team (`removeTeamMember`).
+- **Current tasks & projects** are **shared**, so several people can work on the same task.
+  - `responsibilities` holds the task itself: `title` and `project_manager`. Edits to these show on everyone's list.
+  - `responsibility_assignees` holds `(responsibility_id, username)` plus that person's **own** `priority` and `position`.
+  - Adding a task offers **Existing task**, which picks any task the person isn't on yet and joins them to it, or **New task**.
+  - Each row shows who else is "Working with" them on it.
+  - "Remove" takes only this person off the task. When the last person is removed, the task is deleted (`removeResponsibilityAssignee`).
+  - `priority` references `responsibility_priorities(level)`, a shared legend of level, label and description that staff can edit.
+  - **0 means inactive / on hold**. It is always listed last and greyed out (`compareResponsibilities`).
+- **Last reviewed**: `staff.profile_reviewed_on`.
+- Every staff reference is a FK on `staff(username)` with `ON UPDATE CASCADE`, so only portal accounts can be picked.
+- Everyone can view. Only **admins and leaders** (`canManageProfiles`) can edit. Actions are in `lib/actions/staff-profile.ts` and constants in `lib/staff-profile-constants.ts`.
+
 ### Staff skills (`skills`, `staff_skills`)
 
-These back `/team/<username>`, the per-person drilldown opened by clicking a name on `/team`. They replace the `# Skills` sheet of the "Performance and Development" workbook. The DDL and seed are in `sql/staff_skills_migration.sql`, which is run by hand.
+These back the **Skills** tab of `/team/<username>`. They replace the `# Skills` sheet of the "Performance and Development" workbook. The DDL and seed are in `sql/staff_skills_migration.sql`, which is run by hand.
 
 - **`skills`**: the shared catalogue. Columns are `team` (one of `SKILL_TEAMS`), `task`, `market` (free text such as `US/CA/MX`, nullable), `description` and `position`.
   - The same task repeats per market, and under Others per description, so it is unique on all four columns.
@@ -562,7 +581,7 @@ These back `/team/<username>`, the per-person drilldown opened by clicking a nam
 - **Seed:** the sheet's font colour carried the level (red 1 = in charge, black 1 = can do, blue 0 = learning).
   - Sheet columns for people without a portal account (Jimmy, Rita, Sunny, Le Qi, Shaelmy) are dropped by the join on `staff`.
   - Their levels are still listed in the seed, so they can be re-run by hand once those accounts exist.
-- **Who can edit:** everyone can view. Only **admins and managers** (`canManageSkills` in `lib/roles.ts`, which excludes moderators) can change levels or add catalogue skills.
+- **Who can edit:** everyone can view. Only **admins and leaders** (`canManageProfiles` in `lib/roles.ts`, which excludes moderators) can change levels or add catalogue skills.
   - Server actions are in `lib/actions/skills.ts`. Constants and types are in `lib/skills-constants.ts`.
 
 ### Supply Partners tables

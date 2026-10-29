@@ -5,8 +5,9 @@
  *  - "admin"     — full access to everything; the only role that can promote/
  *                  demote, delete accounts, and assign per-user access. Admin
  *                  accounts can only be created/edited directly in the database.
- *  - "manager"   — currently identical to "moderator" (kept separate so the two
- *                  can diverge later).
+ *  - "leader"    — everything a moderator can do, plus editing staff profiles
+ *                  (reporting lines, teams, responsibilities) and skills on /team.
+ *                  Stored as "manager" before sql/staff_profiles_migration.sql.
  *  - "moderator" — can create regular users and reset their passwords, and has
  *                  whatever section access an admin granted.
  *  - "user"      — has only the section access an admin granted.
@@ -15,14 +16,14 @@
  * shaped as {@link PermissionSet}. Admins bypass it entirely (implicit full access).
  */
 
-export type Role = "admin" | "manager" | "moderator" | "user";
+export type Role = "admin" | "leader" | "moderator" | "user";
 
-export const ROLES: Role[] = ["admin", "manager", "moderator", "user"];
+export const ROLES: Role[] = ["admin", "leader", "moderator", "user"];
 
 /** Display labels for each role. */
 export const ROLE_LABELS: Record<Role, string> = {
   admin: "Admin",
-  manager: "Manager",
+  leader: "Leader",
   moderator: "Moderator",
   user: "User",
 };
@@ -59,14 +60,17 @@ const LEGACY_SECTIONS: Record<string, Section> = {
   communications: "others",
 };
 
-/** Admins, managers and moderators can create users and reset user passwords. */
+/** Admins, leaders and moderators can create users and reset user passwords. */
 export function canManageUsers(role: Role): boolean {
   return role !== "user";
 }
 
-/** Admins and managers set staff skill levels and extend the skills catalogue (/team/<username>). */
-export function canManageSkills(role: Role): boolean {
-  return role === "admin" || role === "manager";
+/**
+ * Admins and leaders edit everything on /team/<username>: reporting lines, teams,
+ * responsibilities, priority levels and skills.
+ */
+export function canManageProfiles(role: Role): boolean {
+  return role === "admin" || role === "leader";
 }
 
 /** Only admins can promote/demote, delete accounts, and assign per-user access. */
@@ -74,9 +78,13 @@ export function canAdminister(role: Role): boolean {
   return role === "admin";
 }
 
-/** Normalizes an unknown value (e.g. from a JWT claim or DB row) to a valid Role. */
+/**
+ * Normalizes an unknown value (e.g. from a JWT claim or DB row) to a valid Role.
+ * "manager" is the pre-rename spelling of "leader", still present in older session cookies.
+ */
 export function toRole(value: unknown): Role {
-  return value === "admin" || value === "manager" || value === "moderator" ? value : "user";
+  if (value === "manager") return "leader";
+  return value === "admin" || value === "leader" || value === "moderator" ? value : "user";
 }
 
 /** Admins are always allowed; otherwise the id must be in the granted set. */

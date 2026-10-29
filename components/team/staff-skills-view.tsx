@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { ArrowLeft, Plus, UserRound } from "lucide-react";
-import { PageHeader } from "@/components/page-header";
+import { Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -111,60 +110,62 @@ function AddSkillDialog({
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-md">
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex min-h-0 flex-col">
           <DialogHeader>
             <DialogTitle>Add skill</DialogTitle>
             <DialogDescription>
               Adds a skill to the catalogue for everyone. It starts as not applicable for each person.
             </DialogDescription>
           </DialogHeader>
-          <div>
-            <label className={labelClass}>Team</label>
-            <select className={inputClass} value={team} onChange={(e) => setTeam(e.target.value)}>
-              {SKILL_TEAMS.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className={labelClass}>Skill</label>
-            <input
-              autoFocus
-              className={inputClass}
-              placeholder="e.g. Create Shipment"
-              maxLength={SKILL_TASK_MAX}
-              value={task}
-              onChange={(e) => setTask(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Market (optional)</label>
-            <input
-              className={inputClass}
-              list="skill-markets"
-              placeholder="e.g. US/CA/MX"
-              maxLength={SKILL_MARKET_MAX}
-              value={market}
-              onChange={(e) => setMarket(e.target.value)}
-            />
-            <datalist id="skill-markets">
-              {SKILL_MARKETS.map((m) => (
-                <option key={m} value={m} />
-              ))}
-            </datalist>
-          </div>
-          <div>
-            <label className={labelClass}>Description (optional)</label>
-            <textarea
-              className={cn(inputClass, "min-h-20")}
-              maxLength={SKILL_DESCRIPTION_MAX}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          <DialogBody className="space-y-4">
+            <div>
+              <label className={labelClass}>Team</label>
+              <select className={inputClass} value={team} onChange={(e) => setTeam(e.target.value)}>
+                {SKILL_TEAMS.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Skill</label>
+              <input
+                autoFocus
+                className={inputClass}
+                placeholder="e.g. Create Shipment"
+                maxLength={SKILL_TASK_MAX}
+                value={task}
+                onChange={(e) => setTask(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Market (optional)</label>
+              <input
+                className={inputClass}
+                list="skill-markets"
+                placeholder="e.g. US/CA/MX"
+                maxLength={SKILL_MARKET_MAX}
+                value={market}
+                onChange={(e) => setMarket(e.target.value)}
+              />
+              <datalist id="skill-markets">
+                {SKILL_MARKETS.map((m) => (
+                  <option key={m} value={m} />
+                ))}
+              </datalist>
+            </div>
+            <div>
+              <label className={labelClass}>Description (optional)</label>
+              <textarea
+                className={cn(inputClass, "min-h-20")}
+                maxLength={SKILL_DESCRIPTION_MAX}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            {error && <p className="text-sm text-destructive">{error}</p>}
+          </DialogBody>
           <DialogFooter>
             <button type="submit" disabled={busy || !task.trim()} className={primaryBtn}>
               {busy ? "Adding…" : "Add skill"}
@@ -254,21 +255,7 @@ export function StaffSkillsView({ username }: { username: string }) {
 
   return (
     <>
-      <PageHeader
-        icon={UserRound}
-        title={view?.member.username ?? username}
-        description={view?.member.job_role ?? (notFound ? "No such staff member" : "Skills")}
-      />
-
-      <div className="space-y-6 p-6 md:p-8">
-        <Link
-          href="/team"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" />
-          Team
-        </Link>
-
+      <div className="space-y-6">
         {error && !notFound && (
           <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             {error}
@@ -384,7 +371,7 @@ export function StaffSkillsView({ username }: { username: string }) {
 
             <p className="text-xs text-muted-foreground">
               Portal role: {ROLE_LABELS[view.member.role]}
-              {view.canEdit ? "" : " · Only admins and managers can change skills."}
+              {view.canEdit ? "" : " · Only admins and leaders can change skills."}
             </p>
 
             <AddSkillDialog

@@ -20,7 +20,7 @@ async function requireAdmin() {
   return { client, session, error: null };
 }
 
-/** Admins, managers and moderators may create users and reset user passwords. */
+/** Admins, leaders and moderators may create users and reset user passwords. */
 async function requireAdminOrModerator() {
   const session = await getSession();
   if (!session || !canManageUsers(session.role)) {
@@ -122,7 +122,7 @@ export async function updateStaffMember(
   if (error) return { data: null, error };
 
   // Admin tier is out-of-band only: admins can move users between user, moderator
-  // and manager, never to admin.
+  // and leader, never to admin.
   if (updates.role === "admin") {
     return { data: null, error: "Admins can only be added directly in the database" };
   }
@@ -229,7 +229,7 @@ export async function resetPassword(id: string, newPassword: string) {
   const { client, error } = await requireAdminOrModerator();
   if (error) return { data: null, error };
 
-  // No one may change an admin's, manager's or moderator's password here
+  // No one may change an admin's, leader's or moderator's password here
   // (those credentials are managed directly in the database). Only "user" accounts.
   const { data: target } = await client!
     .from("staff")

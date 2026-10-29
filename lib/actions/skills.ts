@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
-import { canManageSkills, toRole, type Role } from "@/lib/roles";
+import { canManageProfiles, toRole, type Role } from "@/lib/roles";
 import {
   SKILL_DESCRIPTION_MAX,
   SKILL_LEVELS,
@@ -31,7 +31,7 @@ export interface StaffSkillsView {
 async function requireSkillsEditor() {
   const session = await getSession();
   if (!session) return { session: null, error: "Unauthorized" as const };
-  if (!canManageSkills(session.role)) return { session: null, error: "Forbidden" as const };
+  if (!canManageProfiles(session.role)) return { session: null, error: "Forbidden" as const };
   return { session, error: null };
 }
 
@@ -59,7 +59,7 @@ export async function getStaffSkills(username: string): Promise<Result<StaffSkil
       member: { ...memberRes.data, role: toRole(memberRes.data.role) },
       skills: (skillsRes.data ?? []) as Skill[],
       levels,
-      canEdit: canManageSkills(session.role),
+      canEdit: canManageProfiles(session.role),
     },
     error: null,
   };

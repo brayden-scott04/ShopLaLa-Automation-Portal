@@ -1,7 +1,7 @@
 {
   "app/(portal)/admin/users/page.tsx": {
-    "mtime": 1792553958.3104422,
-    "ast_hash": "8f66f02e1e74d64e96cf62089559a28f",
+    "mtime": 1793284197.0612853,
+    "ast_hash": "56cb929ccdb73d3a80fa46718a3f8567",
     "semantic_hash": ""
   },
   "app/(portal)/dashboard/page.tsx": {
@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/team/page.tsx": {
-    "mtime": 1793283192.305563,
-    "ast_hash": "b2976bfbd5cbe2a121eb416944737d85",
+    "mtime": 1793284197.0612853,
+    "ast_hash": "23c795755c29b294f28c57e4fe2ae17b",
     "semantic_hash": ""
   },
   "app/api/auth/login/route.ts": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "lib/actions/staff.ts": {
-    "mtime": 1793023791.9161983,
-    "ast_hash": "54f5a2c3af7e855313f5c903d9f26f13",
+    "mtime": 1793284197.0622857,
+    "ast_hash": "463eedfbd49e7405bc9cc59c3a1427d6",
     "semantic_hash": ""
   },
   "lib/ppc-daily-cap-constants.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793283257.2996736,
-    "ast_hash": "0d75f6860ec6fd5a384ece11056e207a",
+    "mtime": 1793284912.989765,
+    "ast_hash": "f8ef703da0927d04750722acc8a0713d",
     "semantic_hash": ""
   },
   "README.md": {
@@ -360,8 +360,8 @@
     "semantic_hash": ""
   },
   "lib/roles.ts": {
-    "mtime": 1793283110.407192,
-    "ast_hash": "e4d4b2ecc44d7011c8524ec94b2956da",
+    "mtime": 1793284197.0464296,
+    "ast_hash": "086812256f99303918b70ffd303b7fed",
     "semantic_hash": ""
   },
   "components/ui/segmented-control.tsx": {
@@ -405,8 +405,8 @@
     "semantic_hash": ""
   },
   "proxy.ts": {
-    "mtime": 1792553954.1670568,
-    "ast_hash": "f9f451c4d6eb2507aa0c0bdcd21b2322",
+    "mtime": 1793284197.0602868,
+    "ast_hash": "d21317d387e34a358681938b887638ce",
     "semantic_hash": ""
   },
   "app/(portal)/settings/page.tsx": {
@@ -1045,23 +1045,43 @@
     "semantic_hash": ""
   },
   "app/(portal)/team/[username]/page.tsx": {
-    "mtime": 1793283142.4646642,
-    "ast_hash": "590d02fa3a79fe67dfc6c19688bde33f",
+    "mtime": 1793284338.671538,
+    "ast_hash": "00efd7a5d301094f39c345fa8cf917c3",
     "semantic_hash": ""
   },
   "components/team/staff-skills-view.tsx": {
-    "mtime": 1793283249.2914627,
-    "ast_hash": "989b3906d42e7f1c81521cb94f6643bc",
+    "mtime": 1793284215.4197989,
+    "ast_hash": "3042948fa9e5609b68d5b6c3cba248dc",
     "semantic_hash": ""
   },
   "lib/actions/skills.ts": {
-    "mtime": 1793283129.596517,
-    "ast_hash": "cd9bd73de5ad2c61ad422814299c9fd2",
+    "mtime": 1793284197.0592837,
+    "ast_hash": "7182f41b6a6a3642586d872723857d87",
     "semantic_hash": ""
   },
   "lib/skills-constants.ts": {
     "mtime": 1793283185.9952004,
     "ast_hash": "f31337c2c658bc756f96302f78a70074",
+    "semantic_hash": ""
+  },
+  "components/team/staff-drilldown.tsx": {
+    "mtime": 1793284336.7764192,
+    "ast_hash": "5e12d7adec3817eb10c642b3b95e9ff3",
+    "semantic_hash": ""
+  },
+  "components/team/staff-profile-view.tsx": {
+    "mtime": 1793284909.4719167,
+    "ast_hash": "c9e8330282e74a4958cc9cdcd734b2f7",
+    "semantic_hash": ""
+  },
+  "lib/actions/staff-profile.ts": {
+    "mtime": 1793284848.1427763,
+    "ast_hash": "d2167be45e10893ceb2ac9f1949a4c1e",
+    "semantic_hash": ""
+  },
+  "lib/staff-profile-constants.ts": {
+    "mtime": 1793284796.3104663,
+    "ast_hash": "290463865bc1daa13e4ed13a06b1808a",
     "semantic_hash": ""
   }
 }
