@@ -36,11 +36,23 @@ import {
   importProductPrices,
   listProductPrices,
   parsePriceExcel,
+  setProductDetails,
   setProductFactory,
   setProductPrice,
   type PriceImportPreview,
 } from "@/lib/actions/product-prices";
-import { formatRmb, parsePrice, type FactoryRef, type ProductPrice } from "@/lib/product-prices";
+import {
+  commissionRmb,
+  formatRmb,
+  landedCostRmb,
+  MATERIALS,
+  parsePrice,
+  TERMS,
+  TIERS,
+  type FactoryRef,
+  type ProductDetails,
+  type ProductPrice,
+} from "@/lib/product-prices";
 
 const inputClass =
   "w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring";
@@ -181,6 +193,15 @@ export function ProductsView({
     } else setError(null);
   }
 
+  async function saveDetails(row: ProductPrice, changes: Partial<ProductDetails>) {
+    patch(row.id, changes);
+    const { error } = await setProductDetails(row.id, changes);
+    if (error) {
+      patch(row.id, row);
+      setError(error);
+    } else setError(null);
+  }
+
   async function saveFactory(row: ProductPrice, partnerId: string | null) {
     patch(row.id, { partner_id: partnerId });
     const { error } = await setProductFactory(row.id, partnerId);
@@ -265,7 +286,7 @@ export function ProductsView({
                 <div>
                   <h2 className="text-lg font-semibold">{prices === null ? "Loading…" : title}</h2>
                   <p className="text-sm text-muted-foreground">
-                    {inScope.length} SKU{inScope.length === 1 ? "" : "s"} · prices in RMB
+                    {inScope.length} SKU{inScope.length === 1 ? "" : "s"} · per unit, in RMB
                   </p>
                 </div>
               </div>
@@ -331,13 +352,34 @@ export function ProductsView({
                     : "No SKUs for this factory yet."}
               </p>
             ) : (
-              <div className="overflow-hidden rounded-lg border border-border">
-                <table className="w-full border-collapse text-sm">
+              <div className="overflow-x-auto rounded-lg border border-border">
+                <table className="w-full min-w-[68rem] border-collapse text-sm">
                   <thead className="bg-muted/50 text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
                     <tr>
                       <th className="px-3 py-2 font-medium">SKU</th>
                       <th className="hidden w-40 px-3 py-2 font-medium sm:table-cell">Factory</th>
-                      <th className="w-36 px-3 py-2 text-right font-medium">Price</th>
+                      <th className="w-20 px-3 py-2 font-medium" title="Unit per pack size: SS = standard size">
+                        Tier
+                      </th>
+                      <th className="w-20 px-3 py-2 font-medium">Term</th>
+                      <th className="w-24 px-3 py-2 font-medium">Type</th>
+                      <th className="w-28 px-3 py-2 text-right font-medium">Price</th>
+                      <th className="w-28 px-3 py-2 text-right font-medium" title="Factory to our Guangzhou warehouse">
+                        Local delivery
+                      </th>
+                      <th className="w-28 px-3 py-2 text-right font-medium" title="Guangzhou to US Amazon FBA">
+                        Shipping
+                      </th>
+                      <th className="w-32 px-3 py-2 text-right font-medium">Commission</th>
+                      <th
+                        className="w-28 px-3 py-2 text-right font-medium"
+                        title="Price + local delivery + shipping + commission"
+                      >
+                        Total
+                      </th>
+                      <th className="w-24 px-3 py-2 font-medium" title="When the price last changed">
+                        Updated
+                      </th>
                       <th className="w-10" />
                     </tr>
                   </thead>
@@ -346,7 +388,7 @@ export function ProductsView({
                       <Fragment key={g.key}>
                         {selected === ALL && (
                           <tr className="bg-muted/40">
-                            <td colSpan={4} className="border-t border-border px-3 py-1.5">
+                            <td colSpan={12} className="border-t border-border px-3 py-1.5">
                               <button
                                 onClick={() => select(g.key)}
                                 className="text-xs font-semibold tracking-wide uppercase hover:underline"
@@ -365,6 +407,7 @@ export function ProductsView({
                             highlighted={highlight === row.id}
                             onPrice={(v) => savePrice(row, v)}
                             onFactory={(id) => saveFactory(row, id)}
+                            onDetails={(changes) => saveDetails(row, changes)}
                             onDelete={() => handleDelete(row)}
                           />
                         ))}
@@ -375,7 +418,9 @@ export function ProductsView({
               </div>
             )}
             <p className="text-xs text-muted-foreground">
-              Click a price to edit it. Enter or clicking away saves; Esc cancels.
+              Click any amount to edit it. Enter or clicking away saves; Esc cancels. Type Supplier (or 0) in Local
+              delivery when the supplier pays; FOB rows show it by default. Total is blank until a row has a shipping
+              fee.
             </p>
           </CardContent>
         </Card>
@@ -402,6 +447,7 @@ function PriceRow({
   highlighted,
   onPrice,
   onFactory,
+  onDetails,
   onDelete,
 }: {
   row: ProductPrice;
@@ -409,8 +455,10 @@ function PriceRow({
   highlighted: boolean;
   onPrice: (value: number | null) => void;
   onFactory: (partnerId: string | null) => void;
+  onDetails: (changes: Partial<ProductDetails>) => void;
   onDelete: () => void;
 }) {
+  const commission = commissionRmb(row);
   return (
     <tr
       id={`price-row-${row.id}`}
@@ -435,8 +483,52 @@ function PriceRow({
           ))}
         </select>
       </td>
+      <td className="px-1 py-1">
+        <DetailSelect label={`Tier for ${row.sku}`} value={row.tier} options={TIERS} onChange={(tier) => onDetails({ tier })} />
+      </td>
+      <td className="px-1 py-1">
+        <DetailSelect label={`Term for ${row.sku}`} value={row.term} options={TERMS} onChange={(term) => onDetails({ term })} />
+      </td>
+      <td className="px-1 py-1">
+        <DetailSelect
+          label={`Type for ${row.sku}`}
+          value={row.material}
+          options={MATERIALS}
+          onChange={(material) => onDetails({ material })}
+        />
+      </td>
       <td className="p-0 text-right">
         <PriceCell value={row.price_rmb} onSave={onPrice} />
+      </td>
+      <td className="p-0 text-right">
+        <PriceCell
+          value={row.local_delivery_rmb}
+          decimals={4}
+          empty={row.term === "FOB" ? "Supplier" : undefined}
+          zeroWord="Supplier"
+          onSave={(local_delivery_rmb) => onDetails({ local_delivery_rmb })}
+        />
+      </td>
+      <td className="p-0 text-right">
+        <PriceCell
+          value={row.shipping_fee_rmb}
+          decimals={4}
+          onSave={(shipping_fee_rmb) => onDetails({ shipping_fee_rmb })}
+        />
+      </td>
+      <td className="p-0 text-right">
+        <PriceCell
+          value={row.commission_rate === null ? null : Math.round(row.commission_rate * 10000) / 100}
+          display={commission === null ? undefined : `${formatRmb(commission)} (${formatPercent(row.commission_rate)})`}
+          ariaLabel={`Commission percent for ${row.sku}`}
+          onSave={(percent) => onDetails({ commission_rate: percent === null ? null : percent / 100 })}
+        />
+      </td>
+      <td className="px-3 py-1.5 text-right font-semibold tabular-nums">
+        {formatRmb(landedCostRmb(row))}
+      </td>
+      <td className="px-3 py-1.5 text-xs whitespace-nowrap text-muted-foreground tabular-nums">
+        {row.price_updated ?? "—"}
       </td>
       <td className="pr-2 text-right">
         <DropdownMenu>
@@ -463,7 +555,58 @@ function PriceRow({
   );
 }
 
-function PriceCell({ value, onSave }: { value: number | null; onSave: (value: number | null) => void }) {
+function formatPercent(rate: number | null): string {
+  return rate === null ? "" : `${Math.round(rate * 10000) / 100}%`;
+}
+
+function DetailSelect({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string | null;
+  options: readonly string[];
+  onChange: (value: string | null) => void;
+}) {
+  return (
+    <select
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value || null)}
+      aria-label={label}
+      className="w-full rounded-md border border-transparent bg-transparent px-1 py-1 text-sm hover:border-input focus:border-input focus:outline-none focus:ring-2 focus:ring-ring"
+    >
+      <option value="">—</option>
+      {options.map((o) => (
+        <option key={o} value={o}>
+          {o}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+function PriceCell({
+  value,
+  onSave,
+  decimals = 2,
+  empty,
+  zeroWord,
+  display,
+  ariaLabel,
+}: {
+  value: number | null;
+  onSave: (value: number | null) => void;
+  decimals?: number;
+  /** Shown instead of a dash when there's no value. */
+  empty?: string;
+  /** A word that means 0: typing it saves 0, and 0 shows as this word, greyed. */
+  zeroWord?: string;
+  /** Shown instead of the formatted value, which is still what gets edited. */
+  display?: string;
+  ariaLabel?: string;
+}) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
   const [invalid, setInvalid] = useState(false);
@@ -471,30 +614,39 @@ function PriceCell({ value, onSave }: { value: number | null; onSave: (value: nu
   if (!editing) {
     return (
       <button
+        aria-label={ariaLabel}
         onClick={() => {
-          setDraft(value === null ? "" : String(value));
+          setDraft(value === null ? "" : value === 0 && zeroWord ? zeroWord : String(value));
           setInvalid(false);
           setEditing(true);
         }}
-        className="block w-full px-3 py-1.5 text-right font-medium tabular-nums hover:bg-accent/60"
+        className="block w-full px-3 py-1.5 text-right font-medium whitespace-nowrap tabular-nums hover:bg-accent/60"
       >
-        {value === null ? <span className="text-muted-foreground/50">—</span> : formatRmb(value)}
+        {value === null ? (
+          <span className="text-muted-foreground/50">{empty ?? "—"}</span>
+        ) : value === 0 && zeroWord ? (
+          <span className="text-muted-foreground/50">{zeroWord}</span>
+        ) : (
+          (display ?? formatRmb(value))
+        )}
       </button>
     );
   }
 
   function commit() {
-    const parsed = parsePrice(draft);
+    const isZeroWord = !!zeroWord && draft.trim().toLowerCase() === zeroWord.toLowerCase();
+    const parsed = isZeroWord ? 0 : parsePrice(draft, decimals);
     if (Number.isNaN(parsed)) {
       setInvalid(true);
       return;
     }
     setEditing(false);
-    onSave(parsed);
+    if (parsed !== value) onSave(parsed);
   }
 
   return (
     <input
+      aria-label={ariaLabel}
       autoFocus
       inputMode="decimal"
       value={draft}
@@ -674,8 +826,9 @@ function ImportPricesSheet({
         <SheetHeader>
           <SheetTitle>Import price list</SheetTitle>
           <SheetDescription>
-            Upload the Excel sheet with Factory, SKU and Price (RMB) columns. Existing SKUs are updated, new ones are
-            added, and nothing is removed. Factories not yet in Partners are created there.
+            Upload the Excel sheet with Factory, SKU and Price (RMB) columns, plus any of Tier, Term, Type, Com, Local
+            Delivery, Shipping Fee and Up date. Existing SKUs are updated, new ones are added, and nothing is removed.
+            Factories not yet in Partners are created there.
           </SheetDescription>
         </SheetHeader>
 

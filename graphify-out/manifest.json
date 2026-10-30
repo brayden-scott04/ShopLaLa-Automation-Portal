@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793288005.8676734,
-    "ast_hash": "57692a28bab4779f6c6d797e1549d9d3",
+    "mtime": 1793357625.0796604,
+    "ast_hash": "08c784499498a777c168af3165a50c7d",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1030,18 +1030,18 @@
     "semantic_hash": ""
   },
   "components/products/products-view.tsx": {
-    "mtime": 1793115314.3436525,
-    "ast_hash": "e38f3f189015c3915eeee334eb355db7",
+    "mtime": 1793357516.4447453,
+    "ast_hash": "de02d5e1c356f88a1efd5dea3a4d7aa1",
     "semantic_hash": ""
   },
   "lib/actions/product-prices.ts": {
-    "mtime": 1793115111.924899,
-    "ast_hash": "740d420bf06bb8fc103372cf1cef723b",
+    "mtime": 1793357482.412701,
+    "ast_hash": "79c0a430222263dc06c9ddcafa887eed",
     "semantic_hash": ""
   },
   "lib/product-prices.ts": {
-    "mtime": 1793153821.2618246,
-    "ast_hash": "16fc9e43e3285a0202e99d5516f95aec",
+    "mtime": 1793357476.132293,
+    "ast_hash": "667dcf5d69deaa2438ab536a567fe931",
     "semantic_hash": ""
   },
   "app/(portal)/team/[username]/page.tsx": {

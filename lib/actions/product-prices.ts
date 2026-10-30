@@ -8,9 +8,13 @@ import { getMyPermissions } from "@/lib/permissions";
 import { isAllowed } from "@/lib/roles";
 import { SHORT_NAME_MAX } from "@/lib/partners-constants";
 import {
+  MATERIALS,
   parsePriceMatrix,
+  TERMS,
+  TIERS,
   type FactoryRef,
   type PriceSheetRow,
+  type ProductDetails,
   type ProductPrice,
 } from "@/lib/product-prices";
 
@@ -47,6 +51,36 @@ function toNumber(value: unknown): number | null {
   return value === null || value === undefined ? null : Number(value);
 }
 
+const DETAIL_COLUMNS =
+  "tier, term, material, local_delivery_rmb, shipping_fee_rmb, commission_rate, price_updated";
+const NUMERIC_DETAILS = ["local_delivery_rmb", "shipping_fee_rmb", "commission_rate"] as const;
+
+/** Validates whichever detail fields are present; absent ones stay absent. */
+function cleanDetails(changes: Partial<ProductDetails>): {
+  details: Partial<ProductDetails>;
+  error: string | null;
+} {
+  const details: Partial<ProductDetails> = { ...changes };
+  const options = [
+    ["tier", TIERS],
+    ["term", TERMS],
+    ["material", MATERIALS],
+  ] as const;
+  for (const [key, allowed] of options) {
+    const value = details[key];
+    if (value && !(allowed as readonly string[]).includes(value)) {
+      return { details: {}, error: `Invalid ${key}` };
+    }
+  }
+  for (const key of NUMERIC_DETAILS) {
+    const value = details[key];
+    if (value === undefined || value === null) continue;
+    if (!Number.isFinite(value) || value < 0) return { details: {}, error: "Enter a valid amount" };
+    details[key] = Math.round(value * 10000) / 10000;
+  }
+  return { details, error: null };
+}
+
 async function listFactories(client: Awaited<ReturnType<typeof createClient>>) {
   return client
     .from("supply_partners")
@@ -65,7 +99,7 @@ export async function listProductPrices(): Promise<
   const [pricesRes, factoriesRes] = await Promise.all([
     client
       .from("product_prices")
-      .select("id, sku, partner_id, price_rmb, position, updated_at, updated_by")
+      .select(`id, sku, partner_id, price_rmb, position, updated_at, updated_by, ${DETAIL_COLUMNS}`)
       .order("position")
       .range(0, 9999),
     listFactories(client),
@@ -73,7 +107,13 @@ export async function listProductPrices(): Promise<
   if (pricesRes.error) return { data: null, error: pricesRes.error.message };
   if (factoriesRes.error) return { data: null, error: factoriesRes.error.message };
 
-  const prices = (pricesRes.data ?? []).map((p) => ({ ...p, price_rmb: toNumber(p.price_rmb) }));
+  const prices = (pricesRes.data ?? []).map((p) => ({
+    ...p,
+    price_rmb: toNumber(p.price_rmb),
+    local_delivery_rmb: toNumber(p.local_delivery_rmb),
+    shipping_fee_rmb: toNumber(p.shipping_fee_rmb),
+    commission_rate: toNumber(p.commission_rate),
+  }));
   return { data: { prices, factories: factoriesRes.data ?? [] }, error: null };
 }
 
@@ -113,6 +153,21 @@ export async function setProductPrice(id: string, price: number | null): Promise
   const { error: dbError } = await service
     .from("product_prices")
     .update({ price_rmb: clean, updated_at: new Date().toISOString(), updated_by: session.username })
+    .eq("id", id);
+  if (dbError) return { data: null, error: dbError.message };
+  return { data: null, error: null };
+}
+
+export async function setProductDetails(id: string, changes: Partial<ProductDetails>): Promise<Result<null>> {
+  const { session, error } = await requireProductsAccess();
+  if (error) return { data: null, error };
+  const { details, error: detailError } = cleanDetails(changes);
+  if (detailError) return { data: null, error: detailError };
+
+  const service = createServiceClient();
+  const { error: dbError } = await service
+    .from("product_prices")
+    .update({ ...details, updated_at: new Date().toISOString(), updated_by: session.username })
     .eq("id", id);
   if (dbError) return { data: null, error: dbError.message };
   return { data: null, error: null };
@@ -202,7 +257,7 @@ export async function parsePriceExcel(formData: FormData): Promise<Result<PriceI
   const client = await createClient();
   const [factoriesRes, pricesRes] = await Promise.all([
     listFactories(client),
-    client.from("product_prices").select("sku, partner_id, price_rmb").range(0, 9999),
+    client.from("product_prices").select(`sku, partner_id, price_rmb, ${DETAIL_COLUMNS}`).range(0, 9999),
   ]);
   if (factoriesRes.error) return { data: null, error: factoriesRes.error.message };
   if (pricesRes.error) return { data: null, error: pricesRes.error.message };
@@ -226,7 +281,11 @@ export async function parsePriceExcel(formData: FormData): Promise<Result<PriceI
     if (!current) added++;
     else if (
       toNumber(current.price_rmb) !== row.price ||
-      current.partner_id !== (factoryIds.get(row.factory.toLowerCase()) ?? null)
+      current.partner_id !== (factoryIds.get(row.factory.toLowerCase()) ?? null) ||
+      Object.entries(row.details ?? {}).some(([key, value]) => {
+        const stored = current[key as keyof ProductDetails];
+        return (typeof value === "number" ? toNumber(stored) : stored) !== value;
+      })
     )
       updated++;
     else unchanged++;
@@ -268,10 +327,16 @@ export async function importProductPrices(rows: PriceSheetRow[]): Promise<Result
     factoryIds.set(name.toLowerCase(), created.id);
   }
 
+  for (const r of rows) {
+    const { error: detailError } = cleanDetails(r.details ?? {});
+    if (detailError) return { data: null, error: `${r.sku}: ${detailError}` };
+  }
+
   const now = new Date().toISOString();
   const records = rows.map((r, i) => {
     const { price } = cleanPrice(r.price);
     return {
+      ...cleanDetails(r.details ?? {}).details,
       sku: r.sku.trim(),
       partner_id: factoryIds.get(r.factory.trim().toLowerCase()) ?? null,
       price_rmb: price,

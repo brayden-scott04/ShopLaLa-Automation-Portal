@@ -63,7 +63,6 @@
   "61": "marketplaces.ts",
   "62": "page.tsx",
   "63": "page.tsx",
-  "64": "session.ts",
   "65": "price-plan-import.ts",
   "66": "page.tsx",
   "67": "layout.tsx",
@@ -72,9 +71,5 @@
   "70": "page-header.tsx",
   "71": "dashboard-access-grid.tsx",
   "72": "price-change-plans.ts",
-  "73": "session.ts",
-  "74": "buildVideoBulk.ts",
-  "75": "page.tsx",
-  "76": "page.tsx",
-  "77": "page.tsx"
+  "73": "session.ts"
 }

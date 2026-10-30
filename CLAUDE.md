@@ -602,12 +602,19 @@ The DDL and seed are in `sql/supply_partners_migration.sql`, which is run by han
 Backs `/market-ops/products`: the factory price list, in RMB, grouped by factory. DDL is in `sql/product_prices_migration.sql`.
 
 - Columns: `sku` (UNIQUE, case-sensitive), `partner_id` → `supply_partners(id)`, `price_rmb numeric(12,2)` (nullable), and `position` (sheet order).
+- Detail columns (`sql/product_price_details_migration.sql`, applied 2026-10-30), all editable inline and all nullable:
+  - `tier` (`SS`/`OS`, unit per pack size), `term` (`EXW`/`FOB`), `material` (the sheet's "Type": `Wood`/`Coco`/`Other`).
+  - `local_delivery_rmb` (factory to our Guangzhou warehouse) and `shipping_fee_rmb` (Guangzhou to US Amazon FBA) are per unit, `numeric(12,4)`. In the source sheet local delivery is blank exactly on FOB rows, because the supplier pays; the UI shows a grey "Supplier" and counts it as 0. Staff can type `Supplier` in that cell on any row: it saves `0`, and a `0` always shows as the grey word.
+  - `commission_rate` (sheet's "Com", `0.03` = 3%). The commission amount is never stored: `commissionRmb()` derives it from the price, like the sheet's formula, so the sheet's "Commission" column isn't imported.
+  - `price_updated` is text, the sheet's "Up date": `2026-07-09`, or `2026-07` when only a month was given.
+  - The Total column is `landedCostRmb()`: price + local delivery + shipping + commission. Blank until a row has a shipping fee.
 - `partner_id` uses `on delete set null`. Deleting a factory in Partners keeps its prices, which then show under "Unassigned".
 - This table is independent of `sku_master_list`. A SKU can be in one without the other.
 - Server actions are in `lib/actions/product-prices.ts`. Shared types, `formatRmb` and the sheet parser (`parsePriceMatrix`) are in `lib/product-prices.ts`.
 - Writes need `isAllowed(…, "marketOps", "products")`. `getPriceForSku` only needs a session, because the Master List SKU dialog shows the price to everyone.
 - **Excel import** (`parsePriceExcel` → preview → `importProductPrices`):
   - It upserts by SKU and **never deletes**.
+  - Detail columns are written only if the sheet has that header, so an older Factory/SKU/Price file leaves them alone. A blank cell under a header that is present clears the value.
   - A blank factory cell inherits the factory above it.
   - Factories that aren't in Partners are **created there automatically**, matched to `short_name` case-insensitively.
 - **Deep links:**
