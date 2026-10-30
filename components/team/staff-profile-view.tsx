@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n/client";
 import {
   addFunctionalManager,
   addTeamMember,
@@ -33,9 +34,7 @@ import {
 } from "@/lib/actions/staff-profile";
 import {
   compareResponsibilities,
-  FUNCTIONAL_MANAGER_HINT,
   INACTIVE_PRIORITY,
-  PEOPLE_MANAGER_HINT,
   PRIORITY_DESCRIPTION_MAX,
   PRIORITY_LABEL_MAX,
   PRIORITY_LEVEL_MAX,
@@ -82,6 +81,7 @@ function PriorityBadge({ level, priorities }: { level: number; priorities: Prior
 
 /** A username that links to that person's profile, with an optional remove button for editors. */
 function PersonChip({ username, onRemove }: { username: string; onRemove?: () => void }) {
+  const t = useT();
   return (
     <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/40 py-0.5 pr-1 pl-2.5 text-sm">
       <Link href={`/team/${encodeURIComponent(username)}`} className="hover:text-primary hover:underline">
@@ -91,7 +91,7 @@ function PersonChip({ username, onRemove }: { username: string; onRemove?: () =>
         <button
           type="button"
           onClick={onRemove}
-          title={`Remove ${username}`}
+          title={t("profile.remove", { name: username })}
           className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
         >
           <X className="size-3" />
@@ -144,6 +144,7 @@ export function StaffProfileView({
   onChanged: () => Promise<void>;
 }) {
   const { member, canEdit, directory, priorities } = profile;
+  const t = useT();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [newTeamOpen, setNewTeamOpen] = useState(false);
@@ -155,7 +156,7 @@ export function StaffProfileView({
     () => [...profile.responsibilities].sort(compareResponsibilities),
     [profile.responsibilities],
   );
-  const joinableTeams = profile.allTeams.filter((t) => !profile.teams.some((m) => m.id === t.id));
+  const joinableTeams = profile.allTeams.filter((team) => !profile.teams.some((m) => m.id === team.id));
 
   /** Runs a write, then refetches; shows the error instead if it failed. */
   async function run(action: () => Promise<{ error: string | null }>) {
@@ -180,9 +181,9 @@ export function StaffProfileView({
       {/* ── Reporting ─────────────────────────────────────────── */}
       <Card>
         <CardHeader>
-          <CardTitle>Reporting</CardTitle>
+          <CardTitle>{t("profile.reporting")}</CardTitle>
           <CardDescription>
-            Last reviewed:{" "}
+            {t("profile.lastReviewed")}{" "}
             {canEdit ? (
               <input
                 type="date"
@@ -191,21 +192,21 @@ export function StaffProfileView({
                 className="rounded border border-input bg-background px-1.5 py-0.5 text-xs"
               />
             ) : (
-              <span className="text-foreground">{member.profile_reviewed_on ?? "—"}</span>
+              <span className="text-foreground">{member.profile_reviewed_on ?? t("common.dash")}</span>
             )}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6 md:grid-cols-2">
           <div>
-            <p className="text-sm font-medium">People Manager</p>
-            <p className="mb-2 text-xs text-muted-foreground">{PEOPLE_MANAGER_HINT}</p>
+            <p className="text-sm font-medium">{t("profile.peopleManager")}</p>
+            <p className="mb-2 text-xs text-muted-foreground">{t("profile.peopleManagerHint")}</p>
             {canEdit ? (
               <select
                 value={member.people_manager ?? ""}
                 onChange={(e) => run(() => setPeopleManager(member.username, e.target.value || null))}
                 className={cn(selectClass, "h-8 text-sm")}
               >
-                <option value="">— None</option>
+                <option value="">{t("common.none")}</option>
                 {others.map((u) => (
                   <option key={u} value={u}>
                     {u}
@@ -215,12 +216,12 @@ export function StaffProfileView({
             ) : member.people_manager ? (
               <PersonChip username={member.people_manager} />
             ) : (
-              <span className="text-sm text-muted-foreground">Not set</span>
+              <span className="text-sm text-muted-foreground">{t("common.notSet")}</span>
             )}
           </div>
           <div>
-            <p className="text-sm font-medium">Functional Managers</p>
-            <p className="mb-2 text-xs text-muted-foreground">{FUNCTIONAL_MANAGER_HINT}</p>
+            <p className="text-sm font-medium">{t("profile.functionalManagers")}</p>
+            <p className="mb-2 text-xs text-muted-foreground">{t("profile.functionalManagerHint")}</p>
             <div className="flex flex-wrap items-center gap-2">
               {profile.functionalManagers.map((m) => (
                 <PersonChip
@@ -230,11 +231,11 @@ export function StaffProfileView({
                 />
               ))}
               {profile.functionalManagers.length === 0 && !canEdit && (
-                <span className="text-sm text-muted-foreground">Not set</span>
+                <span className="text-sm text-muted-foreground">{t("common.notSet")}</span>
               )}
               {canEdit && (
                 <PickToAdd
-                  placeholder="+ Add"
+                  placeholder={t("profile.addPerson")}
                   options={others.filter((u) => !profile.functionalManagers.includes(u))}
                   onPick={(m) => run(() => addFunctionalManager(member.username, m))}
                 />
@@ -247,11 +248,11 @@ export function StaffProfileView({
       {/* ── Teams ─────────────────────────────────────────────── */}
       <Card>
         <CardHeader>
-          <CardTitle>Teams</CardTitle>
-          <CardDescription>Teams {member.username} belongs to, and who else is in them.</CardDescription>
+          <CardTitle>{t("profile.teams")}</CardTitle>
+          <CardDescription>{t("profile.teamsDescription", { name: member.username })}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {profile.teams.length === 0 && <p className="text-sm text-muted-foreground">Not in any team yet.</p>}
+          {profile.teams.length === 0 && <p className="text-sm text-muted-foreground">{t("profile.noTeams")}</p>}
           {profile.teams.map((team) => (
             <div key={team.id} className="rounded-lg border border-border p-3">
               <p className="mb-2 text-sm font-medium">
@@ -267,7 +268,7 @@ export function StaffProfileView({
                 ))}
                 {canEdit && (
                   <PickToAdd
-                    placeholder="+ Add member"
+                    placeholder={t("profile.addMember")}
                     options={directory.filter((u) => !team.members.includes(u))}
                     onPick={(u) => run(() => addTeamMember(team.id, u))}
                   />
@@ -277,18 +278,18 @@ export function StaffProfileView({
           ))}
           {canEdit && (
             <PickToAdd
-              placeholder={`+ Add ${member.username} to a team`}
-              options={joinableTeams.map((t) => t.name)}
-              extra={{ value: NEW_TEAM, label: "New team…" }}
+              placeholder={t("profile.addToTeam", { name: member.username })}
+              options={joinableTeams.map((team) => team.name)}
+              extra={{ value: NEW_TEAM, label: t("profile.newTeamOption") }}
               onPick={(name) => {
                 if (name === NEW_TEAM) return setNewTeamOpen(true);
-                const team = joinableTeams.find((t) => t.name === name);
+                const team = joinableTeams.find((j) => j.name === name);
                 if (team) run(() => addTeamMember(team.id, member.username));
               }}
             />
           )}
           {canEdit && (
-            <p className="text-xs text-muted-foreground">Removing a team&apos;s last member deletes the team.</p>
+            <p className="text-xs text-muted-foreground">{t("profile.lastMemberNote")}</p>
           )}
         </CardContent>
       </Card>
@@ -297,13 +298,13 @@ export function StaffProfileView({
       <Card>
         <CardHeader className="flex flex-row items-start justify-between gap-4">
           <div>
-            <CardTitle>Current tasks &amp; projects</CardTitle>
-            <CardDescription>Ranked by priority. Inactive ones are listed last.</CardDescription>
+            <CardTitle>{t("profile.tasks")}</CardTitle>
+            <CardDescription>{t("profile.tasksDescription")}</CardDescription>
           </div>
           {canEdit && (
             <button type="button" onClick={() => setEditing("new")} className={cn(primaryBtn, "inline-flex items-center gap-1.5")}>
               <Plus className="size-4" />
-              Add
+              {t("common.add")}
             </button>
           )}
         </CardHeader>
@@ -311,10 +312,10 @@ export function StaffProfileView({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-y border-border bg-muted/50">
-                <th className="px-4 py-2 text-left font-medium text-muted-foreground">Priority</th>
-                <th className="px-4 py-2 text-left font-medium text-muted-foreground">Task / Project</th>
-                <th className="px-4 py-2 text-left font-medium text-muted-foreground">Project Manager</th>
-                <th className="px-4 py-2 text-left font-medium text-muted-foreground">Working with</th>
+                <th className="px-4 py-2 text-left font-medium text-muted-foreground">{t("profile.priority")}</th>
+                <th className="px-4 py-2 text-left font-medium text-muted-foreground">{t("profile.taskProject")}</th>
+                <th className="px-4 py-2 text-left font-medium text-muted-foreground">{t("profile.projectManager")}</th>
+                <th className="px-4 py-2 text-left font-medium text-muted-foreground">{t("profile.workingWith")}</th>
                 {canEdit && <th className="w-10" />}
               </tr>
             </thead>
@@ -333,7 +334,7 @@ export function StaffProfileView({
                           {r.project_manager}
                         </Link>
                       ) : (
-                        "—"
+                        t("common.dash")
                       )}
                     </td>
                     <td className="px-4 py-2.5">
@@ -344,12 +345,12 @@ export function StaffProfileView({
                           ))}
                         </div>
                       ) : (
-                        "—"
+                        t("common.dash")
                       )}
                     </td>
                     {canEdit && (
                       <td className="px-2">
-                        <button type="button" onClick={() => setEditing(r)} title="Edit" className={ghostBtn}>
+                        <button type="button" onClick={() => setEditing(r)} title={t("profile.edit")} className={ghostBtn}>
                           <Pencil className="size-3.5" />
                         </button>
                       </td>
@@ -360,7 +361,7 @@ export function StaffProfileView({
               {responsibilities.length === 0 && (
                 <tr>
                   <td colSpan={canEdit ? 5 : 4} className="px-4 py-8 text-center text-muted-foreground">
-                    No tasks or projects yet
+                    {t("profile.noTasks")}
                   </td>
                 </tr>
               )}
@@ -369,11 +370,11 @@ export function StaffProfileView({
         </CardContent>
         <CardContent className="border-t border-border pt-4">
           <div className="mb-2 flex items-center justify-between">
-            <p className="text-xs font-medium text-muted-foreground">What the priority levels mean</p>
+            <p className="text-xs font-medium text-muted-foreground">{t("profile.priorityLegend")}</p>
             {canEdit && (
               <button type="button" onClick={() => setPrioritiesOpen(true)} className={ghostBtn}>
                 <Pencil className="size-3" />
-                Edit levels
+                {t("profile.editLevels")}
               </button>
             )}
           </div>
@@ -397,7 +398,7 @@ export function StaffProfileView({
             onClose={() => setNewTeamOpen(false)}
             onSubmit={async (name) => {
               const { data, error } = await createTeam(name);
-              if (error || !data) return error ?? "Could not create team";
+              if (error || !data) return error ?? t("errors.couldNotCreateTeam");
               await run(() => addTeamMember(data.id, member.username));
               return null;
             }}
@@ -408,7 +409,7 @@ export function StaffProfileView({
             editing={editing}
             priorities={priorities}
             directory={directory}
-            existingTasks={profile.allTasks.filter((t) => !t.assignees.includes(member.username))}
+            existingTasks={profile.allTasks.filter((task) => !task.assignees.includes(member.username))}
             onClose={() => setEditing(null)}
             onSubmit={async (input) => {
               const res =
@@ -460,6 +461,7 @@ function NewTeamDialog({
   onClose: () => void;
   onSubmit: (name: string) => Promise<string | null>;
 }) {
+  const t = useT();
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -480,14 +482,14 @@ function NewTeamDialog({
       <DialogContent className="sm:max-w-sm">
         <form onSubmit={handleSubmit} className="flex min-h-0 flex-col">
           <DialogHeader>
-            <DialogTitle>New team</DialogTitle>
-            <DialogDescription>Creates the team and adds this person to it.</DialogDescription>
+            <DialogTitle>{t("profile.newTeam")}</DialogTitle>
+            <DialogDescription>{t("profile.newTeamDescription")}</DialogDescription>
           </DialogHeader>
           <DialogBody className="space-y-4">
             <input
               autoFocus
               className={inputClass}
-              placeholder="e.g. Supply Chain"
+              placeholder={t("profile.teamNamePlaceholder")}
               maxLength={TEAM_NAME_MAX}
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -496,7 +498,7 @@ function NewTeamDialog({
           </DialogBody>
           <DialogFooter>
             <button type="submit" disabled={busy || !name.trim()} className={primaryBtn}>
-              {busy ? "Creating…" : "Create team"}
+              {busy ? t("profile.creating") : t("profile.createTeam")}
             </button>
           </DialogFooter>
         </form>
@@ -533,6 +535,7 @@ function ResponsibilityDialog({
   onSubmit: (input: TaskSubmit) => Promise<string | null>;
   onRemove: (id: string) => Promise<string | null>;
 }) {
+  const t = useT();
   const current = editing && editing !== "new" ? editing : null;
   const defaultPriority = priorities.find((p) => p.level !== INACTIVE_PRIORITY)?.level ?? priorities[0]?.level ?? 1;
   const [mode, setMode] = useState<"existing" | "new">(!current && existingTasks.length > 0 ? "existing" : "new");
@@ -543,7 +546,7 @@ function ResponsibilityDialog({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const picked = existingTasks.find((t) => t.id === taskId);
+  const picked = existingTasks.find((task) => task.id === taskId);
   const canSubmit = mode === "existing" ? Boolean(picked) : Boolean(title.trim());
 
   async function finish(action: () => Promise<string | null>) {
@@ -556,7 +559,7 @@ function ResponsibilityDialog({
 
   const prioritySelect = (
     <div>
-      <label className={labelClass}>Priority for {username}</label>
+      <label className={labelClass}>{t("profile.priorityFor", { name: username })}</label>
       <select className={inputClass} value={priority} onChange={(e) => setPriority(Number(e.target.value))}>
         {priorities.map((p) => (
           <option key={p.level} value={p.level}>
@@ -584,11 +587,10 @@ function ResponsibilityDialog({
           className="flex min-h-0 flex-col"
         >
           <DialogHeader>
-            <DialogTitle>{current ? "Edit task / project" : `Add task / project for ${username}`}</DialogTitle>
+            <DialogTitle>{current ? t("profile.editTask") : t("profile.addTaskFor", { name: username })}</DialogTitle>
             {current && current.coAssignees.length > 0 && (
               <DialogDescription>
-                Shared with {current.coAssignees.join(", ")}. Name and Project Manager changes apply to everyone;
-                priority is just for {username}.
+                {t("profile.sharedWith", { names: current.coAssignees.join(", "), name: username })}
               </DialogDescription>
             )}
           </DialogHeader>
@@ -598,8 +600,8 @@ function ResponsibilityDialog({
                 value={mode}
                 onValueChange={setMode}
                 options={[
-                  { value: "existing", label: "Existing task", disabled: existingTasks.length === 0 },
-                  { value: "new", label: "New task" },
+                  { value: "existing", label: t("profile.existingTask"), disabled: existingTasks.length === 0 },
+                  { value: "new", label: t("profile.newTask") },
                 ]}
               />
             )}
@@ -607,20 +609,22 @@ function ResponsibilityDialog({
             {mode === "existing" ? (
               <>
                 <div>
-                  <label className={labelClass}>Task / Project</label>
+                  <label className={labelClass}>{t("profile.taskProject")}</label>
                   <select autoFocus className={inputClass} value={taskId} onChange={(e) => setTaskId(e.target.value)}>
-                    <option value="">Choose a task…</option>
-                    {existingTasks.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.title}
-                        {t.project_manager ? ` — PM: ${t.project_manager}` : ""}
+                    <option value="">{t("profile.chooseTask")}</option>
+                    {existingTasks.map((task) => (
+                      <option key={task.id} value={task.id}>
+                        {task.title}
+                        {task.project_manager ? t("profile.pmSuffix", { name: task.project_manager }) : ""}
                       </option>
                     ))}
                   </select>
                   {picked && (
                     <p className="mt-1.5 text-xs text-muted-foreground">
-                      Project Manager: {picked.project_manager ?? "none"} · Already on it:{" "}
-                      {picked.assignees.length > 0 ? picked.assignees.join(", ") : "nobody"}
+                      {t("profile.pickedSummary", {
+                        pm: picked.project_manager ?? t("profile.noneLower"),
+                        people: picked.assignees.length > 0 ? picked.assignees.join(", ") : t("profile.nobody"),
+                      })}
                     </p>
                   )}
                 </div>
@@ -629,25 +633,25 @@ function ResponsibilityDialog({
             ) : (
               <>
                 <div>
-                  <label className={labelClass}>Task / Project</label>
+                  <label className={labelClass}>{t("profile.taskProject")}</label>
                   <input
                     autoFocus
                     className={inputClass}
                     maxLength={RESPONSIBILITY_TITLE_MAX}
-                    placeholder="e.g. Shopify, TT"
+                    placeholder={t("profile.taskPlaceholder")}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
                 {prioritySelect}
                 <div>
-                  <label className={labelClass}>Project Manager</label>
+                  <label className={labelClass}>{t("profile.projectManager")}</label>
                   <select
                     className={inputClass}
                     value={projectManager}
                     onChange={(e) => setProjectManager(e.target.value)}
                   >
-                    <option value="">— None</option>
+                    <option value="">{t("common.none")}</option>
                     {directory.map((u) => (
                       <option key={u} value={u}>
                         {u}
@@ -666,17 +670,17 @@ function ResponsibilityDialog({
                 type="button"
                 disabled={busy}
                 onClick={() => finish(() => onRemove(current.id))}
-                title={current.coAssignees.length === 0 ? "Nobody else is on it, so the task is deleted" : undefined}
+                title={current.coAssignees.length === 0 ? t("profile.deleteTaskHint") : undefined}
                 className={destructiveBtn}
               >
                 <Trash2 className="mr-1 inline size-3.5" />
-                {current.coAssignees.length === 0 ? "Delete task" : `Remove ${username}`}
+                {current.coAssignees.length === 0 ? t("profile.deleteTask") : t("profile.remove", { name: username })}
               </button>
             ) : (
               <span />
             )}
             <button type="submit" disabled={busy || !canSubmit} className={primaryBtn}>
-              {busy ? "Saving…" : current ? "Save" : "Add"}
+              {busy ? t("common.saving") : current ? t("common.save") : t("common.add")}
             </button>
           </DialogFooter>
         </form>
@@ -698,6 +702,7 @@ function PrioritiesDialog({
   onSave: (p: PriorityLevel) => Promise<string | null>;
   onDelete: (level: number) => Promise<string | null>;
 }) {
+  const t = useT();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const nextLevel = Math.max(0, ...priorities.map((p) => p.level)) + 1;
@@ -712,10 +717,8 @@ function PrioritiesDialog({
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Priority levels</DialogTitle>
-          <DialogDescription>
-            Shared by everyone&apos;s task list. Lower numbers come first; 0 means inactive / on hold.
-          </DialogDescription>
+          <DialogTitle>{t("profile.priorityLevels")}</DialogTitle>
+          <DialogDescription>{t("profile.priorityLevelsDescription")}</DialogDescription>
         </DialogHeader>
         <DialogBody className={cn("space-y-2", busy && "pointer-events-none opacity-70")}>
           {priorities.map((p) => (
@@ -745,6 +748,7 @@ function PriorityRow({
   onSave: (p: PriorityLevel) => void;
   onDelete?: () => void;
 }) {
+  const t = useT();
   const [level, setLevel] = useState(priority.level);
   const [label, setLabel] = useState(priority.label);
   const [description, setDescription] = useState(priority.description ?? "");
@@ -760,18 +764,18 @@ function PriorityRow({
         disabled={!isNew}
         onChange={(e) => setLevel(Number(e.target.value))}
         className={cn(inputClass, "w-16 shrink-0")}
-        title={isNew ? "Level number" : "To renumber, add a new level and delete this one"}
+        title={isNew ? t("profile.levelNumber") : t("profile.renumberHint")}
       />
       <input
         className={cn(inputClass, "w-36 shrink-0")}
-        placeholder={isNew ? "New level label" : "Label"}
+        placeholder={isNew ? t("profile.newLevelLabel") : t("profile.label")}
         maxLength={PRIORITY_LABEL_MAX}
         value={label}
         onChange={(e) => setLabel(e.target.value)}
       />
       <input
         className={inputClass}
-        placeholder="What it means"
+        placeholder={t("profile.meaning")}
         maxLength={PRIORITY_DESCRIPTION_MAX}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -782,10 +786,10 @@ function PriorityRow({
         onClick={() => onSave({ level, label, description })}
         className={cn(primaryBtn, "shrink-0 px-2.5 py-1 text-xs")}
       >
-        {isNew ? "Add" : "Save"}
+        {isNew ? t("common.add") : t("common.save")}
       </button>
       {onDelete ? (
-        <button type="button" onClick={onDelete} title="Delete level" className={cn(ghostBtn, "shrink-0 hover:text-destructive")}>
+        <button type="button" onClick={onDelete} title={t("profile.deleteLevel")} className={cn(ghostBtn, "shrink-0 hover:text-destructive")}>
           <Trash2 className="size-3.5" />
         </button>
       ) : (

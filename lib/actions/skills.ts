@@ -15,6 +15,14 @@ import {
   type SkillTeam,
 } from "@/lib/skills-constants";
 
+import { getT } from "@/lib/i18n/server";
+import type { MessageKey, Vars } from "@/lib/i18n/translate";
+
+/** Error text in the caller's language. */
+async function tr(key: MessageKey, vars?: Vars): Promise<string> {
+  return (await getT())(key, vars);
+}
+
 type Result<T> = { data: T | null; error: string | null };
 
 export interface StaffSkillsView {
@@ -43,7 +51,8 @@ export async function getStaffSkills(username: string): Promise<Result<StaffSkil
   const client = await createClient();
   const [memberRes, skillsRes, levelsRes] = await Promise.all([
     client.from("staff").select("username, role, job_role").eq("username", username).maybeSingle(),
-    client.from("skills").select("id, team, task, market, description, position").order("position"),
+    // "*" rather than a column list: the _zh columns only exist after sql/staff_language_migration.sql.
+    client.from("skills").select("*").order("position"),
     client.from("staff_skills").select("skill_id, level").eq("username", username),
   ]);
   if (memberRes.error) return { data: null, error: memberRes.error.message };
@@ -73,7 +82,7 @@ export async function setStaffSkillLevel(
 ): Promise<Result<null>> {
   const { session, error } = await requireSkillsEditor();
   if (error) return { data: null, error };
-  if (level !== null && !SKILL_LEVELS.includes(level)) return { data: null, error: "Invalid level" };
+  if (level !== null && !SKILL_LEVELS.includes(level)) return { data: null, error: await tr("errors.invalidLevel") };
 
   const service = createServiceClient();
   const { error: dbError } =
@@ -95,6 +104,8 @@ export async function createSkill(input: {
   task: string;
   market: string;
   description: string;
+  taskZh?: string;
+  descriptionZh?: string;
 }): Promise<Result<Skill>> {
   const { session, error } = await requireSkillsEditor();
   if (error) return { data: null, error };
@@ -103,12 +114,14 @@ export async function createSkill(input: {
   const task = input.task.trim();
   const market = input.market.trim();
   const description = input.description.trim();
-  if (!SKILL_TEAMS.includes(team)) return { data: null, error: "Pick a team" };
-  if (!task) return { data: null, error: "Enter a skill name" };
-  if (task.length > SKILL_TASK_MAX) return { data: null, error: `Skill name must be ${SKILL_TASK_MAX} characters or fewer` };
-  if (market.length > SKILL_MARKET_MAX) return { data: null, error: `Market must be ${SKILL_MARKET_MAX} characters or fewer` };
-  if (description.length > SKILL_DESCRIPTION_MAX) {
-    return { data: null, error: `Description must be ${SKILL_DESCRIPTION_MAX} characters or fewer` };
+  const taskZh = input.taskZh?.trim() ?? "";
+  const descriptionZh = input.descriptionZh?.trim() ?? "";
+  if (!SKILL_TEAMS.includes(team)) return { data: null, error: await tr("errors.pickTeam") };
+  if (!task) return { data: null, error: await tr("errors.enterSkill") };
+  if (task.length > SKILL_TASK_MAX || taskZh.length > SKILL_TASK_MAX) return { data: null, error: await tr("errors.skillTooLong", { max: SKILL_TASK_MAX }) };
+  if (market.length > SKILL_MARKET_MAX) return { data: null, error: await tr("errors.marketTooLong", { max: SKILL_MARKET_MAX }) };
+  if (description.length > SKILL_DESCRIPTION_MAX || descriptionZh.length > SKILL_DESCRIPTION_MAX) {
+    return { data: null, error: await tr("errors.descriptionTooLong", { max: SKILL_DESCRIPTION_MAX }) };
   }
 
   const service = createServiceClient();
@@ -128,14 +141,17 @@ export async function createSkill(input: {
       description: description || null,
       position: (last?.position ?? 0) + 1,
       created_by: session!.username,
+      // Only sent when filled, so adding an English-only skill works before the _zh columns exist.
+      ...(taskZh ? { task_zh: taskZh } : {}),
+      ...(descriptionZh ? { description_zh: descriptionZh } : {}),
     })
-    .select("id, team, task, market, description, position")
+    .select("*")
     .single();
 
   if (dbError) {
     return {
       data: null,
-      error: dbError.code === "23505" ? "That skill already exists for this team and market" : dbError.message,
+      error: dbError.code === "23505" ? await tr("errors.skillExists") : dbError.message,
     };
   }
   return { data: data as Skill, error: null };

@@ -6,6 +6,15 @@ import { getSession } from "@/lib/session";
 import { type Role, type PermissionSet, canManageUsers } from "@/lib/roles";
 import { sanitizePermissions } from "@/lib/permissions";
 
+import { getT, setLocaleCookie } from "@/lib/i18n/server";
+import { LOCALES, type Locale } from "@/lib/i18n/config";
+import type { MessageKey, Vars } from "@/lib/i18n/translate";
+
+/** Error text in the caller's language. */
+async function tr(key: MessageKey, vars?: Vars): Promise<string> {
+  return (await getT())(key, vars);
+}
+
 const USERNAME_PATTERN = /^[a-z0-9_-]{3,32}$/;
 
 /** Applies to self-service changes only; createStaffMember still accepts any non-empty password. */
@@ -65,7 +74,7 @@ export async function updateJobRole(id: string, jobRole: string) {
 
   const trimmed = jobRole.trim();
   if (trimmed.length > MAX_JOB_ROLE_LENGTH) {
-    return { data: null, error: `Job role must be ${MAX_JOB_ROLE_LENGTH} characters or fewer` };
+    return { data: null, error: await tr("errors.jobRoleTooLong", { max: MAX_JOB_ROLE_LENGTH }) };
   }
 
   const { data, error: dbError } = await client!
@@ -91,11 +100,11 @@ export async function createStaffMember(username: string, password: string) {
   if (!USERNAME_PATTERN.test(normalized)) {
     return {
       data: null,
-      error: "Username must be 3-32 characters: lowercase letters, numbers, - or _",
+      error: await tr("errors.usernameFormat"),
     };
   }
   if (!password) {
-    return { data: null, error: "Password is required" };
+    return { data: null, error: await tr("errors.passwordRequired") };
   }
 
   const password_hash = bcrypt.hashSync(password, 10);
@@ -124,7 +133,7 @@ export async function updateStaffMember(
   // Admin tier is out-of-band only: admins can move users between user, moderator
   // and leader, never to admin.
   if (updates.role === "admin") {
-    return { data: null, error: "Admins can only be added directly in the database" };
+    return { data: null, error: await tr("errors.adminOnlyInDb") };
   }
 
   if (updates.role !== undefined) {
@@ -134,7 +143,7 @@ export async function updateStaffMember(
       .eq("id", id)
       .single();
     if (target?.username === session!.username) {
-      return { data: null, error: "You cannot change your own role" };
+      return { data: null, error: await tr("errors.ownRole") };
     }
   }
 
@@ -169,7 +178,7 @@ export async function renameStaffMember(id: string, newUsername: string) {
   if (!USERNAME_PATTERN.test(normalized)) {
     return {
       data: null,
-      error: "Username must be 3-32 characters: lowercase letters, numbers, - or _",
+      error: await tr("errors.usernameFormat"),
     };
   }
 
@@ -179,13 +188,13 @@ export async function renameStaffMember(id: string, newUsername: string) {
     .eq("id", id)
     .single();
   if (!target) {
-    return { data: null, error: "Staff member not found" };
+    return { data: null, error: await tr("errors.staffNotFound") };
   }
   if (target.role === "admin") {
-    return { data: null, error: "Admin usernames can only be changed directly in the database" };
+    return { data: null, error: await tr("errors.adminRenameInDb") };
   }
   if (target.username === normalized) {
-    return { data: null, error: "That is already their username" };
+    return { data: null, error: await tr("errors.sameUsername") };
   }
 
   const { data, error: dbError } = await client!
@@ -237,10 +246,10 @@ export async function resetPassword(id: string, newPassword: string) {
     .eq("id", id)
     .single();
   if (!target) {
-    return { data: null, error: "Staff member not found" };
+    return { data: null, error: await tr("errors.staffNotFound") };
   }
   if (target.role !== "user") {
-    return { data: null, error: "You can only reset passwords for staff users" };
+    return { data: null, error: await tr("errors.resetOnlyUsers") };
   }
 
   const password_hash = bcrypt.hashSync(newPassword, 10);
@@ -273,16 +282,16 @@ export async function changeOwnPassword(
   if (!session) return { data: null, error: "Unauthorized" };
 
   if (!currentPassword) {
-    return { data: null, error: "Current password is required" };
+    return { data: null, error: await tr("errors.currentPasswordRequired") };
   }
   if (newPassword.length < MIN_PASSWORD_LENGTH) {
     return {
       data: null,
-      error: `New password must be at least ${MIN_PASSWORD_LENGTH} characters`,
+      error: await tr("errors.newPasswordTooShort", { min: MIN_PASSWORD_LENGTH }),
     };
   }
   if (newPassword === currentPassword) {
-    return { data: null, error: "New password must be different from your current one" };
+    return { data: null, error: await tr("errors.newPasswordSame") };
   }
 
   const client = await createClient();
@@ -295,7 +304,7 @@ export async function changeOwnPassword(
   // Same generic message whether the account vanished or the password is
   // wrong -- neither case should tell the caller which.
   if (!me || !bcrypt.compareSync(currentPassword, me.password_hash)) {
-    return { data: null, error: "Current password is incorrect" };
+    return { data: null, error: await tr("errors.currentPasswordWrong") };
   }
 
   const { error: dbError } = await client
@@ -317,10 +326,32 @@ export async function deleteStaffMember(id: string) {
     .single();
 
   if (target?.username === session!.username) {
-    return { data: null, error: "You cannot delete your own account" };
+    return { data: null, error: await tr("errors.deleteSelf") };
   }
 
   const { error: dbError } = await client!.from("staff").delete().eq("id", id);
 
   return { data: { ok: true }, error: dbError?.message ?? null };
+}
+
+/**
+ * Sets the signed-in person's own site language: saved to staff.language (so it follows them to
+ * other devices at login) and to the portal_lang cookie (so this browser switches immediately).
+ */
+export async function setLanguage(locale: Locale) {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  if (!LOCALES.includes(locale)) return { data: null, error: await tr("errors.invalidLanguage") };
+
+  await setLocaleCookie(locale);
+  const client = await createClient();
+  const { error: dbError } = await client
+    .from("staff")
+    .update({ language: locale })
+    .eq("username", session.username);
+
+  // The cookie is already set, so the switch works even before sql/staff_language_migration.sql
+  // adds the column (42703 = undefined column); only the cross-device memory is missing until then.
+  const error = dbError && dbError.code !== "42703" ? dbError.message : null;
+  return { data: { locale }, error };
 }

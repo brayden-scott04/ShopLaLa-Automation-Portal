@@ -12,12 +12,6 @@ export const SKILL_MARKETS = ["All Mkt", "US/CA", "US/CA/MX", "EU", "AU"] as con
 export const SKILL_LEVELS = ["in_charge", "can_do", "learning"] as const;
 export type SkillLevel = (typeof SKILL_LEVELS)[number];
 
-export const SKILL_LEVEL_LABELS: Record<SkillLevel, string> = {
-  in_charge: "In charge",
-  can_do: "Can do",
-  learning: "Learning",
-};
-
 /** Red / green / blue echo the original sheet's red 1, black 1 and blue 0. */
 export const SKILL_LEVEL_BADGE: Record<SkillLevel, string> = {
   in_charge: "bg-red-500/10 text-red-600 dark:text-red-400",
@@ -41,5 +35,8 @@ export interface Skill {
   task: string;
   market: string | null;
   description: string | null;
+  /** Optional Chinese text, shown in 中文 mode (sql/staff_language_migration.sql). */
+  task_zh?: string | null;
+  description_zh?: string | null;
   position: number;
 }

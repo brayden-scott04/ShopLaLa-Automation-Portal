@@ -16,6 +16,14 @@ import {
   type TeamWithMembers,
 } from "@/lib/staff-profile-constants";
 
+import { getT } from "@/lib/i18n/server";
+import type { MessageKey, Vars } from "@/lib/i18n/translate";
+
+/** Error text in the caller's language. */
+async function tr(key: MessageKey, vars?: Vars): Promise<string> {
+  return (await getT())(key, vars);
+}
+
 type Result<T> = { data: T | null; error: string | null };
 
 export interface StaffProfile {
@@ -51,10 +59,10 @@ async function requireProfileEditor() {
   return { session, error: null };
 }
 
-function friendlyError(error: { message: string; code?: string } | null): string | null {
+async function friendlyError(error: { message: string; code?: string } | null): Promise<string | null> {
   if (!error) return null;
-  if (error.code === "23503") return "That staff member or priority no longer exists";
-  if (error.code === "23514") return "Someone can't be their own manager";
+  if (error.code === "23503") return tr("errors.staffOrPriorityGone");
+  if (error.code === "23514") return tr("errors.ownManager");
   return error.message;
 }
 
@@ -146,19 +154,19 @@ export async function getStaffProfile(username: string): Promise<Result<StaffPro
 export async function setPeopleManager(username: string, manager: string | null): Promise<Result<null>> {
   const { error } = await requireProfileEditor();
   if (error) return { data: null, error };
-  if (manager === username) return { data: null, error: "Someone can't be their own manager" };
+  if (manager === username) return { data: null, error: await tr("errors.ownManager") };
 
   const { error: dbError } = await createServiceClient()
     .from("staff")
     .update({ people_manager: manager || null })
     .eq("username", username);
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }
 
 export async function addFunctionalManager(username: string, manager: string): Promise<Result<null>> {
   const { error } = await requireProfileEditor();
   if (error) return { data: null, error };
-  if (manager === username) return { data: null, error: "Someone can't be their own manager" };
+  if (manager === username) return { data: null, error: await tr("errors.ownManager") };
 
   const service = createServiceClient();
   const { data: last } = await service
@@ -171,7 +179,7 @@ export async function addFunctionalManager(username: string, manager: string): P
   const { error: dbError } = await service
     .from("staff_functional_managers")
     .upsert({ username, manager_username: manager, position: (last?.position ?? 0) + 1 });
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }
 
 export async function removeFunctionalManager(username: string, manager: string): Promise<Result<null>> {
@@ -183,20 +191,20 @@ export async function removeFunctionalManager(username: string, manager: string)
     .delete()
     .eq("username", username)
     .eq("manager_username", manager);
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }
 
 /** `date` is "YYYY-MM-DD", or null to clear. */
 export async function setProfileReviewedOn(username: string, date: string | null): Promise<Result<null>> {
   const { error } = await requireProfileEditor();
   if (error) return { data: null, error };
-  if (date && !/^\d{4}-\d{2}-\d{2}$/.test(date)) return { data: null, error: "Invalid date" };
+  if (date && !/^\d{4}-\d{2}-\d{2}$/.test(date)) return { data: null, error: await tr("errors.invalidDate") };
 
   const { error: dbError } = await createServiceClient()
     .from("staff")
     .update({ profile_reviewed_on: date || null })
     .eq("username", username);
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }
 
 // ── Teams ───────────────────────────────────────────────────────────────────
@@ -206,16 +214,16 @@ export async function createTeam(name: string): Promise<Result<{ id: string; nam
   if (error) return { data: null, error };
 
   const trimmed = name.trim();
-  if (!trimmed) return { data: null, error: "Enter a team name" };
-  if (trimmed.length > TEAM_NAME_MAX) return { data: null, error: `Team name must be ${TEAM_NAME_MAX} characters or fewer` };
+  if (!trimmed) return { data: null, error: await tr("errors.enterTeamName") };
+  if (trimmed.length > TEAM_NAME_MAX) return { data: null, error: await tr("errors.teamNameTooLong", { max: TEAM_NAME_MAX }) };
 
   const { data, error: dbError } = await createServiceClient()
     .from("teams")
     .insert({ name: trimmed, created_by: session!.username })
     .select("id, name")
     .single();
-  if (dbError?.code === "23505") return { data: null, error: "A team with that name already exists" };
-  return { data, error: friendlyError(dbError) };
+  if (dbError?.code === "23505") return { data: null, error: await tr("errors.teamExists") };
+  return { data, error: await friendlyError(dbError) };
 }
 
 export async function addTeamMember(teamId: string, username: string): Promise<Result<null>> {
@@ -225,7 +233,7 @@ export async function addTeamMember(teamId: string, username: string): Promise<R
   const { error: dbError } = await createServiceClient()
     .from("team_members")
     .upsert({ team_id: teamId, username }, { ignoreDuplicates: true });
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }
 
 /** Removing the last member also deletes the team, so empty teams don't pile up in the picker. */
@@ -235,7 +243,7 @@ export async function removeTeamMember(teamId: string, username: string): Promis
 
   const service = createServiceClient();
   const { error: dbError } = await service.from("team_members").delete().eq("team_id", teamId).eq("username", username);
-  if (dbError) return { data: null, error: friendlyError(dbError) };
+  if (dbError) return { data: null, error: await friendlyError(dbError) };
 
   const { count } = await service.from("team_members").select("username", { count: "exact", head: true }).eq("team_id", teamId);
   if (count === 0) await service.from("teams").delete().eq("id", teamId);
@@ -251,11 +259,11 @@ interface TaskInput {
   projectManager: string | null;
 }
 
-function cleanTask(input: TaskInput) {
+async function cleanTask(input: TaskInput) {
   const title = input.title.trim();
-  if (!title) return { row: null, error: "Enter a task or project" };
+  if (!title) return { row: null, error: await tr("errors.enterTask") };
   if (title.length > RESPONSIBILITY_TITLE_MAX) {
-    return { row: null, error: `Task/project must be ${RESPONSIBILITY_TITLE_MAX} characters or fewer` };
+    return { row: null, error: await tr("errors.taskTooLong", { max: RESPONSIBILITY_TITLE_MAX }) };
   }
   return { row: { title, project_manager: input.projectManager || null }, error: null };
 }
@@ -267,7 +275,7 @@ async function insertAssignee(
   username: string,
   priority: number,
 ): Promise<string | null> {
-  if (!Number.isInteger(priority)) return "Pick a priority";
+  if (!Number.isInteger(priority)) return tr("errors.pickPriority");
   const { data: last } = await service
     .from("responsibility_assignees")
     .select("position")
@@ -278,8 +286,8 @@ async function insertAssignee(
   const { error } = await service
     .from("responsibility_assignees")
     .insert({ responsibility_id: responsibilityId, username, priority, position: (last?.position ?? 0) + 1 });
-  if (error?.code === "23505") return `${username} is already on this task`;
-  return friendlyError(error);
+  if (error?.code === "23505") return tr("errors.alreadyOnTask", { name: username });
+  return await friendlyError(error);
 }
 
 /** Creates a brand-new task with `username` as its first assignee. */
@@ -289,7 +297,7 @@ export async function createResponsibility(
 ): Promise<Result<null>> {
   const { session, error } = await requireProfileEditor();
   if (error) return { data: null, error };
-  const { row, error: inputError } = cleanTask(input);
+  const { row, error: inputError } = await cleanTask(input);
   if (inputError) return { data: null, error: inputError };
 
   const service = createServiceClient();
@@ -298,7 +306,7 @@ export async function createResponsibility(
     .insert({ ...row, created_by: session!.username, updated_by: session!.username })
     .select("id")
     .single();
-  if (dbError || !task) return { data: null, error: friendlyError(dbError) ?? "Could not create task" };
+  if (dbError || !task) return { data: null, error: await friendlyError(dbError) ?? (await tr("errors.couldNotCreateTask")) };
 
   const assignError = await insertAssignee(service, task.id, username, input.priority);
   if (assignError) {
@@ -329,23 +337,23 @@ export async function updateResponsibility(
 ): Promise<Result<null>> {
   const { session, error } = await requireProfileEditor();
   if (error) return { data: null, error };
-  const { row, error: inputError } = cleanTask(input);
+  const { row, error: inputError } = await cleanTask(input);
   if (inputError) return { data: null, error: inputError };
-  if (!Number.isInteger(input.priority)) return { data: null, error: "Pick a priority" };
+  if (!Number.isInteger(input.priority)) return { data: null, error: await tr("errors.pickPriority") };
 
   const service = createServiceClient();
   const { error: taskError } = await service
     .from("responsibilities")
     .update({ ...row, updated_at: new Date().toISOString(), updated_by: session!.username })
     .eq("id", id);
-  if (taskError) return { data: null, error: friendlyError(taskError) };
+  if (taskError) return { data: null, error: await friendlyError(taskError) };
 
   const { error: prioError } = await service
     .from("responsibility_assignees")
     .update({ priority: input.priority })
     .eq("responsibility_id", id)
     .eq("username", username);
-  return { data: null, error: friendlyError(prioError) };
+  return { data: null, error: await friendlyError(prioError) };
 }
 
 /** Takes `username` off a task. The task itself is deleted once nobody is left on it. */
@@ -359,7 +367,7 @@ export async function removeResponsibilityAssignee(id: string, username: string)
     .delete()
     .eq("responsibility_id", id)
     .eq("username", username);
-  if (dbError) return { data: null, error: friendlyError(dbError) };
+  if (dbError) return { data: null, error: await friendlyError(dbError) };
 
   const { count } = await service
     .from("responsibility_assignees")
@@ -378,18 +386,18 @@ export async function savePriorityLevel(input: PriorityLevel): Promise<Result<nu
   const label = input.label.trim();
   const description = input.description?.trim() ?? "";
   if (!Number.isInteger(input.level) || input.level < 0 || input.level > PRIORITY_LEVEL_MAX) {
-    return { data: null, error: `Level must be a whole number from 0 to ${PRIORITY_LEVEL_MAX}` };
+    return { data: null, error: await tr("errors.levelRange", { max: PRIORITY_LEVEL_MAX }) };
   }
-  if (!label) return { data: null, error: "Enter a label" };
-  if (label.length > PRIORITY_LABEL_MAX) return { data: null, error: `Label must be ${PRIORITY_LABEL_MAX} characters or fewer` };
+  if (!label) return { data: null, error: await tr("errors.enterLabel") };
+  if (label.length > PRIORITY_LABEL_MAX) return { data: null, error: await tr("errors.labelTooLong", { max: PRIORITY_LABEL_MAX }) };
   if (description.length > PRIORITY_DESCRIPTION_MAX) {
-    return { data: null, error: `Description must be ${PRIORITY_DESCRIPTION_MAX} characters or fewer` };
+    return { data: null, error: await tr("errors.descriptionTooLong", { max: PRIORITY_DESCRIPTION_MAX }) };
   }
 
   const { error: dbError } = await createServiceClient()
     .from("responsibility_priorities")
     .upsert({ level: input.level, label, description: description || null });
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }
 
 export async function deletePriorityLevel(level: number): Promise<Result<null>> {
@@ -398,7 +406,7 @@ export async function deletePriorityLevel(level: number): Promise<Result<null>> 
 
   const { error: dbError } = await createServiceClient().from("responsibility_priorities").delete().eq("level", level);
   if (dbError?.code === "23503") {
-    return { data: null, error: "Some tasks still use this priority. Move them to another level first." };
+    return { data: null, error: await tr("errors.priorityInUse") };
   }
-  return { data: null, error: friendlyError(dbError) };
+  return { data: null, error: await friendlyError(dbError) };
 }

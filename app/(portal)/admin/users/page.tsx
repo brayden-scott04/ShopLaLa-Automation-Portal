@@ -18,12 +18,14 @@ import {
   type Role,
   type PermissionSet,
   type Section,
-  ROLE_LABELS,
   EMPTY_PERMISSIONS,
   SECTIONS,
   toPermissionSet,
 } from "@/lib/roles";
-import { NAV_GROUPS, SUBGROUP_LABELS, type NavItem } from "@/lib/nav";
+import type { NavItem } from "@/lib/nav";
+import { useLocale, useT } from "@/lib/i18n/client";
+import { formatDate } from "@/lib/i18n/format";
+import { useLocalizedNav, useSubgroupLabel } from "@/lib/i18n/nav";
 
 type StaffMember = {
   id: string;
@@ -33,21 +35,24 @@ type StaffMember = {
   permissions: PermissionSet;
 };
 
-// The gated sections (sidebar Layer-1 groups), with the concrete items an admin
-// can grant per section. Ungated items (e.g. Team) are visible to everyone.
-const ACCESS_SECTIONS: { key: Section; label: string; colorVar: string; items: NavItem[] }[] =
-  NAV_GROUPS.map((group) => ({
-    key: group.section,
-    label: group.label,
-    colorVar: group.colorVar,
-    items: group.items.filter((item) => !item.ungated),
-  }));
 
 function accessSummary(permissions: PermissionSet): number {
   return SECTIONS.reduce((sum, section) => sum + permissions[section].length, 0);
 }
 
 export default function ManageUsersPage() {
+  const t = useT();
+  const locale = useLocale();
+  const subgroupLabel = useSubgroupLabel();
+  // The gated sections (sidebar Layer-1 groups), with the concrete items an admin
+  // can grant per section. Ungated items (e.g. Team) are visible to everyone.
+  const accessSections: { key: Section; label: string; colorVar: string; items: NavItem[] }[] =
+    useLocalizedNav().map((group) => ({
+      key: group.section,
+      label: group.label,
+      colorVar: group.colorVar,
+      items: group.items.filter((item) => !item.ungated),
+    }));
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -209,12 +214,8 @@ export default function ManageUsersPage() {
     <>
       <PageHeader
         icon={ShieldCheck}
-        title="Manage Users"
-        description={
-          isAdmin
-            ? "Create staff accounts, manage roles, and assign tool access"
-            : "Create staff accounts and reset staff passwords"
-        }
+        title={t("admin.title")}
+        description={isAdmin ? t("admin.descriptionAdmin") : t("admin.descriptionModerator")}
       />
 
       <div className="space-y-8 p-6 md:p-8">
@@ -229,13 +230,13 @@ export default function ManageUsersPage() {
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-sm font-semibold text-foreground">
-                Active Users
+                {t("admin.activeUsers")}
               </h2>
               {isLoading ? (
                 <Skeleton className="mt-0.5 h-3.5 w-16" />
               ) : (
                 <p className="text-xs text-muted-foreground">
-                  {staff.length} {staff.length === 1 ? "member" : "members"}
+                  {staff.length === 1 ? t("admin.memberCountOne") : t("admin.memberCount", { count: staff.length })}
                 </p>
               )}
             </div>
@@ -247,7 +248,7 @@ export default function ManageUsersPage() {
               className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               <UserPlus className="size-4" />
-              Create User
+              {t("admin.createUser")}
             </button>
           </div>
 
@@ -255,13 +256,13 @@ export default function ManageUsersPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/50">
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Username</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Role</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("admin.username")}</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("admin.role")}</th>
                   {isAdmin && (
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Access</th>
+                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("admin.access")}</th>
                   )}
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Joined</th>
-                  <th className="px-4 py-3 text-right font-medium text-muted-foreground">Actions</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("admin.joined")}</th>
+                  <th className="px-4 py-3 text-right font-medium text-muted-foreground">{t("admin.actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -303,11 +304,11 @@ export default function ManageUsersPage() {
                                   handleRoleChange(member, e.target.value as Role)
                                 }
                                 className="rounded-md border border-input bg-background px-2 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
-                                title="Change role"
+                                title={t("admin.changeRole")}
                               >
-                                <option value="user">{ROLE_LABELS.user}</option>
-                                <option value="moderator">{ROLE_LABELS.moderator}</option>
-                                <option value="leader">{ROLE_LABELS.leader}</option>
+                                <option value="user">{t("roles.user")}</option>
+                                <option value="moderator">{t("roles.moderator")}</option>
+                                <option value="leader">{t("roles.leader")}</option>
                               </select>
                             ) : (
                               <span
@@ -317,24 +318,25 @@ export default function ManageUsersPage() {
                                     : "rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
                                 }
                               >
-                                {ROLE_LABELS[member.role]}
+                                {t(`roles.${member.role}`)}
                               </span>
                             )}
                           </td>
                           {isAdmin && (
                             <td className="px-4 py-3 text-muted-foreground">
                               {member.role === "admin" ? (
-                                <span className="text-xs">All access</span>
+                                <span className="text-xs">{t("admin.allAccess")}</span>
                               ) : (
                                 <span className="text-xs">
-                                  {accessSummary(member.permissions)} item
-                                  {accessSummary(member.permissions) === 1 ? "" : "s"}
+                                  {accessSummary(member.permissions) === 1
+                                    ? t("admin.itemCountOne")
+                                    : t("admin.itemCount", { count: accessSummary(member.permissions) })}
                                 </span>
                               )}
                             </td>
                           )}
                           <td className="px-4 py-3 text-muted-foreground">
-                            {new Date(member.created_at).toLocaleDateString()}
+                            {formatDate(locale, member.created_at)}
                           </td>
                           <td className="px-4 py-3">
                             <div className="flex items-center justify-end gap-2">
@@ -342,7 +344,7 @@ export default function ManageUsersPage() {
                                 <button
                                   onClick={() => openAccess(member)}
                                   className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                                  title="Manage access"
+                                  title={t("admin.manageAccess")}
                                 >
                                   <SlidersHorizontal className="size-4" />
                                 </button>
@@ -355,7 +357,7 @@ export default function ManageUsersPage() {
                                     setRenameError(null);
                                   }}
                                   className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                                  title="Change username"
+                                  title={t("admin.changeUsername")}
                                 >
                                   <PencilLine className="size-4" />
                                 </button>
@@ -368,7 +370,7 @@ export default function ManageUsersPage() {
                                     setResetError(null);
                                   }}
                                   className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                                  title="Reset password"
+                                  title={t("admin.resetPassword")}
                                 >
                                   <KeyRound className="size-4" />
                                 </button>
@@ -380,7 +382,7 @@ export default function ManageUsersPage() {
                                     setDeleteError(null);
                                   }}
                                   className="rounded-md p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                                  title="Delete user"
+                                  title={t("admin.deleteUser")}
                                 >
                                   <Trash2 className="size-4" />
                                 </button>
@@ -396,7 +398,7 @@ export default function ManageUsersPage() {
                           colSpan={isAdmin ? 5 : 4}
                           className="px-4 py-8 text-center text-muted-foreground"
                         >
-                          No active users
+                          {t("admin.noUsers")}
                         </td>
                       </tr>
                     )}
@@ -412,10 +414,10 @@ export default function ManageUsersPage() {
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-4 text-lg font-semibold">Create User</h2>
+            <h2 className="mb-4 text-lg font-semibold">{t("admin.createUser")}</h2>
             <div className="space-y-3">
               <div>
-                <label className="mb-1 block text-sm font-medium">Username</label>
+                <label className="mb-1 block text-sm font-medium">{t("admin.username")}</label>
                 <input
                   type="text"
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -423,11 +425,11 @@ export default function ManageUsersPage() {
                   onChange={(e) =>
                     setCreateForm((f) => ({ ...f, username: e.target.value }))
                   }
-                  placeholder="jane"
+                  placeholder={t("admin.usernamePlaceholder")}
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Password</label>
+                <label className="mb-1 block text-sm font-medium">{t("admin.password")}</label>
                 <input
                   type="text"
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -435,14 +437,12 @@ export default function ManageUsersPage() {
                   onChange={(e) =>
                     setCreateForm((f) => ({ ...f, password: e.target.value }))
                   }
-                  placeholder="Set a password"
+                  placeholder={t("admin.passwordPlaceholder")}
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                New accounts are created as Users with no tool access.{" "}
-                {isAdmin
-                  ? "Grant access and promote to Moderator or Leader after creating. Admin access can only be granted directly in the database."
-                  : "An admin can grant access and promote to Moderator or Leader."}
+                {t("admin.newAccountNote")}{" "}
+                {isAdmin ? t("admin.newAccountAdmin") : t("admin.newAccountOther")}
               </p>
               {createError && (
                 <p className="text-sm text-destructive">{createError}</p>
@@ -453,7 +453,7 @@ export default function ManageUsersPage() {
                 onClick={() => setShowCreate(false)}
                 className="rounded-md px-4 py-2 text-sm font-medium hover:bg-accent"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 onClick={handleCreate}
@@ -461,7 +461,7 @@ export default function ManageUsersPage() {
                 className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
                 <UserPlus className="size-4" />
-                {isPending ? "Creating…" : "Create User"}
+                {isPending ? t("admin.creating") : t("admin.createUser")}
               </button>
             </div>
           </div>
@@ -472,19 +472,16 @@ export default function ManageUsersPage() {
       {resetTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-1 text-lg font-semibold">Reset Password</h2>
+            <h2 className="mb-1 text-lg font-semibold">{t("admin.resetTitle")}</h2>
             <p className="mb-4 text-sm text-muted-foreground">
-              Set a new password for{" "}
-              <span className="font-medium text-foreground">
-                {resetTarget.username}
-              </span>
+              {t("admin.resetFor", { name: resetTarget.username })}
             </p>
             <input
               type="password"
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="New password"
+              placeholder={t("admin.newPassword")}
             />
             {resetError && (
               <p className="mt-2 text-sm text-destructive">{resetError}</p>
@@ -494,14 +491,14 @@ export default function ManageUsersPage() {
                 onClick={() => setResetTarget(null)}
                 className="rounded-md px-4 py-2 text-sm font-medium hover:bg-accent"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 onClick={handleReset}
                 disabled={isPending || !newPassword}
                 className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
-                {isPending ? "Saving…" : "Save Password"}
+                {isPending ? t("common.saving") : t("admin.savePassword")}
               </button>
             </div>
           </div>
@@ -512,12 +509,9 @@ export default function ManageUsersPage() {
       {renameTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-1 text-lg font-semibold">Change Username</h2>
+            <h2 className="mb-1 text-lg font-semibold">{t("admin.renameTitle")}</h2>
             <p className="mb-4 text-sm text-muted-foreground">
-              Rename{" "}
-              <span className="font-medium text-foreground">
-                {renameTarget.username}
-              </span>
+              {t("admin.renameWho", { name: renameTarget.username })}
             </p>
             <input
               type="text"
@@ -528,11 +522,10 @@ export default function ManageUsersPage() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && newUsername.trim()) handleRename();
               }}
-              placeholder="New username"
+              placeholder={t("admin.newUsername")}
             />
             <p className="mt-2 text-xs text-muted-foreground">
-              Their tasks, calendars and access move with them. They&apos;ll be signed out
-              and must log in with the new username (same password).
+              {t("admin.renameNote")}
             </p>
             {renameError && (
               <p className="mt-2 text-sm text-destructive">{renameError}</p>
@@ -542,7 +535,7 @@ export default function ManageUsersPage() {
                 onClick={() => setRenameTarget(null)}
                 className="rounded-md px-4 py-2 text-sm font-medium hover:bg-accent"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 onClick={handleRename}
@@ -553,7 +546,7 @@ export default function ManageUsersPage() {
                 }
                 className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
-                {isPending ? "Saving…" : "Save Username"}
+                {isPending ? t("common.saving") : t("admin.saveUsername")}
               </button>
             </div>
           </div>
@@ -564,16 +557,12 @@ export default function ManageUsersPage() {
       {accessTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-1 text-lg font-semibold">Manage Access</h2>
+            <h2 className="mb-1 text-lg font-semibold">{t("admin.accessTitle")}</h2>
             <p className="mb-4 text-sm text-muted-foreground">
-              Choose what{" "}
-              <span className="font-medium text-foreground">
-                {accessTarget.username}
-              </span>{" "}
-              can open.
+              {t("admin.accessWho", { name: accessTarget.username })}
             </p>
             <div className="max-h-[50vh] space-y-4 overflow-y-auto">
-              {ACCESS_SECTIONS.map((section) => (
+              {accessSections.map((section) => (
                 <div key={section.key}>
                   <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     <span
@@ -584,14 +573,14 @@ export default function ManageUsersPage() {
                     {section.label}
                   </p>
                   {section.items.length === 0 ? (
-                    <p className="text-xs text-muted-foreground">No items</p>
+                    <p className="text-xs text-muted-foreground">{t("admin.noItems")}</p>
                   ) : (
                     <div className="space-y-1.5">
                       {section.items.map((item, i) => (
                         <div key={item.id}>
                         {item.subgroup && section.items[i - 1]?.subgroup !== item.subgroup && (
                           <p className="mt-2.5 mb-1.5 text-[11px] font-medium text-muted-foreground">
-                            {SUBGROUP_LABELS[item.subgroup]}
+                            {subgroupLabel(item.subgroup)}
                           </p>
                         )}
                         <label
@@ -620,14 +609,14 @@ export default function ManageUsersPage() {
                 onClick={() => setAccessTarget(null)}
                 className="rounded-md px-4 py-2 text-sm font-medium hover:bg-accent"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 onClick={handleSaveAccess}
                 disabled={isPending}
                 className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
-                {isPending ? "Saving…" : "Save Access"}
+                {isPending ? t("common.saving") : t("admin.saveAccess")}
               </button>
             </div>
           </div>
@@ -638,13 +627,9 @@ export default function ManageUsersPage() {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-1 text-lg font-semibold">Delete User</h2>
+            <h2 className="mb-1 text-lg font-semibold">{t("admin.deleteTitle")}</h2>
             <p className="mb-4 text-sm text-muted-foreground">
-              Are you sure you want to remove{" "}
-              <span className="font-medium text-foreground">
-                {deleteTarget.username}
-              </span>
-              ? This cannot be undone.
+              {t("admin.deleteConfirm", { name: deleteTarget.username })}
             </p>
             {deleteError && (
               <p className="mb-3 text-sm text-destructive">{deleteError}</p>
@@ -654,14 +639,14 @@ export default function ManageUsersPage() {
                 onClick={() => setDeleteTarget(null)}
                 className="rounded-md px-4 py-2 text-sm font-medium hover:bg-accent"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 onClick={handleDelete}
                 disabled={isPending}
                 className="rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
               >
-                {isPending ? "Deleting…" : "Delete"}
+                {isPending ? t("common.deleting") : t("common.delete")}
               </button>
             </div>
           </div>

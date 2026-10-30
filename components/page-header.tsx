@@ -1,5 +1,10 @@
 import type { LucideIcon } from "lucide-react";
+import { NavText } from "@/lib/i18n/nav";
 
+/**
+ * Pages pass already-translated text, or a nav item's English name/description
+ * (title={item.name}), which <NavText> translates from the nav dictionary.
+ */
 export function PageHeader({
   icon: Icon,
   title,
@@ -15,8 +20,12 @@ export function PageHeader({
         <Icon className="size-5 text-primary" />
       </div>
       <div>
-        <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        <h1 className="text-2xl font-semibold text-foreground">
+          <NavText text={title} />
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          <NavText text={description} />
+        </p>
       </div>
     </div>
   );

@@ -646,6 +646,26 @@ const supabase = createClient();
 
 ---
 
+## Internationalization (English / 中文)
+
+Each person picks a language on **Profile settings** (`/settings`). The choice is saved to `staff.language` and to the `portal_lang` cookie. Login copies `staff.language` into the cookie, so the choice follows them to other devices. DDL: `sql/staff_language_migration.sql`, run by hand. There is no locale in the URL and no i18n library; it's a small in-house layer in `lib/i18n/`:
+
+- **`messages/en.ts`** is the source of truth for every key. **`messages/zh.ts`** is typed `Messages`, so a missing or extra Chinese key is a `tsc` error.
+- **Server code** (server components, actions, route handlers) uses `const t = await getT()` from `lib/i18n/server.ts`.
+- **Client components** use `const t = useT()` from `lib/i18n/client.tsx`. The root layout passes the dictionary down, so client code never imports the dictionaries.
+- Placeholders use `{name}`: `t("dashboard.welcome", { name })`. Keys built at runtime use `t.dynamic(key, fallback)`.
+- **Nav text** stays English in `lib/nav.ts` and is translated by id via `useLocalizedNav()` and `localizeNavItem()` in `lib/i18n/nav.tsx`. `<PageHeader title={item.name}>` translates nav names automatically through `<NavText>`.
+- **Dates and numbers** go through `formatDate()` and `formatNumber()` in `lib/i18n/format.ts`.
+- **Errors from server actions** are translated on the server with `tr("errors.…")`. `"Not found"`, `"Unauthorized"` and `"Forbidden"` stay as untranslated sentinels, because the UI compares against them.
+
+> **Never hard-code UI text in a converted file.** Add the key to both `en.ts` and `zh.ts`.
+> - `eslint.config.mjs` lists the converted files in `I18N_ENFORCED`. A `no-restricted-syntax` rule there fails on English JSX text and on English `placeholder`, `title`, `aria-label`, `alt` and `label` strings.
+> - When you convert a page, add it to that list.
+> - **Phase 1 (done):** the shell (sidebar, topbar, user menu, page header), Login, Settings, Dashboard, Team (Profile and Skills tabs), and Admin → Users.
+> - **Not yet converted:** Supply Chain, Market Ops and the Automations & Tools pages. In 中文 mode they still show English.
+
+**What is not translated:** staff-entered data (task names, partner notes, SKUs, priority-level labels) and generated Excel or Telegram output. The one exception is the skills catalogue: `skills.task_zh` and `skills.description_zh` are optional Chinese text, shown in 中文 mode with the English as fallback. They're seeded as drafts for staff to review.
+
 ## Server Actions
 
 All server actions live in `lib/actions/` and follow the `{ data, error }` return shape.

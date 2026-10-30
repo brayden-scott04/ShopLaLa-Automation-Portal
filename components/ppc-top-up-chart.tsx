@@ -10,12 +10,14 @@ import { ppcTopUp } from "@/lib/nav";
 import { getDailyCapConfig, type CountryConfig } from "@/lib/actions/ppc-daily-cap";
 import { listManualTopUps } from "@/lib/actions/ppc-manual-topups";
 import { computeProjectedRows, currentSlotSgt } from "@/lib/ppc-daily-cap-constants";
-
-const chartConfig = {
-  runningTotal: { label: "Cumulative cap ($)", color: "var(--color-chart-1)" },
-} satisfies ChartConfig;
+import { useT } from "@/lib/i18n/client";
 
 export default function PpcTopUpCharts() {
+  const t = useT();
+  const chartConfig = useMemo(
+    () => ({ runningTotal: { label: t("dashboard.cumulativeCap"), color: "var(--color-chart-1)" } }) satisfies ChartConfig,
+    [t],
+  );
   const [countries, setCountries] = useState<CountryConfig[]>([]);
   const [amountsByCountry, setAmountsByCountry] = useState<Record<string, Record<string, number>>>({});
   const [topupsByCountry, setTopupsByCountry] = useState<Record<string, { target_date: string; slot_time: string; amount: number }[]>>({});
@@ -94,7 +96,7 @@ export default function PpcTopUpCharts() {
                 href={ppcTopUp.href}
                 className="text-xs font-medium text-primary hover:underline"
               >
-                View →
+                {t("dashboard.view")}
               </Link>
             </CardHeader>
             <CardContent>

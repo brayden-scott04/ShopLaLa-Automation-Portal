@@ -4,25 +4,27 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
+import { getT } from "@/lib/i18n/server";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const t = await getT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
         <Card className="border-border p-8 shadow-sm">
           <CardHeader className="px-0 pb-6 text-center">
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              ShopLaLa
+              {t("app.name")}
               <sup className="ml-0.5 text-xs font-normal">&reg;</sup>
             </h1>
-            <p className="text-sm text-muted-foreground">Automation Portal</p>
+            <p className="text-sm text-muted-foreground">{t("app.portal")}</p>
           </CardHeader>
           <CardContent className="px-0">
             <LoginForm />
           </CardContent>
         </Card>
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          Internal tool — ShopLaLa team only
+          {t("app.internalOnly")}
         </p>
       </div>
     </div>

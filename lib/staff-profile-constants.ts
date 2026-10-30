@@ -11,11 +11,6 @@ export const PRIORITY_LEVEL_MAX = 99;
 /** Priority 0 is "inactive / on hold" by convention: always listed last and greyed out. */
 export const INACTIVE_PRIORITY = 0;
 
-/** Wording taken from the legend on the original "Reporting & Responsibility" sheet. */
-export const PEOPLE_MANAGER_HINT =
-  "Salary, performance review, attendance, leave, general employee matters, career development";
-export const FUNCTIONAL_MANAGER_HINT = "Main work/tasks, priorities, targets, projects, daily work direction";
-
 export interface PriorityLevel {
   level: number;
   label: string;

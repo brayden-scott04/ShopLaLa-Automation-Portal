@@ -20,7 +20,9 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { ChevronDown, Eye, EyeOff, GripVertical, RotateCcw } from "lucide-react";
-import { NAV_GROUPS, type NavItem } from "@/lib/nav";
+import type { NavItem } from "@/lib/nav";
+import { useT } from "@/lib/i18n/client";
+import { useLocalizedNav } from "@/lib/i18n/nav";
 import { cn } from "@/lib/utils";
 
 interface AccessItem extends NavItem {
@@ -106,11 +108,13 @@ export function DashboardAccessGrid({
   );
   const layout = useMemo(() => parseLayout(raw), [raw]);
   const [showHidden, setShowHidden] = useState(false);
+  const t = useT();
+  const navGroups = useLocalizedNav();
 
   const items = useMemo(() => {
     const allowed = new Set(hrefs);
     const byHref = new Map<string, AccessItem>();
-    for (const group of NAV_GROUPS) {
+    for (const group of navGroups) {
       for (const item of group.items) {
         if (allowed.has(item.href)) {
           byHref.set(item.href, { ...item, group: group.label, colorVar: group.colorVar });
@@ -121,7 +125,7 @@ export function DashboardAccessGrid({
     const ordered = layout.order.filter((href) => byHref.has(href));
     const rest = hrefs.filter((href) => byHref.has(href) && !ordered.includes(href));
     return [...ordered, ...rest].map((href) => byHref.get(href)!);
-  }, [hrefs, layout.order]);
+  }, [hrefs, layout.order, navGroups]);
 
   const hiddenSet = useMemo(() => new Set(layout.hidden), [layout.hidden]);
   const visible = items.filter((item) => !hiddenSet.has(item.href));
@@ -157,7 +161,7 @@ export function DashboardAccessGrid({
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-foreground">Your access</h3>
+        <h3 className="text-sm font-semibold text-foreground">{t("dashboard.yourAccess")}</h3>
         <div className="flex items-center gap-3">
           {isCustomised && (
             <button
@@ -166,12 +170,12 @@ export function DashboardAccessGrid({
               className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
             >
               <RotateCcw className="size-3" />
-              Reset layout
+              {t("dashboard.resetLayout")}
             </button>
           )}
           {fullAccess && (
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-              Full access
+              {t("dashboard.fullAccess")}
             </span>
           )}
         </div>
@@ -189,7 +193,7 @@ export function DashboardAccessGrid({
         </DndContext>
       ) : (
         <p className="mt-3 text-sm text-muted-foreground">
-          All your shortcuts are hidden. Show them again below.
+          {t("dashboard.allHidden")}
         </p>
       )}
 
@@ -201,13 +205,13 @@ export function DashboardAccessGrid({
             className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
           >
             <ChevronDown className={cn("size-3.5 transition-transform", !showHidden && "-rotate-90")} />
-            Hidden ({hidden.length})
+            {t("dashboard.hidden", { count: hidden.length })}
           </button>
           {showHidden && (
             <div className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {hidden.map((item) => (
                 <TileBody key={item.href} item={item} muted>
-                  <IconButton label={`Show ${item.name}`} onClick={() => toggleHidden(item.href)}>
+                  <IconButton label={t("dashboard.show", { name: item.name })} onClick={() => toggleHidden(item.href)}>
                     <Eye className="size-4" />
                   </IconButton>
                 </TileBody>
@@ -236,6 +240,7 @@ function SortableTile({
     transition,
     isDragging,
   } = useSortable({ id: item.href });
+  const t = useT();
 
   return (
     <div
@@ -244,13 +249,13 @@ function SortableTile({
       className={cn("relative", isDragging && "z-10 opacity-80 shadow-lg")}
     >
       <TileBody item={item}>
-        <IconButton label={`Hide ${item.name}`} onClick={() => onToggleHidden(item.href)}>
+        <IconButton label={t("dashboard.hide", { name: item.name })} onClick={() => onToggleHidden(item.href)}>
           <EyeOff className="size-4" />
         </IconButton>
         <button
           ref={setActivatorNodeRef}
           type="button"
-          aria-label={`Move ${item.name}`}
+          aria-label={t("dashboard.move", { name: item.name })}
           className="flex size-7 cursor-grab touch-none items-center justify-center rounded-md text-muted-foreground hover:bg-background hover:text-foreground active:cursor-grabbing"
           {...attributes}
           {...listeners}

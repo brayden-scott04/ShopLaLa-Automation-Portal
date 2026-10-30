@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n/client";
 
 export function UserMenu({
   username,
@@ -19,6 +20,7 @@ export function UserMenu({
   username: string;
   collapsed?: boolean;
 }) {
+  const t = useT();
   const router = useRouter();
 
   async function handleLogout() {
@@ -46,12 +48,12 @@ export function UserMenu({
       <DropdownMenuContent align="start" side="top">
         <DropdownMenuItem onClick={() => router.push("/settings")}>
           <Settings />
-          Profile settings
+          {t("userMenu.profileSettings")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={handleLogout}>
           <LogOut />
-          Log out
+          {t("userMenu.logOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

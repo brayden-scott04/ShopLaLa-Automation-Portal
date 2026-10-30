@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import {
   NAV_GROUPS,
-  SUBGROUP_LABELS,
   type NavGroup,
   type NavItem,
   type NavSubgroup,
@@ -25,10 +24,11 @@ import { cn } from "@/lib/utils";
 import { CHAT_ENABLED } from "@/lib/features";
 import { UserMenu } from "@/components/user-menu";
 import { Separator } from "@/components/ui/separator";
+import { useT } from "@/lib/i18n/client";
+import { useLocalizedNav, useSubgroupLabel } from "@/lib/i18n/nav";
 import {
   type Role,
   type PermissionSet,
-  ROLE_LABELS,
   canManageUsers,
   filterItems,
 } from "@/lib/roles";
@@ -214,6 +214,7 @@ function NavGroupSection({
   pinnedHrefs: Set<string>;
   onPin: (href: string) => void;
 }) {
+  const subgroupLabel = useSubgroupLabel();
   const style = { "--pin": `var(${group.colorVar})` } as CSSProperties;
 
   if (collapsed) {
@@ -224,7 +225,7 @@ function NavGroupSection({
           <Link
             key={item.id}
             href={item.href}
-            title={item.subgroup ? `${SUBGROUP_LABELS[item.subgroup]} › ${item.name}` : item.name}
+            title={item.subgroup ? `${subgroupLabel(item.subgroup)} › ${item.name}` : item.name}
             className={cn(
               "flex size-8 items-center justify-center rounded-md text-[10px] font-semibold tracking-wide text-muted-foreground hover:bg-accent hover:text-foreground",
               isActive(pathname, item.href) &&
@@ -289,7 +290,7 @@ function NavGroupSection({
                   aria-expanded={!subFolded}
                   className="flex w-full items-center gap-1.5 rounded-r-md py-1.5 pr-2 pl-3.5 text-left text-sm text-muted-foreground hover:bg-accent/60 hover:text-foreground"
                 >
-                  <span className="flex-1 truncate">{SUBGROUP_LABELS[subgroup]}</span>
+                  <span className="flex-1 truncate">{subgroupLabel(subgroup)}</span>
                   <ChevronDown
                     className={cn("size-3.5 shrink-0 transition-transform", subFolded && "-rotate-90")}
                   />
@@ -320,8 +321,9 @@ function NavGroupSection({
 
 /** Hover-revealed pin / unpin button that sits over the right edge of a nav link. */
 function PinToggle({ pinned, name, onClick }: { pinned: boolean; name: string; onClick: () => void }) {
+  const t = useT();
   const Icon = pinned ? PinOff : PinIcon;
-  const label = pinned ? `Unpin ${name}` : `Pin ${name} to top`;
+  const label = pinned ? t("nav.unpin", { name }) : t("nav.pin", { name });
   return (
     <button
       type="button"
@@ -375,11 +377,12 @@ function PinnedSection({
   collapsed: boolean;
   onUnpin: (href: string) => void;
 }) {
+  const t = useT();
   if (items.length === 0) return null;
 
   if (collapsed) {
     return (
-      <div className="flex flex-col items-center gap-1 pt-3" title="Pinned">
+      <div className="flex flex-col items-center gap-1 pt-3" title={t("nav.pinned")}>
         <PinIcon className="mb-1 size-3 text-muted-foreground" />
         {items.map((item) => (
           <Link
@@ -405,7 +408,7 @@ function PinnedSection({
       <div className="flex items-center gap-2.5 px-3 py-1.5">
         <PinIcon className="size-3 shrink-0 text-muted-foreground" />
         <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground/80">
-          Pinned
+          {t("nav.pinned")}
         </span>
         <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
       </div>
@@ -447,11 +450,13 @@ export function SidebarContent({
   collapsed?: boolean;
   onToggleCollapse?: () => void;
 }) {
+  const t = useT();
+  const navGroups = useLocalizedNav();
   const pathname = usePathname();
   const [folded, setFolded] = useFoldState(pathname);
   const [pins, togglePin] = usePins(username);
 
-  const allowedGroups = NAV_GROUPS.map((group) => ({
+  const allowedGroups = navGroups.map((group) => ({
     ...group,
     items: filterItems(group.section, group.items, role, permissions),
   }));
@@ -480,17 +485,17 @@ export function SidebarContent({
         {!collapsed && (
           <div className="min-w-0 flex-1">
             <h1 className="text-lg font-bold tracking-tight text-foreground">
-              ShopLaLa
+              {t("app.name")}
               <sup className="ml-0.5 text-[10px] font-normal">&reg;</sup>
             </h1>
-            <p className="text-xs text-muted-foreground">Automation Portal</p>
+            <p className="text-xs text-muted-foreground">{t("app.portal")}</p>
           </div>
         )}
         {onToggleCollapse && (
           <button
             type="button"
             onClick={onToggleCollapse}
-            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={collapsed ? t("nav.expandSidebar") : t("nav.collapseSidebar")}
             className="shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             {collapsed ? (
@@ -510,7 +515,7 @@ export function SidebarContent({
       >
         <Link
           href="/dashboard"
-          title={collapsed ? "Dashboard" : undefined}
+          title={collapsed ? t("nav.dashboard") : undefined}
           className={cn(
             "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
             collapsed && "justify-center px-2",
@@ -518,13 +523,13 @@ export function SidebarContent({
           )}
         >
           <LayoutGrid className="size-4 shrink-0" />
-          {!collapsed && "Dashboard"}
+          {!collapsed && t("nav.dashboard")}
         </Link>
 
         {CHAT_ENABLED && (
           <Link
             href="/chat"
-            title={collapsed ? "Chat" : undefined}
+            title={collapsed ? t("nav.chat") : undefined}
             className={cn(
               "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
               collapsed && "justify-center px-2",
@@ -532,13 +537,13 @@ export function SidebarContent({
             )}
           >
             <Sparkles className="size-4 shrink-0" />
-            {!collapsed && "Chat"}
+            {!collapsed && t("nav.chat")}
           </Link>
         )}
 
         <Link
           href="/team"
-          title={collapsed ? "Team" : undefined}
+          title={collapsed ? t("nav.team") : undefined}
           className={cn(
             "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
             collapsed && "justify-center px-2",
@@ -546,7 +551,7 @@ export function SidebarContent({
           )}
         >
           <Users2 className="size-4 shrink-0" />
-          {!collapsed && "Team"}
+          {!collapsed && t("nav.team")}
         </Link>
 
         <PinnedSection
@@ -576,12 +581,12 @@ export function SidebarContent({
             <Separator className="my-2" />
           ) : (
             <p className="px-3 pt-4 pb-1 text-xs font-medium text-muted-foreground">
-              {ROLE_LABELS[role]}
+              {t(`roles.${role}`)}
             </p>
           )}
           <Link
             href="/admin/users"
-            title={collapsed ? "Manage Users" : undefined}
+            title={collapsed ? t("nav.manageUsers") : undefined}
             className={cn(
               "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
               collapsed && "justify-center px-2",
@@ -589,7 +594,7 @@ export function SidebarContent({
             )}
           >
             <Users className="size-4 shrink-0" />
-            {!collapsed && <span className="flex-1 truncate">Manage Users</span>}
+            {!collapsed && <span className="flex-1 truncate">{t("nav.manageUsers")}</span>}
           </Link>
         </div>
       )}

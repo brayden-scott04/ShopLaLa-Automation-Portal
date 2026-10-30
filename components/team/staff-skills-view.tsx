@@ -16,13 +16,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { ROLE_LABELS } from "@/lib/roles";
+import { useLocale, useT } from "@/lib/i18n/client";
 import { createSkill, getStaffSkills, setStaffSkillLevel, type StaffSkillsView as View } from "@/lib/actions/skills";
 import {
   SKILL_DESCRIPTION_MAX,
   SKILL_LEVEL_BADGE,
   SKILL_LEVEL_DOT,
-  SKILL_LEVEL_LABELS,
   SKILL_LEVELS,
   SKILL_MARKET_MAX,
   SKILL_MARKETS,
@@ -34,6 +33,14 @@ import {
 
 type LevelFilter = "all" | SkillLevel;
 
+/** The catalogue's optional Chinese text wins in 中文 mode; otherwise (or when blank) the English. */
+function skillText(skill: Skill, zh: boolean) {
+  return {
+    task: (zh && skill.task_zh) || skill.task,
+    description: (zh && skill.description_zh) || skill.description,
+  };
+}
+
 const inputClass =
   "w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring";
 const primaryBtn =
@@ -41,9 +48,10 @@ const primaryBtn =
 const labelClass = "mb-1.5 block text-xs font-medium text-muted-foreground";
 
 function LevelBadge({ level }: { level: SkillLevel }) {
+  const t = useT();
   return (
     <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium whitespace-nowrap", SKILL_LEVEL_BADGE[level])}>
-      {SKILL_LEVEL_LABELS[level]}
+      {t(`skills.levels.${level}`)}
     </span>
   );
 }
@@ -58,6 +66,7 @@ function LevelPicker({
   disabled: boolean;
   onChange: (level: SkillLevel | null) => void;
 }) {
+  const t = useT();
   return (
     <select
       value={level ?? ""}
@@ -68,10 +77,10 @@ function LevelPicker({
         level ? SKILL_LEVEL_BADGE[level] : "bg-muted text-muted-foreground",
       )}
     >
-      <option value="">— Not applicable</option>
+      <option value="">{t("skills.notApplicable")}</option>
       {SKILL_LEVELS.map((l) => (
         <option key={l} value={l}>
-          {SKILL_LEVEL_LABELS[l]}
+          {t(`skills.levels.${l}`)}
         </option>
       ))}
     </select>
@@ -87,8 +96,11 @@ function AddSkillDialog({
   onClose: () => void;
   onCreated: (skill: Skill) => void;
 }) {
+  const t = useT();
   const [team, setTeam] = useState<string>(SKILL_TEAMS[0]);
   const [task, setTask] = useState("");
+  const [taskZh, setTaskZh] = useState("");
+  const [descriptionZh, setDescriptionZh] = useState("");
   const [market, setMarket] = useState("");
   const [description, setDescription] = useState("");
   const [busy, setBusy] = useState(false);
@@ -97,10 +109,10 @@ function AddSkillDialog({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
-    const { data, error } = await createSkill({ team, task, market, description });
+    const { data, error } = await createSkill({ team, task, market, description, taskZh, descriptionZh });
     setBusy(false);
     if (error || !data) {
-      setError(error ?? "Could not add skill");
+      setError(error ?? t("skills.couldNotAdd"));
       return;
     }
     onCreated(data);
@@ -112,39 +124,46 @@ function AddSkillDialog({
       <DialogContent className="sm:max-w-md">
         <form onSubmit={handleSubmit} className="flex min-h-0 flex-col">
           <DialogHeader>
-            <DialogTitle>Add skill</DialogTitle>
-            <DialogDescription>
-              Adds a skill to the catalogue for everyone. It starts as not applicable for each person.
-            </DialogDescription>
+            <DialogTitle>{t("skills.addSkill")}</DialogTitle>
+            <DialogDescription>{t("skills.addSkillDescription")}</DialogDescription>
           </DialogHeader>
           <DialogBody className="space-y-4">
             <div>
-              <label className={labelClass}>Team</label>
+              <label className={labelClass}>{t("skills.team")}</label>
               <select className={inputClass} value={team} onChange={(e) => setTeam(e.target.value)}>
-                {SKILL_TEAMS.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                {SKILL_TEAMS.map((name) => (
+                  <option key={name} value={name}>
+                    {t.dynamic(`skills.teams.${name}`, name)}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className={labelClass}>Skill</label>
+              <label className={labelClass}>{t("skills.skill")}</label>
               <input
                 autoFocus
                 className={inputClass}
-                placeholder="e.g. Create Shipment"
+                placeholder={t("skills.skillPlaceholder")}
                 maxLength={SKILL_TASK_MAX}
                 value={task}
                 onChange={(e) => setTask(e.target.value)}
               />
             </div>
             <div>
-              <label className={labelClass}>Market (optional)</label>
+              <label className={labelClass}>{t("skills.skillZh")}</label>
+              <input
+                className={inputClass}
+                maxLength={SKILL_TASK_MAX}
+                value={taskZh}
+                onChange={(e) => setTaskZh(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>{t("skills.market")}</label>
               <input
                 className={inputClass}
                 list="skill-markets"
-                placeholder="e.g. US/CA/MX"
+                placeholder={t("skills.marketPlaceholder")}
                 maxLength={SKILL_MARKET_MAX}
                 value={market}
                 onChange={(e) => setMarket(e.target.value)}
@@ -156,7 +175,7 @@ function AddSkillDialog({
               </datalist>
             </div>
             <div>
-              <label className={labelClass}>Description (optional)</label>
+              <label className={labelClass}>{t("skills.description")}</label>
               <textarea
                 className={cn(inputClass, "min-h-20")}
                 maxLength={SKILL_DESCRIPTION_MAX}
@@ -164,11 +183,20 @@ function AddSkillDialog({
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
+            <div>
+              <label className={labelClass}>{t("skills.descriptionZh")}</label>
+              <textarea
+                className={cn(inputClass, "min-h-20")}
+                maxLength={SKILL_DESCRIPTION_MAX}
+                value={descriptionZh}
+                onChange={(e) => setDescriptionZh(e.target.value)}
+              />
+            </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
           </DialogBody>
           <DialogFooter>
             <button type="submit" disabled={busy || !task.trim()} className={primaryBtn}>
-              {busy ? "Adding…" : "Add skill"}
+              {busy ? t("common.adding") : t("skills.addSkill")}
             </button>
           </DialogFooter>
         </form>
@@ -178,6 +206,8 @@ function AddSkillDialog({
 }
 
 export function StaffSkillsView({ username }: { username: string }) {
+  const t = useT();
+  const zh = useLocale() === "zh";
   const [view, setView] = useState<View | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -263,7 +293,7 @@ export function StaffSkillsView({ username }: { username: string }) {
         )}
 
         {notFound ? (
-          <p className="text-sm text-muted-foreground">There is no staff account called “{username}”.</p>
+          <p className="text-sm text-muted-foreground">{t("team.notFound", { username })}</p>
         ) : isLoading || !view ? (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -273,10 +303,10 @@ export function StaffSkillsView({ username }: { username: string }) {
         ) : (
           <>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              <SummaryTile label="Total skills" value={counts.in_charge + counts.can_do} hint="In charge + Can do" />
-              <SummaryTile label="In charge" value={counts.in_charge} level="in_charge" />
-              <SummaryTile label="Can do" value={counts.can_do} level="can_do" />
-              <SummaryTile label="Learning" value={counts.learning} level="learning" />
+              <SummaryTile label={t("skills.totalSkills")} value={counts.in_charge + counts.can_do} hint={t("skills.totalHint")} />
+              <SummaryTile label={t("skills.levels.in_charge")} value={counts.in_charge} level="in_charge" />
+              <SummaryTile label={t("skills.levels.can_do")} value={counts.can_do} level="can_do" />
+              <SummaryTile label={t("skills.levels.learning")} value={counts.learning} level="learning" />
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
@@ -284,8 +314,8 @@ export function StaffSkillsView({ username }: { username: string }) {
                 value={levelFilter}
                 onValueChange={setLevelFilter}
                 options={[
-                  { value: "all", label: "All" },
-                  ...SKILL_LEVELS.map((l) => ({ value: l, label: SKILL_LEVEL_LABELS[l] })),
+                  { value: "all", label: t("skills.all") },
+                  ...SKILL_LEVELS.map((l) => ({ value: l, label: t(`skills.levels.${l}`) })),
                 ]}
               />
               <select
@@ -293,7 +323,7 @@ export function StaffSkillsView({ username }: { username: string }) {
                 onChange={(e) => setMarketFilter(e.target.value)}
                 className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring dark:bg-input/30"
               >
-                <option value="">All markets</option>
+                <option value="">{t("skills.allMarkets")}</option>
                 {markets.map((m) => (
                   <option key={m} value={m}>
                     {m}
@@ -304,14 +334,14 @@ export function StaffSkillsView({ username }: { username: string }) {
                 <div className="ml-auto flex items-center gap-4">
                   <label className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Switch checked={showAll} onCheckedChange={setShowAll} />
-                    Show all catalogue skills
+                    {t("skills.showAll")}
                   </label>
                   <button type="button" onClick={() => {
                       setAddKey((k) => k + 1);
                       setAddOpen(true);
                     }} className={cn(primaryBtn, "inline-flex items-center gap-1.5")}>
                     <Plus className="size-4" />
-                    Add skill
+                    {t("skills.addSkill")}
                   </button>
                 </div>
               )}
@@ -319,14 +349,14 @@ export function StaffSkillsView({ username }: { username: string }) {
 
             {groups.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
-                {Object.keys(view.levels).length === 0 ? "No skills recorded yet" : "No skills match these filters"}
+                {Object.keys(view.levels).length === 0 ? t("skills.noSkills") : t("skills.noMatches")}
               </p>
             ) : (
               groups.map(({ team, skills }) => (
                 <Card key={team}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      {team}
+                      {t.dynamic(`skills.teams.${team}`, team)}
                       <span className="text-sm font-normal text-muted-foreground">{skills.length}</span>
                     </CardTitle>
                   </CardHeader>
@@ -334,12 +364,13 @@ export function StaffSkillsView({ username }: { username: string }) {
                     <ul className="divide-y divide-border">
                       {skills.map((skill) => {
                         const level = view.levels[skill.id];
+                        const text = skillText(skill, zh);
                         return (
                           <li key={skill.id} className="flex items-center gap-4 px-4 py-2.5">
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-center gap-2">
                                 <span className={cn("text-sm font-medium", !level && "text-muted-foreground")}>
-                                  {skill.task}
+                                  {text.task}
                                 </span>
                                 {skill.market && (
                                   <span className="rounded border border-border px-1.5 py-px text-[11px] text-muted-foreground">
@@ -347,8 +378,8 @@ export function StaffSkillsView({ username }: { username: string }) {
                                   </span>
                                 )}
                               </div>
-                              {skill.description && (
-                                <p className="mt-0.5 text-xs text-muted-foreground">{skill.description}</p>
+                              {text.description && (
+                                <p className="mt-0.5 text-xs text-muted-foreground">{text.description}</p>
                               )}
                             </div>
                             {view.canEdit ? (
@@ -370,8 +401,8 @@ export function StaffSkillsView({ username }: { username: string }) {
             )}
 
             <p className="text-xs text-muted-foreground">
-              Portal role: {ROLE_LABELS[view.member.role]}
-              {view.canEdit ? "" : " · Only admins and leaders can change skills."}
+              {t("skills.portalRole", { role: t(`roles.${view.member.role}`) })}
+              {view.canEdit ? "" : t("skills.viewOnly")}
             </p>
 
             <AddSkillDialog

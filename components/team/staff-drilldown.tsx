@@ -7,7 +7,7 @@ import { ArrowLeft, UserRound } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SegmentedControl } from "@/components/ui/segmented-control";
-import { ROLE_LABELS } from "@/lib/roles";
+import { useT } from "@/lib/i18n/client";
 import { getStaffProfile, type StaffProfile } from "@/lib/actions/staff-profile";
 import { StaffProfileView } from "@/components/team/staff-profile-view";
 import { StaffSkillsView } from "@/components/team/staff-skills-view";
@@ -16,6 +16,7 @@ type Tab = "profile" | "skills";
 
 /** /team/<username>: Profile first, Skills as the second tab (?tab=skills). */
 export function StaffDrilldown({ username }: { username: string }) {
+  const t = useT();
   const router = useRouter();
   const pathname = usePathname();
   const tab: Tab = useSearchParams().get("tab") === "skills" ? "skills" : "profile";
@@ -48,9 +49,9 @@ export function StaffDrilldown({ username }: { username: string }) {
         title={profile?.member.username ?? username}
         description={
           notFound
-            ? "No such staff member"
+            ? t("team.noSuchMember")
             : profile
-              ? [profile.member.job_role, ROLE_LABELS[profile.member.role]].filter(Boolean).join(" · ")
+              ? [profile.member.job_role, t(`roles.${profile.member.role}`)].filter(Boolean).join(" · ")
               : ""
         }
       />
@@ -62,22 +63,22 @@ export function StaffDrilldown({ username }: { username: string }) {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
-            Team
+            {t("team.backToTeam")}
           </Link>
           {!notFound && (
             <SegmentedControl<Tab>
               value={tab}
               onValueChange={(next) => router.replace(next === "skills" ? `${pathname}?tab=skills` : pathname)}
               options={[
-                { value: "profile", label: "Profile" },
-                { value: "skills", label: "Skills" },
+                { value: "profile", label: t("team.tabProfile") },
+                { value: "skills", label: t("team.tabSkills") },
               ]}
             />
           )}
         </div>
 
         {notFound ? (
-          <p className="text-sm text-muted-foreground">There is no staff account called “{username}”.</p>
+          <p className="text-sm text-muted-foreground">{t("team.notFound", { username })}</p>
         ) : tab === "skills" ? (
           <StaffSkillsView username={username} />
         ) : isLoading ? (

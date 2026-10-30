@@ -6,10 +6,12 @@ import { filterItems, isAllowed } from "@/lib/roles";
 import PpcTopUpCharts from "@/components/ppc-top-up-chart";
 import { DashboardAccessGrid } from "@/components/dashboard-access-grid";
 import { CoreValues } from "@/components/core-values";
+import { getT } from "@/lib/i18n/server";
 
 export default async function DashboardPage() {
   const session = await getSession();
-  const firstName = session?.username ?? "there";
+  const t = await getT();
+  const firstName = session?.username ?? "";
 
   const { role, permissions } = await getMyPermissions();
 
@@ -25,10 +27,10 @@ export default async function DashboardPage() {
   return (
     <div className="p-6 md:p-8">
       <h2 className="text-2xl font-semibold text-foreground">
-        Welcome back, {firstName}
+        {t("dashboard.welcome", { name: firstName })}
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Here&apos;s what you have access to.
+        {t("dashboard.subtitle")}
       </p>
 
       {/* Your access — shows every item across all sections the signed-in user
@@ -42,9 +44,9 @@ export default async function DashboardPage() {
           />
         ) : (
           <>
-            <h3 className="text-sm font-semibold text-foreground">Your access</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("dashboard.yourAccess")}</h3>
             <p className="mt-3 text-sm text-muted-foreground">
-              You don&apos;t have access to any tools yet. Ask an admin to grant you access.
+              {t("dashboard.noAccess")}
             </p>
           </>
         )}
@@ -53,9 +55,9 @@ export default async function DashboardPage() {
       {canSeePpc && (
         <>
           <div className="mt-8 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-muted-foreground">PPC Top-Up</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">{t("dashboard.ppcTitle")}</h3>
             <Link href={ppcTopUp.href} className="text-xs font-medium text-primary hover:underline">
-              View all →
+              {t("dashboard.viewAll")}
             </Link>
           </div>
           <div className="mt-3">

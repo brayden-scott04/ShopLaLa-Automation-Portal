@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { SidebarContent } from "@/components/sidebar-content";
 import { useState } from "react";
+import { useT } from "@/lib/i18n/client";
 import type { Role, PermissionSet } from "@/lib/roles";
 
 export function Topbar({
@@ -16,6 +17,7 @@ export function Topbar({
   role: Role;
   permissions: PermissionSet;
 }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,12 +27,12 @@ export function Topbar({
           variant="ghost"
           size="icon"
           onClick={() => setOpen(true)}
-          aria-label="Open menu"
+          aria-label={t("nav.openMenu")}
         >
           <Menu className="size-5" />
         </Button>
         <SheetContent side="left" className="w-64 p-0">
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <SheetTitle className="sr-only">{t("nav.navigation")}</SheetTitle>
           <SidebarContent
             username={username}
             role={role}
@@ -39,7 +41,7 @@ export function Topbar({
         </SheetContent>
       </Sheet>
       <span className="text-sm font-semibold text-foreground">
-        ShopLaLa Automation Portal
+        {t("app.fullName")}
       </span>
     </header>
   );

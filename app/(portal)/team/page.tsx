@@ -7,7 +7,8 @@ import { PageHeader } from "@/components/page-header";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentUser, getStaffDirectory, updateJobRole } from "@/lib/actions/staff";
-import { type Role, ROLE_LABELS } from "@/lib/roles";
+import type { Role } from "@/lib/roles";
+import { useT } from "@/lib/i18n/client";
 
 type DirectoryEntry = {
   id: string;
@@ -26,6 +27,7 @@ function JobRoleEditor({
   onSaved: (jobRole: string | null) => void;
   onError: (error: string) => void;
 }) {
+  const t = useT();
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -58,11 +60,11 @@ function JobRoleEditor({
       <button
         type="button"
         onClick={startEditing}
-        title="Edit job role"
+        title={t("team.editJobRole")}
         className="group inline-flex items-center gap-1.5 text-left"
       >
         <span className={member.job_role ? "" : "text-muted-foreground"}>
-          {member.job_role ?? "Add job role"}
+          {member.job_role ?? t("team.addJobRole")}
         </span>
         <Pencil className="size-3 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
       </button>
@@ -74,7 +76,7 @@ function JobRoleEditor({
       autoFocus
       value={value}
       maxLength={60}
-      placeholder="Add job role"
+      placeholder={t("team.addJobRole")}
       disabled={isSaving}
       onChange={(e) => setValue(e.target.value)}
       onBlur={save}
@@ -91,6 +93,7 @@ function JobRoleEditor({
 }
 
 export default function TeamPage() {
+  const t = useT();
   const [staff, setStaff] = useState<DirectoryEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,8 +112,8 @@ export default function TeamPage() {
     <>
       <PageHeader
         icon={Users}
-        title="Team"
-        description="Everyone with portal access"
+        title={t("team.title")}
+        description={t("team.description")}
       />
 
       <div className="p-6 md:p-8">
@@ -124,9 +127,9 @@ export default function TeamPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground">Username</th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground">Job Role</th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground">Portal Role</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("team.username")}</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("team.jobRole")}</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("team.portalRole")}</th>
               </tr>
             </thead>
             <tbody>
@@ -145,7 +148,7 @@ export default function TeamPage() {
                       <td className="px-4 py-3 font-medium">
                         <Link
                           href={`/team/${encodeURIComponent(member.username)}`}
-                          title="View skills"
+                          title={t("team.viewProfile")}
                           className="underline-offset-4 hover:text-primary hover:underline"
                         >
                           {member.username}
@@ -181,7 +184,7 @@ export default function TeamPage() {
                                   : "bg-muted text-muted-foreground"
                           }`}
                         >
-                          {ROLE_LABELS[member.role]}
+                          {t(`roles.${member.role}`)}
                         </span>
                       </td>
                     </tr>
@@ -189,7 +192,7 @@ export default function TeamPage() {
                   {staff.length === 0 && (
                     <tr>
                       <td colSpan={3} className="px-4 py-8 text-center text-muted-foreground">
-                        No accounts yet
+                        {t("team.noAccounts")}
                       </td>
                     </tr>
                   )}
