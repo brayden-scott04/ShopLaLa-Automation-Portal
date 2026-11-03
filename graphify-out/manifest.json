@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "lib/ppc-daily-cap-constants.ts": {
-    "mtime": 1785392747.7168188,
-    "ast_hash": "4c01cad29c7ebce98f0a74ed9482c09a",
+    "mtime": 1793716303.3180718,
+    "ast_hash": "27b8be0ff14b34c6af6d865bcd2e0fea",
     "semantic_hash": ""
   },
   "lib/session.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793357625.0796604,
-    "ast_hash": "08c784499498a777c168af3165a50c7d",
+    "mtime": 1793359751.1302655,
+    "ast_hash": "376d2b64f9d6f8a43240d804f3c673bb",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1030,8 +1030,8 @@
     "semantic_hash": ""
   },
   "components/products/products-view.tsx": {
-    "mtime": 1793357516.4447453,
-    "ast_hash": "de02d5e1c356f88a1efd5dea3a4d7aa1",
+    "mtime": 1793359750.3408425,
+    "ast_hash": "439bab2e6f5f084228c7492b6d6325b0",
     "semantic_hash": ""
   },
   "lib/actions/product-prices.ts": {

@@ -8,6 +8,9 @@ export const CANONICAL_SLOTS: readonly string[] = Array.from({ length: 144 }, (_
 
 export const MAX_SLOT_AMOUNT = 1000;
 
+/** Budget every campaign is reset to at reset_time (reset_all_campaigns_budget in sp_account_budget.py). */
+export const RESET_BUDGET = 1;
+
 function orderedSlots(resetTime: string): string[] {
   const pm = CANONICAL_SLOTS.filter((s) => s >= resetTime).sort();
   const am = CANONICAL_SLOTS.filter((s) => s < resetTime).sort();
@@ -17,7 +20,8 @@ function orderedSlots(resetTime: string): string[] {
 /**
  * Reorders a schedule's slots into "PM session" (reset_time -> 23:30) then
  * "AM session" (00:00 -> just before reset_time), and returns the running
- * cumulative total at each slot. Mirrors get_day_slots/get_cumulative_cap in
+ * cumulative total at each slot, starting from the $RESET_BUDGET the reset
+ * leaves behind. Mirrors get_day_slots/get_cumulative_cap in
  * sp_account_budget.py, but as a pure display calc (no wall-clock dependency)
  * so staff can see the same cumulative shape the Python script computes.
  */
@@ -25,7 +29,7 @@ export function computeRunningTotals(
   amounts: Record<string, number>,
   resetTime: string
 ): { slot: string; runningTotal: number }[] {
-  let total = 0;
+  let total = RESET_BUDGET;
   return orderedSlots(resetTime).map((slot) => {
     total += amounts[slot] ?? 0;
     return { slot, runningTotal: total };
@@ -98,7 +102,7 @@ export function computeProjectedRows(
   manualTopUps: { target_date: string; slot_time: string; amount: number }[],
   dayOffset = 0
 ): { slot: string; date: string; runningTotal: number }[] {
-  let total = 0;
+  let total = RESET_BUDGET;
   return orderedSlotsWithDates(resetTime, dayOffset).map(({ slot, date }) => {
     const bump = manualTopUps
       .filter((t) => t.slot_time === slot && t.target_date === date)
