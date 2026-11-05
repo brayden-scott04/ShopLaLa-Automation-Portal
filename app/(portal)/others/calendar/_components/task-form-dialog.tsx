@@ -421,7 +421,10 @@ export function TaskFormDialog({
 
           <div>
             <Label className="mb-1">Notes (optional)</Label>
-            <Textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
+            <Textarea
+              rows={5}
+              className="min-h-28 max-h-[45vh] resize-y overflow-y-auto field-sizing-content"
+              value={notes} onChange={(e) => setNotes(e.target.value)} />
           </div>
 
           <div className="grid grid-cols-2 gap-3">

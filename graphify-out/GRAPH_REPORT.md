@@ -1,16 +1,16 @@
-# Graph Report - LaLaGreen-Automation-Portal  (2026-11-03)
+# Graph Report - LaLaGreen-Automation-Portal  (2026-11-05)
 
 ## Corpus Check
-- 206 files · ~152,204 words
+- 206 files · ~152,209 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1571 nodes · 4880 edges · 74 communities (53 shown, 21 thin omitted)
+- 1571 nodes · 4880 edges · 73 communities (52 shown, 21 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.57)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `14cd11b5`
+- Built from commit: `6a4c3104`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -77,7 +77,6 @@
 - marketplaces.ts
 - page.tsx
 - page.tsx
-- pricing-update.ts
 - price-plan-import.ts
 - page.tsx
 - layout.tsx
@@ -115,7 +114,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (74 total, 21 thin omitted)
+## Communities (73 total, 21 thin omitted)
 
 ### Community 0 - "calendar.ts"
 Cohesion: 0.06
@@ -154,8 +153,8 @@ Cohesion: 0.09
 Nodes (19): PlaceholderPage(), adsBulkGenerator, advertisements, BASE_PATHS, calendar, defineNavItem(), finance, goalVsPerformance (+11 more)
 
 ### Community 9 - "monday.com Dashboards — Comprehensive Reference"
-Cohesion: 0.14
-Nodes (27): marketplace, asNumber(), callSpApi(), callSpApiJson(), chunk(), credentialsFor(), extractFeaturedPricing(), extractOfferPrice() (+19 more)
+Cohesion: 0.12
+Nodes (30): fetchSkuDetail(), fetchSkuPricing(), requireStaff(), marketplace, asNumber(), callSpApi(), callSpApiJson(), chunk() (+22 more)
 
 ### Community 10 - "utils.ts"
 Cohesion: 0.16
@@ -270,8 +269,8 @@ Cohesion: 0.33
 Nodes (9): LoginPage(), DashboardPage(), CORE_VALUES, CoreValue, CoreValues(), getLocale(), getT(), getMyPermissions() (+1 more)
 
 ### Community 61 - "marketplaces.ts"
-Cohesion: 0.14
-Nodes (31): RegionPicker(), RegionTag(), addRegionsTo(), addSkus(), addSkusGrouped(), ColumnDetectSchema, ColumnMapping, deleteSku() (+23 more)
+Cohesion: 0.12
+Nodes (33): NewPricePlanSheet(), RegionPicker(), RegionTag(), addRegionsTo(), addSkus(), addSkusGrouped(), ColumnDetectSchema, ColumnMapping (+25 more)
 
 ### Community 62 - "page.tsx"
 Cohesion: 0.12
@@ -280,10 +279,6 @@ Nodes (32): addProductPrice(), cleanDetails(), cleanPrice(), deleteProductPrice(
 ### Community 63 - "page.tsx"
 Cohesion: 0.29
 Nodes (5): MARKETPLACE_CODES, MARKETPLACE_IDS, Region, REGION_HOSTS, REGION_LABELS
-
-### Community 64 - "pricing-update.ts"
-Cohesion: 0.47
-Nodes (5): NewPricePlanSheet(), fetchSkuDetail(), fetchSkuPricing(), requireStaff(), listSkus()
 
 ### Community 65 - "price-plan-import.ts"
 Cohesion: 0.18
@@ -329,7 +324,7 @@ Nodes (14): createSkill(), requireSkillsEditor(), Result, setStaffSkillLevel(), 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `getSession()` connect `calendar.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `PPC Schedule AI Import`, `utils.ts`, `Sponsored Brands Bulk XLSX Builder`, `projects.ts`, `chart.tsx`, `build.ts`, `page-header.tsx`, `mail.ts`, `skeleton.tsx`, `server.ts`, `permissions.ts`, `getStaffDirectory`, `session.ts`, `page.tsx`, `getMyPermissions`, `marketplaces.ts`, `page.tsx`, `pricing-update.ts`, `price-plan-import.ts`, `price-change-plans.ts`, `session.ts`?**
+- **Why does `getSession()` connect `calendar.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `PPC Schedule AI Import`, `monday.com Dashboards — Comprehensive Reference`, `utils.ts`, `Sponsored Brands Bulk XLSX Builder`, `projects.ts`, `chart.tsx`, `build.ts`, `page-header.tsx`, `mail.ts`, `skeleton.tsx`, `server.ts`, `permissions.ts`, `getStaffDirectory`, `session.ts`, `page.tsx`, `getMyPermissions`, `marketplaces.ts`, `page.tsx`, `price-plan-import.ts`, `price-change-plans.ts`, `session.ts`?**
   _High betweenness centrality (0.110) - this node is a cross-community bridge._
 - **Why does `cn()` connect `page-header.tsx` to `calendar.ts`, `PPC Top-Up Automation`, `Sponsored Brands Upload - Campaign Data`, `page-header.tsx`, `dashboard-access-grid.tsx`, `projects.ts`, `tabs.tsx`, `page-header.tsx`, `Root Layout`, `mail.ts`, `Sponsored Brands Bulk XLSX Builder`, `fba-fee-tracker.ts`, `product-block.tsx`, `fba-fee-calculator.ts`, `buildVideoBulk.ts`, `getStaffDirectory`, `page.tsx`?**
   _High betweenness centrality (0.105) - this node is a cross-community bridge._
