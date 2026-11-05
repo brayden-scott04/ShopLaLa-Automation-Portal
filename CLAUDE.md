@@ -579,6 +579,17 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
 - Every staff reference is a FK on `staff(username)` with `ON UPDATE CASCADE`, so only portal accounts can be picked.
 - Everyone can view. Only **admins and leaders** (`canManageProfiles`) can edit. Actions are in `lib/actions/staff-profile.ts` and constants in `lib/staff-profile-constants.ts`.
 
+### Organization Chart (`org_chart_*`)
+
+Backs `/org-chart`, linked in the sidebar's fixed block below Team. Every staff member can view it; only **admins** (`canAdminister`) see "Edit chart" and can change it. Server actions are in `lib/actions/org-chart.ts` (RLS-client reads, service-client writes after the role check); types and the stats/locations helpers are in `lib/org-chart-constants.ts`; UI in `components/org-chart/`. DDL and the seed (the chart as of 1 Nov 2026) are in `sql/org_chart_migration.sql`, run by hand.
+
+- **`org_chart_departments`**: the dark column headers, ordered by `position`.
+- **`org_chart_people`**: name (unique, case-insensitive), `location`, `part_time`. Independent of `staff`: most people on the chart have no portal account. A person can sit in several columns; location and part-time live here, so they show the same everywhere.
+- **`org_chart_nodes`**: one box per `(department, person)`, with `kind` = `pic` | `member` | `supporting` | `new` | `open` and `position` within the column. `open` boxes have a `title` and no person. `note` shows under the name for members ("Images") and in brackets after it otherwise ("Shaelmy (Store)").
+- **`org_chart_meta`**: one row, the last edit time, shown as "As of <date>".
+- The counts and the Team locations panel are **computed**, not stored (`orgStats` / `orgLocations`): headcount = distinct people on the chart, part-time from the person flag, open = `open` boxes. People with no location (e.g. Dobie) are counted but not listed under a location.
+- In the box editor, typing a different name **switches the box to that person** (creating them if new). Renaming someone everywhere is done in the People dialog.
+
 ### Staff skills (`skills`, `staff_skills`)
 
 These back the **Skills** tab of `/team/<username>`. They replace the `# Skills` sheet of the "Performance and Development" workbook. The DDL and seed are in `sql/staff_skills_migration.sql`, which is run by hand.

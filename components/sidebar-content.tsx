@@ -13,6 +13,7 @@ import {
   Sparkles,
   Users,
   Users2,
+  Network,
 } from "lucide-react";
 import {
   NAV_GROUPS,
@@ -552,6 +553,19 @@ export function SidebarContent({
         >
           <Users2 className="size-4 shrink-0" />
           {!collapsed && t("nav.team")}
+        </Link>
+
+        <Link
+          href="/org-chart"
+          title={collapsed ? t("nav.orgChart") : undefined}
+          className={cn(
+            "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent",
+            collapsed && "justify-center px-2",
+            pathname === "/org-chart" && "bg-accent text-primary"
+          )}
+        >
+          <Network className="size-4 shrink-0" />
+          {!collapsed && t("nav.orgChart")}
         </Link>
 
         <PinnedSection

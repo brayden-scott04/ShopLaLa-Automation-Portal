@@ -70,8 +70,8 @@
     "semantic_hash": ""
   },
   "components/sidebar-content.tsx": {
-    "mtime": 1793287638.407076,
-    "ast_hash": "0e8235637ae845848e80595fc5b6f30a",
+    "mtime": 1793869393.546256,
+    "ast_hash": "9247bbe8b8a017345287d1b9b9dedb8d",
     "semantic_hash": ""
   },
   "components/sidebar.tsx": {
@@ -155,8 +155,8 @@
     "semantic_hash": ""
   },
   "eslint.config.mjs": {
-    "mtime": 1793287921.8757284,
-    "ast_hash": "766bca7c7e2ca8b66051a935bde3bf30",
+    "mtime": 1793869501.7227786,
+    "ast_hash": "8495485762dfbfec19d77fd9e6f5f8cd",
     "semantic_hash": ""
   },
   "lib/actions/bulk-campaign.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793868198.8124392,
-    "ast_hash": "289a14788f1bebd890e460ecfc0ce981",
+    "mtime": 1793870053.701891,
+    "ast_hash": "438fbba046d13549d2fff604f2a736e7",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1105,13 +1105,13 @@
     "semantic_hash": ""
   },
   "lib/i18n/messages/en.ts": {
-    "mtime": 1793287422.4507089,
-    "ast_hash": "e3aae7439a72912b065ef63e8dd858f3",
+    "mtime": 1793869520.5306327,
+    "ast_hash": "812ce8eb95a72e0fbcf13d55e176c441",
     "semantic_hash": ""
   },
   "lib/i18n/messages/zh.ts": {
-    "mtime": 1793287958.7408347,
-    "ast_hash": "2cf9053aba564f1a9fbaedb5ad95973e",
+    "mtime": 1793869520.5321362,
+    "ast_hash": "9debeae8f7508eb093230b25fe0e5dad",
     "semantic_hash": ""
   },
   "lib/i18n/nav.tsx": {
@@ -1142,6 +1142,31 @@
   "app/(portal)/others/calendar/_components/search-results.tsx": {
     "mtime": 1793868164.1283772,
     "ast_hash": "e41f8689b03214ae4ca7ebee1cfb2f66",
+    "semantic_hash": ""
+  },
+  "app/(portal)/org-chart/page.tsx": {
+    "mtime": 1793869501.6703212,
+    "ast_hash": "aa5217dc0ce0baebc24b32522247aa54",
+    "semantic_hash": ""
+  },
+  "components/org-chart/org-chart-dialogs.tsx": {
+    "mtime": 1793869500.4134705,
+    "ast_hash": "f5bb7dc89546df872613e8bbe4d92569",
+    "semantic_hash": ""
+  },
+  "components/org-chart/org-chart-view.tsx": {
+    "mtime": 1793869520.533142,
+    "ast_hash": "9ca7c77a01d213885baf723edfc55467",
+    "semantic_hash": ""
+  },
+  "lib/actions/org-chart.ts": {
+    "mtime": 1793869340.5969205,
+    "ast_hash": "8b2032a390751105a30624678515e732",
+    "semantic_hash": ""
+  },
+  "lib/org-chart-constants.ts": {
+    "mtime": 1793869302.9422984,
+    "ast_hash": "e9257e600822d473db2da3df9b18223f",
     "semantic_hash": ""
   }
 }
