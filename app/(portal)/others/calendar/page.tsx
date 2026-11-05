@@ -18,13 +18,14 @@ import {
 import {
   addDays,
   addMonths,
-  buildMonthGrid,
+  buildMonthView,
   buildWeek,
   compareByTime,
   eachDateKey,
   formatDayLabel,
   isSpanningTask,
   monthLabel,
+  rangeLabel,
   todayKey,
   weekLabel,
 } from "@/lib/calendar-date-utils";
@@ -58,8 +59,8 @@ const VIEW_OPTIONS: { key: ViewMode; label: string }[] = [
 function rangeFor(view: ViewMode, anchor: string): [string, string] {
   const d = new Date(Number(anchor.slice(0, 4)), Number(anchor.slice(5, 7)) - 1, 1);
   if (view === "month") {
-    const grid = buildMonthGrid(d.getFullYear(), d.getMonth());
-    return [grid[0], grid[grid.length - 1]];
+    const { days } = buildMonthView(anchor);
+    return [days[0], days[days.length - 1]];
   }
   if (view === "week") {
     const week = buildWeek(anchor);
@@ -67,6 +68,15 @@ function rangeFor(view: ViewMode, anchor: string): [string, string] {
   }
   if (view === "day") return [anchor, anchor];
   return [`${d.getFullYear()}-01-01`, `${d.getFullYear()}-12-31`];
+}
+
+/**
+ * Month view's anchor when jumping to a month (`firstOfMonth` = its 1st): the 1st shows that month's
+ * plain grid, except the current month, which uses today so it opens on this week onwards.
+ */
+function monthAnchor(firstOfMonth: string): string {
+  const today = todayKey();
+  return firstOfMonth.slice(0, 7) === today.slice(0, 7) ? today : firstOfMonth;
 }
 
 export default function CalendarPage() {
@@ -202,16 +212,19 @@ export default function CalendarPage() {
 
   function step(delta: number) {
     setAnchor((a) => {
-      if (view === "month") return addMonths(a, delta);
+      if (view === "month") return monthAnchor(addMonths(`${a.slice(0, 7)}-01`, delta));
       if (view === "week") return addDays(a, 7 * delta);
       if (view === "day") return addDays(a, delta);
       return addMonths(a, 12 * delta);
     });
   }
 
+  const monthView = buildMonthView(anchor);
   const periodLabel =
     view === "month"
-      ? monthLabel(year, month)
+      ? monthView.focusMonth === null
+        ? rangeLabel(monthView.days[0], monthView.days[41])
+        : monthLabel(year, month)
       : view === "week"
         ? weekLabel(anchor)
         : view === "day"
@@ -367,8 +380,7 @@ export default function CalendarPage() {
 
           {view === "month" && (
             <MonthGrid
-              year={year}
-              month={month}
+              anchor={anchor}
               eventsByDate={eventsByDate}
               dueByDate={dueByDate}
               spanningTasks={spanningTasks}
@@ -403,7 +415,7 @@ export default function CalendarPage() {
               year={year}
               activeByDate={activeByDate}
               onPickMonth={(m) => {
-                setAnchor(`${year}-${String(m + 1).padStart(2, "0")}-01`);
+                setAnchor(monthAnchor(`${year}-${String(m + 1).padStart(2, "0")}-01`));
                 changeView("month");
               }}
               onPickDay={(dateKey) => {

@@ -41,6 +41,28 @@ export function buildMonthGrid(year: number, month: number): string[] {
   return days;
 }
 
+/**
+ * Month view's 42 days. Starts on the Monday of `anchor`'s week, so opening it on today shows this
+ * week onwards instead of the past days of the month. When `anchor` falls in the month's first
+ * week (e.g. the 1st, which Prev/Next use) this is exactly `buildMonthGrid`. `focusMonth` is that
+ * month's index when the grid is a plain month grid, or null for a rolling 6-week window.
+ */
+export function buildMonthView(anchor: string): { days: string[]; focusMonth: number | null } {
+  const start = startOfWeek(anchor);
+  const d = fromDateKey(anchor);
+  const classic = buildMonthGrid(d.getFullYear(), d.getMonth());
+  if (classic[0] === start) return { days: classic, focusMonth: d.getMonth() };
+  return { days: Array.from({ length: 42 }, (_, i) => addDays(start, i)), focusMonth: null };
+}
+
+/** "Nov 2 – Dec 13, 2026" (years on both ends only when they differ). */
+export function rangeLabel(startKey: string, endKey: string): string {
+  const sameYear = startKey.slice(0, 4) === endKey.slice(0, 4);
+  const fmt = (k: string, withYear: boolean) =>
+    fromDateKey(k).toLocaleDateString(undefined, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
+  return `${fmt(startKey, !sameYear)} – ${fmt(endKey, true)}`;
+}
+
 /** The Monday on/before `key`. */
 export function startOfWeek(key: string): string {
   const jsDay = fromDateKey(key).getDay();

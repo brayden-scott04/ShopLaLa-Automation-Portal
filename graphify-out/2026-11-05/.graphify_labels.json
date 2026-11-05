@@ -25,6 +25,7 @@
   "23": "LaLaGreen Automation Portal — Developer Guide",
   "24": "sp-api.ts",
   "25": "projects.ts",
+  "26": "page.tsx",
   "27": "README.md",
   "28": "AGENTS.md",
   "29": "client.ts",
@@ -60,12 +61,9 @@
   "59": "page-header.tsx",
   "61": "marketplaces.ts",
   "62": "page.tsx",
-  "63": "page.tsx",
-  "64": "use-persisted-state.ts",
   "65": "marketplaces.ts",
   "66": "sku-grouping.ts",
   "67": "layout.tsx",
-  "68": "page.tsx",
   "71": "dashboard-access-grid.tsx",
   "72": "price-change-plans.ts"
 }

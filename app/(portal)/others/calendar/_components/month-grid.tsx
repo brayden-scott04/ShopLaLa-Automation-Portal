@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Flag } from "lucide-react";
 import { colorFor } from "@/lib/calendar-constants";
-import { buildMonthGrid, diffDays, formatTime, formatTimeRange, todayKey } from "@/lib/calendar-date-utils";
+import { buildMonthView, diffDays, formatTime, formatTimeRange, fromDateKey, todayKey } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
@@ -56,23 +56,22 @@ function layoutWeekRibbons(week: string[], spanningTasks: CalendarTask[]): (Ribb
 }
 
 export function MonthGrid({
-  year,
-  month,
+  anchor,
   eventsByDate,
   dueByDate,
   spanningTasks,
   onDayClick,
   onEditTask,
 }: {
-  year: number;
-  month: number;
+  /** See `buildMonthView`: today gives this week onwards, a month's 1st gives that month. */
+  anchor: string;
   eventsByDate: Map<string, CalendarTask[]>;
   dueByDate: Map<string, CalendarTask[]>;
   spanningTasks: CalendarTask[];
   onDayClick: (dateKey: string) => void;
   onEditTask: (task: CalendarTask) => void;
 }) {
-  const days = buildMonthGrid(year, month);
+  const { days, focusMonth } = buildMonthView(anchor);
   const today = todayKey();
   const weeks: string[][] = [];
   for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
@@ -111,7 +110,14 @@ export function MonthGrid({
           return (
             <div key={week[0]} className="grid grid-cols-7">
               {week.map((dateKey, colIndex) => {
-                const inMonth = Number(dateKey.slice(5, 7)) - 1 === month;
+                // Plain month grid: dim the other months' days. Rolling 6-week window: dim past days.
+                const inMonth =
+                  focusMonth === null ? dateKey >= today : Number(dateKey.slice(5, 7)) - 1 === focusMonth;
+                // In the rolling window the month changes mid-grid, so the 1st carries its month name.
+                const monthTag =
+                  focusMonth === null && (dateKey.endsWith("-01") || dateKey === days[0])
+                    ? fromDateKey(dateKey).toLocaleDateString(undefined, { month: "short" })
+                    : null;
                 const isToday = dateKey === today;
                 const events = eventsByDate.get(dateKey) ?? [];
                 const dues = dueByDate.get(dateKey) ?? [];
@@ -165,7 +171,7 @@ export function MonthGrid({
                             : "text-muted-foreground"
                       }`}
                     >
-                      {dayNum}
+                      {monthTag ? `${monthTag} ${dayNum}` : dayNum}
                     </span>
 
                     {dayLanes.map((lane, laneIndex) => {
