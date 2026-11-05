@@ -1,16 +1,16 @@
 # Graph Report - LaLaGreen-Automation-Portal  (2026-11-05)
 
 ## Corpus Check
-- 209 files · ~154,921 words
+- 214 files · ~160,796 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1598 nodes · 4979 edges · 74 communities (50 shown, 24 thin omitted)
+- 1650 nodes · 5195 edges · 70 communities (46 shown, 24 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.55)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `26d20d39`
+- Built from commit: `e2bd96a6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -81,24 +81,20 @@
 - marketplaces.ts
 - sku-grouping.ts
 - layout.tsx
-- getMyPermissions
-- page.tsx
-- page.tsx
-- dashboard-access-grid.tsx
 - price-change-plans.ts
 - page.tsx
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 150 edges
-2. `createServiceClient()` - 123 edges
-3. `getSession()` - 104 edges
-4. `createClient()` - 86 edges
-5. `assertItemAccess()` - 47 edges
-6. `useT()` - 46 edges
-7. `Button()` - 32 edges
+1. `cn()` - 160 edges
+2. `createServiceClient()` - 133 edges
+3. `getSession()` - 108 edges
+4. `createClient()` - 88 edges
+5. `useT()` - 56 edges
+6. `assertItemAccess()` - 47 edges
+7. `Button()` - 34 edges
 8. `requireStaff()` - 24 edges
-9. `Skeleton()` - 22 edges
-10. `addDays()` - 22 edges
+9. `getT()` - 24 edges
+10. `Skeleton()` - 23 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `StatTile()` --calls--> `cn()`  [EXTRACTED]
@@ -115,27 +111,27 @@
 ## Import Cycles
 - None detected.
 
-## Communities (74 total, 24 thin omitted)
+## Communities (70 total, 24 thin omitted)
 
 ### Community 0 - "calendar.ts"
-Cohesion: 0.06
-Nodes (116): POST(), CalendarSidebar(), DayTasksDialog(), DayView(), layoutWeekRibbons(), MonthGrid(), RibbonCell, WEEKDAY_LABELS (+108 more)
+Cohesion: 0.05
+Nodes (125): CalendarSidebar(), DayTasksDialog(), DayView(), DeleteScopeDialog(), layoutWeekRibbons(), MonthGrid(), RibbonCell, WEEKDAY_LABELS (+117 more)
 
 ### Community 1 - "PPC Top-Up Automation"
-Cohesion: 0.05
-Nodes (97): GET(), AcosScheduleCard(), isManualTopUpFuture(), LiveProjectionCard(), nextUpcomingSlot(), PpcTopUpPage(), relativeDayLabel(), statusBadgeClass() (+89 more)
+Cohesion: 0.06
+Nodes (85): GET(), AcosScheduleCard(), isManualTopUpFuture(), LiveProjectionCard(), nextUpcomingSlot(), PpcTopUpPage(), relativeDayLabel(), statusBadgeClass() (+77 more)
 
 ### Community 2 - "Auth & Staff Management"
-Cohesion: 0.17
-Nodes (22): accessSummary(), StaffMember, changeOwnPassword(), createStaffMember(), deleteStaffMember(), listStaff(), renameStaffMember(), requireAdmin() (+14 more)
+Cohesion: 0.18
+Nodes (23): accessSummary(), ManageUsersPage(), StaffMember, DirectoryEntry, JobRoleEditor(), TeamPage(), changeOwnPassword(), createStaffMember() (+15 more)
 
 ### Community 3 - "Package Dependencies (package.json)"
 Cohesion: 0.04
 Nodes (47): dependencies, @anthropic-ai/sdk, @base-ui/react, bcryptjs, class-variance-authority, clsx, date-holidays, @dnd-kit/core (+39 more)
 
 ### Community 4 - "Sponsored Brands Upload - Campaign Data"
-Cohesion: 0.08
-Nodes (38): distributeKeywords(), GenerateForm(), padBrandAsins(), readDraft(), shuffle(), Block, BlockMode, newBlock() (+30 more)
+Cohesion: 0.10
+Nodes (33): blockIssues(), BlockSummary, buildCampaigns(), buildName(), Campaign, campaignCountForBlock(), distributeKeywords(), shuffle() (+25 more)
 
 ### Community 5 - "shadcn/ui Component Registry Config"
 Cohesion: 0.09
@@ -151,22 +147,22 @@ Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModu
 
 ### Community 8 - "product-block.tsx"
 Cohesion: 0.13
-Nodes (7): PlaceholderPage(), advertisements, finance, inventory, listingScore, orders, supplyChainAutomations
+Nodes (7): PlaceholderPage(), advertisements, goalVsPerformance, listingScore, shipments, sourcing, supplyChainAutomations
 
 ### Community 9 - "monday.com Dashboards — Comprehensive Reference"
-Cohesion: 0.13
-Nodes (29): fetchSkuPricing(), requireStaff(), marketplace, asNumber(), callSpApi(), callSpApiJson(), chunk(), credentialsFor() (+21 more)
+Cohesion: 0.14
+Nodes (28): marketplace, asNumber(), callSpApi(), callSpApiJson(), chunk(), credentialsFor(), extractFeaturedPricing(), extractOfferPrice() (+20 more)
 
 ### Community 10 - "utils.ts"
-Cohesion: 0.16
-Nodes (33): StaffDrilldown(), Tab, PriorityBadge(), priorityBadgeClass(), StaffProfileView(), TaskSubmit, addFunctionalManager(), addTeamMember() (+25 more)
+Cohesion: 0.22
+Nodes (27): StaffProfileView(), addFunctionalManager(), addTeamMember(), assignExistingResponsibility(), cleanTask(), createResponsibility(), createTeam(), deletePriorityLevel() (+19 more)
 
 ### Community 11 - "Sponsored Brands Bulk XLSX Builder"
-Cohesion: 0.14
-Nodes (26): AddSkillDialog(), LevelBadge(), LevelFilter, LevelPicker(), skillText(), StaffSkillsView(), SummaryTile(), createSkill() (+18 more)
+Cohesion: 0.19
+Nodes (21): LevelFilter, skillText(), StaffSkillsView(), SummaryTile(), createSkill(), getStaffSkills(), requireSkillsEditor(), Result (+13 more)
 
 ### Community 13 - "Root Layout"
-Cohesion: 0.17
+Cohesion: 0.15
 Nodes (5): PageHeader(), fbaFeeTracker, partners, products, trends
 
 ### Community 15 - "ESLint Config"
@@ -175,159 +171,143 @@ Nodes (4): eslintConfig, I18N_ENFORCED, SHOWN, shownStrings
 
 ### Community 23 - "LaLaGreen Automation Portal — Developer Guide"
 Cohesion: 0.05
-Nodes (36): Adding a Layer-1 group, Adding a new staff member, Adding a page to an existing group, Adding an API route, Ads Bulk Generator tables, Amazon Advertising API (Sponsored Brands Upload → "Upload to Amazon"), Architecture, Auth System (+28 more)
+Nodes (37): Adding a Layer-1 group, Adding a new staff member, Adding a page to an existing group, Adding an API route, Ads Bulk Generator tables, Amazon Advertising API (Sponsored Brands Upload → "Upload to Amazon"), Architecture, Auth System (+29 more)
 
 ### Community 24 - "sp-api.ts"
-Cohesion: 0.16
-Nodes (17): Banded, expectedFbaFee(), FeeInput, fromRows(), incremental(), IncrementalRate, priceBandOf(), RateTables (+9 more)
+Cohesion: 0.11
+Nodes (27): buildRows(), FbaFeeTrackerView(), money(), pct(), relativeTime(), SkuDetail(), TierBadge(), tierLabel() (+19 more)
 
 ### Community 25 - "projects.ts"
 Cohesion: 0.08
-Nodes (46): POST(), BrandRow, IncomingCampaign, ResolveErr, resolveMarketplace(), ResolveOk, budgetFor(), POST() (+38 more)
+Nodes (44): BrandRow, IncomingCampaign, ResolveErr, resolveMarketplace(), ResolveOk, budgetFor(), POST(), AD_GROUP_MEDIA (+36 more)
 
 ### Community 26 - "page.tsx"
-Cohesion: 0.13
-Nodes (23): daysRemaining(), EditPricePlanForm(), formatDate(), formatPrice(), HistoryTable(), MarketplaceOptions(), NewBulkPricePlanSheet(), NewPricePlanSheet() (+15 more)
+Cohesion: 0.15
+Nodes (20): daysRemaining(), EditPricePlanForm(), formatDate(), formatPrice(), HistoryTable(), NewBulkPricePlanSheet(), NewPricePlanSheet(), nextStepPrice() (+12 more)
 
 ### Community 27 - "README.md"
 Cohesion: 0.50
 Nodes (3): Deploy on Vercel, Getting Started, Learn More
 
 ### Community 41 - "build.ts"
-Cohesion: 0.17
-Nodes (19): Row, AsinBsrHistory, BsrAlert, BsrSnapshot, BsrSyncRun, daysBefore(), getAsinBsrHistory(), getTrendsOverview() (+11 more)
+Cohesion: 0.07
+Nodes (47): Row, Row, BulkDimsResult, bulkUpdateTrueDims(), daysBefore(), DimsInput, DimsJson, FbaFeeOverview (+39 more)
 
 ### Community 42 - "projects.ts"
-Cohesion: 0.16
-Nodes (26): DeleteScopeDialog(), SCOPE_OPTIONS, NameCalendarDialog(), WEEKDAY_FULL, WEEKDAY_SHORT, MODE_LABEL, SendResult, TaskFormInner() (+18 more)
+Cohesion: 0.14
+Nodes (32): SCOPE_OPTIONS, WEEKDAY_FULL, WEEKDAY_SHORT, MODE_LABEL, SendResult, KIND_LABELS, knownLocations(), NodeDialog() (+24 more)
 
 ### Community 43 - "tabs.tsx"
-Cohesion: 0.15
-Nodes (24): foldKey(), foldListeners, initials(), isActive(), memoryPins, NavGroupSection(), NavLeaf(), parseFolds() (+16 more)
+Cohesion: 0.11
+Nodes (30): foldKey(), foldListeners, initials(), isActive(), memoryPins, NavGroupSection(), NavLeaf(), parseFolds() (+22 more)
 
 ### Community 44 - "page-header.tsx"
-Cohesion: 0.07
-Nodes (57): FeeBreakdownBody(), money(), moneyIn(), ProfitAnalyticsPage(), RANGES, relativeTime(), SCOPE_CURRENCY, SCOPES (+49 more)
+Cohesion: 0.06
+Nodes (54): money(), moneyIn(), ProfitAnalyticsPage(), RANGES, relativeTime(), SCOPES, sgtDate(), addInto() (+46 more)
 
 ### Community 45 - "mail.ts"
 Cohesion: 0.06
-Nodes (68): ComposeDialog(), ComposeDialogProps, splitAddresses(), CompanyInboxPage(), formatDate(), MAIL_ACTIONS, ThreadView(), ThreadViewProps (+60 more)
+Nodes (72): ComposeDialog(), ComposeDialogProps, splitAddresses(), CompanyInboxPage(), formatDate(), MAIL_ACTIONS, ThreadView(), ThreadViewProps (+64 more)
 
 ### Community 46 - "buildVideoBulk.ts"
-Cohesion: 0.13
-Nodes (19): AlertRankCell(), AsinDetail(), buildRows(), CategoryRank, Delta(), Filter, KIND_SEVERITY, rankText() (+11 more)
+Cohesion: 0.06
+Nodes (59): FeeBreakdownBody(), SCOPE_CURRENCY, StatTile(), DimsDiff(), dimsText(), Filter, num(), SortKey (+51 more)
 
 ### Community 47 - "skeleton.tsx"
-Cohesion: 0.20
-Nodes (17): BulkDimsResult, bulkUpdateTrueDims(), daysBefore(), DimsInput, DimsJson, FbaFeeOverview, getFbaFeeOverview(), getSkuFeeHistory() (+9 more)
+Cohesion: 0.12
+Nodes (35): DepartmentDialog(), DepartmentColumn(), IconButton(), KIND_CLASSES, Legend(), NodeBox(), NodeDialogState, OrgChartView() (+27 more)
 
 ### Community 48 - "fba-fee-tracker.ts"
-Cohesion: 0.16
-Nodes (21): buildRows(), DimsDiff(), dimsText(), FbaFeeTrackerView(), Filter, money(), num(), pct() (+13 more)
+Cohesion: 0.13
+Nodes (23): PartnersView(), withField(), cleanShortName(), createPartner(), deletePartner(), friendlyError(), listPartners(), movePartner() (+15 more)
 
 ### Community 49 - "product-block.tsx"
-Cohesion: 0.06
-Nodes (55): ManageAccessDialog(), AcknowledgedCell(), COLUMNS, formatDate(), formatDateTime(), isBoolean(), isScope(), isSortKey() (+47 more)
+Cohesion: 0.13
+Nodes (23): AcknowledgedCell(), COLUMNS, formatDate(), formatDateTime(), isBoolean(), isScope(), isSortKey(), notesTooltip() (+15 more)
 
 ### Community 50 - "fba-fee-calculator.ts"
-Cohesion: 0.33
-Nodes (6): sendAiChatMessage(), ChatMessage, generateAssistantReply(), chatToolDefinitions, runChatTool(), SUBGROUP_LABELS
+Cohesion: 0.31
+Nodes (8): ManageAccessDialog(), sendAiChatMessage(), getStaffDirectory(), ChatMessage, generateAssistantReply(), chatToolDefinitions, runChatTool(), SUBGROUP_LABELS
 
 ### Community 51 - "server.ts"
 Cohesion: 0.13
 Nodes (23): IncomingCampaign, BrandCampaignInput, budgetFor(), buildBrandBulk(), COL, dedupeKeywords(), emptyRow(), MATCH_LABEL (+15 more)
 
 ### Community 52 - "permissions.ts"
-Cohesion: 0.08
-Nodes (26): GoalVsPerformanceLayout(), ProfitAnalyticsLayout(), AdvertisementsLayout(), AdsBulkGeneratorLayout(), FbaFeeTrackerLayout(), PpcTopUpLayout(), PriceChangePlansLayout(), SponsoredBrandsUploadLayout() (+18 more)
+Cohesion: 0.07
+Nodes (33): POST(), POST(), GoalVsPerformanceLayout(), DashboardPage(), ProfitAnalyticsLayout(), AdvertisementsLayout(), AdsBulkGeneratorLayout(), FbaFeeTrackerLayout() (+25 more)
 
 ### Community 53 - "fba-fee-calculator.ts"
-Cohesion: 0.09
-Nodes (37): ActionResult, BrandLibraryItem, STEPS, WizardStep, MasterListPage(), matchesRegion(), PullFromAmazonSheet(), PullResult (+29 more)
+Cohesion: 0.12
+Nodes (25): ActionResult, BrandLibraryItem, COUNTRIES, DeleteConfirm(), AddPriceDialog(), formatPercent(), ImportPricesSheet(), PriceCell() (+17 more)
 
 ### Community 54 - "getStaffDirectory"
 Cohesion: 0.07
-Nodes (67): BrandLibrarySection(), AdsBulkGeneratorPage(), Step, PartnersView(), withField(), createBrand(), createKeywordTheme(), createVideoAsset() (+59 more)
+Nodes (70): BrandLibrarySection(), AdsBulkGeneratorPage(), Step, STEPS, WizardStep, AssetsSection(), BrandsSection(), KeywordGarageSection() (+62 more)
 
 ### Community 56 - "session.ts"
-Cohesion: 0.16
-Nodes (16): POST(), POST(), toLocale(), setLocaleCookie(), EMPTY_PERMISSIONS, LEGACY_SECTIONS, ROLE_LABELS, ROLES (+8 more)
+Cohesion: 0.23
+Nodes (13): POST(), POST(), toLocale(), setLocaleCookie(), toRole(), clearSessionCookie(), getSecretKey(), SessionPayload (+5 more)
 
 ### Community 57 - "page.tsx"
-Cohesion: 0.23
-Nodes (16): RegionPicker(), RegionTag(), addRegionsTo(), addSkus(), addSkusGrouped(), deleteSku(), fetchAmazonMissingSkus(), listSkus() (+8 more)
-
-### Community 58 - "fba-fee-tracker-constants.ts"
-Cohesion: 0.29
-Nodes (7): FeeAlert, ALERT_CAUSES, ALERT_KIND_LABELS, ALERT_KINDS, ALERT_STATUS_LABELS, AlertCause, AlertKind
+Cohesion: 0.19
+Nodes (14): distributeKeywords(), GenerateForm(), padBrandAsins(), readDraft(), shuffle(), Block, BlockMode, newBlock() (+6 more)
 
 ### Community 59 - "page-header.tsx"
-Cohesion: 0.08
-Nodes (40): Option, SearchableSelect(), ChatPanel(), markdownComponents, AddPriceDialog(), formatPercent(), ImportPricesSheet(), PriceCell() (+32 more)
+Cohesion: 0.10
+Nodes (27): Option, SearchableSelect(), PersonRow(), AlertDialogMedia(), AlertDialogOverlay(), Avatar(), AvatarBadge(), AvatarFallback() (+19 more)
 
 ### Community 60 - "nav.ts"
-Cohesion: 0.16
-Nodes (15): AccessItem, adsBulkGenerator, BASE_PATHS, bulkCampaignUpload, calendar, defineNavItem(), masterList, NavGroup (+7 more)
+Cohesion: 0.17
+Nodes (14): AccessItem, BASE_PATHS, calendar, companyInbox, defineNavItem(), masterList, NavGroup, NavItem (+6 more)
 
 ### Community 61 - "marketplaces.ts"
-Cohesion: 0.19
-Nodes (16): ColumnDetectSchema, ColumnMapping, detectColumnHeuristically(), detectColumnWithAi(), DetectedSkuSheet, detectStatusColumnHeuristically(), extractSkusFromSheet(), findColumn() (+8 more)
+Cohesion: 0.10
+Nodes (41): MasterListPage(), matchesRegion(), PullFromAmazonSheet(), PullResult, RegionFilter, RegionPicker(), RegionTag(), addRegionsTo() (+33 more)
 
 ### Community 62 - "page.tsx"
 Cohesion: 0.12
 Nodes (32): addProductPrice(), cleanDetails(), cleanPrice(), deleteProductPrice(), getPriceForSku(), importProductPrices(), listFactories(), listProductPrices() (+24 more)
 
-### Community 63 - "build.ts"
-Cohesion: 0.28
-Nodes (12): blockIssues(), BlockSummary, buildCampaigns(), buildName(), Campaign, campaignCountForBlock(), distributeKeywords(), shuffle() (+4 more)
-
 ### Community 64 - "dashboard-access-grid.tsx"
-Cohesion: 0.23
-Nodes (11): DashboardAccessGrid(), Layout, layoutKey(), layoutListeners, memoryLayouts, parseLayout(), readLayout(), SortableTile() (+3 more)
+Cohesion: 0.07
+Nodes (35): PortalLayout(), LanguageCard(), PasswordField(), SettingsPage(), DashboardAccessGrid(), Layout, layoutKey(), layoutListeners (+27 more)
 
 ### Community 65 - "marketplaces.ts"
-Cohesion: 0.29
-Nodes (5): MARKETPLACE_CODES, MARKETPLACE_IDS, Region, REGION_HOSTS, REGION_LABELS
+Cohesion: 0.18
+Nodes (10): MarketplaceOptions(), formatPrice(), SkuDetailDialog(), formatMoney(), MARKETPLACE_CODES, MARKETPLACE_IDS, marketplacesByRegion(), Region (+2 more)
 
 ### Community 66 - "sku-grouping.ts"
 Cohesion: 0.47
 Nodes (4): InsertionPlan, naturalCompare(), planInsertions(), skuPrefix()
 
 ### Community 67 - "layout.tsx"
-Cohesion: 0.12
-Nodes (24): inter, metadata, RootLayout(), LoginPage(), DashboardPage(), CORE_VALUES, CoreValue, CoreValues() (+16 more)
-
-### Community 68 - "getMyPermissions"
-Cohesion: 0.47
-Nodes (4): PortalLayout(), Sidebar(), Topbar(), getMyPermissions()
-
-### Community 71 - "dashboard-access-grid.tsx"
-Cohesion: 0.13
-Nodes (24): ManageUsersPage(), LanguageCard(), PasswordField(), SettingsPage(), JobRoleEditor(), DashboardLink(), PinToggle(), NewTeamDialog() (+16 more)
+Cohesion: 0.11
+Nodes (27): inter, metadata, RootLayout(), LoginPage(), OrgChartPage(), CORE_VALUES, CoreValue, CoreValues() (+19 more)
 
 ### Community 72 - "price-change-plans.ts"
 Cohesion: 0.29
 Nodes (11): applyManualStep(), cancelPricePlans(), createBulkPricePlans(), createPricePlan(), listPricePlans(), PricePlan, PriceType, requirePlanAccess() (+3 more)
 
 ## Knowledge Gaps
-- **318 isolated node(s):** `StaffMember`, `SCOPE_CURRENCY`, `ActionResult`, `BrandLibraryItem`, `Step` (+313 more)
+- **324 isolated node(s):** `StaffMember`, `SCOPE_CURRENCY`, `ActionResult`, `BrandLibraryItem`, `Step` (+319 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `getSession()` connect `calendar.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `PPC Schedule AI Import`, `monday.com Dashboards — Comprehensive Reference`, `utils.ts`, `Sponsored Brands Bulk XLSX Builder`, `projects.ts`, `build.ts`, `page-header.tsx`, `mail.ts`, `skeleton.tsx`, `product-block.tsx`, `fba-fee-calculator.ts`, `server.ts`, `permissions.ts`, `getStaffDirectory`, `session.ts`, `page.tsx`, `marketplaces.ts`, `page.tsx`, `layout.tsx`, `getMyPermissions`, `price-change-plans.ts`?**
-  _High betweenness centrality (0.123) - this node is a cross-community bridge._
-- **Why does `cn()` connect `page-header.tsx` to `calendar.ts`, `dashboard-access-grid.tsx`, `PPC Top-Up Automation`, `Sponsored Brands Upload - Campaign Data`, `getMyPermissions`, `dashboard-access-grid.tsx`, `projects.ts`, `tabs.tsx`, `page-header.tsx`, `mail.ts`, `buildVideoBulk.ts`, `utils.ts`, `fba-fee-tracker.ts`, `product-block.tsx`, `Sponsored Brands Bulk XLSX Builder`, `fba-fee-calculator.ts`, `getStaffDirectory`?**
-  _High betweenness centrality (0.095) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `Package Dependencies (package.json)` to `PPC Top-Up Automation`, `marketplaces.ts`, `mail.ts`?**
-  _High betweenness centrality (0.063) - this node is a cross-community bridge._
+- **Why does `cn()` connect `page-header.tsx` to `calendar.ts`, `dashboard-access-grid.tsx`, `Sponsored Brands Upload - Campaign Data`, `projects.ts`, `tabs.tsx`, `page-header.tsx`, `mail.ts`, `buildVideoBulk.ts`, `skeleton.tsx`, `fba-fee-tracker.ts`, `product-block.tsx`, `utils.ts`, `Sponsored Brands Bulk XLSX Builder`, `fba-fee-calculator.ts`, `sp-api.ts`, `page.tsx`?**
+  _High betweenness centrality (0.122) - this node is a cross-community bridge._
+- **Why does `getSession()` connect `calendar.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `PPC Schedule AI Import`, `utils.ts`, `Sponsored Brands Bulk XLSX Builder`, `projects.ts`, `page.tsx`, `build.ts`, `page-header.tsx`, `mail.ts`, `skeleton.tsx`, `fba-fee-tracker.ts`, `fba-fee-calculator.ts`, `server.ts`, `permissions.ts`, `getStaffDirectory`, `session.ts`, `marketplaces.ts`, `page.tsx`, `dashboard-access-grid.tsx`, `price-change-plans.ts`?**
+  _High betweenness centrality (0.109) - this node is a cross-community bridge._
+- **Why does `createClient()` connect `calendar.ts` to `PPC Top-Up Automation`, `Auth & Staff Management`, `price-change-plans.ts`, `build.ts`, `utils.ts`, `Sponsored Brands Bulk XLSX Builder`, `page-header.tsx`, `skeleton.tsx`, `fba-fee-tracker.ts`, `fba-fee-calculator.ts`, `server.ts`, `permissions.ts`, `getStaffDirectory`, `session.ts`, `projects.ts`, `marketplaces.ts`, `page.tsx`?**
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
 - **What connects `StaffMember`, `SCOPE_CURRENCY`, `ActionResult` to the rest of the system?**
-  _321 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _327 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `calendar.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.05826065891472868 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05210688591983556 - nodes in this community are weakly interconnected._
 - **Should `PPC Top-Up Automation` be split into smaller, more focused modules?**
-  _Cohesion score 0.0527868343424934 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06303030303030303 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies (package.json)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._

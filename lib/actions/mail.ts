@@ -5,6 +5,8 @@ import { ImapFlow, type FetchMessageObject, type MessageStructureObject } from "
 import { simpleParser, type AddressObject, type ParsedMail } from "mailparser";
 import nodemailer from "nodemailer";
 import { getSession } from "@/lib/session";
+import { getMyPermissions } from "@/lib/permissions";
+import { isAllowed } from "@/lib/roles";
 
 const TITAN_HOST = "imap.secureserver.net";
 const TITAN_PORT = 993;
@@ -19,6 +21,8 @@ const THREAD_SCAN_LIMIT = 100;
 const MAX_THREAD_ITEMS = 100;
 
 export type MailAccountId = "titan" | "yahoo";
+/** Which folder the inbox page is browsing. */
+export type MailFolder = "inbox" | "trash";
 
 interface MailAccountConfig {
   id: MailAccountId;
@@ -202,12 +206,13 @@ function mailClientFor(accountId: MailAccountId): ImapFlow | null {
 // connect/login/logout per action. Measured on Yahoo: login ~5 s and each
 // switch of the selected mailbox (INBOX <-> Sent) ~1.7 s, versus under 1 s to
 // fetch 30 envelopes — so setup, not work, was most of every click. Each
-// account therefore keeps TWO connections: one that only ever uses INBOX and
-// one that only ever uses Sent, so no request pays for a mailbox switch and
-// INBOX/Sent work can run in parallel. Kept on globalThis so dev hot-reloads
+// account therefore keeps a connection per folder it touches: one that only
+// ever uses INBOX, one for Sent and (opened lazily, only once someone browses
+// or restores from Trash) one for Trash, so no request pays for a mailbox
+// switch and INBOX/Sent work can run in parallel. Kept on globalThis so dev hot-reloads
 // don't strand old connections; imapflow's mailbox locks serialize concurrent
 // users of one connection.
-type MailRole = "inbox" | "sent";
+type MailRole = "inbox" | "sent" | "trash";
 type PoolKey = `${MailAccountId}:${MailRole}`;
 
 const poolSymbol = Symbol.for("portal.mailClientPool");
@@ -567,7 +572,42 @@ function connectionErrorMessage(err: unknown, accountId: MailAccountId): string 
   return err instanceof Error ? err.message : `Failed to connect to ${config.name} mailbox`;
 }
 
-async function listMailEmailsImpl(accountId: MailAccountId): Promise<{
+// Like the Sent path, the Trash path is stable per account.
+const trashPathCache = new Map<MailAccountId, string>();
+
+async function findTrashMailbox(client: ImapFlow, accountId: MailAccountId): Promise<string | null> {
+  const cached = trashPathCache.get(accountId);
+  if (cached) return cached;
+
+  const mailboxes = await client.list();
+  const bySpecialUse = mailboxes.find((mb) => mb.specialUse === "\\Trash");
+  const byName = mailboxes.find((mb) => /^(trash|bin|deleted( items| messages)?)$/i.test(mb.name));
+  const path = bySpecialUse?.path ?? byName?.path ?? null;
+  if (path) trashPathCache.set(accountId, path);
+  return path;
+}
+
+/** The mailbox path behind a MailFolder; null when the account has no Trash folder. */
+async function folderPath(client: ImapFlow, accountId: MailAccountId, folder: MailFolder): Promise<string | null> {
+  return folder === "inbox" ? "INBOX" : findTrashMailbox(client, accountId);
+}
+
+/**
+ * Trash / restore change the mailbox, so they re-check the same item access the
+ * page's layout.tsx guard enforces (server actions are callable on their own).
+ */
+async function requireInboxAccess(): Promise<string | null> {
+  const session = await getSession();
+  if (!session) return "Unauthorized";
+  const { role, permissions } = await getMyPermissions();
+  if (!isAllowed(role, permissions, "others", "company-inbox")) return "Forbidden";
+  return null;
+}
+
+async function listMailEmailsImpl(
+  accountId: MailAccountId,
+  folder: MailFolder
+): Promise<{
   data: MailListItem[] | null;
   error: string | null;
 }> {
@@ -577,16 +617,20 @@ async function listMailEmailsImpl(accountId: MailAccountId): Promise<{
   const config = MAIL_ACCOUNTS[accountId];
   if (!mailAuthFor(accountId)) return { data: null, error: `${config.name} email is not configured` };
 
-  // A (re)loaded list means "show me what's new" — drop the cached INBOX scan.
-  scanCache.delete(`${accountId}:inbox`);
-  // Log in the Sent connection in the background now, so the "replied" badge
-  // scan that follows doesn't pay for a second ~5 s login on its own.
-  pooledClient(accountId, "sent").catch(() => {});
+  if (folder === "inbox") {
+    // A (re)loaded list means "show me what's new" — drop the cached INBOX scan.
+    scanCache.delete(`${accountId}:inbox`);
+    // Log in the Sent connection in the background now, so the "replied" badge
+    // scan that follows doesn't pay for a second ~5 s login on its own.
+    pooledClient(accountId, "sent").catch(() => {});
+  }
 
   try {
-    return await withMailClient(accountId, "inbox", async (client) => {
+    return await withMailClient(accountId, folder, async (client) => {
       const items: MailListItem[] = [];
-      const lock = await client.getMailboxLock("INBOX");
+      const path = await folderPath(client, accountId, folder);
+      if (!path) return { data: null, error: `No Trash folder found in the ${config.name} mailbox` };
+      const lock = await client.getMailboxLock(path);
       try {
         const total = client.mailbox && typeof client.mailbox !== "boolean" ? client.mailbox.exists : 0;
         if (total > 0) {
@@ -625,12 +669,12 @@ async function listMailEmailsImpl(accountId: MailAccountId): Promise<{
   }
 }
 
-export async function listTitanEmails() {
-  return listMailEmailsImpl("titan");
+export async function listTitanEmails(folder: MailFolder = "inbox") {
+  return listMailEmailsImpl("titan", folder);
 }
 
-export async function listYahooEmails() {
-  return listMailEmailsImpl("yahoo");
+export async function listYahooEmails(folder: MailFolder = "inbox") {
+  return listMailEmailsImpl("yahoo", folder);
 }
 
 /**
@@ -687,7 +731,7 @@ export async function getYahooRepliedUids(items: { uid: number; messageId: strin
  * A single INBOX message — the fast path for opening an email: the page shows
  * this immediately while the full conversation (getMailThreadImpl) loads.
  */
-async function getMailMessageImpl(accountId: MailAccountId, uid: number): Promise<{
+async function getMailMessageImpl(accountId: MailAccountId, uid: number, folder: MailFolder): Promise<{
   data: MailDetail | null;
   error: string | null;
 }> {
@@ -698,11 +742,13 @@ async function getMailMessageImpl(accountId: MailAccountId, uid: number): Promis
   if (!mailAuthFor(accountId)) return { data: null, error: `${config.name} email is not configured` };
 
   try {
-    return await withMailClient(accountId, "inbox", async (client) => {
-      const lock = await client.getMailboxLock("INBOX");
+    return await withMailClient(accountId, folder, async (client) => {
+      const path = await folderPath(client, accountId, folder);
+      if (!path) return { data: null, error: `No Trash folder found in the ${config.name} mailbox` };
+      const lock = await client.getMailboxLock(path);
       let message: LoadedMessage | undefined;
       try {
-        message = (await cachedFetchMessages(client, accountId, "inbox", [uid])).get(uid);
+        message = (await cachedFetchMessages(client, accountId, folder, [uid])).get(uid);
       } finally {
         lock.release();
       }
@@ -718,12 +764,12 @@ async function getMailMessageImpl(accountId: MailAccountId, uid: number): Promis
   }
 }
 
-export async function getTitanEmail(uid: number) {
-  return getMailMessageImpl("titan", uid);
+export async function getTitanEmail(uid: number, folder: MailFolder = "inbox") {
+  return getMailMessageImpl("titan", uid, folder);
 }
 
-export async function getYahooEmail(uid: number) {
-  return getMailMessageImpl("yahoo", uid);
+export async function getYahooEmail(uid: number, folder: MailFolder = "inbox") {
+  return getMailMessageImpl("yahoo", uid, folder);
 }
 
 /**
@@ -1062,6 +1108,121 @@ export async function sendTitanEmail(input: SendMailInput) {
 
 export async function sendYahooEmail(input: SendMailInput) {
   return sendMailReplyImpl("yahoo", input);
+}
+
+/**
+ * Moves one INBOX message to the account's Trash folder, the same as "Delete"
+ * in webmail: it stays recoverable from Trash (the portal's Trash view, or
+ * webmail) until the provider empties it. Never flags \Deleted + EXPUNGE as a
+ * fallback; if there's no Trash folder this errors instead of deleting
+ * permanently.
+ *
+ * Returns the message's new UID in Trash so the page can offer Undo. Taken from
+ * the server's UIDPLUS reply when it sends one, else found by Message-ID; null
+ * if neither works (Undo is then hidden, but the Trash view can still restore).
+ */
+async function trashMailImpl(accountId: MailAccountId, uid: number): Promise<{
+  data: { trashUid: number | null } | null;
+  error: string | null;
+}> {
+  const denied = await requireInboxAccess();
+  if (denied) return { data: null, error: denied };
+
+  const config = MAIL_ACCOUNTS[accountId];
+  if (!mailAuthFor(accountId)) return { data: null, error: `${config.name} email is not configured` };
+
+  try {
+    // withMailClient may retry once on a dead connection. That's safe here: a
+    // second MOVE of an already-moved UID just matches nothing.
+    const result = await withMailClient(accountId, "inbox", async (client) => {
+      const trashPath = await findTrashMailbox(client, accountId);
+      if (!trashPath) return null;
+      const lock = await client.getMailboxLock("INBOX");
+      try {
+        const head = await client.fetchOne(String(uid), { envelope: true }, { uid: true });
+        if (!head) return { moved: false as const, messageId: null, trashPath };
+        const moved = await client.messageMove(String(uid), trashPath, { uid: true });
+        return { moved, messageId: head.envelope?.messageId ?? null, trashPath };
+      } finally {
+        lock.release();
+      }
+    });
+    if (result === null) return { data: null, error: `No Trash folder found in the ${config.name} mailbox` };
+    if (result.moved === false) {
+      return { data: null, error: "Message not found (it may already have been moved)" };
+    }
+
+    scanCache.delete(`${accountId}:inbox`);
+    messageCache.delete(`${accountId}:inbox:${uid}`);
+
+    let trashUid = result.moved.uidMap?.get(uid) ?? null;
+    if (trashUid === null && result.messageId) {
+      const { messageId, trashPath } = result;
+      trashUid = await withMailClient(accountId, "trash", async (client) => {
+        const lock = await client.getMailboxLock(trashPath);
+        try {
+          const found = await client.search({ header: { "message-id": messageId } }, { uid: true });
+          return found && found.length > 0 ? Math.max(...found) : null;
+        } finally {
+          lock.release();
+        }
+      }).catch(() => null);
+    }
+    return { data: { trashUid }, error: null };
+  } catch (err) {
+    return { data: null, error: connectionErrorMessage(err, accountId) };
+  }
+}
+
+export async function trashTitanEmail(uid: number) {
+  return trashMailImpl("titan", uid);
+}
+
+export async function trashYahooEmail(uid: number) {
+  return trashMailImpl("yahoo", uid);
+}
+
+/** Moves a message from Trash back to INBOX: the Trash view's Restore and the post-trash Undo. */
+async function restoreMailImpl(accountId: MailAccountId, trashUid: number): Promise<{
+  data: { ok: true } | null;
+  error: string | null;
+}> {
+  const denied = await requireInboxAccess();
+  if (denied) return { data: null, error: denied };
+
+  const config = MAIL_ACCOUNTS[accountId];
+  if (!mailAuthFor(accountId)) return { data: null, error: `${config.name} email is not configured` };
+
+  try {
+    const moved = await withMailClient(accountId, "trash", async (client) => {
+      const trashPath = await findTrashMailbox(client, accountId);
+      if (!trashPath) return null;
+      const lock = await client.getMailboxLock(trashPath);
+      try {
+        return await client.messageMove(String(trashUid), "INBOX", { uid: true });
+      } finally {
+        lock.release();
+      }
+    });
+    if (moved === null) return { data: null, error: `No Trash folder found in the ${config.name} mailbox` };
+    if (moved === false) {
+      return { data: null, error: "Message not found in Trash (it may have been emptied or already restored)" };
+    }
+
+    scanCache.delete(`${accountId}:inbox`);
+    messageCache.delete(`${accountId}:trash:${trashUid}`);
+    return { data: { ok: true }, error: null };
+  } catch (err) {
+    return { data: null, error: connectionErrorMessage(err, accountId) };
+  }
+}
+
+export async function restoreTitanEmail(trashUid: number) {
+  return restoreMailImpl("titan", trashUid);
+}
+
+export async function restoreYahooEmail(trashUid: number) {
+  return restoreMailImpl("yahoo", trashUid);
 }
 
 export interface MailAccountOption {
