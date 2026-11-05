@@ -46,6 +46,7 @@ import {
 } from "@/lib/actions/tasks";
 import { getCurrentUser, getStaffDirectory } from "@/lib/actions/staff";
 import { PRIORITY_CLASSES, PRIORITY_LABELS } from "@/lib/tasks-constants";
+import { usePersistedState } from "@/lib/use-persisted-state";
 
 const PRIORITY_ICONS: Record<number, LucideIcon> = { 4: ChevronUp, 5: ChevronsUp };
 
@@ -81,6 +82,11 @@ const COLUMNS: { label: string; sort?: SortKey; className?: string }[] = [
   { label: "", className: "w-20" },
 ];
 type Scope = "all" | "mine" | "assigned";
+
+// Guards for the view settings remembered in localStorage (sort, scope, show done).
+const isSortKey = (v: unknown): v is SortKey => v === "priority" || v === "date" || v === "dueDate";
+const isScope = (v: unknown): v is Scope => v === "all" || v === "mine" || v === "assigned";
+const isBoolean = (v: unknown): v is boolean => typeof v === "boolean";
 
 function todayIso(): string {
   const d = new Date();
@@ -170,10 +176,11 @@ export default function TasksPage() {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("priority");
-  const [sortDesc, setSortDesc] = useState(true);
-  const [scope, setScope] = useState<Scope>("all");
-  const [showDone, setShowDone] = useState(false);
+  // The page reopens with the sort and filters the person last used.
+  const [sortKey, setSortKey] = usePersistedState<SortKey>("tasks.sortKey", "priority", isSortKey);
+  const [sortDesc, setSortDesc] = usePersistedState("tasks.sortDesc", true, isBoolean);
+  const [scope, setScope] = usePersistedState<Scope>("tasks.scope", "all", isScope);
+  const [showDone, setShowDone] = usePersistedState("tasks.showDone", false, isBoolean);
   const [search, setSearch] = useState("");
   const [isPending, startTransition] = useTransition();
   const columns = useResizableColumns("tasks.columnWidths", COLUMNS.length);

@@ -41,8 +41,10 @@ import { TaskFormDialog } from "./_components/task-form-dialog";
 import { DeleteScopeDialog } from "./_components/delete-scope-dialog";
 import { ManageAccessDialog } from "./_components/manage-access-dialog";
 import { NameCalendarDialog } from "./_components/name-calendar-dialog";
+import { usePersistedState } from "@/lib/use-persisted-state";
 
 type ViewMode = "month" | "week" | "day" | "year";
+const isViewMode = (v: unknown): v is ViewMode => v === "month" || v === "week" || v === "day" || v === "year";
 const VIEW_OPTIONS: { key: ViewMode; label: string }[] = [
   { key: "day", label: "Day" },
   { key: "week", label: "Week" },
@@ -66,7 +68,8 @@ function rangeFor(view: ViewMode, anchor: string): [string, string] {
 }
 
 export default function CalendarPage() {
-  const [view, setView] = useState<ViewMode>("month");
+  // Month is the default; after that the page reopens in whichever view the person last picked.
+  const [view, setView] = usePersistedState<ViewMode>("calendar.view", "month", isViewMode);
   const [anchor, setAnchor] = useState(todayKey());
   const year = Number(anchor.slice(0, 4));
   const month = Number(anchor.slice(5, 7)) - 1;
@@ -220,6 +223,9 @@ export default function CalendarPage() {
     });
   });
 
+  // Upcoming follows the My Calendars ticks too (everything shows until the selection has loaded).
+  const visibleUpcoming = selectionReady ? upcoming.filter((t) => selectedIds.has(t.calendarId)) : upcoming;
+
   const dayActiveTasks = dayDialogDate ? activeByDate.get(dayDialogDate) ?? [] : [];
 
   // Tasks you can't edit (view-only calendars, Shared with me) open the read-only day list instead.
@@ -256,99 +262,97 @@ export default function CalendarPage() {
       <div className="space-y-6 p-6 md:p-8">
         <div>
           <h3 className="mb-2 text-sm font-semibold text-foreground">Upcoming (next 7 days)</h3>
-          <UpcomingPanel tasks={upcoming} />
+          <UpcomingPanel tasks={visibleUpcoming} />
         </div>
 
-        <div className="flex flex-col gap-6 lg:flex-row">
-          <CalendarSidebar
-            calendars={calendars}
-            selectedIds={selectedIds}
-            onToggle={toggleCalendar}
-            onSetAll={setAllCalendars}
-            onCreateNew={() => setNewCalendarOpen(true)}
-            onRename={(cal) => setRenameTarget(cal)}
-            onDelete={handleDeleteCalendar}
-            onManageAccess={(cal) => setManageAccessTarget(cal)}
-          />
+        <CalendarSidebar
+          calendars={calendars}
+          selectedIds={selectedIds}
+          onToggle={toggleCalendar}
+          onSetAll={setAllCalendars}
+          onCreateNew={() => setNewCalendarOpen(true)}
+          onRename={(cal) => setRenameTarget(cal)}
+          onDelete={handleDeleteCalendar}
+          onManageAccess={(cal) => setManageAccessTarget(cal)}
+        />
 
-          <div className="flex min-w-0 flex-1 flex-col">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-lg font-semibold text-foreground">{periodLabel}</h3>
-              <div className="flex flex-wrap items-center gap-1.5">
-                <div className="flex overflow-hidden rounded-lg border border-border">
-                  {VIEW_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.key}
-                      type="button"
-                      onClick={() => changeView(opt.key)}
-                      className={`px-2.5 py-1 text-sm transition-colors ${
-                        view === opt.key ? "bg-primary text-primary-foreground" : "hover:bg-accent"
-                      }`}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-                <Button size="sm" variant="outline" onClick={() => setAnchor(todayKey())}>
-                  Today
-                </Button>
-                <Button size="icon-sm" variant="outline" onClick={() => step(-1)} title="Previous">
-                  <ChevronLeft />
-                </Button>
-                <Button size="icon-sm" variant="outline" onClick={() => step(1)} title="Next">
-                  <ChevronRight />
-                </Button>
+        <div className="flex min-w-0 flex-col">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-lg font-semibold text-foreground">{periodLabel}</h3>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <div className="flex overflow-hidden rounded-lg border border-border">
+                {VIEW_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.key}
+                    type="button"
+                    onClick={() => changeView(opt.key)}
+                    className={`px-2.5 py-1 text-sm transition-colors ${
+                      view === opt.key ? "bg-primary text-primary-foreground" : "hover:bg-accent"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
               </div>
+              <Button size="sm" variant="outline" onClick={() => setAnchor(todayKey())}>
+                Today
+              </Button>
+              <Button size="icon-sm" variant="outline" onClick={() => step(-1)} title="Previous">
+                <ChevronLeft />
+              </Button>
+              <Button size="icon-sm" variant="outline" onClick={() => step(1)} title="Next">
+                <ChevronRight />
+              </Button>
             </div>
-
-            {view === "month" && (
-              <MonthGrid
-                year={year}
-                month={month}
-                eventsByDate={eventsByDate}
-                dueByDate={dueByDate}
-                spanningTasks={spanningTasks}
-                onDayClick={(dateKey) => setDayDialogDate(dateKey)}
-                onEditTask={openTask}
-              />
-            )}
-            {view === "week" && (
-              <WeekView
-                anchor={anchor}
-                activeByDate={activeByDate}
-                canAdd={editableCalendarIds.size > 0}
-                onHeaderClick={(dateKey) => {
-                  setAnchor(dateKey);
-                  changeView("day");
-                }}
-                onAddTask={(dateKey) => setTaskForm({ open: true, task: null, date: dateKey })}
-                onEditTask={openTask}
-              />
-            )}
-            {view === "day" && (
-              <DayView
-                date={anchor}
-                tasks={activeByDate.get(anchor) ?? []}
-                canAdd={editableCalendarIds.size > 0}
-                onAddTask={() => setTaskForm({ open: true, task: null, date: anchor })}
-                onEditTask={openTask}
-              />
-            )}
-            {view === "year" && (
-              <YearView
-                year={year}
-                activeByDate={activeByDate}
-                onPickMonth={(m) => {
-                  setAnchor(`${year}-${String(m + 1).padStart(2, "0")}-01`);
-                  changeView("month");
-                }}
-                onPickDay={(dateKey) => {
-                  setAnchor(dateKey);
-                  changeView("day");
-                }}
-              />
-            )}
           </div>
+
+          {view === "month" && (
+            <MonthGrid
+              year={year}
+              month={month}
+              eventsByDate={eventsByDate}
+              dueByDate={dueByDate}
+              spanningTasks={spanningTasks}
+              onDayClick={(dateKey) => setDayDialogDate(dateKey)}
+              onEditTask={openTask}
+            />
+          )}
+          {view === "week" && (
+            <WeekView
+              anchor={anchor}
+              activeByDate={activeByDate}
+              canAdd={editableCalendarIds.size > 0}
+              onHeaderClick={(dateKey) => {
+                setAnchor(dateKey);
+                changeView("day");
+              }}
+              onAddTask={(dateKey) => setTaskForm({ open: true, task: null, date: dateKey })}
+              onEditTask={openTask}
+            />
+          )}
+          {view === "day" && (
+            <DayView
+              date={anchor}
+              tasks={activeByDate.get(anchor) ?? []}
+              canAdd={editableCalendarIds.size > 0}
+              onAddTask={() => setTaskForm({ open: true, task: null, date: anchor })}
+              onEditTask={openTask}
+            />
+          )}
+          {view === "year" && (
+            <YearView
+              year={year}
+              activeByDate={activeByDate}
+              onPickMonth={(m) => {
+                setAnchor(`${year}-${String(m + 1).padStart(2, "0")}-01`);
+                changeView("month");
+              }}
+              onPickDay={(dateKey) => {
+                setAnchor(dateKey);
+                changeView("day");
+              }}
+            />
+          )}
         </div>
       </div>
 

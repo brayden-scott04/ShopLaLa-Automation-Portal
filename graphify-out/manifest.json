@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/calendar-sidebar.tsx": {
-    "mtime": 1792860292.9166763,
-    "ast_hash": "4bac9c99b31d6bb57f89e752629d5ad4",
+    "mtime": 1793866872.2015965,
+    "ast_hash": "27e146a2e779b33bd9fb08d4cd69d4ef",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/day-tasks-dialog.tsx": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/page.tsx": {
-    "mtime": 1792860291.341488,
-    "ast_hash": "2641b1ea1bfbf32df52d025668124dc8",
+    "mtime": 1793867175.0337627,
+    "ast_hash": "714f7145f0525a281908cac3701bff91",
     "semantic_hash": ""
   },
   "app/api/tools/ads-bulk-generator/generate/route.ts": {
@@ -635,8 +635,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/tasks/page.tsx": {
-    "mtime": 1793033910.2497053,
-    "ast_hash": "54dd02f3acdfb85360fb0e557a2f49de",
+    "mtime": 1793866872.2015965,
+    "ast_hash": "58c015929ff03993cb92e106c5c51405",
     "semantic_hash": ""
   },
   "components/tasks/task-form-dialog.tsx": {
@@ -1127,6 +1127,11 @@
   "lib/i18n/translate.ts": {
     "mtime": 1793287354.680648,
     "ast_hash": "2ba87e664bb49cd2c277dfa1aac043ea",
+    "semantic_hash": ""
+  },
+  "lib/use-persisted-state.ts": {
+    "mtime": 1793866906.1061096,
+    "ast_hash": "be7b72bf68bebc7acd0bf2cde60245ca",
     "semantic_hash": ""
   }
 }

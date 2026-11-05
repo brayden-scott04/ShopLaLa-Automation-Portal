@@ -34,38 +34,27 @@ export function CalendarSidebar({
 }) {
   const allSelected = calendars.length > 0 && calendars.every((c) => selectedIds.has(c.id));
 
+  // A horizontal bar above the calendar (it used to be a left column), so the grid gets the full width.
   return (
-    <div className="flex w-64 shrink-0 flex-col gap-3">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold text-foreground">My Calendars</h3>
-        <div className="flex items-center gap-1">
-          {calendars.length > 1 && (
-            <Button size="xs" variant="ghost" onClick={() => onSetAll(!allSelected)}>
-              {allSelected ? "Clear all" : "Select all"}
-            </Button>
-          )}
-          <Button size="icon-sm" variant="outline" onClick={onCreateNew} title="New calendar">
-            <Plus />
-          </Button>
-        </div>
-      </div>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-border px-3 py-2">
+      <h3 className="shrink-0 text-sm font-semibold text-foreground">My Calendars</h3>
 
       {calendars.length === 0 ? (
         <p className="text-xs text-muted-foreground">
           No calendars yet — create one to start pinning tasks.
         </p>
       ) : (
-        <ul className="space-y-1">
+        <ul className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
           {calendars.map((cal) => (
             <li
               key={cal.id}
-              className="group flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent"
+              className="group flex max-w-64 items-center gap-2 rounded-md px-2 py-1 hover:bg-accent"
             >
               <Checkbox
                 checked={selectedIds.has(cal.id)}
                 onCheckedChange={() => onToggle(cal.id)}
               />
-              <span className="min-w-0 flex-1 truncate text-sm text-foreground">{cal.name}</span>
+              <span className="min-w-0 truncate text-sm text-foreground">{cal.name}</span>
               {cal.myRole !== "owner" && cal.id !== SHARED_CALENDAR_ID && (
                 <Badge variant="secondary" className="shrink-0 text-[10px]">
                   {cal.myRole === "editor" ? "Shared · Editor" : "Shared · View"}
@@ -78,7 +67,7 @@ export function CalendarSidebar({
                       <Button
                         size="icon-xs"
                         variant="ghost"
-                        className="shrink-0 opacity-0 group-hover:opacity-100"
+                        className="shrink-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
                       />
                     }
                   >
@@ -104,6 +93,17 @@ export function CalendarSidebar({
           ))}
         </ul>
       )}
+
+      <div className="ml-auto flex shrink-0 items-center gap-1">
+        {calendars.length > 1 && (
+          <Button size="xs" variant="ghost" onClick={() => onSetAll(!allSelected)}>
+            {allSelected ? "Clear all" : "Select all"}
+          </Button>
+        )}
+        <Button size="icon-sm" variant="outline" onClick={onCreateNew} title="New calendar">
+          <Plus />
+        </Button>
+      </div>
     </div>
   );
 }
