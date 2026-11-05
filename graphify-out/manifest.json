@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "lib/actions/sku-list.ts": {
-    "mtime": 1793010618.875109,
-    "ast_hash": "1a8d793080820fe61092ce8ecd9d9453",
+    "mtime": 1793880909.6467853,
+    "ast_hash": "f869f28025766a57e40bc163c3dabc0e",
     "semantic_hash": ""
   },
   "lib/ai/chat-provider.ts": {

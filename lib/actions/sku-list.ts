@@ -31,14 +31,22 @@ export async function listSkus() {
   const { error } = await requireStaff();
   if (error) return { data: null, error };
 
+  // PostgREST caps a response at 1000 rows and the list is past that, so page through it —
+  // otherwise newly added SKUs (appended at the end) silently never appear.
   const client = await createClient();
-  const { data, error: dbError } = await client
-    .from("sku_master_list")
-    .select("id, sku, position, regions, created_at")
-    .order("position", { ascending: true })
-    .order("created_at", { ascending: true });
-
-  return { data: data as Sku[] | null, error: dbError?.message ?? null };
+  const rows: Sku[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error: dbError } = await client
+      .from("sku_master_list")
+      .select("id, sku, position, regions, created_at")
+      .order("position", { ascending: true })
+      .order("created_at", { ascending: true })
+      .order("id", { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+    if (dbError) return { data: null, error: dbError.message };
+    rows.push(...((data ?? []) as Sku[]));
+    if (!data || data.length < PAGE_SIZE) return { data: rows, error: null };
+  }
 }
 
 type ServiceClient = ReturnType<typeof createServiceClient>;
@@ -159,10 +167,9 @@ export async function replaceSkus(skus: string[]) {
   const service = createServiceClient();
 
   // 1. Snapshot existing rows so we know which to delete afterwards.
-  const { data: existing, error: fetchError } = await service
-    .from("sku_master_list")
-    .select("id, sku");
-  if (fetchError) return { data: null, error: fetchError.message };
+  // Paged read: a plain select stops at 1000 rows, which would leave stale rows undeleted.
+  const { data: existing, error: fetchError } = await readAllSkusOrdered(service);
+  if (fetchError) return { data: null, error: fetchError };
 
   // 2. Upsert the imported set with fresh positions (kept SKUs re-positioned, new inserted).
   const { error: upsertError } = await service
@@ -207,10 +214,10 @@ export async function reorderSkus(orderedIds: string[]) {
   // `sku` is included in each upsert row because it is NOT NULL — the upsert always
   // conflicts on the existing id and updates position, but the candidate row must still
   // carry a valid sku.
-  const { data: existing, error: fetchError } = await service
-    .from("sku_master_list")
-    .select("id, sku");
-  if (fetchError) return { data: null, error: fetchError.message };
+  // Paged read: a plain select stops at 1000 rows, and SKUs past that would be dropped from
+  // the renumbering and keep stale positions.
+  const { data: existing, error: fetchError } = await readAllSkusOrdered(service);
+  if (fetchError) return { data: null, error: fetchError };
 
   const skuById = new Map((existing ?? []).map((r) => [r.id as string, r.sku as string]));
   const rows = orderedIds

@@ -110,7 +110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_dashboard_page",
-      "community": 52,
+      "community": 72,
       "norm_label": "page.tsx"
     },
     {
@@ -120,7 +120,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "app_portal_dashboard_page_dashboardpage",
-      "community": 52,
+      "community": 72,
       "norm_label": "dashboardpage()"
     },
     {
@@ -150,7 +150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page",
-      "community": 46,
+      "community": 6,
       "norm_label": "page.tsx"
     },
     {
@@ -160,7 +160,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_ranges",
-      "community": 44,
+      "community": 6,
       "norm_label": "ranges"
     },
     {
@@ -170,7 +170,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_scopes",
-      "community": 44,
+      "community": 6,
       "norm_label": "scopes"
     },
     {
@@ -180,7 +180,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_sgtdate",
-      "community": 44,
+      "community": 6,
       "norm_label": "sgtdate()"
     },
     {
@@ -190,7 +190,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_money",
-      "community": 44,
+      "community": 6,
       "norm_label": "money()"
     },
     {
@@ -200,7 +200,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_scope_currency",
-      "community": 46,
+      "community": 6,
       "norm_label": "scope_currency"
     },
     {
@@ -210,7 +210,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_moneyin",
-      "community": 44,
+      "community": 6,
       "norm_label": "moneyin()"
     },
     {
@@ -220,7 +220,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_relativetime",
-      "community": 44,
+      "community": 6,
       "norm_label": "relativetime()"
     },
     {
@@ -230,7 +230,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_profitanalyticspage",
-      "community": 44,
+      "community": 6,
       "norm_label": "profitanalyticspage()"
     },
     {
@@ -240,7 +240,7 @@
       "source_location": "L776",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_infotip",
-      "community": 46,
+      "community": 6,
       "norm_label": "infotip()"
     },
     {
@@ -250,7 +250,7 @@
       "source_location": "L818",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_stattile",
-      "community": 46,
+      "community": 6,
       "norm_label": "stattile()"
     },
     {
@@ -260,7 +260,7 @@
       "source_location": "L864",
       "_origin": "ast",
       "id": "app_portal_dashboard_profit_analytics_page_feebreakdownbody",
-      "community": 46,
+      "community": 6,
       "norm_label": "feebreakdownbody()"
     },
     {
@@ -270,7 +270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_layout",
-      "community": 64,
+      "community": 72,
       "norm_label": "layout.tsx"
     },
     {
@@ -280,7 +280,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_portal_layout_portallayout",
-      "community": 64,
+      "community": 72,
       "norm_label": "portallayout()"
     },
     {
@@ -610,7 +610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view",
-      "community": 46,
+      "community": 24,
       "norm_label": "fba-fee-tracker-view.tsx"
     },
     {
@@ -630,7 +630,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_sortkey",
-      "community": 46,
+      "community": 24,
       "norm_label": "sortkey"
     },
     {
@@ -640,7 +640,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_filter",
-      "community": 46,
+      "community": 24,
       "norm_label": "filter"
     },
     {
@@ -670,7 +670,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_num",
-      "community": 46,
+      "community": 24,
       "norm_label": "num()"
     },
     {
@@ -680,7 +680,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_dimstext",
-      "community": 46,
+      "community": 24,
       "norm_label": "dimstext()"
     },
     {
@@ -730,7 +730,7 @@
       "source_location": "L748",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_stattile",
-      "community": 46,
+      "community": 24,
       "norm_label": "stattile()"
     },
     {
@@ -740,7 +740,7 @@
       "source_location": "L783",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_sortth",
-      "community": 46,
+      "community": 24,
       "norm_label": "sortth()"
     },
     {
@@ -760,7 +760,7 @@
       "source_location": "L822",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_dimsdiff",
-      "community": 46,
+      "community": 24,
       "norm_label": "dimsdiff()"
     },
     {
@@ -780,7 +780,7 @@
       "source_location": "L1058",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_caseraiseddialog",
-      "community": 46,
+      "community": 24,
       "norm_label": "caseraiseddialog()"
     },
     {
@@ -790,7 +790,7 @@
       "source_location": "L1124",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_fba_fee_tracker_fba_fee_tracker_view_uploaddimsdialog",
-      "community": 46,
+      "community": 24,
       "norm_label": "uploaddimsdialog()"
     },
     {
@@ -1090,7 +1090,7 @@
       "source_location": "L500",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_price_change_plans_page_marketplaceoptions",
-      "community": 65,
+      "community": 26,
       "norm_label": "marketplaceoptions()"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_page",
-      "community": 54,
+      "community": 53,
       "norm_label": "page.tsx"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_page_wizardstep",
-      "community": 54,
+      "community": 53,
       "norm_label": "wizardstep"
     },
     {
@@ -1400,7 +1400,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_page_steps",
-      "community": 54,
+      "community": 53,
       "norm_label": "steps"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "app_portal_market_ops_automations_sponsored_brands_upload_page_bulkcampaignuploadpage",
-      "community": 54,
+      "community": 53,
       "norm_label": "bulkcampaignuploadpage()"
     },
     {
@@ -1750,7 +1750,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_market_ops_inventory_page",
-      "community": 58,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -1760,7 +1760,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_portal_market_ops_inventory_page_inventorypage",
-      "community": 58,
+      "community": 8,
       "norm_label": "inventorypage()"
     },
     {
@@ -1800,7 +1800,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "app_portal_market_ops_master_list_page_formatprice",
-      "community": 65,
+      "community": 26,
       "norm_label": "formatprice()"
     },
     {
@@ -1910,7 +1910,7 @@
       "source_location": "L1034",
       "_origin": "ast",
       "id": "app_portal_market_ops_master_list_page_skudetaildialog",
-      "community": 65,
+      "community": 26,
       "norm_label": "skudetaildialog()"
     },
     {
@@ -2000,7 +2000,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_day_tasks_dialog",
-      "community": 0,
+      "community": 42,
       "norm_label": "day-tasks-dialog.tsx"
     },
     {
@@ -2080,7 +2080,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_portal_others_calendar_components_manage_access_dialog_manageaccessdialog",
-      "community": 50,
+      "community": 60,
       "norm_label": "manageaccessdialog()"
     },
     {
@@ -2470,7 +2470,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "app_portal_others_company_inbox_compose_dialog_splitaddresses",
-      "community": 45,
+      "community": 42,
       "norm_label": "splitaddresses()"
     },
     {
@@ -2490,7 +2490,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "app_portal_others_company_inbox_compose_dialog_composedialog",
-      "community": 45,
+      "community": 42,
       "norm_label": "composedialog()"
     },
     {
@@ -2527,27 +2527,57 @@
       "label": "MAIL_ACTIONS",
       "file_type": "code",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L34",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "app_portal_others_company_inbox_page_mail_actions",
       "community": 45,
       "norm_label": "mail_actions"
     },
     {
+      "label": "FOLDER_OPTIONS",
+      "file_type": "code",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "app_portal_others_company_inbox_page_folder_options",
+      "community": 45,
+      "norm_label": "folder_options"
+    },
+    {
+      "label": "viewKey()",
+      "file_type": "code",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "app_portal_others_company_inbox_page_viewkey",
+      "community": 45,
+      "norm_label": "viewkey()"
+    },
+    {
       "label": "threadKey()",
       "file_type": "code",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L63",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "app_portal_others_company_inbox_page_threadkey",
       "community": 45,
       "norm_label": "threadkey()"
     },
     {
+      "label": "Notice",
+      "file_type": "code",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "app_portal_others_company_inbox_page_notice",
+      "community": 45,
+      "norm_label": "notice"
+    },
+    {
       "label": "formatDate()",
       "file_type": "code",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L65",
+      "source_location": "L96",
       "_origin": "ast",
       "id": "app_portal_others_company_inbox_page_formatdate",
       "community": 45,
@@ -2557,7 +2587,7 @@
       "label": "CompanyInboxPage()",
       "file_type": "code",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L74",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "app_portal_others_company_inbox_page_companyinboxpage",
       "community": 45,
@@ -2620,7 +2650,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_others_finance_page",
-      "community": 75,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -2630,7 +2660,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_portal_others_finance_page_financepage",
-      "community": 75,
+      "community": 8,
       "norm_label": "financepage()"
     },
     {
@@ -2820,7 +2850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_settings_page",
-      "community": 46,
+      "community": 42,
       "norm_label": "page.tsx"
     },
     {
@@ -2830,7 +2860,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "app_portal_settings_page_passwordfield",
-      "community": 64,
+      "community": 60,
       "norm_label": "passwordfield()"
     },
     {
@@ -2840,7 +2870,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "app_portal_settings_page_languagecard",
-      "community": 64,
+      "community": 60,
       "norm_label": "languagecard()"
     },
     {
@@ -2850,7 +2880,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "app_portal_settings_page_settingspage",
-      "community": 64,
+      "community": 60,
       "norm_label": "settingspage()"
     },
     {
@@ -2920,7 +2950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_supply_chain_orders_page",
-      "community": 63,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -2930,7 +2960,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_portal_supply_chain_orders_page_orderspage",
-      "community": 63,
+      "community": 8,
       "norm_label": "orderspage()"
     },
     {
@@ -3060,7 +3090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_team_username_page",
-      "community": 64,
+      "community": 10,
       "norm_label": "page.tsx"
     },
     {
@@ -3070,7 +3100,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_portal_team_username_page_staffpage",
-      "community": 64,
+      "community": 10,
       "norm_label": "staffpage()"
     },
     {
@@ -3080,7 +3110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_portal_team_page",
-      "community": 2,
+      "community": 60,
       "norm_label": "page.tsx"
     },
     {
@@ -3090,7 +3120,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "app_portal_team_page_directoryentry",
-      "community": 2,
+      "community": 60,
       "norm_label": "directoryentry"
     },
     {
@@ -3100,7 +3130,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "app_portal_team_page_jobroleeditor",
-      "community": 2,
+      "community": 60,
       "norm_label": "jobroleeditor()"
     },
     {
@@ -3110,7 +3140,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "app_portal_team_page_teampage",
-      "community": 2,
+      "community": 60,
       "norm_label": "teampage()"
     },
     {
@@ -3240,7 +3270,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_api_tools_ads_bulk_generator_generate_route_post",
-      "community": 52,
+      "community": 51,
       "norm_label": "post()"
     },
     {
@@ -3250,7 +3280,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve",
-      "community": 25,
+      "community": 65,
       "norm_label": "_resolve.ts"
     },
     {
@@ -3260,7 +3290,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_incomingcampaign",
-      "community": 25,
+      "community": 65,
       "norm_label": "incomingcampaign"
     },
     {
@@ -3270,7 +3300,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_brandrow",
-      "community": 25,
+      "community": 65,
       "norm_label": "brandrow"
     },
     {
@@ -3280,7 +3310,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolveok",
-      "community": 25,
+      "community": 65,
       "norm_label": "resolveok"
     },
     {
@@ -3290,7 +3320,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolveerr",
-      "community": 25,
+      "community": 65,
       "norm_label": "resolveerr"
     },
     {
@@ -3300,7 +3330,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_resolve_resolvemarketplace",
-      "community": 25,
+      "community": 65,
       "norm_label": "resolvemarketplace()"
     },
     {
@@ -3310,7 +3340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route",
-      "community": 52,
+      "community": 65,
       "norm_label": "route.ts"
     },
     {
@@ -3320,7 +3350,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_api_tools_sponsored_brands_upload_generate_route_post",
-      "community": 52,
+      "community": 65,
       "norm_label": "post()"
     },
     {
@@ -3400,7 +3430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_login_page",
-      "community": 46,
+      "community": 53,
       "norm_label": "page.tsx"
     },
     {
@@ -3660,7 +3690,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel",
-      "community": 46,
+      "community": 58,
       "norm_label": "chat-panel.tsx"
     },
     {
@@ -3670,7 +3700,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_markdowncomponents",
-      "community": 46,
+      "community": 58,
       "norm_label": "markdowncomponents"
     },
     {
@@ -3680,7 +3710,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_composer",
-      "community": 46,
+      "community": 58,
       "norm_label": "composer()"
     },
     {
@@ -3690,7 +3720,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ai_chat_chat_panel_chatpanel",
-      "community": 46,
+      "community": 58,
       "norm_label": "chatpanel()"
     },
     {
@@ -3720,7 +3750,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections_brandssection",
-      "community": 54,
+      "community": 53,
       "norm_label": "brandssection()"
     },
     {
@@ -3730,7 +3760,7 @@
       "source_location": "L250",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections_assetssection",
-      "community": 54,
+      "community": 53,
       "norm_label": "assetssection()"
     },
     {
@@ -3740,7 +3770,7 @@
       "source_location": "L508",
       "_origin": "ast",
       "id": "components_bulk_campaign_library_sections_keywordgaragesection",
-      "community": 54,
+      "community": 53,
       "norm_label": "keywordgaragesection()"
     },
     {
@@ -3810,7 +3840,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "components_dashboard_access_grid_accessitem",
-      "community": 60,
+      "community": 64,
       "norm_label": "accessitem"
     },
     {
@@ -3940,7 +3970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_dashboard_link",
-      "community": 64,
+      "community": 60,
       "norm_label": "dashboard-link.tsx"
     },
     {
@@ -3950,7 +3980,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_dashboard_link_dashboardlink",
-      "community": 64,
+      "community": 60,
       "norm_label": "dashboardlink()"
     },
     {
@@ -3970,7 +4000,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_login_form_loginform",
-      "community": 46,
+      "community": 60,
       "norm_label": "loginform()"
     },
     {
@@ -4170,7 +4200,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_partners_partners_view",
-      "community": 4,
+      "community": 48,
       "norm_label": "partners-view.tsx"
     },
     {
@@ -4180,7 +4210,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "components_partners_partners_view_row",
-      "community": 4,
+      "community": 48,
       "norm_label": "row"
     },
     {
@@ -4200,7 +4230,7 @@
       "source_location": "L180",
       "_origin": "ast",
       "id": "components_partners_partners_view_priceshref",
-      "community": 4,
+      "community": 48,
       "norm_label": "priceshref()"
     },
     {
@@ -4220,7 +4250,7 @@
       "source_location": "L191",
       "_origin": "ast",
       "id": "components_partners_partners_view_partnergrid",
-      "community": 4,
+      "community": 48,
       "norm_label": "partnergrid()"
     },
     {
@@ -4230,7 +4260,7 @@
       "source_location": "L376",
       "_origin": "ast",
       "id": "components_partners_partners_view_editablecell",
-      "community": 4,
+      "community": 48,
       "norm_label": "editablecell()"
     },
     {
@@ -4240,7 +4270,7 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "components_partners_partners_view_partnernamedialog",
-      "community": 4,
+      "community": 48,
       "norm_label": "partnernamedialog()"
     },
     {
@@ -4290,7 +4320,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_products_products_view",
-      "community": 53,
+      "community": 62,
       "norm_label": "products-view.tsx"
     },
     {
@@ -4300,7 +4330,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "components_products_products_view_productsview",
-      "community": 53,
+      "community": 62,
       "norm_label": "productsview()"
     },
     {
@@ -4310,7 +4340,7 @@
       "source_location": "L444",
       "_origin": "ast",
       "id": "components_products_products_view_pricerow",
-      "community": 53,
+      "community": 62,
       "norm_label": "pricerow()"
     },
     {
@@ -4320,7 +4350,7 @@
       "source_location": "L558",
       "_origin": "ast",
       "id": "components_products_products_view_formatpercent",
-      "community": 53,
+      "community": 62,
       "norm_label": "formatpercent()"
     },
     {
@@ -4330,7 +4360,7 @@
       "source_location": "L562",
       "_origin": "ast",
       "id": "components_products_products_view_detailselect",
-      "community": 53,
+      "community": 62,
       "norm_label": "detailselect()"
     },
     {
@@ -4340,7 +4370,7 @@
       "source_location": "L590",
       "_origin": "ast",
       "id": "components_products_products_view_pricecell",
-      "community": 53,
+      "community": 62,
       "norm_label": "pricecell()"
     },
     {
@@ -4350,7 +4380,7 @@
       "source_location": "L671",
       "_origin": "ast",
       "id": "components_products_products_view_addpricedialog",
-      "community": 53,
+      "community": 62,
       "norm_label": "addpricedialog()"
     },
     {
@@ -4360,7 +4390,7 @@
       "source_location": "L773",
       "_origin": "ast",
       "id": "components_products_products_view_importpricessheet",
-      "community": 53,
+      "community": 62,
       "norm_label": "importpricessheet()"
     },
     {
@@ -4620,7 +4650,7 @@
       "source_location": "L324",
       "_origin": "ast",
       "id": "components_sidebar_content_pintoggle",
-      "community": 64,
+      "community": 60,
       "norm_label": "pintoggle()"
     },
     {
@@ -4670,7 +4700,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_sidebar_sidebar",
-      "community": 64,
+      "community": 43,
       "norm_label": "sidebar()"
     },
     {
@@ -4730,7 +4760,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_tasks_task_updates",
-      "community": 42,
+      "community": 58,
       "norm_label": "task-updates.tsx"
     },
     {
@@ -4740,7 +4770,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "components_tasks_task_updates_formatwhen",
-      "community": 42,
+      "community": 58,
       "norm_label": "formatwhen()"
     },
     {
@@ -4750,7 +4780,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "components_tasks_task_updates_taskupdates",
-      "community": 42,
+      "community": 58,
       "norm_label": "taskupdates()"
     },
     {
@@ -4760,7 +4790,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_team_staff_drilldown",
-      "community": 46,
+      "community": 10,
       "norm_label": "staff-drilldown.tsx"
     },
     {
@@ -4770,7 +4800,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "components_team_staff_drilldown_tab",
-      "community": 46,
+      "community": 10,
       "norm_label": "tab"
     },
     {
@@ -4780,7 +4810,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "components_team_staff_drilldown_staffdrilldown",
-      "community": 64,
+      "community": 10,
       "norm_label": "staffdrilldown()"
     },
     {
@@ -4790,7 +4820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_team_staff_profile_view",
-      "community": 46,
+      "community": 10,
       "norm_label": "staff-profile-view.tsx"
     },
     {
@@ -4800,7 +4830,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_prioritybadgeclass",
-      "community": 46,
+      "community": 10,
       "norm_label": "prioritybadgeclass()"
     },
     {
@@ -4810,7 +4840,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_prioritybadge",
-      "community": 46,
+      "community": 10,
       "norm_label": "prioritybadge()"
     },
     {
@@ -4820,7 +4850,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_personchip",
-      "community": 64,
+      "community": 60,
       "norm_label": "personchip()"
     },
     {
@@ -4830,7 +4860,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_picktoadd",
-      "community": 46,
+      "community": 10,
       "norm_label": "picktoadd()"
     },
     {
@@ -4850,7 +4880,7 @@
       "source_location": "L455",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_newteamdialog",
-      "community": 64,
+      "community": 60,
       "norm_label": "newteamdialog()"
     },
     {
@@ -4860,7 +4890,7 @@
       "source_location": "L510",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_tasksubmit",
-      "community": 46,
+      "community": 10,
       "norm_label": "tasksubmit"
     },
     {
@@ -4870,7 +4900,7 @@
       "source_location": "L518",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_responsibilitydialog",
-      "community": 64,
+      "community": 60,
       "norm_label": "responsibilitydialog()"
     },
     {
@@ -4880,7 +4910,7 @@
       "source_location": "L692",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_prioritiesdialog",
-      "community": 46,
+      "community": 60,
       "norm_label": "prioritiesdialog()"
     },
     {
@@ -4890,7 +4920,7 @@
       "source_location": "L740",
       "_origin": "ast",
       "id": "components_team_staff_profile_view_priorityrow",
-      "community": 46,
+      "community": 60,
       "norm_label": "priorityrow()"
     },
     {
@@ -4900,7 +4930,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_team_staff_skills_view",
-      "community": 11,
+      "community": 58,
       "norm_label": "staff-skills-view.tsx"
     },
     {
@@ -4910,7 +4940,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_levelfilter",
-      "community": 11,
+      "community": 58,
       "norm_label": "levelfilter"
     },
     {
@@ -4920,7 +4950,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_skilltext",
-      "community": 11,
+      "community": 58,
       "norm_label": "skilltext()"
     },
     {
@@ -4930,7 +4960,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_levelbadge",
-      "community": 64,
+      "community": 58,
       "norm_label": "levelbadge()"
     },
     {
@@ -4940,7 +4970,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_levelpicker",
-      "community": 64,
+      "community": 58,
       "norm_label": "levelpicker()"
     },
     {
@@ -4950,7 +4980,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_addskilldialog",
-      "community": 64,
+      "community": 58,
       "norm_label": "addskilldialog()"
     },
     {
@@ -4960,7 +4990,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_staffskillsview",
-      "community": 11,
+      "community": 58,
       "norm_label": "staffskillsview()"
     },
     {
@@ -4970,7 +5000,7 @@
       "source_location": "L424",
       "_origin": "ast",
       "id": "components_team_staff_skills_view_summarytile",
-      "community": 11,
+      "community": 58,
       "norm_label": "summarytile()"
     },
     {
@@ -4980,7 +5010,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_topbar",
-      "community": 43,
+      "community": 53,
       "norm_label": "topbar.tsx"
     },
     {
@@ -4990,7 +5020,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "components_topbar_topbar",
-      "community": 64,
+      "community": 60,
       "norm_label": "topbar()"
     },
     {
@@ -5040,7 +5070,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogoverlay",
-      "community": 59,
+      "community": 4,
       "norm_label": "alertdialogoverlay()"
     },
     {
@@ -5080,7 +5110,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "components_ui_alert_dialog_alertdialogmedia",
-      "community": 59,
+      "community": 4,
       "norm_label": "alertdialogmedia()"
     },
     {
@@ -5200,7 +5230,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_badge",
-      "community": 53,
+      "community": 59,
       "norm_label": "badge.tsx"
     },
     {
@@ -5210,7 +5240,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_badge_badgevariants",
-      "community": 53,
+      "community": 59,
       "norm_label": "badgevariants"
     },
     {
@@ -5220,7 +5250,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "components_ui_badge_badge",
-      "community": 53,
+      "community": 59,
       "norm_label": "badge()"
     },
     {
@@ -5260,7 +5290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_card",
-      "community": 46,
+      "community": 53,
       "norm_label": "card.tsx"
     },
     {
@@ -5270,7 +5300,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_ui_card_card",
-      "community": 46,
+      "community": 53,
       "norm_label": "card()"
     },
     {
@@ -5280,7 +5310,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "components_ui_card_cardheader",
-      "community": 46,
+      "community": 53,
       "norm_label": "cardheader()"
     },
     {
@@ -5290,7 +5320,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "components_ui_card_cardtitle",
-      "community": 46,
+      "community": 53,
       "norm_label": "cardtitle()"
     },
     {
@@ -5300,7 +5330,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "components_ui_card_carddescription",
-      "community": 46,
+      "community": 53,
       "norm_label": "carddescription()"
     },
     {
@@ -5320,7 +5350,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "components_ui_card_cardcontent",
-      "community": 46,
+      "community": 53,
       "norm_label": "cardcontent()"
     },
     {
@@ -5330,7 +5360,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "components_ui_card_cardfooter",
-      "community": 46,
+      "community": 1,
       "norm_label": "cardfooter()"
     },
     {
@@ -5340,7 +5370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_chart",
-      "community": 46,
+      "community": 6,
       "norm_label": "chart.tsx"
     },
     {
@@ -5350,7 +5380,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_ui_chart_themes",
-      "community": 46,
+      "community": 6,
       "norm_label": "themes"
     },
     {
@@ -5360,7 +5390,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "components_ui_chart_initial_dimension",
-      "community": 46,
+      "community": 6,
       "norm_label": "initial_dimension"
     },
     {
@@ -5370,7 +5400,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "components_ui_chart_tooltipnametype",
-      "community": 46,
+      "community": 6,
       "norm_label": "tooltipnametype"
     },
     {
@@ -5380,7 +5410,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "components_ui_chart_chartconfig",
-      "community": 46,
+      "community": 6,
       "norm_label": "chartconfig"
     },
     {
@@ -5390,7 +5420,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "components_ui_chart_chartcontextprops",
-      "community": 46,
+      "community": 6,
       "norm_label": "chartcontextprops"
     },
     {
@@ -5400,7 +5430,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "components_ui_chart_chartcontext",
-      "community": 46,
+      "community": 6,
       "norm_label": "chartcontext"
     },
     {
@@ -5410,7 +5440,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "components_ui_chart_usechart",
-      "community": 46,
+      "community": 6,
       "norm_label": "usechart()"
     },
     {
@@ -5420,7 +5450,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "components_ui_chart_chartcontainer",
-      "community": 46,
+      "community": 6,
       "norm_label": "chartcontainer()"
     },
     {
@@ -5430,7 +5460,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "components_ui_chart_chartstyle",
-      "community": 46,
+      "community": 6,
       "norm_label": "chartstyle()"
     },
     {
@@ -5440,7 +5470,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "components_ui_chart_charttooltipcontent",
-      "community": 46,
+      "community": 6,
       "norm_label": "charttooltipcontent()"
     },
     {
@@ -5450,7 +5480,7 @@
       "source_location": "L275",
       "_origin": "ast",
       "id": "components_ui_chart_chartlegendcontent",
-      "community": 46,
+      "community": 6,
       "norm_label": "chartlegendcontent()"
     },
     {
@@ -5460,7 +5490,7 @@
       "source_location": "L330",
       "_origin": "ast",
       "id": "components_ui_chart_getpayloadconfigfrompayload",
-      "community": 46,
+      "community": 6,
       "norm_label": "getpayloadconfigfrompayload()"
     },
     {
@@ -5830,7 +5860,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_ui_segmented_control_segmentedcontrol",
-      "community": 46,
+      "community": 57,
       "norm_label": "segmentedcontrol()"
     },
     {
@@ -5970,7 +6000,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_skeleton",
-      "community": 46,
+      "community": 58,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -5980,7 +6010,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_ui_skeleton_skeleton",
-      "community": 46,
+      "community": 58,
       "norm_label": "skeleton()"
     },
     {
@@ -5990,7 +6020,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_switch",
-      "community": 59,
+      "community": 58,
       "norm_label": "switch.tsx"
     },
     {
@@ -6000,7 +6030,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_ui_switch_switch",
-      "community": 59,
+      "community": 58,
       "norm_label": "switch()"
     },
     {
@@ -6070,7 +6100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_ui_textarea",
-      "community": 42,
+      "community": 58,
       "norm_label": "textarea.tsx"
     },
     {
@@ -6080,7 +6110,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_ui_textarea_textarea",
-      "community": 42,
+      "community": 58,
       "norm_label": "textarea()"
     },
     {
@@ -6210,7 +6240,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_brand",
-      "community": 53,
+      "community": 57,
       "norm_label": "brand"
     },
     {
@@ -6220,7 +6250,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_videoasset",
-      "community": 54,
+      "community": 57,
       "norm_label": "videoasset"
     },
     {
@@ -6230,7 +6260,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_keywordtheme",
-      "community": 54,
+      "community": 57,
       "norm_label": "keywordtheme"
     },
     {
@@ -6240,7 +6270,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_preset",
-      "community": 54,
+      "community": 53,
       "norm_label": "preset"
     },
     {
@@ -6430,7 +6460,7 @@
       "source_location": "L402",
       "_origin": "ast",
       "id": "lib_actions_bulk_campaign_campaignproduct",
-      "community": 54,
+      "community": 53,
       "norm_label": "campaignproduct"
     },
     {
@@ -7080,7 +7110,7 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "lib_actions_fba_fee_tracker_getskufeehistory",
-      "community": 41,
+      "community": 24,
       "norm_label": "getskufeehistory()"
     },
     {
@@ -7184,10 +7214,20 @@
       "norm_label": "mailaccountid"
     },
     {
-      "label": "MailAccountConfig",
+      "label": "MailFolder",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
       "source_location": "L25",
+      "_origin": "ast",
+      "id": "lib_actions_mail_mailfolder",
+      "community": 45,
+      "norm_label": "mailfolder"
+    },
+    {
+      "label": "MailAccountConfig",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "lib_actions_mail_mailaccountconfig",
       "community": 45,
@@ -7197,7 +7237,7 @@
       "label": "MAIL_ACCOUNTS",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L47",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "lib_actions_mail_mail_accounts",
       "community": 45,
@@ -7207,7 +7247,7 @@
       "label": "MAIL_ACCOUNT_ORDER",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L74",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "lib_actions_mail_mail_account_order",
       "community": 45,
@@ -7217,7 +7257,7 @@
       "label": "MailListItem",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L76",
+      "source_location": "L78",
       "_origin": "ast",
       "id": "lib_actions_mail_maillistitem",
       "community": 45,
@@ -7227,7 +7267,7 @@
       "label": "MailAddress",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L92",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "lib_actions_mail_mailaddress",
       "community": 45,
@@ -7237,7 +7277,7 @@
       "label": "MailDetail",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L97",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "lib_actions_mail_maildetail",
       "community": 45,
@@ -7247,7 +7287,7 @@
       "label": "MailComposeMode",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "lib_actions_mail_mailcomposemode",
       "community": 45,
@@ -7257,7 +7297,7 @@
       "label": "SendMailInput",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L113",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "lib_actions_mail_sendmailinput",
       "community": 45,
@@ -7267,7 +7307,7 @@
       "label": "ThreadItem",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L127",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "lib_actions_mail_threaditem",
       "community": 45,
@@ -7277,7 +7317,7 @@
       "label": "ThreadNode",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L133",
+      "source_location": "L135",
       "_origin": "ast",
       "id": "lib_actions_mail_threadnode",
       "community": 45,
@@ -7287,7 +7327,7 @@
       "label": "htmlToPlainText()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L148",
+      "source_location": "L150",
       "_origin": "ast",
       "id": "lib_actions_mail_htmltoplaintext",
       "community": 45,
@@ -7297,7 +7337,7 @@
       "label": "extractText()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L159",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "lib_actions_mail_extracttext",
       "community": 45,
@@ -7307,7 +7347,7 @@
       "label": "flattenAddresses()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L163",
+      "source_location": "L165",
       "_origin": "ast",
       "id": "lib_actions_mail_flattenaddresses",
       "community": 45,
@@ -7317,7 +7357,7 @@
       "label": "referencesOf()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L175",
+      "source_location": "L177",
       "_origin": "ast",
       "id": "lib_actions_mail_referencesof",
       "community": 45,
@@ -7327,7 +7367,7 @@
       "label": "mailAuthFor()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L181",
+      "source_location": "L183",
       "_origin": "ast",
       "id": "lib_actions_mail_mailauthfor",
       "community": 45,
@@ -7337,7 +7377,7 @@
       "label": "mailClientFor()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L189",
+      "source_location": "L191",
       "_origin": "ast",
       "id": "lib_actions_mail_mailclientfor",
       "community": 45,
@@ -7347,7 +7387,7 @@
       "label": "MailRole",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L212",
+      "source_location": "L215",
       "_origin": "ast",
       "id": "lib_actions_mail_mailrole",
       "community": 45,
@@ -7357,7 +7397,7 @@
       "label": "PoolKey",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L213",
+      "source_location": "L216",
       "_origin": "ast",
       "id": "lib_actions_mail_poolkey",
       "community": 45,
@@ -7367,7 +7407,7 @@
       "label": "poolSymbol",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L215",
+      "source_location": "L218",
       "_origin": "ast",
       "id": "lib_actions_mail_poolsymbol",
       "community": 45,
@@ -7377,7 +7417,7 @@
       "label": "dropPooled()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L220",
+      "source_location": "L223",
       "_origin": "ast",
       "id": "lib_actions_mail_droppooled",
       "community": 45,
@@ -7387,7 +7427,7 @@
       "label": "pooledClient()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L224",
+      "source_location": "L227",
       "_origin": "ast",
       "id": "lib_actions_mail_pooledclient",
       "community": 45,
@@ -7397,7 +7437,7 @@
       "label": "withMailClient()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L252",
+      "source_location": "L255",
       "_origin": "ast",
       "id": "lib_actions_mail_withmailclient",
       "community": 45,
@@ -7407,7 +7447,7 @@
       "label": "LoadedMessage",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L267",
+      "source_location": "L270",
       "_origin": "ast",
       "id": "lib_actions_mail_loadedmessage",
       "community": 45,
@@ -7417,7 +7457,7 @@
       "label": "CRLF",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L279",
+      "source_location": "L282",
       "_origin": "ast",
       "id": "lib_actions_mail_crlf",
       "community": 45,
@@ -7427,7 +7467,7 @@
       "label": "findTextPart()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L282",
+      "source_location": "L285",
       "_origin": "ast",
       "id": "lib_actions_mail_findtextpart",
       "community": 45,
@@ -7437,7 +7477,7 @@
       "label": "fetchMessages()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L308",
+      "source_location": "L311",
       "_origin": "ast",
       "id": "lib_actions_mail_fetchmessages",
       "community": 45,
@@ -7447,7 +7487,7 @@
       "label": "messageCache",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L402",
+      "source_location": "L405",
       "_origin": "ast",
       "id": "lib_actions_mail_messagecache",
       "community": 45,
@@ -7457,7 +7497,7 @@
       "label": "cachedFetchMessages()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L405",
+      "source_location": "L408",
       "_origin": "ast",
       "id": "lib_actions_mail_cachedfetchmessages",
       "community": 45,
@@ -7467,7 +7507,7 @@
       "label": "toMailDetail()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L430",
+      "source_location": "L433",
       "_origin": "ast",
       "id": "lib_actions_mail_tomaildetail",
       "community": 45,
@@ -7477,7 +7517,7 @@
       "label": "scanRecentEnvelopes()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L451",
+      "source_location": "L454",
       "_origin": "ast",
       "id": "lib_actions_mail_scanrecentenvelopes",
       "community": 45,
@@ -7487,7 +7527,7 @@
       "label": "sentPathCache",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L465",
+      "source_location": "L468",
       "_origin": "ast",
       "id": "lib_actions_mail_sentpathcache",
       "community": 45,
@@ -7497,7 +7537,7 @@
       "label": "scanCache",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L473",
+      "source_location": "L476",
       "_origin": "ast",
       "id": "lib_actions_mail_scancache",
       "community": 45,
@@ -7507,7 +7547,7 @@
       "label": "cachedRecentEnvelopes()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L476",
+      "source_location": "L479",
       "_origin": "ast",
       "id": "lib_actions_mail_cachedrecentenvelopes",
       "community": 45,
@@ -7517,7 +7557,7 @@
       "label": "findSentMailbox()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L489",
+      "source_location": "L492",
       "_origin": "ast",
       "id": "lib_actions_mail_findsentmailbox",
       "community": 45,
@@ -7527,7 +7567,7 @@
       "label": "encodeHeaderText()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L501",
+      "source_location": "L504",
       "_origin": "ast",
       "id": "lib_actions_mail_encodeheadertext",
       "community": 45,
@@ -7537,7 +7577,7 @@
       "label": "buildRawMessage()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L511",
+      "source_location": "L514",
       "_origin": "ast",
       "id": "lib_actions_mail_buildrawmessage",
       "community": 45,
@@ -7547,7 +7587,7 @@
       "label": "dedupeAddresses()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L542",
+      "source_location": "L545",
       "_origin": "ast",
       "id": "lib_actions_mail_dedupeaddresses",
       "community": 45,
@@ -7557,7 +7597,7 @@
       "label": "parseAddressList()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L556",
+      "source_location": "L559",
       "_origin": "ast",
       "id": "lib_actions_mail_parseaddresslist",
       "community": 45,
@@ -7567,167 +7607,17 @@
       "label": "connectionErrorMessage()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L564",
+      "source_location": "L567",
       "_origin": "ast",
       "id": "lib_actions_mail_connectionerrormessage",
       "community": 45,
       "norm_label": "connectionerrormessage()"
     },
     {
-      "label": "listMailEmailsImpl()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L572",
-      "_origin": "ast",
-      "id": "lib_actions_mail_listmailemailsimpl",
-      "community": 45,
-      "norm_label": "listmailemailsimpl()"
-    },
-    {
-      "label": "listTitanEmails()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L630",
-      "_origin": "ast",
-      "id": "lib_actions_mail_listtitanemails",
-      "community": 45,
-      "norm_label": "listtitanemails()"
-    },
-    {
-      "label": "listYahooEmails()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L634",
-      "_origin": "ast",
-      "id": "lib_actions_mail_listyahooemails",
-      "community": 45,
-      "norm_label": "listyahooemails()"
-    },
-    {
-      "label": "getRepliedUidsImpl()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L644",
-      "_origin": "ast",
-      "id": "lib_actions_mail_getreplieduidsimpl",
-      "community": 45,
-      "norm_label": "getreplieduidsimpl()"
-    },
-    {
-      "label": "getTitanRepliedUids()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L680",
-      "_origin": "ast",
-      "id": "lib_actions_mail_gettitanreplieduids",
-      "community": 45,
-      "norm_label": "gettitanreplieduids()"
-    },
-    {
-      "label": "getYahooRepliedUids()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L684",
-      "_origin": "ast",
-      "id": "lib_actions_mail_getyahooreplieduids",
-      "community": 45,
-      "norm_label": "getyahooreplieduids()"
-    },
-    {
-      "label": "getMailMessageImpl()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L692",
-      "_origin": "ast",
-      "id": "lib_actions_mail_getmailmessageimpl",
-      "community": 45,
-      "norm_label": "getmailmessageimpl()"
-    },
-    {
-      "label": "getTitanEmail()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L723",
-      "_origin": "ast",
-      "id": "lib_actions_mail_gettitanemail",
-      "community": 45,
-      "norm_label": "gettitanemail()"
-    },
-    {
-      "label": "getYahooEmail()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L727",
-      "_origin": "ast",
-      "id": "lib_actions_mail_getyahooemail",
-      "community": 45,
-      "norm_label": "getyahooemail()"
-    },
-    {
-      "label": "getMailThreadImpl()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L738",
-      "_origin": "ast",
-      "id": "lib_actions_mail_getmailthreadimpl",
-      "community": 45,
-      "norm_label": "getmailthreadimpl()"
-    },
-    {
-      "label": "getTitanThread()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L873",
-      "_origin": "ast",
-      "id": "lib_actions_mail_gettitanthread",
-      "community": 45,
-      "norm_label": "gettitanthread()"
-    },
-    {
-      "label": "getYahooThread()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L877",
-      "_origin": "ast",
-      "id": "lib_actions_mail_getyahoothread",
-      "community": 45,
-      "norm_label": "getyahoothread()"
-    },
-    {
-      "label": "sendMailReplyImpl()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L881",
-      "_origin": "ast",
-      "id": "lib_actions_mail_sendmailreplyimpl",
-      "community": 45,
-      "norm_label": "sendmailreplyimpl()"
-    },
-    {
-      "label": "sendTitanEmail()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L1061",
-      "_origin": "ast",
-      "id": "lib_actions_mail_sendtitanemail",
-      "community": 45,
-      "norm_label": "sendtitanemail()"
-    },
-    {
-      "label": "sendYahooEmail()",
-      "file_type": "code",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L1065",
-      "_origin": "ast",
-      "id": "lib_actions_mail_sendyahooemail",
-      "community": 45,
-      "norm_label": "sendyahooemail()"
-    },
-    {
       "label": "trashPathCache",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1070",
+      "source_location": "L576",
       "_origin": "ast",
       "id": "lib_actions_mail_trashpathcache",
       "community": 45,
@@ -7737,17 +7627,187 @@
       "label": "findTrashMailbox()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1072",
+      "source_location": "L578",
       "_origin": "ast",
       "id": "lib_actions_mail_findtrashmailbox",
       "community": 45,
       "norm_label": "findtrashmailbox()"
     },
     {
+      "label": "folderPath()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L591",
+      "_origin": "ast",
+      "id": "lib_actions_mail_folderpath",
+      "community": 45,
+      "norm_label": "folderpath()"
+    },
+    {
+      "label": "requireInboxAccess()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L599",
+      "_origin": "ast",
+      "id": "lib_actions_mail_requireinboxaccess",
+      "community": 72,
+      "norm_label": "requireinboxaccess()"
+    },
+    {
+      "label": "listMailEmailsImpl()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L607",
+      "_origin": "ast",
+      "id": "lib_actions_mail_listmailemailsimpl",
+      "community": 45,
+      "norm_label": "listmailemailsimpl()"
+    },
+    {
+      "label": "listTitanEmails()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L672",
+      "_origin": "ast",
+      "id": "lib_actions_mail_listtitanemails",
+      "community": 45,
+      "norm_label": "listtitanemails()"
+    },
+    {
+      "label": "listYahooEmails()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L676",
+      "_origin": "ast",
+      "id": "lib_actions_mail_listyahooemails",
+      "community": 45,
+      "norm_label": "listyahooemails()"
+    },
+    {
+      "label": "getRepliedUidsImpl()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L686",
+      "_origin": "ast",
+      "id": "lib_actions_mail_getreplieduidsimpl",
+      "community": 45,
+      "norm_label": "getreplieduidsimpl()"
+    },
+    {
+      "label": "getTitanRepliedUids()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L722",
+      "_origin": "ast",
+      "id": "lib_actions_mail_gettitanreplieduids",
+      "community": 45,
+      "norm_label": "gettitanreplieduids()"
+    },
+    {
+      "label": "getYahooRepliedUids()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L726",
+      "_origin": "ast",
+      "id": "lib_actions_mail_getyahooreplieduids",
+      "community": 45,
+      "norm_label": "getyahooreplieduids()"
+    },
+    {
+      "label": "getMailMessageImpl()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L734",
+      "_origin": "ast",
+      "id": "lib_actions_mail_getmailmessageimpl",
+      "community": 45,
+      "norm_label": "getmailmessageimpl()"
+    },
+    {
+      "label": "getTitanEmail()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L767",
+      "_origin": "ast",
+      "id": "lib_actions_mail_gettitanemail",
+      "community": 45,
+      "norm_label": "gettitanemail()"
+    },
+    {
+      "label": "getYahooEmail()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L771",
+      "_origin": "ast",
+      "id": "lib_actions_mail_getyahooemail",
+      "community": 45,
+      "norm_label": "getyahooemail()"
+    },
+    {
+      "label": "getMailThreadImpl()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L782",
+      "_origin": "ast",
+      "id": "lib_actions_mail_getmailthreadimpl",
+      "community": 45,
+      "norm_label": "getmailthreadimpl()"
+    },
+    {
+      "label": "getTitanThread()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L917",
+      "_origin": "ast",
+      "id": "lib_actions_mail_gettitanthread",
+      "community": 45,
+      "norm_label": "gettitanthread()"
+    },
+    {
+      "label": "getYahooThread()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L921",
+      "_origin": "ast",
+      "id": "lib_actions_mail_getyahoothread",
+      "community": 45,
+      "norm_label": "getyahoothread()"
+    },
+    {
+      "label": "sendMailReplyImpl()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L925",
+      "_origin": "ast",
+      "id": "lib_actions_mail_sendmailreplyimpl",
+      "community": 45,
+      "norm_label": "sendmailreplyimpl()"
+    },
+    {
+      "label": "sendTitanEmail()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1105",
+      "_origin": "ast",
+      "id": "lib_actions_mail_sendtitanemail",
+      "community": 45,
+      "norm_label": "sendtitanemail()"
+    },
+    {
+      "label": "sendYahooEmail()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1109",
+      "_origin": "ast",
+      "id": "lib_actions_mail_sendyahooemail",
+      "community": 45,
+      "norm_label": "sendyahooemail()"
+    },
+    {
       "label": "trashMailImpl()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1090",
+      "source_location": "L1124",
       "_origin": "ast",
       "id": "lib_actions_mail_trashmailimpl",
       "community": 45,
@@ -7757,7 +7817,7 @@
       "label": "trashTitanEmail()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1129",
+      "source_location": "L1177",
       "_origin": "ast",
       "id": "lib_actions_mail_trashtitanemail",
       "community": 45,
@@ -7767,17 +7827,47 @@
       "label": "trashYahooEmail()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1133",
+      "source_location": "L1181",
       "_origin": "ast",
       "id": "lib_actions_mail_trashyahooemail",
       "community": 45,
       "norm_label": "trashyahooemail()"
     },
     {
+      "label": "restoreMailImpl()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1186",
+      "_origin": "ast",
+      "id": "lib_actions_mail_restoremailimpl",
+      "community": 45,
+      "norm_label": "restoremailimpl()"
+    },
+    {
+      "label": "restoreTitanEmail()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1220",
+      "_origin": "ast",
+      "id": "lib_actions_mail_restoretitanemail",
+      "community": 45,
+      "norm_label": "restoretitanemail()"
+    },
+    {
+      "label": "restoreYahooEmail()",
+      "file_type": "code",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1224",
+      "_origin": "ast",
+      "id": "lib_actions_mail_restoreyahooemail",
+      "community": 45,
+      "norm_label": "restoreyahooemail()"
+    },
+    {
       "label": "MailAccountOption",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1137",
+      "source_location": "L1228",
       "_origin": "ast",
       "id": "lib_actions_mail_mailaccountoption",
       "community": 45,
@@ -7787,7 +7877,7 @@
       "label": "listMailAccounts()",
       "file_type": "code",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1142",
+      "source_location": "L1233",
       "_origin": "ast",
       "id": "lib_actions_mail_listmailaccounts",
       "community": 45,
@@ -7797,7 +7887,7 @@
       "label": "RFC-5322",
       "file_type": "concept",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L507",
+      "source_location": "L510",
       "_origin": "ast",
       "id": "docref_rfc_5322",
       "community": 45,
@@ -7980,7 +8070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_partners",
-      "community": 48,
+      "community": 66,
       "norm_label": "partners.ts"
     },
     {
@@ -8000,7 +8090,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_actions_partners_result",
-      "community": 48,
+      "community": 66,
       "norm_label": "result"
     },
     {
@@ -8010,7 +8100,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_actions_partners_requirepartnersaccess",
-      "community": 48,
+      "community": 66,
       "norm_label": "requirepartnersaccess()"
     },
     {
@@ -8020,7 +8110,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "lib_actions_partners_cleanshortname",
-      "community": 48,
+      "community": 66,
       "norm_label": "cleanshortname()"
     },
     {
@@ -8030,7 +8120,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "lib_actions_partners_friendlyerror",
-      "community": 48,
+      "community": 66,
       "norm_label": "friendlyerror()"
     },
     {
@@ -8040,7 +8130,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_actions_partners_listpartners",
-      "community": 48,
+      "community": 66,
       "norm_label": "listpartners()"
     },
     {
@@ -8050,7 +8140,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "lib_actions_partners_createpartner",
-      "community": 48,
+      "community": 66,
       "norm_label": "createpartner()"
     },
     {
@@ -8060,7 +8150,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "lib_actions_partners_renamepartner",
-      "community": 48,
+      "community": 66,
       "norm_label": "renamepartner()"
     },
     {
@@ -8070,7 +8160,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "lib_actions_partners_deletepartner",
-      "community": 48,
+      "community": 66,
       "norm_label": "deletepartner()"
     },
     {
@@ -8080,7 +8170,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "lib_actions_partners_movepartner",
-      "community": 48,
+      "community": 66,
       "norm_label": "movepartner()"
     },
     {
@@ -8090,7 +8180,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "lib_actions_partners_setpartnerfield",
-      "community": 48,
+      "community": 66,
       "norm_label": "setpartnerfield()"
     },
     {
@@ -8130,7 +8220,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_actions_pdp_bulk_generator_storeurl",
-      "community": 57,
+      "community": 54,
       "norm_label": "storeurl"
     },
     {
@@ -8390,7 +8480,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import",
-      "community": 1,
+      "community": 63,
       "norm_label": "ppc-ai-import.ts"
     },
     {
@@ -8400,7 +8490,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_slot_minutes",
-      "community": 1,
+      "community": 63,
       "norm_label": "slot_minutes"
     },
     {
@@ -8410,7 +8500,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_snaptoslot",
-      "community": 1,
+      "community": 63,
       "norm_label": "snaptoslot()"
     },
     {
@@ -8420,7 +8510,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_parsetimetominutes",
-      "community": 1,
+      "community": 63,
       "norm_label": "parsetimetominutes()"
     },
     {
@@ -8430,7 +8520,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_parseamount",
-      "community": 1,
+      "community": 63,
       "norm_label": "parseamount()"
     },
     {
@@ -8440,7 +8530,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_country_aliases",
-      "community": 1,
+      "community": 63,
       "norm_label": "country_aliases"
     },
     {
@@ -8450,7 +8540,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_matchcountrylabel",
-      "community": 1,
+      "community": 63,
       "norm_label": "matchcountrylabel()"
     },
     {
@@ -8460,7 +8550,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_normalizeheader",
-      "community": 1,
+      "community": 63,
       "norm_label": "normalizeheader()"
     },
     {
@@ -8470,7 +8560,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_time_hints",
-      "community": 1,
+      "community": 63,
       "norm_label": "time_hints"
     },
     {
@@ -8480,7 +8570,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_amount_hints",
-      "community": 1,
+      "community": 63,
       "norm_label": "amount_hints"
     },
     {
@@ -8490,7 +8580,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_country_hints",
-      "community": 1,
+      "community": 63,
       "norm_label": "country_hints"
     },
     {
@@ -8500,7 +8590,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_primary_amount_hints",
-      "community": 1,
+      "community": 63,
       "norm_label": "primary_amount_hints"
     },
     {
@@ -8510,7 +8600,7 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_columnmapping",
-      "community": 1,
+      "community": 63,
       "norm_label": "columnmapping"
     },
     {
@@ -8520,7 +8610,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_findheaderrow",
-      "community": 1,
+      "community": 63,
       "norm_label": "findheaderrow()"
     },
     {
@@ -8530,7 +8620,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_findcountrylabelabove",
-      "community": 1,
+      "community": 63,
       "norm_label": "findcountrylabelabove()"
     },
     {
@@ -8540,7 +8630,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_detectcolumnblocks",
-      "community": 1,
+      "community": 63,
       "norm_label": "detectcolumnblocks()"
     },
     {
@@ -8550,7 +8640,7 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_findscheduleendrow",
-      "community": 1,
+      "community": 63,
       "norm_label": "findscheduleendrow()"
     },
     {
@@ -8560,7 +8650,7 @@
       "source_location": "L247",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_columndetectschema",
-      "community": 1,
+      "community": 63,
       "norm_label": "columndetectschema"
     },
     {
@@ -8570,7 +8660,7 @@
       "source_location": "L261",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_detectcolumnswithai",
-      "community": 1,
+      "community": 63,
       "norm_label": "detectcolumnswithai()"
     },
     {
@@ -8580,7 +8670,7 @@
       "source_location": "L321",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_detectedsheet",
-      "community": 1,
+      "community": 63,
       "norm_label": "detectedsheet"
     },
     {
@@ -8590,7 +8680,7 @@
       "source_location": "L332",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_parsesheetrows",
-      "community": 1,
+      "community": 63,
       "norm_label": "parsesheetrows()"
     },
     {
@@ -8600,7 +8690,7 @@
       "source_location": "L457",
       "_origin": "ast",
       "id": "lib_actions_ppc_ai_import_analyzescheduleimport",
-      "community": 1,
+      "community": 63,
       "norm_label": "analyzescheduleimport()"
     },
     {
@@ -8800,7 +8890,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "lib_actions_price_change_plans_priceplan",
-      "community": 72,
+      "community": 26,
       "norm_label": "priceplan"
     },
     {
@@ -8890,7 +8980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import",
-      "community": 6,
+      "community": 41,
       "norm_label": "price-plan-import.ts"
     },
     {
@@ -8900,7 +8990,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_requirestaff",
-      "community": 6,
+      "community": 41,
       "norm_label": "requirestaff()"
     },
     {
@@ -8910,7 +9000,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_sku_hints",
-      "community": 6,
+      "community": 41,
       "norm_label": "sku_hints"
     },
     {
@@ -8920,7 +9010,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_target_price_hints",
-      "community": 6,
+      "community": 41,
       "norm_label": "target_price_hints"
     },
     {
@@ -8930,7 +9020,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_price_fallback_hints",
-      "community": 6,
+      "community": 41,
       "norm_label": "price_fallback_hints"
     },
     {
@@ -8940,7 +9030,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_step_hints",
-      "community": 6,
+      "community": 41,
       "norm_label": "step_hints"
     },
     {
@@ -8950,7 +9040,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_normalizeheader",
-      "community": 6,
+      "community": 41,
       "norm_label": "normalizeheader()"
     },
     {
@@ -8960,7 +9050,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_findcolumn",
-      "community": 6,
+      "community": 41,
       "norm_label": "findcolumn()"
     },
     {
@@ -8970,7 +9060,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_parseamount",
-      "community": 6,
+      "community": 41,
       "norm_label": "parseamount()"
     },
     {
@@ -8980,7 +9070,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_columnmapping",
-      "community": 6,
+      "community": 41,
       "norm_label": "columnmapping"
     },
     {
@@ -8990,7 +9080,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_detectcolumnheuristically",
-      "community": 6,
+      "community": 41,
       "norm_label": "detectcolumnheuristically()"
     },
     {
@@ -9000,7 +9090,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_detecttargetcolumnheuristically",
-      "community": 6,
+      "community": 41,
       "norm_label": "detecttargetcolumnheuristically()"
     },
     {
@@ -9010,7 +9100,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_columndetectschema",
-      "community": 6,
+      "community": 41,
       "norm_label": "columndetectschema"
     },
     {
@@ -9020,7 +9110,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_detectcolumnwithai",
-      "community": 6,
+      "community": 41,
       "norm_label": "detectcolumnwithai()"
     },
     {
@@ -9030,7 +9120,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_detectedpriceimportsheet",
-      "community": 6,
+      "community": 41,
       "norm_label": "detectedpriceimportsheet"
     },
     {
@@ -9040,7 +9130,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_importedrow",
-      "community": 6,
+      "community": 41,
       "norm_label": "importedrow"
     },
     {
@@ -9050,7 +9140,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_extractrowsfromsheet",
-      "community": 6,
+      "community": 41,
       "norm_label": "extractrowsfromsheet()"
     },
     {
@@ -9060,7 +9150,7 @@
       "source_location": "L212",
       "_origin": "ast",
       "id": "lib_actions_price_plan_import_analyzebulkpriceimport",
-      "community": 6,
+      "community": 41,
       "norm_label": "analyzebulkpriceimport()"
     },
     {
@@ -9740,7 +9830,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "lib_actions_skills_getstaffskills",
-      "community": 11,
+      "community": 0,
       "norm_label": "getstaffskills()"
     },
     {
@@ -9800,7 +9890,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_actions_sku_list_listskus",
-      "community": 61,
+      "community": 26,
       "norm_label": "listskus()"
     },
     {
@@ -10130,7 +10220,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_actions_staff_profile_getstaffprofile",
-      "community": 0,
+      "community": 10,
       "norm_label": "getstaffprofile()"
     },
     {
@@ -10350,7 +10440,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "lib_actions_staff_getstaffdirectory",
-      "community": 50,
+      "community": 60,
       "norm_label": "getstaffdirectory()"
     },
     {
@@ -11130,7 +11220,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces",
-      "community": 65,
+      "community": 9,
       "norm_label": "marketplaces.ts"
     },
     {
@@ -11140,7 +11230,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_region",
-      "community": 65,
+      "community": 9,
       "norm_label": "region"
     },
     {
@@ -11150,7 +11240,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_region_hosts",
-      "community": 65,
+      "community": 9,
       "norm_label": "region_hosts"
     },
     {
@@ -11160,7 +11250,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_region_labels",
-      "community": 65,
+      "community": 9,
       "norm_label": "region_labels"
     },
     {
@@ -11180,7 +11270,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplacecode",
-      "community": 72,
+      "community": 26,
       "norm_label": "marketplacecode"
     },
     {
@@ -11190,7 +11280,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplace_ids",
-      "community": 65,
+      "community": 9,
       "norm_label": "marketplace_ids"
     },
     {
@@ -11200,7 +11290,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplace_codes",
-      "community": 65,
+      "community": 9,
       "norm_label": "marketplace_codes"
     },
     {
@@ -11210,7 +11300,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_islivemarketplace",
-      "community": 65,
+      "community": 9,
       "norm_label": "islivemarketplace()"
     },
     {
@@ -11220,7 +11310,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_marketplacesbyregion",
-      "community": 65,
+      "community": 26,
       "norm_label": "marketplacesbyregion()"
     },
     {
@@ -11230,7 +11320,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "lib_amazon_marketplaces_formatmoney",
-      "community": 65,
+      "community": 26,
       "norm_label": "formatmoney()"
     },
     {
@@ -11270,7 +11360,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "lib_amazon_sp_api_skudetail",
-      "community": 26,
+      "community": 9,
       "norm_label": "skudetail"
     },
     {
@@ -12360,7 +12450,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_i18n_client",
-      "community": 67,
+      "community": 60,
       "norm_label": "client.tsx"
     },
     {
@@ -12370,7 +12460,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "lib_i18n_client_i18ncontext",
-      "community": 67,
+      "community": 60,
       "norm_label": "i18ncontext"
     },
     {
@@ -12390,7 +12480,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_i18n_client_usei18n",
-      "community": 64,
+      "community": 60,
       "norm_label": "usei18n()"
     },
     {
@@ -12400,7 +12490,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_i18n_client_uset",
-      "community": 64,
+      "community": 60,
       "norm_label": "uset()"
     },
     {
@@ -12410,7 +12500,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "lib_i18n_client_uselocale",
-      "community": 64,
+      "community": 60,
       "norm_label": "uselocale()"
     },
     {
@@ -12420,7 +12510,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_i18n_config",
-      "community": 67,
+      "community": 68,
       "norm_label": "config.ts"
     },
     {
@@ -12440,7 +12530,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_i18n_config_locale",
-      "community": 67,
+      "community": 68,
       "norm_label": "locale"
     },
     {
@@ -12450,7 +12540,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_i18n_config_locale_labels",
-      "community": 67,
+      "community": 68,
       "norm_label": "locale_labels"
     },
     {
@@ -12460,7 +12550,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_i18n_config_locale_tags",
-      "community": 67,
+      "community": 68,
       "norm_label": "locale_tags"
     },
     {
@@ -12480,7 +12570,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_i18n_format",
-      "community": 67,
+      "community": 68,
       "norm_label": "format.ts"
     },
     {
@@ -12500,7 +12590,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_i18n_format_formatnumber",
-      "community": 67,
+      "community": 68,
       "norm_label": "formatnumber()"
     },
     {
@@ -12730,7 +12820,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_i18n_translate_vars",
-      "community": 11,
+      "community": 67,
       "norm_label": "vars"
     },
     {
@@ -12740,7 +12830,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "lib_i18n_translate_translator",
-      "community": 67,
+      "community": 64,
       "norm_label": "translator"
     },
     {
@@ -12780,7 +12870,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_nav",
-      "community": 60,
+      "community": 8,
       "norm_label": "nav.ts"
     },
     {
@@ -12810,7 +12900,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "lib_nav_navitem",
-      "community": 60,
+      "community": 64,
       "norm_label": "navitem"
     },
     {
@@ -12820,7 +12910,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "lib_nav_navgroup",
-      "community": 60,
+      "community": 64,
       "norm_label": "navgroup"
     },
     {
@@ -12830,7 +12920,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_nav_base_paths",
-      "community": 60,
+      "community": 8,
       "norm_label": "base_paths"
     },
     {
@@ -12840,7 +12930,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "lib_nav_slugify",
-      "community": 60,
+      "community": 8,
       "norm_label": "slugify()"
     },
     {
@@ -12850,7 +12940,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "lib_nav_naviteminput",
-      "community": 60,
+      "community": 64,
       "norm_label": "naviteminput"
     },
     {
@@ -12860,7 +12950,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "lib_nav_definenavitem",
-      "community": 60,
+      "community": 8,
       "norm_label": "definenavitem()"
     },
     {
@@ -12880,7 +12970,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "lib_nav_profitanalytics",
-      "community": 60,
+      "community": 8,
       "norm_label": "profitanalytics"
     },
     {
@@ -12910,7 +13000,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "lib_nav_orders",
-      "community": 63,
+      "community": 8,
       "norm_label": "orders"
     },
     {
@@ -12950,7 +13040,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "lib_nav_inventory",
-      "community": 58,
+      "community": 8,
       "norm_label": "inventory"
     },
     {
@@ -12970,7 +13060,7 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "lib_nav_masterlist",
-      "community": 60,
+      "community": 8,
       "norm_label": "masterlist"
     },
     {
@@ -12990,7 +13080,7 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "lib_nav_pricechangeplans",
-      "community": 60,
+      "community": 8,
       "norm_label": "pricechangeplans"
     },
     {
@@ -13000,7 +13090,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "lib_nav_bulkcampaignupload",
-      "community": 54,
+      "community": 53,
       "norm_label": "bulkcampaignupload"
     },
     {
@@ -13010,7 +13100,7 @@
       "source_location": "L210",
       "_origin": "ast",
       "id": "lib_nav_adsbulkgenerator",
-      "community": 54,
+      "community": 8,
       "norm_label": "adsbulkgenerator"
     },
     {
@@ -13050,7 +13140,7 @@
       "source_location": "L243",
       "_origin": "ast",
       "id": "lib_nav_calendar",
-      "community": 60,
+      "community": 8,
       "norm_label": "calendar"
     },
     {
@@ -13060,7 +13150,7 @@
       "source_location": "L250",
       "_origin": "ast",
       "id": "lib_nav_finance",
-      "community": 75,
+      "community": 8,
       "norm_label": "finance"
     },
     {
@@ -13070,7 +13160,7 @@
       "source_location": "L257",
       "_origin": "ast",
       "id": "lib_nav_tasks",
-      "community": 60,
+      "community": 8,
       "norm_label": "tasks"
     },
     {
@@ -13080,7 +13170,7 @@
       "source_location": "L264",
       "_origin": "ast",
       "id": "lib_nav_companyinbox",
-      "community": 60,
+      "community": 45,
       "norm_label": "companyinbox"
     },
     {
@@ -13090,7 +13180,7 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "lib_nav_nav_groups",
-      "community": 52,
+      "community": 50,
       "norm_label": "nav_groups"
     },
     {
@@ -13290,7 +13380,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_partners_constants_validfieldkeys",
-      "community": 48,
+      "community": 66,
       "norm_label": "validfieldkeys()"
     },
     {
@@ -13330,7 +13420,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_permissions_sanitizepermissions",
-      "community": 52,
+      "community": 2,
       "norm_label": "sanitizepermissions()"
     },
     {
@@ -13340,7 +13430,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_permissions_getmypermissions",
-      "community": 52,
+      "community": 72,
       "norm_label": "getmypermissions()"
     },
     {
@@ -13690,7 +13780,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "lib_product_prices_formatrmb",
-      "community": 53,
+      "community": 62,
       "norm_label": "formatrmb()"
     },
     {
@@ -13700,7 +13790,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "lib_product_prices_commissionrmb",
-      "community": 53,
+      "community": 62,
       "norm_label": "commissionrmb()"
     },
     {
@@ -13710,7 +13800,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "lib_product_prices_landedcostrmb",
-      "community": 53,
+      "community": 62,
       "norm_label": "landedcostrmb()"
     },
     {
@@ -13930,7 +14020,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_roles",
-      "community": 43,
+      "community": 52,
       "norm_label": "roles.ts"
     },
     {
@@ -13940,7 +14030,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_roles_role",
-      "community": 43,
+      "community": 11,
       "norm_label": "role"
     },
     {
@@ -13950,7 +14040,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_roles_roles",
-      "community": 43,
+      "community": 52,
       "norm_label": "roles"
     },
     {
@@ -13960,7 +14050,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_roles_role_labels",
-      "community": 43,
+      "community": 52,
       "norm_label": "role_labels"
     },
     {
@@ -13970,7 +14060,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "lib_roles_section",
-      "community": 60,
+      "community": 64,
       "norm_label": "section"
     },
     {
@@ -13980,7 +14070,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "lib_roles_sections",
-      "community": 2,
+      "community": 52,
       "norm_label": "sections"
     },
     {
@@ -13990,7 +14080,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "lib_roles_permissionset",
-      "community": 43,
+      "community": 2,
       "norm_label": "permissionset"
     },
     {
@@ -14000,7 +14090,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "lib_roles_empty_permissions",
-      "community": 43,
+      "community": 52,
       "norm_label": "empty_permissions"
     },
     {
@@ -14010,7 +14100,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "lib_roles_legacy_sections",
-      "community": 43,
+      "community": 52,
       "norm_label": "legacy_sections"
     },
     {
@@ -14020,7 +14110,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "lib_roles_canmanageusers",
-      "community": 43,
+      "community": 2,
       "norm_label": "canmanageusers()"
     },
     {
@@ -14030,7 +14120,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "lib_roles_canmanageprofiles",
-      "community": 11,
+      "community": 10,
       "norm_label": "canmanageprofiles()"
     },
     {
@@ -14060,7 +14150,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "lib_roles_isallowed",
-      "community": 52,
+      "community": 72,
       "norm_label": "isallowed()"
     },
     {
@@ -14070,7 +14160,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "lib_roles_filteritems",
-      "community": 52,
+      "community": 72,
       "norm_label": "filteritems()"
     },
     {
@@ -14080,7 +14170,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "lib_roles_topermissionset",
-      "community": 52,
+      "community": 2,
       "norm_label": "topermissionset()"
     },
     {
@@ -14110,7 +14200,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_session_sessionpayload",
-      "community": 56,
+      "community": 11,
       "norm_label": "sessionpayload"
     },
     {
@@ -14260,7 +14350,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_sku_grouping",
-      "community": 66,
+      "community": 61,
       "norm_label": "sku-grouping.ts"
     },
     {
@@ -14270,7 +14360,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "lib_sku_grouping_skuprefix",
-      "community": 66,
+      "community": 61,
       "norm_label": "skuprefix()"
     },
     {
@@ -14280,7 +14370,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_sku_grouping_sharedlength",
-      "community": 66,
+      "community": 61,
       "norm_label": "sharedlength()"
     },
     {
@@ -14290,7 +14380,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_sku_grouping_naturalcompare",
-      "community": 66,
+      "community": 61,
       "norm_label": "naturalcompare()"
     },
     {
@@ -14300,7 +14390,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "lib_sku_grouping_insertionplan",
-      "community": 66,
+      "community": 61,
       "norm_label": "insertionplan"
     },
     {
@@ -14310,7 +14400,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "lib_sku_grouping_planinsertions",
-      "community": 66,
+      "community": 61,
       "norm_label": "planinsertions()"
     },
     {
@@ -14460,7 +14550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_supabase_server",
-      "community": 1,
+      "community": 65,
       "norm_label": "server.ts"
     },
     {
@@ -14500,7 +14590,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_tasks_constants",
-      "community": 49,
+      "community": 58,
       "norm_label": "tasks-constants.ts"
     },
     {
@@ -14510,7 +14600,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_tasks_constants_priorities",
-      "community": 49,
+      "community": 58,
       "norm_label": "priorities"
     },
     {
@@ -14520,7 +14610,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "lib_tasks_constants_priority_labels",
-      "community": 49,
+      "community": 58,
       "norm_label": "priority_labels"
     },
     {
@@ -14530,7 +14620,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_tasks_constants_priority_classes",
-      "community": 49,
+      "community": 58,
       "norm_label": "priority_classes"
     },
     {
@@ -14660,7 +14750,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_utils",
-      "community": 46,
+      "community": 58,
       "norm_label": "utils.ts"
     },
     {
@@ -14680,7 +14770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_xlsx_assetid",
-      "community": 57,
+      "community": 4,
       "norm_label": "assetid.ts"
     },
     {
@@ -14690,7 +14780,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_xlsx_assetid_extractassetid",
-      "community": 57,
+      "community": 4,
       "norm_label": "extractassetid()"
     },
     {
@@ -14700,7 +14790,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_xlsx_assetid_extractbrandlogoid",
-      "community": 57,
+      "community": 4,
       "norm_label": "extractbrandlogoid()"
     },
     {
@@ -14760,7 +14850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk",
-      "community": 25,
+      "community": 65,
       "norm_label": "buildsponsoredbrandsbulk.ts"
     },
     {
@@ -14770,7 +14860,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_country",
-      "community": 25,
+      "community": 65,
       "norm_label": "country"
     },
     {
@@ -14780,7 +14870,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_us_header",
-      "community": 25,
+      "community": 65,
       "norm_label": "us_header"
     },
     {
@@ -14790,7 +14880,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_header",
-      "community": 25,
+      "community": 65,
       "norm_label": "header"
     },
     {
@@ -14800,7 +14890,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_basecampaigninput",
-      "community": 25,
+      "community": 65,
       "norm_label": "basecampaigninput"
     },
     {
@@ -14810,7 +14900,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_campaigninput",
-      "community": 25,
+      "community": 65,
       "norm_label": "campaigninput"
     },
     {
@@ -14820,7 +14910,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_sheet_name",
-      "community": 25,
+      "community": 65,
       "norm_label": "sheet_name"
     },
     {
@@ -14830,7 +14920,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_toamazondate",
-      "community": 25,
+      "community": 65,
       "norm_label": "toamazondate()"
     },
     {
@@ -14840,7 +14930,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_budgetfor",
-      "community": 25,
+      "community": 65,
       "norm_label": "budgetfor()"
     },
     {
@@ -14850,7 +14940,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_emptyrow",
-      "community": 25,
+      "community": 65,
       "norm_label": "emptyrow()"
     },
     {
@@ -14860,7 +14950,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_dedupekeywords",
-      "community": 25,
+      "community": 65,
       "norm_label": "dedupekeywords()"
     },
     {
@@ -14870,7 +14960,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "lib_xlsx_buildsponsoredbrandsbulk_buildsponsoredbrandsbulk",
-      "community": 25,
+      "community": 65,
       "norm_label": "buildsponsoredbrandsbulk()"
     },
     {
@@ -15420,7 +15510,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "package_dependencies_react",
-      "community": 46,
+      "community": 6,
       "norm_label": "react"
     },
     {
@@ -32682,7 +32772,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L31",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_compose_dialog",
@@ -32737,7 +32827,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L31",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_compose_dialog_composedialog",
@@ -32790,7 +32880,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L74",
+      "source_location": "L105",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_page_companyinboxpage",
@@ -32800,7 +32890,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L65",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page",
+      "target": "app_portal_others_company_inbox_page_folder_options",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L96",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_page_formatdate",
@@ -32810,7 +32910,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L34",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_page_mail_actions",
@@ -32820,10 +32920,30 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L63",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page",
+      "target": "app_portal_others_company_inbox_page_notice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L86",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_page_threadkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page",
+      "target": "app_portal_others_company_inbox_page_viewkey",
       "confidence_score": 1.0
     },
     {
@@ -32831,7 +32951,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L32",
+      "source_location": "L45",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_thread_view",
@@ -32842,7 +32962,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L32",
+      "source_location": "L45",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "app_portal_others_company_inbox_thread_view_threadview",
@@ -32853,7 +32973,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L5",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_page_header",
@@ -32864,7 +32984,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L5",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_page_header_pageheader",
@@ -32875,7 +32995,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L6",
+      "source_location": "L16",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_ui_button",
@@ -32886,7 +33006,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L6",
+      "source_location": "L16",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_ui_button_button",
@@ -32897,7 +33017,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L8",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_ui_segmented_control",
@@ -32908,7 +33028,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L8",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_ui_segmented_control_segmentedcontrol",
@@ -32919,7 +33039,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L7",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_ui_skeleton",
@@ -32930,7 +33050,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L7",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "components_ui_skeleton_skeleton",
@@ -32941,7 +33061,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail",
@@ -32952,7 +33072,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_gettitanemail",
@@ -32963,7 +33083,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_gettitanreplieduids",
@@ -32974,7 +33094,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_gettitanthread",
@@ -32985,7 +33105,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_getyahooemail",
@@ -32996,7 +33116,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_getyahooreplieduids",
@@ -33007,7 +33127,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_getyahoothread",
@@ -33018,7 +33138,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_listmailaccounts",
@@ -33029,7 +33149,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_listtitanemails",
@@ -33040,7 +33160,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_listyahooemails",
@@ -33051,7 +33171,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_mailaccountid",
@@ -33062,7 +33182,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_mailaccountoption",
@@ -33073,7 +33193,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_mailcomposemode",
@@ -33084,7 +33204,18 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page",
+      "target": "lib_actions_mail_mailfolder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_maillistitem",
@@ -33095,7 +33226,29 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page",
+      "target": "lib_actions_mail_restoretitanemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page",
+      "target": "lib_actions_mail_restoreyahooemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_sendtitanemail",
@@ -33106,7 +33259,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_sendyahooemail",
@@ -33117,7 +33270,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_threaditem",
@@ -33128,7 +33281,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_trashtitanemail",
@@ -33139,7 +33292,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L11",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_actions_mail_trashyahooemail",
@@ -33150,7 +33303,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L10",
+      "source_location": "L20",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_nav",
@@ -33161,7 +33314,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L10",
+      "source_location": "L20",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_nav_companyinbox",
@@ -33172,7 +33325,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L9",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_utils",
@@ -33183,7 +33336,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L9",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page",
       "target": "lib_utils_cn",
@@ -33194,7 +33347,29 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L353",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page_companyinboxpage",
+      "target": "app_portal_others_company_inbox_page_viewkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "app_portal_others_company_inbox_page_notice",
+      "target": "lib_actions_mail_mailaccountid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(portal)/others/company-inbox/page.tsx",
+      "source_location": "L475",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page_companyinboxpage",
       "target": "app_portal_others_company_inbox_page_formatdate",
@@ -33206,7 +33381,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L107",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page_companyinboxpage",
       "target": "lib_actions_mail_listmailaccounts"
@@ -33217,7 +33392,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(portal)/others/company-inbox/page.tsx",
-      "source_location": "L284",
+      "source_location": "L392",
       "weight": 1.0,
       "source": "app_portal_others_company_inbox_page_companyinboxpage",
       "target": "lib_utils_cn"
@@ -51489,7 +51664,7 @@
       "relation": "cites",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L507",
+      "source_location": "L510",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "docref_rfc_5322",
@@ -51499,7 +51674,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L511",
+      "source_location": "L514",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_buildrawmessage",
@@ -51509,7 +51684,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L405",
+      "source_location": "L408",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_cachedfetchmessages",
@@ -51519,7 +51694,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L476",
+      "source_location": "L479",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_cachedrecentenvelopes",
@@ -51529,7 +51704,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L564",
+      "source_location": "L567",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_connectionerrormessage",
@@ -51539,7 +51714,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L279",
+      "source_location": "L282",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_crlf",
@@ -51549,7 +51724,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L542",
+      "source_location": "L545",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_dedupeaddresses",
@@ -51559,7 +51734,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L220",
+      "source_location": "L223",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_droppooled",
@@ -51569,7 +51744,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L501",
+      "source_location": "L504",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_encodeheadertext",
@@ -51579,7 +51754,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L159",
+      "source_location": "L161",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_extracttext",
@@ -51589,7 +51764,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L308",
+      "source_location": "L311",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_fetchmessages",
@@ -51599,7 +51774,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L489",
+      "source_location": "L492",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_findsentmailbox",
@@ -51609,7 +51784,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L282",
+      "source_location": "L285",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_findtextpart",
@@ -51619,7 +51794,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1072",
+      "source_location": "L578",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_findtrashmailbox",
@@ -51629,7 +51804,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L163",
+      "source_location": "L165",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_flattenaddresses",
@@ -51639,7 +51814,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L692",
+      "source_location": "L591",
+      "weight": 1.0,
+      "source": "lib_actions_mail",
+      "target": "lib_actions_mail_folderpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L734",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_getmailmessageimpl",
@@ -51649,7 +51834,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L738",
+      "source_location": "L782",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_getmailthreadimpl",
@@ -51659,7 +51844,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L644",
+      "source_location": "L686",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_getreplieduidsimpl",
@@ -51669,7 +51854,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L723",
+      "source_location": "L767",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_gettitanemail",
@@ -51679,7 +51864,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L680",
+      "source_location": "L722",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_gettitanreplieduids",
@@ -51689,7 +51874,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L873",
+      "source_location": "L917",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_gettitanthread",
@@ -51699,7 +51884,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L727",
+      "source_location": "L771",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_getyahooemail",
@@ -51709,7 +51894,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L684",
+      "source_location": "L726",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_getyahooreplieduids",
@@ -51719,7 +51904,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L877",
+      "source_location": "L921",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_getyahoothread",
@@ -51729,7 +51914,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L148",
+      "source_location": "L150",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_htmltoplaintext",
@@ -51739,7 +51924,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1142",
+      "source_location": "L1233",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_listmailaccounts",
@@ -51749,7 +51934,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L572",
+      "source_location": "L607",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_listmailemailsimpl",
@@ -51759,7 +51944,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L630",
+      "source_location": "L672",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_listtitanemails",
@@ -51769,7 +51954,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L634",
+      "source_location": "L676",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_listyahooemails",
@@ -51779,7 +51964,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L267",
+      "source_location": "L270",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_loadedmessage",
@@ -51789,7 +51974,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L74",
+      "source_location": "L76",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mail_account_order",
@@ -51799,7 +51984,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L47",
+      "source_location": "L49",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mail_accounts",
@@ -51809,7 +51994,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L25",
+      "source_location": "L27",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailaccountconfig",
@@ -51829,7 +52014,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1137",
+      "source_location": "L1228",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailaccountoption",
@@ -51839,7 +52024,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L92",
+      "source_location": "L94",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailaddress",
@@ -51849,7 +52034,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L181",
+      "source_location": "L183",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailauthfor",
@@ -51859,7 +52044,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L189",
+      "source_location": "L191",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailclientfor",
@@ -51869,7 +52054,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailcomposemode",
@@ -51879,7 +52064,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L97",
+      "source_location": "L99",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_maildetail",
@@ -51889,7 +52074,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L76",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "lib_actions_mail",
+      "target": "lib_actions_mail_mailfolder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L78",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_maillistitem",
@@ -51899,7 +52094,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L212",
+      "source_location": "L215",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_mailrole",
@@ -51909,7 +52104,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L402",
+      "source_location": "L405",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_messagecache",
@@ -51919,7 +52114,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L556",
+      "source_location": "L559",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_parseaddresslist",
@@ -51929,7 +52124,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L224",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_pooledclient",
@@ -51939,7 +52134,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L213",
+      "source_location": "L216",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_poolkey",
@@ -51949,7 +52144,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L215",
+      "source_location": "L218",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_poolsymbol",
@@ -51959,7 +52154,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L175",
+      "source_location": "L177",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_referencesof",
@@ -51969,7 +52164,47 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L473",
+      "source_location": "L599",
+      "weight": 1.0,
+      "source": "lib_actions_mail",
+      "target": "lib_actions_mail_requireinboxaccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1186",
+      "weight": 1.0,
+      "source": "lib_actions_mail",
+      "target": "lib_actions_mail_restoremailimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1220",
+      "weight": 1.0,
+      "source": "lib_actions_mail",
+      "target": "lib_actions_mail_restoretitanemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1224",
+      "weight": 1.0,
+      "source": "lib_actions_mail",
+      "target": "lib_actions_mail_restoreyahooemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L476",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_scancache",
@@ -51979,7 +52214,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L451",
+      "source_location": "L454",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_scanrecentenvelopes",
@@ -51989,7 +52224,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L113",
+      "source_location": "L115",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_sendmailinput",
@@ -51999,7 +52234,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L881",
+      "source_location": "L925",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_sendmailreplyimpl",
@@ -52009,7 +52244,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1061",
+      "source_location": "L1105",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_sendtitanemail",
@@ -52019,7 +52254,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1065",
+      "source_location": "L1109",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_sendyahooemail",
@@ -52029,7 +52264,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L465",
+      "source_location": "L468",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_sentpathcache",
@@ -52039,7 +52274,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L127",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_threaditem",
@@ -52049,7 +52284,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L133",
+      "source_location": "L135",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_threadnode",
@@ -52059,7 +52294,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L430",
+      "source_location": "L433",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_tomaildetail",
@@ -52069,7 +52304,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1090",
+      "source_location": "L1124",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_trashmailimpl",
@@ -52079,7 +52314,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1070",
+      "source_location": "L576",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_trashpathcache",
@@ -52089,7 +52324,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1129",
+      "source_location": "L1177",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_trashtitanemail",
@@ -52099,7 +52334,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1133",
+      "source_location": "L1181",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_trashyahooemail",
@@ -52109,7 +52344,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L252",
+      "source_location": "L255",
       "weight": 1.0,
       "source": "lib_actions_mail",
       "target": "lib_actions_mail_withmailclient",
@@ -52186,7 +52421,7 @@
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L127",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "lib_actions_mail_threaditem",
       "target": "lib_actions_mail_maildetail",
@@ -52197,7 +52432,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L160",
+      "source_location": "L162",
       "weight": 1.0,
       "source": "lib_actions_mail_extracttext",
       "target": "lib_actions_mail_htmltoplaintext",
@@ -52208,7 +52443,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L378",
+      "source_location": "L381",
       "weight": 1.0,
       "source": "lib_actions_mail_fetchmessages",
       "target": "lib_actions_mail_htmltoplaintext",
@@ -52219,7 +52454,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L379",
+      "source_location": "L382",
       "weight": 1.0,
       "source": "lib_actions_mail_fetchmessages",
       "target": "lib_actions_mail_extracttext",
@@ -52230,7 +52465,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L384",
+      "source_location": "L387",
       "weight": 1.0,
       "source": "lib_actions_mail_fetchmessages",
       "target": "lib_actions_mail_flattenaddresses",
@@ -52241,7 +52476,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L390",
+      "source_location": "L393",
       "weight": 1.0,
       "source": "lib_actions_mail_fetchmessages",
       "target": "lib_actions_mail_referencesof",
@@ -52252,7 +52487,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L700",
+      "source_location": "L742",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailmessageimpl",
       "target": "lib_actions_mail_mailauthfor",
@@ -52263,7 +52498,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L746",
+      "source_location": "L790",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_mailauthfor",
@@ -52274,7 +52509,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L655",
+      "source_location": "L697",
       "weight": 1.0,
       "source": "lib_actions_mail_getreplieduidsimpl",
       "target": "lib_actions_mail_mailauthfor",
@@ -52285,7 +52520,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L580",
+      "source_location": "L618",
       "weight": 1.0,
       "source": "lib_actions_mail_listmailemailsimpl",
       "target": "lib_actions_mail_mailauthfor",
@@ -52296,7 +52531,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L190",
+      "source_location": "L192",
       "weight": 1.0,
       "source": "lib_actions_mail_mailclientfor",
       "target": "lib_actions_mail_mailauthfor",
@@ -52307,7 +52542,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L890",
+      "source_location": "L1194",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoremailimpl",
+      "target": "lib_actions_mail_mailauthfor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L934",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_mailauthfor",
@@ -52318,7 +52564,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1103",
+      "source_location": "L1132",
       "weight": 1.0,
       "source": "lib_actions_mail_trashmailimpl",
       "target": "lib_actions_mail_mailauthfor",
@@ -52329,7 +52575,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L233",
+      "source_location": "L236",
       "weight": 1.0,
       "source": "lib_actions_mail_pooledclient",
       "target": "lib_actions_mail_mailclientfor",
@@ -52340,7 +52586,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L230",
+      "source_location": "L233",
       "weight": 1.0,
       "source": "lib_actions_mail_pooledclient",
       "target": "lib_actions_mail_droppooled",
@@ -52351,7 +52597,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L586",
+      "source_location": "L625",
       "weight": 1.0,
       "source": "lib_actions_mail_listmailemailsimpl",
       "target": "lib_actions_mail_pooledclient",
@@ -52363,7 +52609,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L236",
+      "source_location": "L239",
       "weight": 1.0,
       "source": "lib_actions_mail_pooledclient",
       "target": "package_dependencies_imapflow"
@@ -52373,7 +52619,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L257",
+      "source_location": "L260",
       "weight": 1.0,
       "source": "lib_actions_mail_withmailclient",
       "target": "lib_actions_mail_pooledclient",
@@ -52384,7 +52630,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L703",
+      "source_location": "L745",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailmessageimpl",
       "target": "lib_actions_mail_withmailclient",
@@ -52395,7 +52641,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L768",
+      "source_location": "L812",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_withmailclient",
@@ -52406,7 +52652,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L658",
+      "source_location": "L700",
       "weight": 1.0,
       "source": "lib_actions_mail_getreplieduidsimpl",
       "target": "lib_actions_mail_withmailclient",
@@ -52417,7 +52663,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L589",
+      "source_location": "L629",
       "weight": 1.0,
       "source": "lib_actions_mail_listmailemailsimpl",
       "target": "lib_actions_mail_withmailclient",
@@ -52428,7 +52674,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L915",
+      "source_location": "L1197",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoremailimpl",
+      "target": "lib_actions_mail_withmailclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L959",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_withmailclient",
@@ -52439,7 +52696,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1108",
+      "source_location": "L1137",
       "weight": 1.0,
       "source": "lib_actions_mail_trashmailimpl",
       "target": "lib_actions_mail_withmailclient",
@@ -52450,7 +52707,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L323",
+      "source_location": "L326",
       "weight": 1.0,
       "source": "lib_actions_mail_fetchmessages",
       "target": "lib_actions_mail_findtextpart",
@@ -52461,7 +52718,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L418",
+      "source_location": "L421",
       "weight": 1.0,
       "source": "lib_actions_mail_cachedfetchmessages",
       "target": "lib_actions_mail_fetchmessages",
@@ -52473,7 +52730,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L313",
+      "source_location": "L316",
       "weight": 1.0,
       "source": "lib_actions_mail_fetchmessages",
       "target": "package_dependencies_imapflow"
@@ -52483,7 +52740,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L918",
+      "source_location": "L962",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_fetchmessages",
@@ -52494,7 +52751,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L707",
+      "source_location": "L751",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailmessageimpl",
       "target": "lib_actions_mail_cachedfetchmessages",
@@ -52505,7 +52762,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L831",
+      "source_location": "L875",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_cachedfetchmessages",
@@ -52516,7 +52773,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L713",
+      "source_location": "L757",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailmessageimpl",
       "target": "lib_actions_mail_tomaildetail",
@@ -52527,7 +52784,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L856",
+      "source_location": "L900",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_tomaildetail",
@@ -52538,7 +52795,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L484",
+      "source_location": "L487",
       "weight": 1.0,
       "source": "lib_actions_mail_cachedrecentenvelopes",
       "target": "lib_actions_mail_scanrecentenvelopes",
@@ -52550,7 +52807,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L457",
+      "source_location": "L460",
       "weight": 1.0,
       "source": "lib_actions_mail_scanrecentenvelopes",
       "target": "package_dependencies_imapflow"
@@ -52560,7 +52817,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L772",
+      "source_location": "L816",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_cachedrecentenvelopes",
@@ -52571,7 +52828,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L665",
+      "source_location": "L707",
       "weight": 1.0,
       "source": "lib_actions_mail_getreplieduidsimpl",
       "target": "lib_actions_mail_cachedrecentenvelopes",
@@ -52582,7 +52839,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L780",
+      "source_location": "L824",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_findsentmailbox",
@@ -52593,7 +52850,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L659",
+      "source_location": "L701",
       "weight": 1.0,
       "source": "lib_actions_mail_getreplieduidsimpl",
       "target": "lib_actions_mail_findsentmailbox",
@@ -52604,7 +52861,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1040",
+      "source_location": "L1084",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_findsentmailbox",
@@ -52615,7 +52872,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L528",
+      "source_location": "L531",
       "weight": 1.0,
       "source": "lib_actions_mail_buildrawmessage",
       "target": "lib_actions_mail_encodeheadertext",
@@ -52626,7 +52883,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1029",
+      "source_location": "L1073",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_buildrawmessage",
@@ -52637,7 +52894,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L939",
+      "source_location": "L983",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_dedupeaddresses",
@@ -52648,7 +52905,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L899",
+      "source_location": "L943",
       "weight": 1.0,
       "source": "lib_actions_mail_sendmailreplyimpl",
       "target": "lib_actions_mail_parseaddresslist",
@@ -52659,7 +52916,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L869",
+      "source_location": "L913",
       "weight": 1.0,
       "source": "lib_actions_mail_getmailthreadimpl",
       "target": "lib_actions_mail_connectionerrormessage",
@@ -52670,7 +52927,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L626",
+      "source_location": "L668",
       "weight": 1.0,
       "source": "lib_actions_mail_listmailemailsimpl",
       "target": "lib_actions_mail_connectionerrormessage",
@@ -52681,7 +52938,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1125",
+      "source_location": "L1216",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoremailimpl",
+      "target": "lib_actions_mail_connectionerrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1173",
       "weight": 1.0,
       "source": "lib_actions_mail_trashmailimpl",
       "target": "lib_actions_mail_connectionerrormessage",
@@ -52692,32 +52960,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L576",
+      "source_location": "L592",
       "weight": 1.0,
-      "source": "lib_actions_mail_listmailemailsimpl",
-      "target": "lib_session_getsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L591",
-      "weight": 1.0,
-      "source": "lib_actions_mail_listmailemailsimpl",
-      "target": "package_dependencies_imapflow"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L631",
-      "weight": 1.0,
-      "source": "lib_actions_mail_listtitanemails",
-      "target": "lib_actions_mail_listmailemailsimpl",
+      "source": "lib_actions_mail_folderpath",
+      "target": "lib_actions_mail_findtrashmailbox",
       "confidence_score": 1.0
     },
     {
@@ -52725,10 +52971,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L635",
+      "source_location": "L1198",
       "weight": 1.0,
-      "source": "lib_actions_mail_listyahooemails",
-      "target": "lib_actions_mail_listmailemailsimpl",
+      "source": "lib_actions_mail_restoremailimpl",
+      "target": "lib_actions_mail_findtrashmailbox",
       "confidence_score": 1.0
     },
     {
@@ -52736,183 +52982,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L648",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getreplieduidsimpl",
-      "target": "lib_session_getsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L663",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getreplieduidsimpl",
-      "target": "package_dependencies_imapflow"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L681",
-      "weight": 1.0,
-      "source": "lib_actions_mail_gettitanreplieduids",
-      "target": "lib_actions_mail_getreplieduidsimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L685",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getyahooreplieduids",
-      "target": "lib_actions_mail_getreplieduidsimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L696",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getmailmessageimpl",
-      "target": "lib_session_getsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L704",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getmailmessageimpl",
-      "target": "package_dependencies_imapflow"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L724",
-      "weight": 1.0,
-      "source": "lib_actions_mail_gettitanemail",
-      "target": "lib_actions_mail_getmailmessageimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L728",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getyahooemail",
-      "target": "lib_actions_mail_getmailmessageimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L742",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getmailthreadimpl",
-      "target": "lib_session_getsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L769",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getmailthreadimpl",
-      "target": "package_dependencies_imapflow"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L874",
-      "weight": 1.0,
-      "source": "lib_actions_mail_gettitanthread",
-      "target": "lib_actions_mail_getmailthreadimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L878",
-      "weight": 1.0,
-      "source": "lib_actions_mail_getyahoothread",
-      "target": "lib_actions_mail_getmailthreadimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L886",
-      "weight": 1.0,
-      "source": "lib_actions_mail_sendmailreplyimpl",
-      "target": "lib_session_getsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L916",
-      "weight": 1.0,
-      "source": "lib_actions_mail_sendmailreplyimpl",
-      "target": "package_dependencies_imapflow"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L1062",
-      "weight": 1.0,
-      "source": "lib_actions_mail_sendtitanemail",
-      "target": "lib_actions_mail_sendmailreplyimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L1066",
-      "weight": 1.0,
-      "source": "lib_actions_mail_sendyahooemail",
-      "target": "lib_actions_mail_sendmailreplyimpl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/actions/mail.ts",
-      "source_location": "L1109",
+      "source_location": "L1138",
       "weight": 1.0,
       "source": "lib_actions_mail_trashmailimpl",
       "target": "lib_actions_mail_findtrashmailbox",
@@ -52923,9 +52993,31 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1097",
+      "source_location": "L746",
       "weight": 1.0,
-      "source": "lib_actions_mail_trashmailimpl",
+      "source": "lib_actions_mail_getmailmessageimpl",
+      "target": "lib_actions_mail_folderpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L631",
+      "weight": 1.0,
+      "source": "lib_actions_mail_listmailemailsimpl",
+      "target": "lib_actions_mail_folderpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L602",
+      "weight": 1.0,
+      "source": "lib_actions_mail_requireinboxaccess",
       "target": "lib_permissions_getmypermissions",
       "confidence_score": 1.0
     },
@@ -52934,9 +53026,9 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1098",
+      "source_location": "L603",
       "weight": 1.0,
-      "source": "lib_actions_mail_trashmailimpl",
+      "source": "lib_actions_mail_requireinboxaccess",
       "target": "lib_roles_isallowed",
       "confidence_score": 1.0
     },
@@ -52945,9 +53037,42 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1094",
+      "source_location": "L600",
+      "weight": 1.0,
+      "source": "lib_actions_mail_requireinboxaccess",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1190",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoremailimpl",
+      "target": "lib_actions_mail_requireinboxaccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1128",
       "weight": 1.0,
       "source": "lib_actions_mail_trashmailimpl",
+      "target": "lib_actions_mail_requireinboxaccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L614",
+      "weight": 1.0,
+      "source": "lib_actions_mail_listmailemailsimpl",
       "target": "lib_session_getsession",
       "confidence_score": 1.0
     },
@@ -52957,7 +53082,216 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1111",
+      "source_location": "L633",
+      "weight": 1.0,
+      "source": "lib_actions_mail_listmailemailsimpl",
+      "target": "package_dependencies_imapflow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L673",
+      "weight": 1.0,
+      "source": "lib_actions_mail_listtitanemails",
+      "target": "lib_actions_mail_listmailemailsimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L677",
+      "weight": 1.0,
+      "source": "lib_actions_mail_listyahooemails",
+      "target": "lib_actions_mail_listmailemailsimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L690",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getreplieduidsimpl",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L705",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getreplieduidsimpl",
+      "target": "package_dependencies_imapflow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L723",
+      "weight": 1.0,
+      "source": "lib_actions_mail_gettitanreplieduids",
+      "target": "lib_actions_mail_getreplieduidsimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L727",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getyahooreplieduids",
+      "target": "lib_actions_mail_getreplieduidsimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L738",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getmailmessageimpl",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L748",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getmailmessageimpl",
+      "target": "package_dependencies_imapflow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L768",
+      "weight": 1.0,
+      "source": "lib_actions_mail_gettitanemail",
+      "target": "lib_actions_mail_getmailmessageimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L772",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getyahooemail",
+      "target": "lib_actions_mail_getmailmessageimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L786",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getmailthreadimpl",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L813",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getmailthreadimpl",
+      "target": "package_dependencies_imapflow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L918",
+      "weight": 1.0,
+      "source": "lib_actions_mail_gettitanthread",
+      "target": "lib_actions_mail_getmailthreadimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L922",
+      "weight": 1.0,
+      "source": "lib_actions_mail_getyahoothread",
+      "target": "lib_actions_mail_getmailthreadimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L930",
+      "weight": 1.0,
+      "source": "lib_actions_mail_sendmailreplyimpl",
+      "target": "lib_session_getsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L960",
+      "weight": 1.0,
+      "source": "lib_actions_mail_sendmailreplyimpl",
+      "target": "package_dependencies_imapflow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1106",
+      "weight": 1.0,
+      "source": "lib_actions_mail_sendtitanemail",
+      "target": "lib_actions_mail_sendmailreplyimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1110",
+      "weight": 1.0,
+      "source": "lib_actions_mail_sendyahooemail",
+      "target": "lib_actions_mail_sendmailreplyimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1140",
       "weight": 1.0,
       "source": "lib_actions_mail_trashmailimpl",
       "target": "package_dependencies_imapflow"
@@ -52967,7 +53301,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1130",
+      "source_location": "L1178",
       "weight": 1.0,
       "source": "lib_actions_mail_trashtitanemail",
       "target": "lib_actions_mail_trashmailimpl",
@@ -52978,10 +53312,43 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1134",
+      "source_location": "L1182",
       "weight": 1.0,
       "source": "lib_actions_mail_trashyahooemail",
       "target": "lib_actions_mail_trashmailimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1200",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoremailimpl",
+      "target": "package_dependencies_imapflow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1221",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoretitanemail",
+      "target": "lib_actions_mail_restoremailimpl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/actions/mail.ts",
+      "source_location": "L1225",
+      "weight": 1.0,
+      "source": "lib_actions_mail_restoreyahooemail",
+      "target": "lib_actions_mail_restoremailimpl",
       "confidence_score": 1.0
     },
     {
@@ -52990,7 +53357,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/actions/mail.ts",
-      "source_location": "L1146",
+      "source_location": "L1237",
       "weight": 1.0,
       "source": "lib_actions_mail_listmailaccounts",
       "target": "lib_session_getsession"
