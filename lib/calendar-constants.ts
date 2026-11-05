@@ -76,3 +76,10 @@ export type CalendarRole = "owner" | CalendarMemberRole;
  * (calendar_task_shares). It has no row in `calendars` and is always read-only.
  */
 export const SHARED_CALENDAR_ID = "shared-with-me";
+
+/**
+ * Id of the built-in International Calendar (public holidays, `lib/holidays.ts`). Like Shared with
+ * me it has no `calendars` row: every staff member sees it, read-only, and its events are computed.
+ */
+export const HOLIDAYS_CALENDAR_ID = "international-holidays";
+export const HOLIDAYS_CALENDAR_NAME = "International Calendar";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useTransition, useCallback } from "react";
-import { CalendarDays } from "lucide-react";
+import { useEffect, useRef, useState, useTransition, useCallback } from "react";
+import { CalendarDays, Search } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { calendar as calendarItem } from "@/lib/nav";
 import {
@@ -11,6 +11,7 @@ import {
   deleteCalendar,
   getTasksForRange,
   getUpcomingTasks,
+  searchCalendarTasks,
   type CalendarSummary,
   type CalendarTask,
 } from "@/lib/actions/calendar";
@@ -41,6 +42,7 @@ import { TaskFormDialog } from "./_components/task-form-dialog";
 import { DeleteScopeDialog } from "./_components/delete-scope-dialog";
 import { ManageAccessDialog } from "./_components/manage-access-dialog";
 import { NameCalendarDialog } from "./_components/name-calendar-dialog";
+import { SearchResults } from "./_components/search-results";
 import { usePersistedState } from "@/lib/use-persisted-state";
 
 type ViewMode = "month" | "week" | "day" | "year";
@@ -97,6 +99,13 @@ export default function CalendarPage() {
   const [renameTarget, setRenameTarget] = useState<CalendarSummary | null>(null);
   const [manageAccessTarget, setManageAccessTarget] = useState<CalendarSummary | null>(null);
 
+  // Search across all dates in the ticked calendars (title, notes, assignee), like the Tasks page search.
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState<CalendarTask[]>([]);
+  const [searching, setSearching] = useState(false);
+  const searchRequest = useRef(0);
+  const searchQuery = search.trim();
+
   const loadCalendars = useCallback(() => {
     startTransition(async () => {
       const { data } = await getMyCalendars();
@@ -144,6 +153,29 @@ export default function CalendarPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const runSearch = useCallback(() => {
+    const request = ++searchRequest.current;
+    if (!searchQuery || selectedIds.size === 0) {
+      setSearchResults([]);
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    void searchCalendarTasks(Array.from(selectedIds), searchQuery).then(({ data }) => {
+      // Ignore answers to an older query that arrive after a newer one.
+      if (request !== searchRequest.current) return;
+      setSearchResults(data ?? []);
+      setSearching(false);
+    });
+  }, [searchQuery, selectedIds]);
+
+  // Debounced so typing doesn't fire a request per keystroke.
+  useEffect(() => {
+    if (!selectionReady) return;
+    const timer = setTimeout(runSearch, 250);
+    return () => clearTimeout(timer);
+  }, [runSearch, selectionReady]);
+
   useEffect(() => {
     if (selectionReady) loadTasks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,6 +184,7 @@ export default function CalendarPage() {
   function refreshAfterMutation() {
     loadTasks();
     loadUpcoming();
+    if (searchQuery) runSearch();
   }
 
   function toggleCalendar(id: string) {
@@ -280,6 +313,20 @@ export default function CalendarPage() {
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-lg font-semibold text-foreground">{periodLabel}</h3>
             <div className="flex flex-wrap items-center gap-1.5">
+              <div className="relative w-full sm:w-64">
+                <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setSearch("");
+                  }}
+                  placeholder="Search events or assignee"
+                  aria-label="Search calendar events by title, notes or assignee"
+                  className="w-full rounded-md border border-input bg-background py-1.5 pr-2 pl-8 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
+                />
+              </div>
               <div className="flex overflow-hidden rounded-lg border border-border">
                 {VIEW_OPTIONS.map((opt) => (
                   <button
@@ -305,6 +352,18 @@ export default function CalendarPage() {
               </Button>
             </div>
           </div>
+
+          {searchQuery && (
+            <SearchResults
+              query={searchQuery}
+              tasks={searchResults}
+              loading={searching}
+              onPick={(task, date) => {
+                setAnchor(date);
+                openTask(task);
+              }}
+            />
+          )}
 
           {view === "month" && (
             <MonthGrid

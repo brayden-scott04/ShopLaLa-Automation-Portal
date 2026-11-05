@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1787116694.330362,
-    "ast_hash": "c671e3cead67e3692d6f464b08ef7ac6",
+    "mtime": 1793867722.0685642,
+    "ast_hash": "5b7421438063ba6ae06010307e2adef9",
     "semantic_hash": ""
   },
   "postcss.config.mjs": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1793359751.1302655,
-    "ast_hash": "376d2b64f9d6f8a43240d804f3c673bb",
+    "mtime": 1793867992.5088587,
+    "ast_hash": "2ec4c6d17462d71478a0358f8d2dcb87",
     "semantic_hash": ""
   },
   "README.md": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/calendar-sidebar.tsx": {
-    "mtime": 1793866872.2015965,
-    "ast_hash": "27e146a2e779b33bd9fb08d4cd69d4ef",
+    "mtime": 1793867819.6841135,
+    "ast_hash": "48c8a20837c583e0f36c93eb6d7b7b8a",
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/_components/day-tasks-dialog.tsx": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "app/(portal)/others/calendar/page.tsx": {
-    "mtime": 1793866854.9000626,
-    "ast_hash": "f40d42f5fa320aff2f1f262c35cbdd3e",
+    "mtime": 1793867175.0337627,
+    "ast_hash": "714f7145f0525a281908cac3701bff91",
     "semantic_hash": ""
   },
   "app/api/tools/ads-bulk-generator/generate/route.ts": {
@@ -535,8 +535,8 @@
     "semantic_hash": ""
   },
   "lib/actions/calendar.ts": {
-    "mtime": 1792756073.7918828,
-    "ast_hash": "e824aa0c5c18bd586a4051d20928d0a3",
+    "mtime": 1793867992.5076604,
+    "ast_hash": "73ddfa4f3a111512d1692beb0c6f56d3",
     "semantic_hash": ""
   },
   "lib/actions/fba-fee-tracker.ts": {
@@ -550,8 +550,8 @@
     "semantic_hash": ""
   },
   "lib/calendar-constants.ts": {
-    "mtime": 1792755995.039279,
-    "ast_hash": "2da83f1e69d93553f3254669ed7dd495",
+    "mtime": 1793867819.6841135,
+    "ast_hash": "c280f7a23bc744ee1a941619293a9dab",
     "semantic_hash": ""
   },
   "lib/calendar-date-utils.ts": {
@@ -1132,6 +1132,11 @@
   "lib/use-persisted-state.ts": {
     "mtime": 1793866906.1061096,
     "ast_hash": "be7b72bf68bebc7acd0bf2cde60245ca",
+    "semantic_hash": ""
+  },
+  "lib/holidays.ts": {
+    "mtime": 1793867819.6841135,
+    "ast_hash": "ad2fc1be3b3e4f2b0b1c475086147a33",
     "semantic_hash": ""
   }
 }

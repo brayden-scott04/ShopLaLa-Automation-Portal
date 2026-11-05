@@ -13,7 +13,10 @@ import {
   type TaskException,
   CALENDAR_MEMBER_ROLES,
   SHARED_CALENDAR_ID,
+  HOLIDAYS_CALENDAR_ID,
+  HOLIDAYS_CALENDAR_NAME,
 } from "@/lib/calendar-constants";
+import { getHolidayTasks } from "@/lib/holidays";
 import { addDays, diffDays } from "@/lib/calendar-date-utils";
 import { expandTask } from "@/lib/calendar-recurrence";
 
@@ -404,6 +407,15 @@ export async function getMyCalendars(): Promise<{ data: CalendarSummary[] | null
     });
   }
 
+  // Public holidays: built in for everyone, read-only.
+  data.push({
+    id: HOLIDAYS_CALENDAR_ID,
+    name: HOLIDAYS_CALENDAR_NAME,
+    ownerUsername: "",
+    myRole: "viewer",
+    createdAt: "",
+  });
+
   return { data, error: null };
 }
 
@@ -764,7 +776,8 @@ export async function getTasksForRange(
   const accessible = await getAccessibleCalendarMap(client, session.username);
   const targetIds = calendarIds.filter((id) => accessible.has(id));
   const wantShared = calendarIds.includes(SHARED_CALENDAR_ID);
-  if (targetIds.length === 0 && !wantShared) return { data: [], error: null };
+  const holidays = calendarIds.includes(HOLIDAYS_CALENDAR_ID) ? getHolidayTasks(startDate, endDate) : [];
+  if (targetIds.length === 0 && !wantShared) return { data: holidays, error: null };
 
   let rows: TaskRow[] = [];
   if (targetIds.length > 0) {
@@ -785,7 +798,7 @@ export async function getTasksForRange(
       )
     : [];
 
-  return { data: await hydrateTasks(client, rows, sharedRows, accessible), error: null };
+  return { data: [...(await hydrateTasks(client, rows, sharedRows, accessible)), ...holidays], error: null };
 }
 
 /** Tasks in the next 7 days: created by or assigned to the caller, or shared with them. */
@@ -823,6 +836,7 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
   const sharedRows = (await loadSharedInTaskRows(client, session.username, accessible)).filter((t) =>
     rowTouchesRange(t, start, end)
   );
+  // International Calendar holidays are deliberately left out of Upcoming.
   if (relevant.length === 0 && sharedRows.length === 0) return { data: [], error: null };
 
   const result = (await hydrateTasks(client, relevant, sharedRows, accessible))
@@ -841,6 +855,60 @@ export async function getUpcomingTasks(): Promise<{ data: CalendarTask[] | null;
   result.sort((a, b) => relevantDate(a).localeCompare(relevantDate(b)));
 
   return { data: result, error: null };
+}
+
+const SEARCH_LIMIT = 100;
+
+/**
+ * Calendar search: tasks in the given calendars whose title, notes or an assignee contains `query`
+ * (case-insensitive), returned as series rows (recurring tasks once, not per occurrence). The
+ * International Calendar is searched a year either side of today. Matches the Tasks page search:
+ * filtered in JS rather than SQL, which keeps quoting simple at this table's size.
+ */
+export async function searchCalendarTasks(
+  calendarIds: string[],
+  query: string
+): Promise<{ data: CalendarTask[] | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+
+  const q = query.trim().toLowerCase();
+  if (!q) return { data: [], error: null };
+  const matches = (...fields: (string | null | undefined)[]) =>
+    fields.some((f) => !!f && f.toLowerCase().includes(q));
+
+  const client = await createClient();
+  const accessible = await getAccessibleCalendarMap(client, session.username);
+  const targetIds = calendarIds.filter((id) => accessible.has(id));
+
+  let rows: TaskRow[] = [];
+  if (targetIds.length > 0) {
+    const { data, error } = await client.from("calendar_tasks").select(TASK_COLUMNS).in("calendar_id", targetIds);
+    if (error) return { data: null, error: error.message };
+    rows = data ?? [];
+  }
+  const sharedRows = calendarIds.includes(SHARED_CALENDAR_ID)
+    ? await loadSharedInTaskRows(client, session.username, accessible)
+    : [];
+
+  const assigneesByTask = await loadAssignees(client, [...rows, ...sharedRows].map((t) => t.id));
+  const isMatch = (t: TaskRow) => matches(t.title, t.notes, ...(assigneesByTask.get(t.id) ?? []));
+  const matchedRows = rows.filter(isMatch).slice(0, SEARCH_LIMIT);
+  const matchedShared = sharedRows.filter(isMatch).slice(0, SEARCH_LIMIT);
+
+  const tasks =
+    matchedRows.length === 0 && matchedShared.length === 0
+      ? []
+      : await hydrateTasks(client, matchedRows, matchedShared, accessible);
+
+  if (calendarIds.includes(HOLIDAYS_CALENDAR_ID)) {
+    const year = new Date().getFullYear();
+    tasks.push(
+      ...getHolidayTasks(`${year - 1}-01-01`, `${year + 1}-12-31`).filter((t) => matches(t.title, t.notes))
+    );
+  }
+
+  return { data: tasks.slice(0, SEARCH_LIMIT * 2), error: null };
 }
 
 async function assertAssigneesAllowed(

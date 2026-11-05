@@ -25,7 +25,6 @@
   "23": "LaLaGreen Automation Portal — Developer Guide",
   "24": "sp-api.ts",
   "25": "projects.ts",
-  "26": "chart.tsx",
   "27": "README.md",
   "28": "AGENTS.md",
   "29": "client.ts",
@@ -59,15 +58,14 @@
   "57": "page.tsx",
   "58": "fba-fee-tracker-constants.ts",
   "59": "page-header.tsx",
-  "60": "getMyPermissions",
   "61": "marketplaces.ts",
   "62": "page.tsx",
   "63": "page.tsx",
   "64": "use-persisted-state.ts",
+  "65": "marketplaces.ts",
+  "66": "sku-grouping.ts",
   "67": "layout.tsx",
   "68": "page.tsx",
-  "69": "nav.ts",
   "71": "dashboard-access-grid.tsx",
-  "72": "price-change-plans.ts",
-  "73": "session.ts"
+  "72": "price-change-plans.ts"
 }

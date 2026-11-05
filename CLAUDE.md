@@ -489,6 +489,17 @@ A task is one `calendar_tasks` row; recurring ones are expanded client-side by `
   virtual "Shared with me" calendar (`SHARED_CALENDAR_ID`, no `calendars` row, only listed when they
   have at least one share) and can't see who else it's shared with. Shares for people who already
   see the calendar are dropped by `resolveShares()`.
+- **Search** (toolbar box): `searchCalendarTasks()` matches title, notes or an assignee across **all
+  dates** in the ticked calendars (International Calendar: a year either side of today), filtered in JS
+  like the Tasks page search. Results list each task once (a repeating one at its next occurrence) in
+  "Coming up" then "Past"; clicking one jumps the calendar to that date and opens it.
+- **International Calendar** (`HOLIDAYS_CALENDAR_ID`): a second virtual, read-only calendar that every
+  staff member always has. Its events are public holidays computed on the server by `lib/holidays.ts`
+  from the `date-holidays` package (offline, no DB rows) for US, CA, MX, SG, CN, PH, MY, and "EU" =
+  DE/FR/IT/ES/NL. A holiday shared by several countries on one day is one entry ("Christmas Day (US,
+  CA, …)"); consecutive days merge into one multi-day entry. It is deliberately **not** shown in the Upcoming panel. Bump
+  `date-holidays` now and then for newly announced dates; lunar/Islamic dates are calculated and can be
+  a day off the official announcement.
 
 ### FBA Fee Tracker tables
 
