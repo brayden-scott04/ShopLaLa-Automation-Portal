@@ -15,6 +15,7 @@ import {
   Megaphone,
   Package,
   PackageSearch,
+  Rocket,
   Tag,
   Target,
   TrendingUp,
@@ -183,6 +184,13 @@ export const masterList = defineNavItem({
   section: "marketOps",
 });
 
+export const newProductLaunchWorkflow = defineNavItem({
+  name: "New Product Launch Workflow",
+  description: "From sourcing to Amazon launch: each team's steps, owners and handoffs",
+  icon: Rocket,
+  section: "marketOps",
+});
+
 export const ppcTopUp = defineNavItem({
   name: "PPC Top Up",
   description: "Amazon Sponsored Products daily budget cap schedule",
@@ -293,6 +301,7 @@ export const NAV_GROUPS: NavGroup[] = [
       inventory,
       advertisements,
       masterList,
+      newProductLaunchWorkflow,
       ppcTopUp,
       priceChangePlans,
       bulkCampaignUpload,

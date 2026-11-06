@@ -15,6 +15,8 @@ const I18N_ENFORCED = [
   "app/(portal)/admin/users/**",
   "components/team/**",
   "components/org-chart/**",
+  "app/(portal)/market-ops/new-product-launch-workflow/**",
+  "components/npl-workflow/**",
   "components/sidebar.tsx",
   "components/sidebar-content.tsx",
   "components/topbar.tsx",

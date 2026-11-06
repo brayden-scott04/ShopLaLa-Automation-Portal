@@ -1,0 +1,674 @@
+{
+  "schema": 1,
+  "en": [
+    {
+      "title": "Sourcing",
+      "sub": "Wk 1–2",
+      "owner": "Supply Chain",
+      "trigger": "Kickoff / new product opportunity",
+      "actions": [
+        "Shortlist suppliers or manufacturers and request quotes and capability details.",
+        "Check MOQ, lead time and any mold fee.",
+        "Confirm proposed specifications, sizes, colors and customization."
+      ],
+      "output": "Supplier shortlist and proposed product specifications.",
+      "handoff": "Order pre-production samples from shortlisted suppliers (Step 2)."
+    },
+    {
+      "title": "Sample",
+      "sub": "Wk 2–3",
+      "owner": "Supply Chain",
+      "trigger": "Potential suppliers shortlisted",
+      "actions": [
+        "Order pre-production samples.",
+        "Inspect quality, material and functional fit.",
+        "Ship a sample to Singapore if needed.",
+        "Monica confirms the sample; Dobie decides whether to place the order and the order quantity."
+      ],
+      "output": "Sample assessment and confirmed or revised specifications.",
+      "handoff": "Proceed to pricing and order terms (Step 3); delays extend the whole schedule."
+    },
+    {
+      "title": "Terms & first order",
+      "sub": "Wk 3–4",
+      "owner": "Supply Chain",
+      "trigger": "Sample and specifications acceptable",
+      "actions": [
+        "Agree unit price, MOQ, production schedule, payment terms and terms and conditions.",
+        "Finalize the supplier agreement or purchase order and place the first order.",
+        "For the first shipment of a new product, arrange for one packaged sample to be sent to Singapore."
+      ],
+      "output": "Confirmed first order.",
+      "handoff": "Create the product form (Step 4) and proceed with pre-production QC (Step 6)."
+    },
+    {
+      "title": "Product form",
+      "sub": "Wk 4 · as soon as possible",
+      "owner": "Supply Chain; Market Ops counter-checks; Dobie confirms",
+      "trigger": "First order placed",
+      "actions": [
+        "Create the SKU/product form as soon as possible after the order is placed.",
+        "Enter product specifications, weight, packaging type and estimated packaging dimensions where available; final dimensions can be confirmed later.",
+        "Confirm SKU pricing structure and P&L using Dobie’s details.",
+        "Share the completed form with the Market Ops team.",
+        "Share available product information in the CREATE NEW LISTING group so Visual can begin ideas and preparation."
+      ],
+      "output": "Confirmed product form with initial product details, estimated packaging dimensions and P&L.",
+      "handoff": "Market Ops uses the form for listing and labels (Step 5); Visual can begin preparation (Step 7)."
+    },
+    {
+      "title": "Listing & packaging",
+      "title2": "label",
+      "sub": "Wk 4–8",
+      "owner": "Market Ops; Supply Chain supports labels in peak season",
+      "trigger": "Product form received",
+      "actions": [
+        "Counter-check product details and confirm any information needed for the listing.",
+        "Research keywords and competitors; draft listing copy, backend terms, variations and attributes.",
+        "Create the Amazon listing within 24 hours of receiving the product form and update the team. Keep the listing closed before launch per the SOP.",
+        "Once packaging dimensions are confirmed, create the SKU code and GTIN and prepare the label within 24–48 hours. Confirm box design with Shai; Shai coordinates design changes with Dobie.",
+        "Involve Visual when new packaging design or sizes are needed; confirm the design and dimensions before the supplier proceeds.",
+        "Stewie / Xie Yi / Jimmy / Fenny cross-check the label; Dobie verifies it before it is sent to the supplier. Le Qi also counter-checks AU/EU labels.",
+        "Sync confirmed product details across markets and share the creative brief with Visual.",
+        "Use the shared GTIN label template for future labels.",
+        "The supplier provides dimensions. Shai decides on existing packaging designs with size changes; Dobie decides on new designs."
+      ],
+      "output": "Prepared listing and verified packaging label.",
+      "handoff": "Listing details go to launch preparation; the verified label goes to Supply Chain for Step 8."
+    },
+    {
+      "title": "Pre-production QC",
+      "sub": "Before bulk production",
+      "owner": "Supplier; Supply Chain reviews and approves",
+      "trigger": "Final product specification is ready, before bulk production starts",
+      "actions": [
+        "Supplier presents the final product specifications before bulk production.",
+        "Request clear photos and videos from all sides, including dimensions, materials, finish and included accessories.",
+        "Supply Chain reviews the evidence and confirms the final specifications before approving bulk production.",
+        "After approval, track production milestones and status and escalate delays.",
+        "Follow the delivery countdown for most factories; adjust follow-up when a factory is delayed."
+      ],
+      "output": "Approved final specifications and supplier photos/videos; bulk production may proceed.",
+      "handoff": "Share supplier evidence with Visual to refine assets (Step 7); label work proceeds in parallel (Step 8)."
+    },
+    {
+      "title": "Prepare visual assets",
+      "sub": "Start with listing information",
+      "owner": "Visual team; coordinate with Shai",
+      "trigger": "Product information is shared in the CREATE NEW LISTING group",
+      "actions": [
+        "Start visual concepts and preparation as soon as product information is shared.",
+        "For variations, use suitable existing assets to prepare or complete images and video before shipment where possible.",
+        "For new products, develop images and video using confirmed specifications and available supplier photos and videos.",
+        "Prepare the main image, 6–8 secondary images and product video as applicable.",
+        "Check all content against the confirmed specifications.",
+        "Use additional product images from the GZ inspection in Step 9 for final touch-ups when needed."
+      ],
+      "output": "Visual assets prepared for final review.",
+      "handoff": "Final assets go to upload and launch check (Step 11)."
+    },
+    {
+      "title": "Labels &",
+      "title2": "packing list",
+      "sub": "Wk 7–8 · before dispatch",
+      "owner": "Supply Chain; Dobie verifies and sends the US label",
+      "trigger": "Label verified in Step 5 and final specifications approved in Step 6",
+      "actions": [
+        "Send the finalized label to the supplier after Dobie verification.",
+        "Confirm the supplier applies the label correctly to each box.",
+        "Spot-check placement and compliance before mass packing.",
+        "Obtain the supplier’s packing list before dispatch.",
+        "Check the SKU, shipment quantity and price against the confirmed order.",
+        "Resolve any discrepancies with the supplier and confirm the final packing list before dispatch.",
+        "For products not exceeding 60 cm, apply the carton requirements: up to 60 × 60 × 60 cm and 20 kg, with reinforced five-layer cartons equivalent to “extra hard 50”. Products themselves exceeding 60 cm are exceptions."
+      ],
+      "output": "Supplier confirmation, label checks and verified packing list.",
+      "handoff": "Labelled goods proceed to GZ QC and shipment in Step 9, concurrently with Step 7.",
+      "note": "For AU/EU, Le Qi counter-checks the label."
+    },
+    {
+      "title": "GZ QC & shipment",
+      "sub": "Wk 9–16",
+      "owner": "Supply Chain",
+      "trigger": "Bulk production is complete and the first batch is ready for inspection",
+      "actions": [
+        "Inspect stock at the GZ warehouse or accessible supplier factory.",
+        "Capture and share additional product photos with Visual for final image touch-ups in Step 7.",
+        "Request quotes from 2–3 forwarders and compare cost, transit time and reliability.",
+        "Create the Amazon FBA/AWD shipment plan; share labels and documents with the forwarder.",
+        "Update tracking in Amazon and monitor delivery."
+      ],
+      "output": "GZ QC evidence, additional Visual photos, shipment plan and tracking status.",
+      "handoff": "Share delivery progress with Market Ops for inbound timing and sellable check (Step 10).",
+      "note": "Booking and shipment creation start around Week 9–10 for the approximate two-month China-to-US ocean transit."
+    },
+    {
+      "title": "Inbound & sellable",
+      "sub": "Wk 15–16",
+      "owner": "Market Ops",
+      "trigger": "Amazon inbound shipment received",
+      "actions": [
+        "Compare received inbound quantity with the PO and shipment plan.",
+        "Confirm inventory is marked Sellable in Seller Central.",
+        "Flag and resolve discrepancies before launch."
+      ],
+      "output": "Confirmed sellable quantity or a recorded launch blocker.",
+      "handoff": "Sellable inventory is a prerequisite for the final launch check (Step 11)."
+    },
+    {
+      "title": "Final launch check",
+      "sub": "Wk 16",
+      "owner": "Visual team: Shai final images, Joy final video; Dobie approves before upload",
+      "trigger": "Final assets and sellable inventory ready",
+      "actions": [
+        "Shai finalises the images and Joy finalises the video; obtain Dobie’s approval before uploading either.",
+        "Check title, SKU, images, keyword placement, bullets and backend terms.",
+        "Check for stranded inventory.",
+        "Shai confirms the product listing and PDP; activate the listing."
+      ],
+      "output": "Checked and activated product detail page.",
+      "handoff": "Market Ops begins launch ads, promotion and store-page work (Step 12)."
+    },
+    {
+      "title": "Launch week",
+      "sub": "Wk 16",
+      "owner": "Market Ops",
+      "trigger": "Listing/PDP activated",
+      "actions": [
+        "Set up Sponsored Products / Sponsored Brands campaigns using Fenny / Xie Yi’s PPC plan.",
+        "Activate agreed launch promotion and publish the updated store page.",
+        "For every new product, Market Ops creates a bulk auto campaign after the listing has run for 1–2 days."
+      ],
+      "output": "Live launch campaign, promotion and store page.",
+      "handoff": "Begin post-launch monitoring (Step 13)."
+    },
+    {
+      "title": "Monitor & adjust",
+      "sub": "Wk 17+",
+      "owner": "Market Ops",
+      "trigger": "Product launched",
+      "actions": [
+        "Monitor sales, Buy Box and inventory closely.",
+        "Adjust ad bids/budget, pricing or promotions based on performance.",
+        "Ask Visual for a creative refresh when results warrant one."
+      ],
+      "output": "Ongoing performance updates and changes.",
+      "handoff": "Continue monitoring from 7–14 days after launch onward."
+    }
+  ],
+  "zh": [
+    {
+      "title": "寻找供应商",
+      "sub": "第 1–2 周",
+      "owner": "供应链",
+      "trigger": "启动／发现新产品机会",
+      "actions": [
+        "筛选供应商或制造商，索取报价和产能资料。",
+        "核对最小起订量、交期和模具费用。",
+        "确认拟议规格、尺寸、颜色和定制要求。"
+      ],
+      "output": "供应商候选名单及拟议产品规格。",
+      "handoff": "向入围供应商订购产前样品（步骤 2）。"
+    },
+    {
+      "title": "样品",
+      "sub": "第 2–3 周",
+      "owner": "供应链",
+      "trigger": "供应商初步筛选完成",
+      "actions": [
+        "订购产前样品。",
+        "检查质量、材料及功能适配性。",
+        "如有需要，将样品寄往新加坡。",
+        "Monica 确认样品；Dobie 决定是否下单及订购数量。"
+      ],
+      "output": "样品评估结果及确认或修订后的规格。",
+      "handoff": "进入价格和订单条款确认（步骤 3）；样品延误会影响后续时间。"
+    },
+    {
+      "title": "条款与首单",
+      "sub": "第 3–4 周",
+      "owner": "供应链",
+      "trigger": "样品和规格符合要求",
+      "actions": [
+        "商定单价、最小起订量、生产计划、付款条款及其他条件。",
+        "确定供应商协议或采购订单并下首单。",
+        "新品首批发货时，安排寄一套带包装的样品到新加坡。"
+      ],
+      "output": "已确认的首单。",
+      "handoff": "制作产品表（步骤 4），并进行产前质检（步骤 6）。"
+    },
+    {
+      "title": "产品表",
+      "sub": "第 4 周 · 尽快",
+      "owner": "供应链；市场运营复核；Dobie 确认",
+      "trigger": "首单已下",
+      "actions": [
+        "下单后尽快创建 SKU／产品表。",
+        "填写产品规格、重量、包装类型及可获得的预估包装尺寸；最终尺寸可随后确认。",
+        "使用 Dobie 提供的信息确认 SKU 定价结构及损益表。",
+        "将完成的表格交给市场运营同事。",
+        "在 CREATE NEW LISTING 群分享可用产品资料，让视觉团队尽早构思和准备。"
+      ],
+      "output": "包含初始产品资料、预估包装尺寸及损益信息的已确认产品表。",
+      "handoff": "市场运营使用产品表创建商品信息及包装标签（步骤 5）；视觉团队可开始准备（步骤 7）。"
+    },
+    {
+      "title": "商品信息与包装标签",
+      "sub": "第 4–8 周",
+      "owner": "市场运营；旺季时供应链协助标签",
+      "trigger": "收到产品表",
+      "actions": [
+        "复核产品资料并确认创建商品信息所需的数据。",
+        "研究关键词和竞品，准备商品文案、后台词、变体和属性。",
+        "收到产品表后 24 小时内创建亚马逊商品信息并通知团队；按原 SOP 在上线前保持关闭。",
+        "包装尺寸确认后创建 SKU 代码及 GTIN，并在 24–48 小时内准备标签；与 Shai 确认包装设计，Shai 与 Dobie 协调设计修改。",
+        "如果需要新包装设计或新尺寸，邀请视觉团队参与；确认设计及尺寸后再交供应商执行。",
+        "Stewie／Xie Yi／Jimmy／Fenny 交叉核对标签，Dobie 复核后交供应商；Le Qi 也复核澳洲／欧洲标签。",
+        "同步各市场的已确认资料，并与视觉团队分享需求。",
+        "今后的标签使用统一的 GTIN 标签模板。",
+        "尺寸由供应商提供。沿用旧包装设计、仅改变尺寸时由 Shai 决定；新设计由 Dobie 决定。"
+      ],
+      "output": "已准备的商品信息及已核对的包装标签。",
+      "handoff": "商品资料进入上线准备；已核对标签交供应链发送给供应商（步骤 8）。"
+    },
+    {
+      "title": "产前质检",
+      "sub": "批量生产前",
+      "owner": "供应商；供应链复核并确认",
+      "trigger": "最终产品规格已准备好，尚未开始批量生产",
+      "actions": [
+        "供应商在批量生产前展示最终产品规格。",
+        "索取各个角度的清晰照片和视频，涵盖尺寸、材料、表面处理及所含配件。",
+        "供应链核对资料并确认最终规格后，才批准批量生产。",
+        "批准后跟进生产节点和进度，及时上报延误。",
+        "大多数工厂按交货倒计时跟进；工厂延期时相应调整跟进安排。"
+      ],
+      "output": "已确认的最终规格及供应商照片／视频；可以进入批量生产。",
+      "handoff": "供应商资料提供给视觉团队完善素材（步骤 7）；标签工作并行进行（步骤 8）。"
+    },
+    {
+      "title": "准备视觉素材",
+      "sub": "收到商品资料后开始",
+      "owner": "视觉团队；与 Shai 协调",
+      "trigger": "CREATE NEW LISTING 群已分享产品资料",
+      "actions": [
+        "收到产品资料后尽早开始视觉构思和准备。",
+        "对于变体，在适用时利用已有素材，尽可能在发货前准备或完成图片和视频。",
+        "对于全新品，根据已确认规格及可用的供应商照片和视频逐步制作。",
+        "按需要准备主图、6–8 张辅图及产品视频。",
+        "按已确认规格核对所有内容。",
+        "必要时使用步骤 9 的广州质检照片作最终调整。"
+      ],
+      "output": "已准备、待最终审核的视觉素材。",
+      "handoff": "最终素材进入上传和上线检查（步骤 11）。"
+    },
+    {
+      "title": "标签与装箱单",
+      "sub": "第 7–8 周及发货前",
+      "owner": "供应链；Dobie 复核并发送美国标签",
+      "trigger": "步骤 5 的标签已核对、步骤 6 的最终规格已确认",
+      "actions": [
+        "Dobie 复核后将最终标签发送给供应商。",
+        "确认供应商将标签正确贴在每个箱子上。",
+        "批量装箱前抽查位置和合规性。",
+        "发货前取得供应商的装箱单。",
+        "对照已确认订单核对 SKU、发货数量和价格。",
+        "与供应商解决差异，并在发货前确认最终装箱单。",
+        "产品本身不超过 60 cm 时，按纸箱要求执行：尺寸不超过 60 × 60 × 60 cm、重量不超过 20 kg，并使用与“超硬 50”同等级的五层加厚纸箱；产品本身超过 60 cm 的情况除外。"
+      ],
+      "output": "供应商确认、标签抽查证据及已核对的装箱单。",
+      "handoff": "贴标货物进入广州质检及发货（步骤 9）；视觉准备可并行进行（步骤 7）。",
+      "note": "澳洲／欧洲标签由 Le Qi 同时复核。"
+    },
+    {
+      "title": "广州质检与发货",
+      "sub": "第 9–16 周",
+      "owner": "供应链",
+      "trigger": "大货完成，首批货物可供检查",
+      "actions": [
+        "在广州仓库或可进入的供应商工厂检查货物。",
+        "向视觉团队分享额外产品照片，供步骤 7 必要的最终调整。",
+        "向 2–3 家货代询价，比较费用、运输时间及可靠性。",
+        "创建亚马逊 FBA／AWD 发货计划，将标签和文件提供给货代。",
+        "更新亚马逊追踪信息并跟进交付。"
+      ],
+      "output": "广州质检证据、视觉补充照片、发货计划和追踪状态。",
+      "handoff": "向市场运营同步交付进度，供入仓及可售检查使用（步骤 10）。",
+      "note": "订舱和创建货件约从第 9–10 周开始，预计中国至美国海运约两个月。"
+    },
+    {
+      "title": "入仓与可售",
+      "sub": "第 15–16 周",
+      "owner": "市场运营",
+      "trigger": "亚马逊入仓货件已收货",
+      "actions": [
+        "将入仓数量与采购订单及发货计划核对。",
+        "在卖家平台确认库存状态为可售。",
+        "上线前标记并处理数量差异。"
+      ],
+      "output": "已确认可售数量，或已记录的上线阻碍。",
+      "handoff": "可售库存是最终上线检查（步骤 11）的前提。"
+    },
+    {
+      "title": "最终上线检查",
+      "sub": "第 16 周",
+      "owner": "视觉团队：Shai 负责最终图片，Joy 负责最终视频；Dobie 确认后上传",
+      "trigger": "最终素材和可售库存已准备好",
+      "actions": [
+        "Shai 负责最终图片，Joy 负责最终视频；两者均须经 Dobie 确认后才能上传。",
+        "检查标题、SKU、图片、关键词位置、卖点和后台词。",
+        "检查滞留库存。",
+        "Shai 确认商品信息及详情页后，激活商品。"
+      ],
+      "output": "已检查并激活的商品详情页。",
+      "handoff": "市场运营开始上线广告、促销及店铺页面工作（步骤 12）。"
+    },
+    {
+      "title": "上线周",
+      "sub": "第 16 周",
+      "owner": "市场运营",
+      "trigger": "商品信息／详情页已激活",
+      "actions": [
+        "根据 Fenny／Xie Yi 的 PPC 计划设置 Sponsored Products／Sponsored Brands 广告。",
+        "启动已确认的上线促销并发布更新后的店铺页面。",
+        "每个新品由市场运营在商品运行 1–2 天后创建批量自动广告活动（bulk auto campaign）。"
+      ],
+      "output": "已上线的广告活动、促销和店铺页面。",
+      "handoff": "开始上线后监控（步骤 13）。"
+    },
+    {
+      "title": "监控与调整",
+      "sub": "第 17 周起",
+      "owner": "市场运营",
+      "trigger": "产品已上线",
+      "actions": [
+        "密切监控销量、Buy Box 和库存。",
+        "根据表现调整广告出价／预算、价格或促销。",
+        "需要时请视觉团队更新创意素材。"
+      ],
+      "output": "持续的表现记录和调整。",
+      "handoff": "上线 7–14 天后继续监控。"
+    }
+  ],
+  "sharedActions": {
+    "supply": {
+      "5": {
+        "en": [
+          "Provide confirmed packaging dimensions and support Market Ops on labels in peak season.",
+          "Send verified label details to the supplier after the required checks; coordinate any design or size changes.",
+          "The supplier provides packaging dimensions. Use the shared GTIN label template; Shai decides on existing designs with size changes and Dobie decides on new designs."
+        ],
+        "zh": [
+          "提供已确认的包装尺寸，旺季时协助市场运营处理标签。",
+          "完成必要核对后将标签资料交供应商；协调设计或尺寸变更。",
+          "包装尺寸由供应商提供。使用统一的 GTIN 标签模板；旧设计仅改尺寸由 Shai 决定，新设计由 Dobie 决定。"
+        ]
+      },
+      "13": {
+        "en": [
+          "Record delivery and QC issues, review supplier performance and use findings for future orders."
+        ],
+        "zh": [
+          "记录交付和质检问题，评估供应商表现，并用于后续订单改进。"
+        ]
+      }
+    },
+    "ops": {
+      "4": {
+        "en": [
+          "Counter-check the product form and confirm any missing details with Supply Chain.",
+          "Use Dobie’s information to confirm SKU pricing and P&L; share the listing brief with Visual."
+        ],
+        "zh": [
+          "复核产品表，与供应链确认缺失资料。",
+          "使用 Dobie 提供的信息确认 SKU 定价及损益，并向视觉团队分享商品需求。"
+        ]
+      },
+      "7": {
+        "en": [
+          "Share the listing brief and confirmed product details in CREATE NEW LISTING.",
+          "Coordinate with Visual on image and video progress and clarify listing requirements."
+        ],
+        "zh": [
+          "在 CREATE NEW LISTING 群分享商品需求及已确认产品资料。",
+          "与视觉团队跟进图片和视频进度，澄清商品信息要求。"
+        ]
+      },
+      "11": {
+        "en": [
+          "Coordinate final listing, inventory and launch readiness with Visual.",
+          "Ensure Dobie approves Shai’s final images and Joy’s final video before upload."
+        ],
+        "zh": [
+          "与视觉团队协调最终商品信息、库存和上线准备。",
+          "确保 Shai 的最终图片和 Joy 的最终视频均经 Dobie 确认后再上传。"
+        ]
+      }
+    },
+    "visual": {
+      "4": {
+        "en": [
+          "Use product information shared in CREATE NEW LISTING to begin visual concepts and preparation."
+        ],
+        "zh": [
+          "使用 CREATE NEW LISTING 群分享的产品资料，开始视觉构思和准备。"
+        ]
+      },
+      "5": {
+        "en": [
+          "Review the creative brief and join packaging work when a new design or size is required.",
+          "The supplier provides dimensions; Shai decides on existing designs with size changes, while Dobie decides on new designs."
+        ],
+        "zh": [
+          "查看视觉需求，在需要新包装设计或尺寸时参与包装工作。",
+          "尺寸由供应商提供；旧设计仅改尺寸由 Shai 决定，新设计由 Dobie 决定。"
+        ]
+      },
+      "6": {
+        "en": [
+          "Use available supplier photos, videos and confirmed specifications to refine the visual assets."
+        ],
+        "zh": [
+          "使用可获得的供应商照片、视频及已确认规格完善视觉素材。"
+        ]
+      },
+      "9": {
+        "en": [
+          "Use extra GZ inspection photos for verification or final touch-ups when needed."
+        ],
+        "zh": [
+          "必要时使用广州质检补充照片进行核对或最终调整。"
+        ]
+      },
+      "13": {
+        "en": [
+          "Refresh creative assets when Market Ops identifies a need."
+        ],
+        "zh": [
+          "市场运营提出需要时，更新视觉素材。"
+        ]
+      }
+    }
+  },
+  "extras": {
+    "supply": {
+      "en": [
+        [
+          "Supplier due diligence",
+          "Check supplier business legitimacy, business licence and relevant quality certifications; compare quotations and specifications and retain evaluation records."
+        ],
+        [
+          "Sample and first order",
+          "Inspect workmanship, take videos, measure dimensions and record parameters."
+        ],
+        [
+          "Production follow-up",
+          "confirm the first production unit with photos/video before bulk production; track progress and packaging; follow up by phone when responses or delivery are delayed."
+        ],
+        [
+          "Bulk production evidence",
+          "Track production and finishing, arrange random quality checks, record actual dimensions and weight, and share photos, videos and included accessory details with Market Ops and Visual."
+        ],
+        [
+          "Packaging and packing list",
+          "Confirm carton design and dimensions before the supplier orders cartons. Check applicable inner, outer and warning labels. Monica’s document says to send the packing list as a reminder before delivery and ask the supplier to return it with final quantities; reconcile it with the confirmed order. The attached Excel is available in Step 8."
+        ],
+        [
+          "Quality and records",
+          "Use photos or video to verify the first item and, where applicable, finishing, packing before and after the inner box, and the final outer cartons. Follow up QC issues with suppliers, retain records and review supplier performance after delivery."
+        ],
+        [
+          "Delivery countdown",
+          "For most factories, follow this delivery countdown: 15–20 days before delivery, check the first production item; 15 days before, follow up cartons; 10 days before, send labels; 8 days before, check production; 6 days before, send the packing-list reminder; 3–5 days before, follow up daily; 2 days before, obtain the completed packing list. Adjust follow-up when a factory is delayed."
+        ],
+        [
+          "Carton standards",
+          "For products not exceeding 60 cm, cartons are within 60 × 60 × 60 cm and 20 kg and use reinforced five-layer material equivalent to “extra hard 50”. Products themselves exceeding 60 cm are exceptions."
+        ],
+        [
+          "Packaged sample",
+          "Before the first order is finalised, a Singapore sample is not required. For the first shipment of a new product, send one packaged sample to Singapore."
+        ]
+      ],
+      "zh": [
+        [
+          "供应商尽调",
+          "检查供应商经营主体、营业执照及相关质量认证；比较报价和规格并保留评估记录。"
+        ],
+        [
+          "样品与首单",
+          "检查工艺、拍摄视频、测量尺寸并记录参数。"
+        ],
+        [
+          "生产跟进",
+          "批量生产前通过照片／视频确认首件，跟进生产和包装；回复或交付延误时电话跟进。"
+        ],
+        [
+          "大货生产证据",
+          "跟进生产和表面处理，安排随机质量检查，记录实际尺寸和重量，并将照片、视频及所含配件信息分享给市场运营和视觉团队。"
+        ],
+        [
+          "包装与装箱单",
+          "供应商订购纸箱前确认设计和尺寸。核对适用的内箱、外箱和警示标签。Monica 文档要求发货前发送装箱单提醒供应商，催回填最终数量并与已确认订单核对；Excel 可从步骤 8 下载。"
+        ],
+        [
+          "质检与记录",
+          "通过照片或视频核对首件，以及适用情况下的上色、内箱装箱前后及外箱成品。向供应商跟进质检问题，保留记录并在交付后评估供应商表现。"
+        ],
+        [
+          "交货倒计时",
+          "大多数工厂按交货日倒推：前 15–20 天确认首件；前 15 天跟进纸箱；前 10 天发送标签；前 8 天确认生产；前 6 天发送装箱单提醒；前 3–5 天每天跟进；前 2 天收回已填写的装箱单。工厂延期时相应调整跟进安排。"
+        ],
+        [
+          "纸箱标准",
+          "产品本身不超过 60 cm 时，外箱不超过 60 × 60 × 60 cm、20 kg，并使用与“超硬 50”同等级的五层加厚纸箱。产品本身超过 60 cm 的情况除外。"
+        ],
+        [
+          "带包装样品",
+          "新品订单尚未敲定前可不用寄新加坡样品；新品首批发货时，寄一套带包装的样品到新加坡。"
+        ]
+      ]
+    },
+    "ops": {
+      "en": [
+        [
+          "Role and handoffs",
+          "Check the product form and resolve missing or conflicting information with Supply Chain. Share the listing brief in CREATE NEW LISTING so Visual can prepare early."
+        ],
+        [
+          "Research and preparation",
+          "Market Ops can begin research before the order. Review search terms, search volume, competition and competitor listings; prepare listing title, five bullets, description, backend terms, attributes and variations. Share suitable competitor references and the creative brief with Visual. Prepare PPC strategy alongside listing work."
+        ],
+        [
+          "Listing and labels",
+          "Prepare the listing and market-specific label using confirmed product data. Obtain required cross-checks and Dobie’s verification; involve Visual for new packaging design or dimensions."
+        ],
+        [
+          "Launch and monitoring",
+          "Confirm sellable stock, coordinate final product-page checks and launch approval, then implement the agreed advertising and promotion plan and monitor results."
+        ],
+        [
+          "GTIN label template",
+          "Use the shared GTIN label template for future labels."
+        ],
+        [
+          "Bulk auto campaign",
+          "For every new product, create a bulk auto campaign after the listing has run for 1–2 days."
+        ]
+      ],
+      "zh": [
+        [
+          "岗位及交接",
+          "核对产品表，向供应链确认缺失或有冲突的信息；在 CREATE NEW LISTING 群分享商品需求，让视觉团队提前准备。"
+        ],
+        [
+          "调研与准备",
+          "市场运营可在下单前开始调研。检查搜索词、搜索量、竞争情况及竞品商品信息；准备标题、五点描述、商品描述、后台词、属性和变体。将适用的竞品参考和视觉需求分享给视觉团队，并与商品信息制作并行准备 PPC 策略。"
+        ],
+        [
+          "商品信息和标签",
+          "使用已确认的产品资料准备商品信息和市场专用标签，取得规定的交叉核对及 Dobie 复核；新包装设计或尺寸需视觉团队参与。"
+        ],
+        [
+          "上线与监控",
+          "确认可售库存，协调商品详情页最终检查和上线批准，按已确认计划执行广告和促销并监控结果。"
+        ],
+        [
+          "GTIN 标签模板",
+          "今后的标签使用统一的 GTIN 模板。"
+        ],
+        [
+          "批量自动广告",
+          "每个新品由市场运营在商品运行 1–2 天后创建 bulk auto campaign。"
+        ]
+      ]
+    },
+    "visual": {
+      "en": [
+        [
+          "Early preparation",
+          "Join CREATE NEW LISTING discussions and begin concepts when product information is shared. For variations, reuse suitable verified existing assets where possible; images or video may be completed before shipment."
+        ],
+        [
+          "Packaging design",
+          "When a new packaging design or size is required, work with the relevant team to prepare and confirm the design and dimensions before the supplier proceeds."
+        ],
+        [
+          "Production and final review",
+          "Use confirmed specifications and available supplier imagery for new-product assets. Incorporate GZ photos when needed, verify that assets match the actual product, and coordinate final page review with Shai. Do not assume every product must wait for GZ photos."
+        ],
+        [
+          "Final image and video approval",
+          "Shai is responsible for the final images and Joy for the final video. Dobie must approve both before upload."
+        ],
+        [
+          "Packaging decisions",
+          "The supplier provides dimensions. Shai decides on existing designs with size changes; Dobie decides on new packaging designs."
+        ]
+      ],
+      "zh": [
+        [
+          "提前准备",
+          "参与 CREATE NEW LISTING 群讨论，收到产品资料后开始构思。变体可在适用时复用已核实的现有素材，图片或视频有机会在发货前完成。"
+        ],
+        [
+          "包装设计",
+          "需要新包装设计或新尺寸时，与相关团队准备并确认设计和尺寸，再由供应商继续执行。"
+        ],
+        [
+          "制作与最终审核",
+          "根据已确认规格及可用供应商照片制作新品素材；必要时使用广州照片调整，核对素材与实际产品一致，并与 Shai 协调最终页面审核。并非所有产品都必须等待广州照片。"
+        ],
+        [
+          "图片及视频最终确认",
+          "Shai 负责最终图片，Joy 负责最终视频；两者均须经 Dobie 确认后才能上传。"
+        ],
+        [
+          "包装决策",
+          "尺寸由供应商提供；旧设计仅改尺寸由 Shai 决定，新包装设计由 Dobie 决定。"
+        ]
+      ]
+    }
+  },
+  "labelTemplateUrl": "https://www.canva.com/folder/FAF44kKOAnI"
+}

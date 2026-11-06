@@ -581,7 +581,7 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
 
 ### Organization Chart (`org_chart_*`)
 
-Backs `/org-chart`, linked in the sidebar's fixed block below Team. Every staff member can view it; only **admins** (`canAdminister`) see "Edit chart" and can change it. Server actions are in `lib/actions/org-chart.ts` (RLS-client reads, service-client writes after the role check); types and the stats/locations helpers are in `lib/org-chart-constants.ts`; UI in `components/org-chart/`. DDL and the seed (the chart as of 1 Nov 2026) are in `sql/org_chart_migration.sql`, run by hand.
+Backs `/org-chart`, linked in the sidebar's fixed block below Team. Every staff member can view it; only **admins and leaders** (`canManageProfiles`) see "Edit chart" and can change it. Server actions are in `lib/actions/org-chart.ts` (RLS-client reads, service-client writes after the role check); types and the stats/locations helpers are in `lib/org-chart-constants.ts`; UI in `components/org-chart/`. DDL and the seed (the chart as of 1 Nov 2026) are in `sql/org_chart_migration.sql`, run by hand.
 
 - **`org_chart_departments`**: the dark column headers, ordered by `position`.
 - **`org_chart_people`**: name (unique, case-insensitive), `location`, `part_time`. Independent of `staff`: most people on the chart have no portal account. A person can sit in several columns; location and part-time live here, so they show the same everywhere.
@@ -589,6 +589,18 @@ Backs `/org-chart`, linked in the sidebar's fixed block below Team. Every staff 
 - **`org_chart_meta`**: one row, the last edit time, shown as "As of <date>".
 - The counts and the Team locations panel are **computed**, not stored (`orgStats` / `orgLocations`): headcount = distinct people on the chart, part-time from the person flag, open = `open` boxes. People with no location (e.g. Dobie) are counted but not listed under a location.
 - In the box editor, typing a different name **switches the box to that person** (creating them if new). Renaming someone everywhere is done in the People dialog.
+
+### New Product Launch Workflow (`npl_workflow`, `npl_workflow_files`)
+
+Backs `/market-ops/new-product-launch-workflow` (Market Ops, below Master List), ported from the standalone "New Product Launch Workflow Draft" HTML. It shows a swim-lane diagram of 13 steps across Supply Chain / Market Ops / Visual, a step detail panel, a team filter and each team's full SOP. It has its own English / 中文 switch, which defaults to the portal language. DDL: `sql/npl_workflow_migration.sql`, run by hand.
+
+- **`npl_workflow`**: one row (`id = 1`) holding the whole bilingual document as `content` jsonb: steps `en`/`zh`, `sharedActions` (team-specific actions per step), `extras` (each team SOP's closing sections) and `labelTemplateUrl`. Its shape is `workflowContentSchema` in `lib/npl-workflow/constants.ts`.
+  - **No row = nothing saved yet**: the page shows `lib/npl-workflow/default-content.json` (the draft's content) with revision 0, and the first save inserts the row.
+  - `revision` is bumped on every save. A save carrying a stale revision is refused (`errors.nplConflict`), so two editors can't overwrite each other.
+- **`npl_workflow_files`**: attachments, base64 in `data`, pinned to a step (`scope_type='step'`, `scope_id` `1`–`13`) or a team SOP (`'team'`, `supply|ops|visual`). Uploads go through `POST /api/npl-workflow/files`, not a server action, because server action bodies cap at 1 MB. Files are capped at 4 MB (Vercel's body limit). Downloads go through `GET /api/npl-workflow/files/<id>`.
+- The diagram's geometry (card positions, arrows, phases, lanes) is code in `lib/npl-workflow/constants.ts`, not data. Only the text is editable.
+- **Who can edit:** viewing needs page access (`assertItemAccess`). Editing needs that **plus** admin or leader (`canManageProfiles`), checked in `lib/actions/npl-workflow.ts` and the API routes. Both tables have RLS on with **no policies**, so all reads and writes use the service client after those checks.
+- Viewer labels follow the page's own language switch, so they live in `VIEW_LABELS` (constants file), not `lib/i18n`. Editor chrome uses `t("nplWorkflow.…")`.
 
 ### Staff skills (`skills`, `staff_skills`)
 
@@ -738,7 +750,7 @@ also feeds the dashboard's "Your access" grid, the Manage Users access editor, t
 |---|---|
 | Dashboard (`dashboard` / `/dashboard`) | Goal vs Performance\*, Profit Analytics |
 | Supply Chain (`supplyChain` / `/supply-chain`) | Partners, Sourcing\*, Orders\*, Shipments\*, Automations\* |
-| Market Ops (`marketOps` / `/market-ops`) | Products, Inventory\*, Advertisements\*, Master List, and an **Automations & Tools** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`; only the label was renamed on 2026-10-21, the key and URLs stayed): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker, Trends |
+| Market Ops (`marketOps` / `/market-ops`) | Products, Inventory\*, Advertisements\*, Master List, New Product Launch Workflow, and an **Automations & Tools** fold (`subgroup: "automations"`, routes `/market-ops/automations/<id>`; only the label was renamed on 2026-10-21, the key and URLs stayed): PPC Top Up, Price Change Plans, Sponsored Brands Upload, Ads Bulk Generator, FBA Fee Tracker, Trends |
 | Visual (`visual` / `/visual`) | Listing Score\* |
 | Others (`others` / `/others`) | Calendar, Finance\*, Tasks, Company Inbox |
 

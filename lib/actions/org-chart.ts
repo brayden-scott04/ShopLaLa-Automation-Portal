@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
-import { canAdminister } from "@/lib/roles";
+import { canManageProfiles } from "@/lib/roles";
 import {
   ORG_LOCATION_MAX,
   ORG_NAME_MAX,
@@ -14,7 +14,7 @@ import {
 import { getT } from "@/lib/i18n/server";
 import type { MessageKey, Vars } from "@/lib/i18n/translate";
 
-// Organization Chart. Everyone signed in can read it; only admins can change it. Reads use the RLS
+// Organization Chart. Everyone signed in can read it; only admins and leaders can change it. Reads use the RLS
 // client, writes the service client after the role check below.
 
 type Result<T> = { data: T | null; error: string | null };
@@ -24,10 +24,10 @@ async function tr(key: MessageKey, vars?: Vars): Promise<string> {
 }
 
 /** Server actions are callable POST endpoints, so every write re-checks the role here. */
-async function requireAdmin() {
+async function requireEditor() {
   const session = await getSession();
   if (!session) return { session: null, error: "Unauthorized" as const };
-  if (!canAdminister(session.role)) return { session: null, error: "Forbidden" as const };
+  if (!canManageProfiles(session.role)) return { session: null, error: "Forbidden" as const };
   return { session, error: null };
 }
 
@@ -82,7 +82,7 @@ export async function getOrgChart(): Promise<Result<OrgChart>> {
         position: n.position,
       })),
       updatedAt: metaRes.data?.updated_at ?? null,
-      canEdit: canAdminister(session.role),
+      canEdit: canManageProfiles(session.role),
     },
     error: null,
   };
@@ -91,7 +91,7 @@ export async function getOrgChart(): Promise<Result<OrgChart>> {
 // ---- Departments ----
 
 export async function saveOrgDepartment(input: { id?: string; name: string }): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
 
   const name = await cleanText(input.name, ORG_NAME_MAX);
@@ -120,7 +120,7 @@ export async function saveOrgDepartment(input: { id?: string; name: string }): P
 
 /** Deletes the column and every box in it (people stay, for other columns). */
 export async function deleteOrgDepartment(id: string): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
   const { error: e } = await createServiceClient().from("org_chart_departments").delete().eq("id", id);
   if (e) return { data: null, error: e.message };
@@ -130,7 +130,7 @@ export async function deleteOrgDepartment(id: string): Promise<Result<true>> {
 
 /** Swaps a column with its left (-1) or right (+1) neighbour. */
 export async function moveOrgDepartment(id: string, direction: -1 | 1): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
 
   const db = createServiceClient();
@@ -174,7 +174,7 @@ async function upsertPerson(
 }
 
 export async function saveOrgNode(input: OrgNodeInput): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
   if (!ORG_NODE_KINDS.includes(input.kind)) return { data: null, error: "Forbidden" };
 
@@ -221,7 +221,7 @@ export async function saveOrgNode(input: OrgNodeInput): Promise<Result<true>> {
 }
 
 export async function deleteOrgNode(id: string): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
   const { error: e } = await createServiceClient().from("org_chart_nodes").delete().eq("id", id);
   if (e) return { data: null, error: e.message };
@@ -231,7 +231,7 @@ export async function deleteOrgNode(id: string): Promise<Result<true>> {
 
 /** Swaps a box with the one above (-1) or below (+1) it in the same column. */
 export async function moveOrgNode(id: string, direction: -1 | 1): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
 
   const db = createServiceClient();
@@ -257,7 +257,7 @@ export async function updateOrgPerson(input: {
   location: string;
   partTime: boolean;
 }): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
 
   const name = await cleanText(input.name, ORG_NAME_MAX);
@@ -278,7 +278,7 @@ export async function updateOrgPerson(input: {
 
 /** Removes the person and every box they're in. */
 export async function deleteOrgPerson(id: string): Promise<Result<true>> {
-  const { session, error } = await requireAdmin();
+  const { session, error } = await requireEditor();
   if (!session) return { data: null, error };
   const { error: e } = await createServiceClient().from("org_chart_people").delete().eq("id", id);
   if (e) return { data: null, error: e.message };
