@@ -15,6 +15,7 @@ import {
   SHARED_CALENDAR_ID,
   HOLIDAYS_CALENDAR_ID,
   HOLIDAYS_CALENDAR_NAME,
+  fixedColorForCalendar,
 } from "@/lib/calendar-constants";
 import { getHolidayTasks } from "@/lib/holidays";
 import { addDays, diffDays } from "@/lib/calendar-date-utils";
@@ -164,7 +165,7 @@ function repeatColumns(repeat: RepeatRule | null | undefined) {
   };
 }
 
-type AccessResult = { role: CalendarRole; ownerUsername: string } | { error: string };
+type AccessResult = { role: CalendarRole; ownerUsername: string; calendarName: string } | { error: string };
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
@@ -175,13 +176,13 @@ async function requireCalendarAccess(
 ): Promise<AccessResult> {
   const { data: cal, error } = await client
     .from("calendars")
-    .select("owner_username")
+    .select("owner_username, name")
     .eq("id", calendarId)
     .maybeSingle();
   if (error) return { error: error.message };
   if (!cal) return { error: "Calendar not found" };
   if (cal.owner_username === username) {
-    return { role: "owner", ownerUsername: cal.owner_username };
+    return { role: "owner", ownerUsername: cal.owner_username, calendarName: cal.name };
   }
 
   const { data: member, error: memberError } = await client
@@ -193,7 +194,7 @@ async function requireCalendarAccess(
   if (memberError) return { error: memberError.message };
   if (!member) return { error: "You don't have access to this calendar" };
 
-  return { role: member.role as CalendarRole, ownerUsername: cal.owner_username };
+  return { role: member.role as CalendarRole, ownerUsername: cal.owner_username, calendarName: cal.name };
 }
 
 async function requireEditorAccess(
@@ -713,7 +714,7 @@ function toCalendarTask(
     notes: row.notes,
     eventDate: row.event_date,
     dueDate: row.due_date,
-    color: row.color as TaskColorKey,
+    color: fixedColorForCalendar(calendarName) ?? (row.color as TaskColorKey),
     createdBy: row.created_by,
     assignees,
     sharedWith,
@@ -974,7 +975,7 @@ export async function createTask(
       notes: input.notes?.trim() || null,
       event_date: input.eventDate,
       due_date: input.dueDate || null,
-      color: input.color,
+      color: fixedColorForCalendar(access.calendarName) ?? input.color,
       created_by: session.username,
       start_time: input.startTime || null,
       end_time: input.startTime ? input.endTime || null : null,
@@ -1089,6 +1090,9 @@ export async function updateTask(
   if (updates.eventDate !== undefined) patch.event_date = updates.eventDate;
   if (updates.dueDate !== undefined) patch.due_date = updates.dueDate || null;
   if (updates.color !== undefined) patch.color = updates.color;
+  // Leave / Meeting events always carry their calendar's colour, including when moved in.
+  const fixedColor = fixedColorForCalendar(targetAccess.calendarName);
+  if (fixedColor && (moving || updates.color !== undefined)) patch.color = fixedColor;
 
   const service = createServiceClient();
 
@@ -1160,7 +1164,7 @@ export async function copyTaskToDates(
         notes: source.notes,
         event_date: date,
         due_date: span === null ? null : addDays(date, span),
-        color: source.color,
+        color: fixedColorForCalendar(access.calendarName) ?? source.color,
         start_time: source.start_time,
         end_time: source.end_time,
         created_by: session.username,

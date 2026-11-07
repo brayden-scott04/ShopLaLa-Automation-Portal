@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Flag } from "lucide-react";
-import { colorFor } from "@/lib/calendar-constants";
+import { colorFor, isUninvolved, UNINVOLVED_CLASS } from "@/lib/calendar-constants";
 import { buildMonthView, diffDays, formatTime, formatTimeRange, fromDateKey, todayKey } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
@@ -60,6 +60,7 @@ export function MonthGrid({
   eventsByDate,
   dueByDate,
   spanningTasks,
+  me,
   onDayClick,
   onEditTask,
 }: {
@@ -68,6 +69,8 @@ export function MonthGrid({
   eventsByDate: Map<string, CalendarTask[]>;
   dueByDate: Map<string, CalendarTask[]>;
   spanningTasks: CalendarTask[];
+  /** Viewer's username; tasks assigned only to others render greyed out. */
+  me: string | null;
   onDayClick: (dateKey: string) => void;
   onEditTask: (task: CalendarTask) => void;
 }) {
@@ -189,7 +192,9 @@ export function MonthGrid({
                           title={cell.task.title}
                           className={`flex h-4 min-w-0 shrink-0 items-center gap-0.5 pl-1 text-left text-[10px] font-medium leading-4 text-white ${
                             cell.isStart ? "-ml-1.5 rounded-l" : "-ml-px"
-                          } ${cell.isEnd ? "-mr-1.5 rounded-r pr-1" : "-mr-px"}`}
+                          } ${cell.isEnd ? "-mr-1.5 rounded-r pr-1" : "-mr-px"} ${
+                            isUninvolved(cell.task, me) ? UNINVOLVED_CLASS : ""
+                          }`}
                           style={{ backgroundColor: color.hex }}
                         >
                           {cell.isEnd && <Flag className="size-2.5 shrink-0" />}
@@ -212,7 +217,7 @@ export function MonthGrid({
                               key={occurrenceKey(task)}
                               className={`flex flex-1 items-center gap-1 rounded px-1.5 py-1 leading-tight ${soloSize} ${color.chip} ${
                                 isDuePin ? `ring-1 ${color.ring}` : ""
-                              }`}
+                              } ${isUninvolved(task, me) ? UNINVOLVED_CLASS : ""}`}
                             >
                               {isDuePin && <Flag className="size-3 shrink-0" />}
                               <span className="line-clamp-3 break-words">
@@ -229,7 +234,7 @@ export function MonthGrid({
                             key={occurrenceKey(task)}
                             className={`flex items-center gap-1 truncate rounded px-1 py-0.5 text-[11px] font-medium ${color.chip} ${
                               isDuePin ? `ring-1 ${color.ring}` : ""
-                            }`}
+                            } ${isUninvolved(task, me) ? UNINVOLVED_CLASS : ""}`}
                           >
                             {isDuePin && <Flag className="size-2.5 shrink-0" />}
                             <span className="truncate">

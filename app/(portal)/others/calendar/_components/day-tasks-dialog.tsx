@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { colorFor } from "@/lib/calendar-constants";
+import { colorFor, isUninvolved, UNINVOLVED_CLASS } from "@/lib/calendar-constants";
 import { formatDayLabel, formatTimeRange } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
@@ -20,6 +20,7 @@ import type { CalendarTask } from "@/lib/actions/calendar";
 export function DayTasksDialog({
   date,
   activeTasks,
+  me,
   editableCalendarIds,
   onClose,
   onAddTask,
@@ -28,6 +29,7 @@ export function DayTasksDialog({
 }: {
   date: string | null;
   activeTasks: CalendarTask[];
+  me: string | null;
   editableCalendarIds: Set<string>;
   onClose: () => void;
   onAddTask: () => void;
@@ -40,13 +42,13 @@ export function DayTasksDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent>
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>{date ? formatDayLabel(date) : ""}</DialogTitle>
+          <DialogTitle className="text-xl">{date ? formatDayLabel(date) : ""}</DialogTitle>
         </DialogHeader>
-        <DialogBody className="space-y-2">
+        <DialogBody className="space-y-3">
           {rows.length === 0 && (
-            <p className="text-sm text-muted-foreground">Nothing pinned to this day yet.</p>
+            <p className="text-base text-muted-foreground">Nothing pinned to this day yet.</p>
           )}
           {rows.map(({ task, isDue }) => {
             const color = colorFor(task.color);
@@ -54,41 +56,46 @@ export function DayTasksDialog({
             return (
               <div
                 key={occurrenceKey(task)}
-                className="flex items-start gap-2 rounded-md border border-border p-2.5"
+                className={`flex items-start gap-3 rounded-lg border border-border p-4 ${
+                  isUninvolved(task, me) ? UNINVOLVED_CLASS : ""
+                }`}
               >
-                <span className={`mt-1 size-2 shrink-0 rounded-full ${color.dot}`} />
+                <span className={`mt-2 size-3 shrink-0 rounded-full ${color.dot}`} />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-foreground">{task.title}</p>
+                  <p className="break-words text-base font-semibold text-foreground">{task.title}</p>
                   {task.notes && (
-                    <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{task.notes}</p>
+                    <p className="mt-1 line-clamp-4 text-sm whitespace-pre-line text-muted-foreground">{task.notes}</p>
                   )}
                   {task.startTime && (
-                    <p className="text-xs text-muted-foreground">{formatTimeRange(task)}</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">{formatTimeRange(task)}</p>
                   )}
-                  <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                    <Badge variant="secondary" className="text-[10px]">
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <Badge variant="secondary" className="text-xs">
                       {task.calendarName}
                     </Badge>
                     {isDue && (
-                      <Badge variant="destructive" className="text-[10px]">
-                        <Flag className="size-2.5" />
+                      <Badge variant="destructive" className="text-xs">
+                        <Flag className="size-3" />
                         Due
                       </Badge>
                     )}
                     {task.assignees.length > 0 && (
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-sm text-muted-foreground">
                         {task.assignees.join(", ")}
                       </span>
+                    )}
+                    {task.createdBy && (
+                      <span className="text-sm text-muted-foreground">Created by {task.createdBy}</span>
                     )}
                   </div>
                 </div>
                 {canEdit && (
                   <div className="flex shrink-0 items-center gap-1">
-                    <Button size="icon-xs" variant="ghost" onClick={() => onEditTask(task)} title="Edit">
+                    <Button size="icon-sm" variant="ghost" onClick={() => onEditTask(task)} title="Edit">
                       <Pencil />
                     </Button>
                     <Button
-                      size="icon-xs"
+                      size="icon-sm"
                       variant="ghost"
                       onClick={() => onDeleteTask(task)}
                       title="Delete"

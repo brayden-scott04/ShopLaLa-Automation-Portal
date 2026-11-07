@@ -20,6 +20,8 @@ import {
   TASK_COLORS,
   DEFAULT_TASK_COLOR,
   MONTH_WEEK_OPTIONS,
+  fixedColorForCalendar,
+  colorFor,
   type TaskColorKey,
   type RepeatFreq,
   type RepeatRule,
@@ -99,6 +101,9 @@ export function TaskFormDialog({
   // only title/notes/times can change, and only for that date.
   const isOccurrence = isEdit && !!task?.repeat && !!task?.occurrenceDate;
   const occurrenceOnly = isOccurrence && !applyToAll;
+  // Leave and Meeting calendars have one fixed colour; the picker is locked to it.
+  const fixedColor = fixedColorForCalendar(calendars.find((c) => c.id === calendarId)?.name);
+  const effectiveColor = fixedColor ?? color;
 
   if (open !== wasOpen) {
     setWasOpen(open);
@@ -161,6 +166,7 @@ export function TaskFormDialog({
         list.push({ username: selectedCalendar.ownerUsername, label: `${selectedCalendar.ownerUsername} (owner)` });
       }
       (data ?? []).forEach((m) => list.push({ username: m.username, label: `${m.username} (${m.role})` }));
+      list.sort((a, b) => a.username.localeCompare(b.username));
       setMembers(list);
       // After switching calendars, only people with access to the new one can stay assigned.
       if (data) {
@@ -328,7 +334,7 @@ export function TaskFormDialog({
             notes,
             eventDate,
             dueDate: hasDueDate ? dueDate || null : null,
-            color,
+            color: effectiveColor,
             assigneeUsernames: Array.from(assignees),
             sharedWithUsernames: shares,
             repeat,
@@ -341,7 +347,7 @@ export function TaskFormDialog({
             notes,
             eventDate,
             dueDate: hasDueDate ? dueDate || null : null,
-            color,
+            color: effectiveColor,
             assigneeUsernames: Array.from(assignees),
             sharedWithUsernames: shares,
             repeat,
@@ -362,6 +368,9 @@ export function TaskFormDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isEdit ? "Edit task" : "Add a task"}</DialogTitle>
+          {isEdit && task?.createdBy && (
+            <p className="text-xs text-muted-foreground">Created by {task.createdBy}</p>
+          )}
         </DialogHeader>
         <DialogBody className="space-y-4">
           {isOccurrence && (
@@ -656,16 +665,21 @@ export function TaskFormDialog({
                   type="button"
                   title={c.label}
                   onClick={() => setColor(c.key)}
-                  disabled={occurrenceOnly}
+                  disabled={occurrenceOnly || !!fixedColor}
                   className={cn(
                     "size-7 rounded-full transition-transform disabled:cursor-not-allowed disabled:opacity-40",
                     c.dot,
-                    color === c.key ? "ring-2 ring-offset-2 ring-offset-background" : "opacity-70 hover:opacity-100"
+                    effectiveColor === c.key ? "ring-2 ring-offset-2 ring-offset-background" : "opacity-70 hover:opacity-100"
                   )}
-                  style={color === c.key ? { boxShadow: `0 0 0 2px ${c.hex}` } : undefined}
+                  style={effectiveColor === c.key ? { boxShadow: `0 0 0 2px ${c.hex}` } : undefined}
                 />
               ))}
             </div>
+            {fixedColor && (
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                Events in this calendar are always {colorFor(fixedColor).label.toLowerCase()}.
+              </p>
+            )}
           </div>
 
           {members.length > 0 && (

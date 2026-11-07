@@ -45,6 +45,7 @@ import { ManageAccessDialog } from "./_components/manage-access-dialog";
 import { NameCalendarDialog } from "./_components/name-calendar-dialog";
 import { SearchResults } from "./_components/search-results";
 import { usePersistedState } from "@/lib/use-persisted-state";
+import { getCurrentUser } from "@/lib/actions/staff";
 
 type ViewMode = "month" | "week" | "day" | "year";
 const isViewMode = (v: unknown): v is ViewMode => v === "month" || v === "week" || v === "day" || v === "year";
@@ -97,6 +98,11 @@ export default function CalendarPage() {
   const [tasks, setTasks] = useState<CalendarTask[]>([]);
   const [upcoming, setUpcoming] = useState<CalendarTask[]>([]);
   const [, startTransition] = useTransition();
+  // Who's viewing: tasks assigned only to other people are greyed out for them.
+  const [me, setMe] = useState<string | null>(null);
+  useEffect(() => {
+    getCurrentUser().then((user) => setMe(user?.username ?? null));
+  }, []);
 
   const [dayDialogDate, setDayDialogDate] = useState<string | null>(null);
   const [taskForm, setTaskForm] = useState<{ open: boolean; task: CalendarTask | null; date: string; calendarId?: string }>({
@@ -384,6 +390,7 @@ export default function CalendarPage() {
               eventsByDate={eventsByDate}
               dueByDate={dueByDate}
               spanningTasks={spanningTasks}
+              me={me}
               onDayClick={(dateKey) => setDayDialogDate(dateKey)}
               onEditTask={openTask}
             />
@@ -393,6 +400,7 @@ export default function CalendarPage() {
               anchor={anchor}
               activeByDate={activeByDate}
               canAdd={editableCalendarIds.size > 0}
+              me={me}
               onHeaderClick={(dateKey) => {
                 setAnchor(dateKey);
                 changeView("day");
@@ -405,6 +413,7 @@ export default function CalendarPage() {
             <DayView
               date={anchor}
               tasks={activeByDate.get(anchor) ?? []}
+              me={me}
               canAdd={editableCalendarIds.size > 0}
               onAddTask={() => setTaskForm({ open: true, task: null, date: anchor })}
               onEditTask={openTask}
@@ -430,6 +439,7 @@ export default function CalendarPage() {
       <DayTasksDialog
         date={dayDialogDate}
         activeTasks={dayActiveTasks}
+        me={me}
         editableCalendarIds={editableCalendarIds}
         onClose={() => setDayDialogDate(null)}
         onAddTask={() =>

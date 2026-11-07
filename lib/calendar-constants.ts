@@ -83,3 +83,29 @@ export const SHARED_CALENDAR_ID = "shared-with-me";
  */
 export const HOLIDAYS_CALENDAR_ID = "international-holidays";
 export const HOLIDAYS_CALENDAR_NAME = "International Calendar";
+
+/**
+ * True when a task has assignees and `me` isn't one of them — the calendar shows these greyed out
+ * ("doesn't involve me"). Tasks with no assignees are for the whole calendar, so they never dim.
+ */
+export function isUninvolved(task: { assignees: string[] }, me: string | null | undefined): boolean {
+  return !!me && task.assignees.length > 0 && !task.assignees.includes(me);
+}
+
+/** Classes applied to a task chip/card that doesn't involve the viewer. */
+export const UNINVOLVED_CLASS = "opacity-65 grayscale-[60%]";
+
+/**
+ * Calendars whose events always use one colour, matched by calendar name (case-insensitive).
+ * The form locks the picker, the server overrides whatever colour is sent, and existing events
+ * are shown in this colour whatever is stored.
+ */
+const FIXED_CALENDAR_COLORS: Record<string, TaskColorKey> = {
+  leave: "yellow",
+  meeting: "blue",
+};
+
+export function fixedColorForCalendar(calendarName: string | null | undefined): TaskColorKey | null {
+  if (!calendarName) return null;
+  return FIXED_CALENDAR_COLORS[calendarName.trim().toLowerCase()] ?? null;
+}

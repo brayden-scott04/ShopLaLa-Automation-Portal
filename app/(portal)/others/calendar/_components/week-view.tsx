@@ -10,6 +10,7 @@ export function WeekView({
   anchor,
   activeByDate,
   canAdd,
+  me,
   onHeaderClick,
   onAddTask,
   onEditTask,
@@ -17,6 +18,7 @@ export function WeekView({
   anchor: string;
   activeByDate: Map<string, CalendarTask[]>;
   canAdd: boolean;
+  me: string | null;
   onHeaderClick: (dateKey: string) => void;
   onAddTask: (dateKey: string) => void;
   onEditTask: (task: CalendarTask) => void;
@@ -52,7 +54,7 @@ export function WeekView({
               </span>
             </button>
             {tasks.map((task) => (
-              <TaskCard key={occurrenceKey(task)} task={task} date={dateKey} onClick={() => onEditTask(task)} />
+              <TaskCard key={occurrenceKey(task)} task={task} me={me} date={dateKey} onClick={() => onEditTask(task)} />
             ))}
             {canAdd && (
               <button
