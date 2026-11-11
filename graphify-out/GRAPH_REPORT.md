@@ -1,7 +1,7 @@
-# Graph Report - LaLaGreen-Automation-Portal  (2026-11-07)
+# Graph Report - LaLaGreen-Automation-Portal  (2026-11-11)
 
 ## Corpus Check
-- 225 files · ~172,529 words
+- 225 files · ~172,570 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f38517a1`
+- Built from commit: `8a302c9a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

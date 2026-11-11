@@ -456,7 +456,7 @@ Collection); one file can hold both sheets. Route: `app/api/tools/ads-bulk-gener
 Backs `/others/tasks` (Others → "Tasks"), which replaced the old Boards and Dashboards features
 (dropped by `sql/tasks_migration.sql`, run by hand). Fixed fields only — no user-defined columns.
 
-- **`tasks`**: `title`, `notes`, `task_date` (Date), `due_date`, `priority` (1-5, **5 = highest**), `done`, `owner_username` (the creator).
+- **`tasks`**: `title`, `notes`, `task_date` (Date), `due_date`, `priority` (1-5, **1 = highest**; was 5 = highest until `sql/tasks_priority_flip_migration.sql` remapped rows with `6 - priority`), `done`, `owner_username` (the creator).
 - **`task_assignees`**: `(task_id, username)`, cascade on delete.
 
 A task is visible **only to its owner and assignees** — admins included, for privacy (no admin override), enforced in `lib/actions/tasks.ts`

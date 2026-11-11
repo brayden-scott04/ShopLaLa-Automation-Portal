@@ -45,10 +45,10 @@ import {
   type TrackedTaskInput,
 } from "@/lib/actions/tasks";
 import { getCurrentUser, getStaffDirectory } from "@/lib/actions/staff";
-import { PRIORITY_CLASSES, PRIORITY_LABELS } from "@/lib/tasks-constants";
+import { HIGHEST_PRIORITY, PRIORITY_CLASSES, PRIORITY_LABELS } from "@/lib/tasks-constants";
 import { usePersistedState } from "@/lib/use-persisted-state";
 
-const PRIORITY_ICONS: Record<number, LucideIcon> = { 4: ChevronUp, 5: ChevronsUp };
+const PRIORITY_ICONS: Record<number, LucideIcon> = { 1: ChevronsUp, 2: ChevronUp };
 
 function PriorityPill({ priority }: { priority: number }) {
   const Icon = PRIORITY_ICONS[priority];
@@ -178,7 +178,8 @@ export default function TasksPage() {
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
   // The page reopens with the sort and filters the person last used.
   const [sortKey, setSortKey] = usePersistedState<SortKey>("tasks.sortKey", "priority", isSortKey);
-  const [sortDesc, setSortDesc] = usePersistedState("tasks.sortDesc", true, isBoolean);
+  // Key renamed when 1 became the highest priority, so stale "descending" settings don't put 5s first.
+  const [sortDesc, setSortDesc] = usePersistedState("tasks.sortDesc.v2", false, isBoolean);
   const [scope, setScope] = usePersistedState<Scope>("tasks.scope", "all", isScope);
   const [showDone, setShowDone] = usePersistedState("tasks.showDone", false, isBoolean);
   const [search, setSearch] = useState("");
@@ -200,8 +201,8 @@ export default function TasksPage() {
     if (key === sortKey) setSortDesc((d) => !d);
     else {
       setSortKey(key);
-      // Highest priority first, soonest date first.
-      setSortDesc(key === "priority");
+      // Highest priority (1) first, soonest date first: ascending for every key.
+      setSortDesc(false);
     }
   }
 
@@ -232,10 +233,10 @@ export default function TasksPage() {
       const av = a[sortKey];
       const bv = b[sortKey];
       // Tasks with no value always sort last.
-      if (!av && !bv) return b.priority - a.priority;
+      if (!av && !bv) return a.priority - b.priority;
       if (!av) return 1;
       if (!bv) return -1;
-      return av.localeCompare(bv) * dir || b.priority - a.priority;
+      return av.localeCompare(bv) * dir || a.priority - b.priority;
     });
   }, [tasks, scope, showDone, search, sortKey, sortDesc, me]);
 
@@ -246,7 +247,7 @@ export default function TasksPage() {
     const weekIso = `${weekEnd.getFullYear()}-${String(weekEnd.getMonth() + 1).padStart(2, "0")}-${String(weekEnd.getDate()).padStart(2, "0")}`;
     return {
       open: open.length,
-      top: open.filter((t) => t.priority === 5).length,
+      top: open.filter((t) => t.priority === HIGHEST_PRIORITY).length,
       overdue: open.filter((t) => t.dueDate && t.dueDate < today).length,
       week: open.filter((t) => t.dueDate && t.dueDate >= today && t.dueDate <= weekIso).length,
     };
@@ -357,7 +358,7 @@ export default function TasksPage() {
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {[
             { label: "Open", value: stats.open, tone: "" },
-            { label: "Priority 5", value: stats.top, tone: stats.top ? "text-red-600 dark:text-red-400" : "" },
+            { label: `Priority ${HIGHEST_PRIORITY}`, value: stats.top, tone: stats.top ? "text-red-600 dark:text-red-400" : "" },
             { label: "Overdue", value: stats.overdue, tone: stats.overdue ? "text-red-600 dark:text-red-400" : "" },
             { label: "Due in 7 days", value: stats.week, tone: "" },
           ].map((s) => (

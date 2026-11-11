@@ -85,7 +85,7 @@ function TaskFormInner({
           </div>
 
           <div className="space-y-1.5">
-            <Label>Priority (5 = highest)</Label>
+            <Label>Priority (1 = highest)</Label>
             <div className="flex gap-2">
               {PRIORITIES.map((p) => (
                 <button
