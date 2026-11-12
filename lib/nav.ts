@@ -242,7 +242,7 @@ export const trends = defineNavItem({
 // ── Visual ───────────────────────────────────────────────────────────────────
 export const listingScore = defineNavItem({
   name: "Listing Score",
-  description: "Score listing content and imagery quality",
+  description: "Daily check of every listing's title, highlight, bullets, images, A+ and Brand Story against Amazon's limits, with alerts when Amazon changes them",
   icon: Gauge,
   section: "visual",
 });
