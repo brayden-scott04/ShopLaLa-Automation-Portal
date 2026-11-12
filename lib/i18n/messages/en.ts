@@ -88,7 +88,7 @@ const en = {
         description:
           "Daily Best Sellers Rank per ASIN, with alerts when Amazon changes a product's category or its rank drops sharply",
       },
-      "listing-score": { name: "Listing Score", description: "Daily check of every listing's title, highlight, bullets, images, A+ and Brand Story against Amazon's limits, with alerts when Amazon changes them" },
+      "listing-score": { name: "Listing Score", description: "Score listing content and imagery quality" },
       calendar: { name: "Calendar", description: "Personal calendars for tasks, deadlines, and reminders" },
       finance: { name: "Finance", description: "Company finance overview" },
       tasks: { name: "Tasks", description: "Track tasks and projects with owners, assignees, and priority" },

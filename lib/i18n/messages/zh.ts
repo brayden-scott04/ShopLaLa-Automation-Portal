@@ -86,7 +86,7 @@ const zh: Messages = {
         name: "趋势",
         description: "每个 ASIN 的每日 BSR 排名，在亚马逊更改产品类目或排名大幅下滑时提醒",
       },
-      "listing-score": { name: "Listing 评分", description: "每日对照亚马逊限制检查每个 Listing 的标题、亮点、五点描述、图片、A+ 和品牌故事，并在亚马逊改动时发出提醒" },
+      "listing-score": { name: "Listing 评分", description: "为 Listing 内容和图片质量评分" },
       calendar: { name: "日历", description: "用于任务、截止日期和提醒的个人日历" },
       finance: { name: "财务", description: "公司财务概览" },
       tasks: { name: "任务", description: "跟踪任务和项目的负责人、协作人和优先级" },
