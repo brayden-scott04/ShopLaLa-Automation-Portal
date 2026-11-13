@@ -727,8 +727,14 @@ export function TaskFormDialog({
             </div>
           )}
 
-          {error && <p className="text-sm text-destructive">{error}</p>}
         </DialogBody>
+        {/* Outside the scrolling body so a failed save is always visible next to the button,
+            not buried below the share list where the click looks like it did nothing. */}
+        {error && (
+          <p role="alert" className="border-t border-border px-4 pt-3 text-sm text-destructive">
+            {error}
+          </p>
+        )}
         <DialogFooter className={isEdit ? "sm:justify-between" : undefined}>
           {isEdit && task && (
             <div className="flex items-center gap-2">
