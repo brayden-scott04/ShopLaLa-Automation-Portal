@@ -3,7 +3,7 @@
 import { Repeat } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { colorFor } from "@/lib/calendar-constants";
-import { addDays, formatTimeRange, fromDateKey, todayKey } from "@/lib/calendar-date-utils";
+import { addDays, formatTimeRange, fromDateKey, todayKey, CALENDAR_LOCALE } from "@/lib/calendar-date-utils";
 import { describeRecurrence, expandTask, occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ interface Result {
 }
 
 function formatDate(key: string): string {
-  return fromDateKey(key).toLocaleDateString(undefined, {
+  return fromDateKey(key).toLocaleDateString(CALENDAR_LOCALE, {
     weekday: "short",
     day: "numeric",
     month: "short",

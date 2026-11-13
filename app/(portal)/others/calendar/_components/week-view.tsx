@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { buildWeek, fromDateKey, todayKey } from "@/lib/calendar-date-utils";
+import { buildWeek, fromDateKey, todayKey, CALENDAR_LOCALE } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 import { TaskCard } from "./task-card";
@@ -44,7 +44,7 @@ export function WeekView({
               onClick={() => onHeaderClick(dateKey)}
               className="flex items-center gap-1.5 text-left text-xs font-medium text-muted-foreground hover:text-foreground"
             >
-              {date.toLocaleDateString(undefined, { weekday: "short" })}
+              {date.toLocaleDateString(CALENDAR_LOCALE, { weekday: "short" })}
               <span
                 className={`rounded-full px-1.5 py-0.5 text-sm ${
                   isToday ? "bg-primary font-semibold text-primary-foreground" : "text-foreground"

@@ -12,10 +12,18 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { colorFor, isUninvolved, UNINVOLVED_CLASS } from "@/lib/calendar-constants";
+import {
+  colorFor,
+  isUninvolved,
+  UNINVOLVED_CLASS,
+  HOLIDAYS_CALENDAR_ID,
+  SHARED_CALENDAR_ID,
+} from "@/lib/calendar-constants";
+import { isPingableCalendarName } from "@/lib/notifications-constants";
+import { PingButton } from "@/components/notifications/ping-button";
 import { formatDayLabel, formatTimeRange } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
-import type { CalendarTask } from "@/lib/actions/calendar";
+import { pingCalendarTask, type CalendarTask } from "@/lib/actions/calendar";
 
 export function DayTasksDialog({
   date,
@@ -53,6 +61,15 @@ export function DayTasksDialog({
           {rows.map(({ task, isDue }) => {
             const color = colorFor(task.color);
             const canEdit = editableCalendarIds.has(task.calendarId);
+            // Ping: any event with assignees other than me, except Leave / International / Shared with me.
+            const pingable =
+              task.calendarId !== HOLIDAYS_CALENDAR_ID &&
+              task.calendarId !== SHARED_CALENDAR_ID &&
+              isPingableCalendarName(task.calendarName);
+            const pingCandidates = pingable
+              ? task.assignees.filter((u) => u !== me).map((username) => ({ username }))
+              : [];
+            const day = date ?? task.occurrenceDate ?? task.eventDate;
             return (
               <div
                 key={occurrenceKey(task)}
@@ -89,8 +106,15 @@ export function DayTasksDialog({
                     )}
                   </div>
                 </div>
-                {canEdit && (
+                {(canEdit || pingCandidates.length > 0) && (
                   <div className="flex shrink-0 items-center gap-1">
+                    <PingButton
+                      title={task.title}
+                      candidates={pingCandidates}
+                      onPing={(usernames) => pingCalendarTask(task.id, day, usernames)}
+                    />
+                    {canEdit && (
+                    <>
                     <Button size="icon-sm" variant="ghost" onClick={() => onEditTask(task)} title="Edit">
                       <Pencil />
                     </Button>
@@ -102,6 +126,8 @@ export function DayTasksDialog({
                     >
                       <Trash2 />
                     </Button>
+                    </>
+                    )}
                   </div>
                 )}
               </div>

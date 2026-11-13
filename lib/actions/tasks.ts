@@ -3,6 +3,8 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/session";
 import { MAX_TASK_TITLE_LENGTH, MAX_TASK_NOTES_LENGTH, MAX_TASK_UPDATE_LENGTH } from "@/lib/tasks-constants";
+import { notify, pushChange } from "@/lib/notify";
+import { PING_COOLDOWN_MS, taskLink, type NotificationChange, type NotificationKind } from "@/lib/notifications-constants";
 
 export interface Task {
   id: string;
@@ -113,39 +115,61 @@ function toTask(
   };
 }
 
+type AssigneeDiff = { error: string | null; added: string[]; removed: string[] };
+
 /**
  * Replaces the assignee set, keeping only usernames that exist in `staff`. Only removed/added rows are
- * touched, so assignees who stay keep their acknowledgement.
+ * touched, so assignees who stay keep their acknowledgement. Reports who was added/removed.
  */
-async function setAssignees(taskId: string, usernames: string[]): Promise<string | null> {
+async function setAssignees(taskId: string, usernames: string[]): Promise<AssigneeDiff> {
+  const fail = (error: string): AssigneeDiff => ({ error, added: [], removed: [] });
   const db = createServiceClient();
   const wanted = [...new Set(usernames.map((u) => u.toLowerCase()))];
 
   const { data: valid, error: staffError } = wanted.length
     ? await db.from("staff").select("username").in("username", wanted)
     : { data: [], error: null };
-  if (staffError) return staffError.message;
+  if (staffError) return fail(staffError.message);
   const next = new Set((valid ?? []).map((s) => s.username as string));
 
   const { data: current, error: currentError } = await db
     .from("task_assignees")
     .select("username")
     .eq("task_id", taskId);
-  if (currentError) return currentError.message;
+  if (currentError) return fail(currentError.message);
   const existing = new Set((current ?? []).map((r) => r.username as string));
 
   const removed = [...existing].filter((u) => !next.has(u));
   if (removed.length) {
     const { error } = await db.from("task_assignees").delete().eq("task_id", taskId).in("username", removed);
-    if (error) return error.message;
+    if (error) return fail(error.message);
   }
 
-  const added = [...next].filter((u) => !existing.has(u)).map((username) => ({ task_id: taskId, username }));
+  const added = [...next].filter((u) => !existing.has(u));
   if (added.length) {
-    const { error } = await db.from("task_assignees").insert(added);
-    if (error) return error.message;
+    const { error } = await db.from("task_assignees").insert(added.map((username) => ({ task_id: taskId, username })));
+    if (error) return fail(error.message);
   }
-  return null;
+  return { error: null, added, removed };
+}
+
+/** Notifies the people on a task (default: owner + assignees) except the actor. */
+function notifyTask(
+  actor: string,
+  task: { id: string; title: string; owner: string; assignees: string[] },
+  kind: NotificationKind,
+  data: Parameters<typeof notify>[0]["data"] = {},
+  recipients: string[] = [task.owner, ...task.assignees]
+) {
+  return notify({
+    recipients,
+    actor,
+    kind,
+    sourceType: "task",
+    sourceId: task.id,
+    data: { title: task.title, ...data },
+    link: kind === "task_deleted" ? null : taskLink(task.id),
+  });
 }
 
 /** Loads one task from the caller's point of view; null if missing or not visible to them. */
@@ -223,8 +247,16 @@ export async function createTrackedTask(input: TrackedTaskInput): Promise<{ data
     .single();
   if (error || !row) return { data: null, error: error?.message ?? "Failed to create task" };
 
-  const assignError = await setAssignees(row.id, input.assignees);
-  if (assignError) return { data: null, error: assignError };
+  const assigned = await setAssignees(row.id, input.assignees);
+  if (assigned.error) return { data: null, error: assigned.error };
+
+  await notifyTask(
+    session.username,
+    { id: row.id, title: row.title, owner: row.owner_username, assignees: assigned.added },
+    "task_assigned",
+    { dueDate: row.due_date, priority: row.priority },
+    assigned.added
+  );
 
   return { data: await loadVisible(row.id, session.username), error: null };
 }
@@ -235,7 +267,8 @@ export async function updateTrackedTask(id: string, input: TrackedTaskInput): Pr
   if (!session) return { data: null, error: "Unauthorized" };
   const invalid = validate(input);
   if (invalid) return { data: null, error: invalid };
-  if (!(await loadVisible(id, session.username))) return { data: null, error: "Task not found" };
+  const before = await loadVisible(id, session.username);
+  if (!before) return { data: null, error: "Task not found" };
 
   const db = createServiceClient();
   const { error } = await db
@@ -251,8 +284,26 @@ export async function updateTrackedTask(id: string, input: TrackedTaskInput): Pr
     .eq("id", id);
   if (error) return { data: null, error: error.message };
 
-  const assignError = await setAssignees(id, input.assignees);
-  if (assignError) return { data: null, error: assignError };
+  const assigned = await setAssignees(id, input.assignees);
+  if (assigned.error) return { data: null, error: assigned.error };
+
+  const title = input.title.trim();
+  const changes: NotificationChange[] = [];
+  pushChange(changes, "title", before.title, title);
+  pushChange(changes, "priority", String(before.priority), String(input.priority));
+  pushChange(changes, "date", before.date, input.date);
+  pushChange(changes, "dueDate", before.dueDate, input.dueDate);
+  pushChange(changes, "notes", before.notes, input.notes.trim(), { withValues: false });
+
+  const after = { id, title, owner: before.owner, assignees: input.assignees };
+  const stayed = [before.owner, ...before.assignees].filter((u) => !assigned.removed.includes(u));
+  await Promise.all([
+    notifyTask(session.username, after, "task_assigned", { dueDate: input.dueDate, priority: input.priority }, assigned.added),
+    notifyTask(session.username, after, "task_unassigned", {}, assigned.removed),
+    changes.length > 0
+      ? notifyTask(session.username, after, "task_updated", { changes, dueDate: input.dueDate }, stayed)
+      : Promise.resolve(0),
+  ]);
 
   return { data: await loadVisible(id, session.username), error: null };
 }
@@ -269,7 +320,9 @@ export async function setTaskDone(id: string, done: boolean): Promise<{ error: s
     .from("tasks")
     .update({ done, updated_at: new Date().toISOString() })
     .eq("id", id);
-  return { error: error?.message ?? null };
+  if (error) return { error: error.message };
+  if (task.done !== done) await notifyTask(session.username, task, "task_done", { done });
+  return { error: null };
 }
 
 /** Newest first. Same visibility as the task itself. */
@@ -295,7 +348,8 @@ export async function addTaskUpdate(taskId: string, body: string): Promise<{ dat
   const text = body.trim();
   if (!text) return { data: null, error: "Update is empty" };
   if (text.length > MAX_TASK_UPDATE_LENGTH) return { data: null, error: `Update must be ${MAX_TASK_UPDATE_LENGTH} characters or fewer` };
-  if (!(await loadVisible(taskId, session.username))) return { data: null, error: "Task not found" };
+  const task = await loadVisible(taskId, session.username);
+  if (!task) return { data: null, error: "Task not found" };
 
   const db = createServiceClient();
   const { data, error } = await db
@@ -304,6 +358,9 @@ export async function addTaskUpdate(taskId: string, body: string): Promise<{ dat
     .select(UPDATE_COLUMNS)
     .single();
   if (error || !data) return { data: null, error: error?.message ?? "Failed to add update" };
+  await notifyTask(session.username, task, "task_progress", {
+    body: text.length > 200 ? `${text.slice(0, 199)}…` : text,
+  });
   return { data: toTaskUpdate(data as TaskUpdateRow), error: null };
 }
 
@@ -328,6 +385,7 @@ export async function setTaskAcknowledged(
     .eq("task_id", id)
     .eq("username", session.username);
   if (error) return { data: null, error: error.message };
+  if (acknowledged) await notifyTask(session.username, task, "task_ack", {}, [task.owner]);
   return { data: acknowledgedAt, error: null };
 }
 
@@ -340,5 +398,49 @@ export async function deleteTrackedTask(id: string): Promise<{ error: string | n
 
   const db = createServiceClient();
   const { error } = await db.from("tasks").delete().eq("id", id);
-  return { error: error?.message ?? null };
+  if (error) return { error: error.message };
+  await notifyTask(session.username, task, "task_deleted");
+  return { error: null };
+}
+
+/**
+ * Sends a "REMINDER" about a task to the people on it (owner + assignees, minus the sender):
+ * everyone, or just `usernames`. Anyone who can see the task may ping it. At most one ping per
+ * person per task per PING_COOLDOWN_MS; those are counted in `skipped`.
+ */
+export async function pingTrackedTask(
+  id: string,
+  usernames: string[] | null
+): Promise<{ data: { sent: number; skipped: number } | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  const task = await loadVisible(id, session.username);
+  if (!task) return { data: null, error: "Task not found" };
+
+  const pool = [...new Set([task.owner, ...task.assignees])].filter((u) => u !== session.username);
+  const wanted = usernames === null ? pool : pool.filter((u) => usernames.includes(u));
+  if (wanted.length === 0) return { data: null, error: "Pick at least one person to remind" };
+
+  const db = createServiceClient();
+  const { data: recent, error } = await db
+    .from("notifications")
+    .select("recipient")
+    .eq("kind", "task_ping")
+    .eq("source_id", id)
+    .in("recipient", wanted)
+    .gte("created_at", new Date(Date.now() - PING_COOLDOWN_MS).toISOString());
+  if (error) return { data: null, error: error.message };
+  const justPinged = new Set((recent ?? []).map((r) => r.recipient as string));
+  const recipients = wanted.filter((u) => !justPinged.has(u));
+  if (recipients.length === 0) return { data: null, error: "Already reminded in the last minute. Try again shortly." };
+
+  const sent = await notifyTask(
+    session.username,
+    task,
+    "task_ping",
+    { dueDate: task.dueDate, date: task.date, priority: task.priority },
+    recipients
+  );
+  if (sent === 0) return { data: null, error: "Couldn't send the reminder. Try again." };
+  return { data: { sent, skipped: justPinged.size }, error: null };
 }

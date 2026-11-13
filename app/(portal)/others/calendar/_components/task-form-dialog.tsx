@@ -35,7 +35,9 @@ import {
   copyTaskToDates,
 } from "@/lib/actions/calendar";
 import { getStaffDirectory } from "@/lib/actions/staff";
-import type { CalendarSummary, CalendarTask } from "@/lib/actions/calendar";
+import { pingCalendarTask, type CalendarSummary, type CalendarTask } from "@/lib/actions/calendar";
+import { isPingableCalendarName } from "@/lib/notifications-constants";
+import { PingButton } from "@/components/notifications/ping-button";
 import { addDays, formatDayLabel } from "@/lib/calendar-date-utils";
 import { describeRecurrence, nthWeekOfMonth, weekdayIndex } from "@/lib/calendar-recurrence";
 import { cn } from "@/lib/utils";
@@ -52,6 +54,7 @@ export function TaskFormDialog({
   onClose,
   onSaved,
   onDelete,
+  me = null,
 }: {
   open: boolean;
   calendars: CalendarSummary[];
@@ -62,6 +65,8 @@ export function TaskFormDialog({
   onSaved: () => void;
   /** Called when the user asks to delete the task being edited; the parent shows the confirm. */
   onDelete: (task: CalendarTask) => void;
+  /** The viewer, left out of the reminder (ping) list. */
+  me?: string | null;
 }) {
   const [calendarId, setCalendarId] = useState("");
   const [title, setTitle] = useState("");
@@ -725,17 +730,27 @@ export function TaskFormDialog({
           {error && <p className="text-sm text-destructive">{error}</p>}
         </DialogBody>
         <DialogFooter className={isEdit ? "sm:justify-between" : undefined}>
-          {isEdit && (
-            <Button
-              type="button"
-              variant="outline"
-              className="text-destructive hover:text-destructive"
-              onClick={() => task && onDelete(task)}
-              disabled={isPending}
-            >
-              <Trash2 />
-              Delete
-            </Button>
+          {isEdit && task && (
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="text-destructive hover:text-destructive"
+                onClick={() => onDelete(task)}
+                disabled={isPending}
+              >
+                <Trash2 />
+                Delete
+              </Button>
+              {/* Reminds the saved assignees (not unsaved edits) about this day of the event. */}
+              {isPingableCalendarName(task.calendarName) && (
+                <PingButton
+                  title={task.title}
+                  candidates={task.assignees.filter((u) => u !== me).map((username) => ({ username }))}
+                  onPing={(usernames) => pingCalendarTask(task.id, task.occurrenceDate ?? task.eventDate, usernames)}
+                />
+              )}
+            </div>
           )}
           <div className="flex flex-col-reverse gap-2 sm:flex-row">
             <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>

@@ -1,6 +1,6 @@
 "use client";
 
-import { buildMonthGrid, todayKey } from "@/lib/calendar-date-utils";
+import { buildMonthGrid, todayKey, CALENDAR_LOCALE } from "@/lib/calendar-date-utils";
 import { colorFor } from "@/lib/calendar-constants";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
@@ -32,7 +32,7 @@ export function YearView({
               onClick={() => onPickMonth(month)}
               className="mb-2 text-sm font-semibold text-foreground hover:underline"
             >
-              {new Date(year, month, 1).toLocaleDateString(undefined, { month: "long" })}
+              {new Date(year, month, 1).toLocaleDateString(CALENDAR_LOCALE, { month: "long" })}
             </button>
             <div className="grid grid-cols-7 gap-y-0.5 text-center text-[10px] text-muted-foreground">
               {WEEKDAY_INITIALS.map((d, i) => (

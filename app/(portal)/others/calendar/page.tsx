@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition, useCallback } from "react";
+import { use, useEffect, useRef, useState, useTransition, useCallback } from "react";
 import { CalendarDays, Search } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { calendar as calendarItem } from "@/lib/nav";
@@ -80,10 +80,19 @@ function monthAnchor(firstOfMonth: string): string {
   return firstOfMonth.slice(0, 7) === today.slice(0, 7) ? today : firstOfMonth;
 }
 
-export default function CalendarPage() {
+export default function CalendarPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  // Deep link from a Dashboard notification / upcoming item: ?date=YYYY-MM-DD opens on that day
+  // with its event list showing.
+  const dateParam = use(searchParams).date;
+  const linkedDate = typeof dateParam === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? dateParam : null;
+
   // Month is the default; after that the page reopens in whichever view the person last picked.
   const [view, setView] = usePersistedState<ViewMode>("calendar.view", "month", isViewMode);
-  const [anchor, setAnchor] = useState(todayKey());
+  const [anchor, setAnchor] = useState(() => linkedDate ?? todayKey());
   const year = Number(anchor.slice(0, 4));
   const month = Number(anchor.slice(5, 7)) - 1;
 
@@ -104,12 +113,16 @@ export default function CalendarPage() {
     getCurrentUser().then((user) => setMe(user?.username ?? null));
   }, []);
 
-  const [dayDialogDate, setDayDialogDate] = useState<string | null>(null);
+  const [dayDialogDate, setDayDialogDate] = useState<string | null>(linkedDate);
   const [taskForm, setTaskForm] = useState<{ open: boolean; task: CalendarTask | null; date: string; calendarId?: string }>({
     open: false,
     task: null,
     date: "",
   });
+  // Drop ?date= once used, so a refresh doesn't reopen the day list.
+  useEffect(() => {
+    if (linkedDate) window.history.replaceState(null, "", window.location.pathname);
+  }, [linkedDate]);
   const [deleteTarget, setDeleteTarget] = useState<CalendarTask | null>(null);
   const [newCalendarOpen, setNewCalendarOpen] = useState(false);
   const [renameTarget, setRenameTarget] = useState<CalendarSummary | null>(null);
@@ -461,6 +474,7 @@ export default function CalendarPage() {
           refreshAfterMutation();
         }}
         onDelete={handleDeleteTask}
+        me={me}
       />
 
       <DeleteScopeDialog

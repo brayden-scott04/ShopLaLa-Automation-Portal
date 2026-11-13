@@ -20,6 +20,13 @@ import {
 import { getHolidayTasks } from "@/lib/holidays";
 import { addDays, diffDays } from "@/lib/calendar-date-utils";
 import { expandTask } from "@/lib/calendar-recurrence";
+import { notify, pushChange, timeValue } from "@/lib/notify";
+import {
+  calendarLink,
+  isPingableCalendarName,
+  PING_COOLDOWN_MS,
+  type NotificationChange,
+} from "@/lib/notifications-constants";
 
 const TASK_COLUMNS =
   "id, calendar_id, title, notes, event_date, due_date, color, created_by, created_at, repeat_freq, repeat_interval, repeat_weekdays, repeat_until, repeat_month_week, repeat_month_weekday, start_time, end_time";
@@ -999,6 +1006,23 @@ export async function createTask(
     if (shareInsertError) return { data: null, error: shareInsertError.message };
   }
 
+  await notify({
+    recipients: [...assignees, ...shares.usernames],
+    actor: session.username,
+    kind: "cal_assigned",
+    sourceType: "calendar_task",
+    sourceId: task.id,
+    data: {
+      title,
+      date: input.eventDate,
+      dueDate: input.dueDate || null,
+      startTime: task.start_time?.slice(0, 5) ?? null,
+      endTime: task.end_time?.slice(0, 5) ?? null,
+      calendarName: access.calendarName,
+    },
+    link: calendarLink(input.eventDate),
+  });
+
   return { data: toCalendarTask(task, "", assignees, shares.usernames), error: null };
 }
 
@@ -1012,7 +1036,7 @@ export async function updateTask(
   const client = await createClient();
   const { data: existing, error: fetchError } = await client
     .from("calendar_tasks")
-    .select("id, calendar_id, event_date, due_date, start_time, end_time")
+    .select(TASK_COLUMNS)
     .eq("id", taskId)
     .maybeSingle();
   if (fetchError) return { data: null, error: fetchError.message };
@@ -1020,6 +1044,14 @@ export async function updateTask(
 
   const access = await requireEditorAccess(client, existing.calendar_id, session.username);
   if ("error" in access) return { data: null, error: access.error };
+
+  // Who was on it before the save, so the notification can tell added / removed / still-on apart.
+  const [beforeAssigneeMap, beforeShareMap] = await Promise.all([
+    loadAssignees(client, [taskId]),
+    loadShares(client, [taskId]),
+  ]);
+  const beforeAssignees = beforeAssigneeMap.get(taskId) ?? [];
+  const beforeShares = beforeShareMap.get(taskId) ?? [];
 
   // Moving needs edit rights on both ends; assignees and shares are then checked
   // against the destination calendar.
@@ -1123,7 +1155,67 @@ export async function updateTask(
     }
   }
 
+  // ---- Notifications: diff what actually changed (the form re-sends unchanged fields). ----
+  const nextTitle = (patch.title as string | undefined) ?? existing.title;
+  const nextNotes = updates.notes !== undefined ? (patch.notes as string | null) : existing.notes;
+  const changes: NotificationChange[] = [];
+  pushChange(changes, "title", existing.title, nextTitle);
+  pushChange(changes, "date", existing.event_date, nextEventDate);
+  pushChange(changes, "dueDate", existing.due_date, nextDueDate);
+  pushChange(
+    changes,
+    "time",
+    timeValue(existing.start_time, existing.end_time),
+    timeValue(nextStart, nextStart ? nextEnd : null)
+  );
+  pushChange(changes, "notes", existing.notes, nextNotes, { withValues: false });
+  if (updates.repeat !== undefined) {
+    const before = JSON.stringify(repeatColumns(toCalendarTask(existing, "", []).repeat));
+    if (before !== JSON.stringify(repeatColumns(updates.repeat))) changes.push({ field: "repeat" });
+  }
+  if (moving) changes.push({ field: "calendar", from: access.calendarName, to: targetAccess.calendarName });
+
+  const beforeInvolved = new Set([...beforeAssignees, ...beforeShares]);
+  const afterInvolved = new Set([...(assignees ?? beforeAssignees), ...(shares ?? beforeShares)]);
+  const added = [...afterInvolved].filter((u) => !beforeInvolved.has(u));
+  const removed = [...beforeInvolved].filter((u) => !afterInvolved.has(u));
+  const stayed = [...afterInvolved].filter((u) => beforeInvolved.has(u));
+  const base = {
+    actor: session.username,
+    sourceType: "calendar_task" as const,
+    sourceId: taskId,
+    link: calendarLink(nextEventDate),
+  };
+  const summary = {
+    title: nextTitle,
+    date: nextEventDate,
+    dueDate: nextDueDate,
+    startTime: nextStart || null,
+    endTime: nextStart ? nextEnd || null : null,
+    calendarName: targetAccess.calendarName,
+  };
+
+  await Promise.all([
+    notify({ ...base, recipients: added, kind: "cal_assigned", data: summary }),
+    notify({ ...base, recipients: removed, kind: "cal_unassigned", data: { title: nextTitle, date: nextEventDate } }),
+    changes.length > 0
+      ? notify({
+          ...base,
+          // The creator hears about edits too, unless they were just added/removed (they got that one).
+          recipients: [...stayed, existing.created_by].filter((u) => !added.includes(u) && !removed.includes(u)),
+          kind: "cal_updated",
+          data: { ...summary, scope: "series", changes },
+        })
+      : Promise.resolve(0),
+  ]);
+
   return { data: { ok: true }, error: null };
+}
+
+/** Everyone a calendar event concerns: assignees, people it's shared with, and its creator. */
+async function involvedInTask(client: SupabaseServerClient, taskId: string, createdBy: string): Promise<string[]> {
+  const [a, s] = await Promise.all([loadAssignees(client, [taskId]), loadShares(client, [taskId])]);
+  return [...(a.get(taskId) ?? []), ...(s.get(taskId) ?? []), createdBy];
 }
 
 /** Copies a task (non-recurring copies, same span length and assignees) onto each of the given dates. */
@@ -1180,6 +1272,24 @@ export async function copyTaskToDates(
     if (assigneeError) return { data: null, error: assigneeError.message };
   }
 
+  const sortedTargets = [...targets].sort();
+  await notify({
+    recipients: assignees,
+    actor: session.username,
+    kind: "cal_assigned",
+    sourceType: "calendar_task",
+    sourceId: inserted?.[0]?.id ?? null,
+    data: {
+      title: source.title,
+      date: sortedTargets[0],
+      dates: sortedTargets,
+      startTime: source.start_time?.slice(0, 5) ?? null,
+      endTime: source.end_time?.slice(0, 5) ?? null,
+      calendarName: access.calendarName,
+    },
+    link: calendarLink(sortedTargets[0]),
+  });
+
   return { data: { copied: inserted?.length ?? 0 }, error: null };
 }
 
@@ -1192,7 +1302,7 @@ export async function deleteTask(
   const client = await createClient();
   const { data: existing, error: fetchError } = await client
     .from("calendar_tasks")
-    .select("calendar_id")
+    .select("calendar_id, title, event_date, created_by")
     .eq("id", taskId)
     .maybeSingle();
   if (fetchError) return { data: null, error: fetchError.message };
@@ -1201,9 +1311,22 @@ export async function deleteTask(
   const access = await requireEditorAccess(client, existing.calendar_id, session.username);
   if ("error" in access) return { data: null, error: access.error };
 
+  // Read before the delete: the assignee/share rows cascade away with it.
+  const involved = await involvedInTask(client, taskId, existing.created_by);
+
   const service = createServiceClient();
   const { error } = await service.from("calendar_tasks").delete().eq("id", taskId);
   if (error) return { data: null, error: error.message };
+
+  await notify({
+    recipients: involved,
+    actor: session.username,
+    kind: "cal_deleted",
+    sourceType: "calendar_task",
+    sourceId: taskId,
+    data: { title: existing.title, date: existing.event_date, scope: "all", calendarName: access.calendarName },
+    link: null,
+  });
 
   return { data: { ok: true }, error: null };
 }
@@ -1233,7 +1356,43 @@ async function loadOccurrenceTarget(
   if (!expandTask(series, occurrenceDate, occurrenceDate).some((t) => t.occurrenceDate === occurrenceDate)) {
     return { error: "That date isn't part of this repeating task" } as const;
   }
-  return { row, series } as const;
+  return { row, series, calendarName: access.calendarName } as const;
+}
+
+/** The occurrence's current title/notes/times, i.e. the series with any existing edit applied. */
+async function effectiveOccurrence(
+  client: SupabaseServerClient,
+  row: TaskRow,
+  occurrenceDate: string
+): Promise<{ exists: boolean; title: string; notes: string | null; time: string | null }> {
+  const exc = (await loadExceptions(client, [row.id])).get(row.id)?.[occurrenceDate];
+  const seriesTime = timeValue(row.start_time, row.end_time);
+  if (!exc) return { exists: false, title: row.title, notes: row.notes, time: seriesTime };
+  return {
+    exists: true,
+    title: exc.title ?? row.title,
+    notes: exc.notes ?? row.notes,
+    time: exc.timeOverridden ? timeValue(exc.startTime, exc.endTime) : seriesTime,
+  };
+}
+
+function notifyOccurrence(
+  actor: string,
+  row: TaskRow,
+  occurrenceDate: string,
+  recipients: string[],
+  data: Parameters<typeof notify>[0]["data"],
+  kind: "cal_updated" | "cal_deleted"
+) {
+  return notify({
+    recipients,
+    actor,
+    kind,
+    sourceType: "calendar_task",
+    sourceId: row.id,
+    data: { title: row.title, date: occurrenceDate, ...data },
+    link: kind === "cal_deleted" ? null : calendarLink(occurrenceDate),
+  });
 }
 
 /** Edits one occurrence of a recurring task without touching the rest of the series. */
@@ -1272,6 +1431,25 @@ export async function updateOccurrence(
   const titleOverride = title !== row.title ? title : null;
   const notesOverride = nextNotes !== seriesNotes ? nextNotes : null;
 
+  // What this day looked like before, so "2pm → 1pm" is exact even on a second edit of the same day.
+  const before = await effectiveOccurrence(client, row, occurrenceDate);
+  const changes: NotificationChange[] = [];
+  pushChange(changes, "title", before.title, title);
+  pushChange(changes, "time", before.time, timeValue(startTime, endTime));
+  pushChange(changes, "notes", before.notes ?? "", nextNotes, { withValues: false });
+  const sendChanges = async () => {
+    if (changes.length === 0) return;
+    const recipients = await involvedInTask(client, taskId, row.created_by);
+    await notifyOccurrence(
+      session.username,
+      { ...row, title },
+      occurrenceDate,
+      recipients,
+      { scope: "occurrence", changes, startTime, endTime, calendarName: target.calendarName },
+      "cal_updated"
+    );
+  };
+
   const service = createServiceClient();
 
   // Nothing differs from the series: drop any previous edit instead of storing a no-op row.
@@ -1282,6 +1460,7 @@ export async function updateOccurrence(
       .eq("task_id", taskId)
       .eq("occurrence_date", occurrenceDate);
     if (error) return { data: null, error: error.message };
+    await sendChanges();
     return { data: { ok: true }, error: null };
   }
 
@@ -1300,6 +1479,7 @@ export async function updateOccurrence(
   );
   if (error) return { data: null, error: error.message };
 
+  await sendChanges();
   return { data: { ok: true }, error: null };
 }
 
@@ -1314,6 +1494,7 @@ export async function resetOccurrence(
   const client = await createClient();
   const target = await loadOccurrenceTarget(client, taskId, occurrenceDate, session.username);
   if (target.error !== undefined) return { data: null, error: target.error };
+  const before = await effectiveOccurrence(client, target.row, occurrenceDate);
 
   const service = createServiceClient();
   const { error } = await service
@@ -1322,6 +1503,24 @@ export async function resetOccurrence(
     .eq("task_id", taskId)
     .eq("occurrence_date", occurrenceDate);
   if (error) return { data: null, error: error.message };
+
+  if (before.exists) {
+    const { row } = target;
+    await notifyOccurrence(
+      session.username,
+      row,
+      occurrenceDate,
+      await involvedInTask(client, taskId, row.created_by),
+      {
+        scope: "occurrence",
+        changes: [{ field: "reset" }],
+        startTime: row.start_time?.slice(0, 5) ?? null,
+        endTime: row.end_time?.slice(0, 5) ?? null,
+        calendarName: target.calendarName,
+      },
+      "cal_updated"
+    );
+  }
 
   return { data: { ok: true }, error: null };
 }
@@ -1362,6 +1561,14 @@ export async function deleteOccurrences(
       { onConflict: "task_id,occurrence_date" }
     );
     if (error) return { data: null, error: error.message };
+    await notifyOccurrence(
+      session.username,
+      target.row,
+      occurrenceDate,
+      await involvedInTask(client, taskId, target.row.created_by),
+      { scope: "this", calendarName: target.calendarName },
+      "cal_deleted"
+    );
     return { data: { ok: true }, error: null };
   }
 
@@ -1383,5 +1590,93 @@ export async function deleteOccurrences(
     .gte("occurrence_date", occurrenceDate);
   if (cleanupError) return { data: null, error: cleanupError.message };
 
+  await notifyOccurrence(
+    session.username,
+    target.row,
+    occurrenceDate,
+    await involvedInTask(client, taskId, target.row.created_by),
+    { scope: "following", calendarName: target.calendarName },
+    "cal_deleted"
+  );
+
   return { data: { ok: true }, error: null };
+}
+
+// ---- Ping (reminder) ----
+
+/**
+ * Sends a "REMINDER" notification about one day of an event to its assignees (all of them, or
+ * the `usernames` picked). Anyone who can see the calendar may ping; Leave and the virtual
+ * Shared-with-me / International calendars can't be pinged. The same person is pinged about the
+ * same day at most once per PING_COOLDOWN_MS — those are counted in `skipped`.
+ */
+export async function pingCalendarTask(
+  taskId: string,
+  occurrenceDate: string,
+  usernames: string[] | null
+): Promise<{ data: { sent: number; skipped: number } | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(occurrenceDate)) return { data: null, error: "Invalid date" };
+
+  const client = await createClient();
+  const { data: row, error } = await client.from("calendar_tasks").select(TASK_COLUMNS).eq("id", taskId).maybeSingle();
+  if (error) return { data: null, error: error.message };
+  if (!row) return { data: null, error: "Task not found" };
+
+  const access = await requireCalendarAccess(client, row.calendar_id, session.username);
+  if ("error" in access) return { data: null, error: access.error };
+  if (!isPingableCalendarName(access.calendarName)) {
+    return { data: null, error: "Events on this calendar can't be pinged" };
+  }
+
+  // The day must be one the event is actually on; a repeating day uses its own edits (title, time).
+  const series = toCalendarTask(row, access.calendarName, []);
+  const exceptions = row.repeat_freq ? (await loadExceptions(client, [taskId])).get(taskId) : undefined;
+  const occurrence = expandTask(exceptions ? { ...series, exceptions } : series, occurrenceDate, occurrenceDate).find(
+    (t) => occurrenceDate >= t.eventDate && occurrenceDate <= (t.dueDate ?? t.eventDate)
+  );
+  if (!occurrence) return { data: null, error: "The event isn't on that day" };
+
+  const assignees = (await loadAssignees(client, [taskId])).get(taskId) ?? [];
+  const pool = assignees.filter((u) => u !== session.username);
+  const wanted = usernames === null ? pool : pool.filter((u) => usernames.includes(u));
+  if (wanted.length === 0) return { data: null, error: "Pick at least one assignee to remind" };
+
+  const service = createServiceClient();
+  const since = new Date(Date.now() - PING_COOLDOWN_MS).toISOString();
+  const { data: recent, error: recentError } = await service
+    .from("notifications")
+    .select("recipient, data")
+    .eq("kind", "cal_ping")
+    .eq("source_id", taskId)
+    .in("recipient", wanted)
+    .gte("created_at", since);
+  if (recentError) return { data: null, error: recentError.message };
+  const justPinged = new Set(
+    (recent ?? []).filter((r) => (r.data as { date?: string })?.date === occurrenceDate).map((r) => r.recipient as string)
+  );
+  const recipients = wanted.filter((u) => !justPinged.has(u));
+  if (recipients.length === 0) {
+    return { data: null, error: "Already reminded in the last minute. Try again shortly." };
+  }
+
+  const sent = await notify({
+    recipients,
+    actor: session.username,
+    kind: "cal_ping",
+    sourceType: "calendar_task",
+    sourceId: taskId,
+    data: {
+      title: occurrence.title,
+      date: occurrenceDate,
+      startTime: occurrence.startTime,
+      endTime: occurrence.endTime,
+      calendarName: access.calendarName,
+    },
+    link: calendarLink(occurrenceDate),
+  });
+  if (sent === 0) return { data: null, error: "Couldn't send the reminder. Try again." };
+
+  return { data: { sent, skipped: justPinged.size }, error: null };
 }

@@ -45,6 +45,8 @@ import {
   type TrackedTaskInput,
 } from "@/lib/actions/tasks";
 import { getCurrentUser, getStaffDirectory } from "@/lib/actions/staff";
+import { pingTrackedTask } from "@/lib/actions/tasks";
+import { PingButton } from "@/components/notifications/ping-button";
 import { HIGHEST_PRIORITY, PRIORITY_CLASSES, PRIORITY_LABELS } from "@/lib/tasks-constants";
 import { usePersistedState } from "@/lib/use-persisted-state";
 
@@ -194,6 +196,15 @@ export default function TasksPage() {
       setMe(user?.username ?? "");
       setStaff((directory.data ?? []).map((s) => s.username));
       setIsLoading(false);
+      // Deep link from a Dashboard notification / upcoming item: ?task=<id> opens that task.
+      const linked = new URLSearchParams(window.location.search).get("task");
+      const target = linked ? (list.data ?? []).find((task) => task.id === linked) : undefined;
+      if (linked) window.history.replaceState(null, "", window.location.pathname);
+      if (target) {
+        setEditing(target);
+        setFormError(null);
+        setFormOpen(true);
+      }
     });
   }, []);
 
@@ -512,6 +523,15 @@ export default function TasksPage() {
                       </td>
                       <td className="px-3 py-2">
                         <div className="flex justify-end gap-1">
+                          {!t.done && (
+                            <PingButton
+                              title={t.title}
+                              candidates={[...new Set([t.owner, ...t.assignees])]
+                                .filter((u) => u !== me)
+                                .map((username) => ({ username, isOwner: username === t.owner }))}
+                              onPing={(usernames) => pingTrackedTask(t.id, usernames)}
+                            />
+                          )}
                           {t.canEdit && (
                             <Button variant="ghost" size="icon-sm" onClick={() => openEdit(t)} aria-label="Edit task">
                               <Pencil />

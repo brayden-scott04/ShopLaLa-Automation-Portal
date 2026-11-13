@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_GROUPS, ppcTopUp } from "@/lib/nav";
+import { NAV_GROUPS, ppcTopUp, calendar, tasks as tasksItem } from "@/lib/nav";
 import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
 import { filterItems, isAllowed } from "@/lib/roles";
@@ -7,6 +7,10 @@ import PpcTopUpCharts from "@/components/ppc-top-up-chart";
 import { DashboardAccessGrid } from "@/components/dashboard-access-grid";
 import { CoreValues } from "@/components/core-values";
 import { getT } from "@/lib/i18n/server";
+import { listTasks } from "@/lib/actions/tasks";
+import { getUpcomingTasks } from "@/lib/actions/calendar";
+import { NotificationsPanel } from "@/components/notifications/notifications-panel";
+import { UpcomingOverview, type UpcomingEvent, type UpcomingTask } from "@/components/notifications/upcoming-overview";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -23,6 +27,26 @@ export default async function DashboardPage() {
 
   const hasAnyAccess = accessGroups.length > 0;
   const canSeePpc = isAllowed(role, permissions, ppcTopUp.section, ppcTopUp.id);
+  const canSeeTasks = isAllowed(role, permissions, tasksItem.section, tasksItem.id);
+  const canSeeCalendar = isAllowed(role, permissions, calendar.section, calendar.id);
+
+  // Left half of the overview: open tasks I'm on, and my calendar for the next 7 days.
+  const [taskResult, eventResult] = await Promise.all([
+    canSeeTasks ? listTasks() : Promise.resolve({ data: [], error: null }),
+    canSeeCalendar ? getUpcomingTasks() : Promise.resolve({ data: [], error: null }),
+  ]);
+  const upcomingTasks: UpcomingTask[] = (taskResult.data ?? [])
+    .filter((task) => !task.done)
+    .map(({ id, title, date, dueDate, priority }) => ({ id, title, date, dueDate, priority }));
+  const upcomingEvents: UpcomingEvent[] = (eventResult.data ?? []).map((e) => ({
+    key: `${e.id}:${e.occurrenceDate ?? e.eventDate}`,
+    title: e.title,
+    date: e.occurrenceDate ?? e.eventDate,
+    startTime: e.startTime,
+    endTime: e.endTime,
+    calendarName: e.calendarName,
+    color: e.color,
+  }));
 
   return (
     <div className="p-6 md:p-8">
@@ -33,9 +57,22 @@ export default async function DashboardPage() {
         {t("dashboard.subtitle")}
       </p>
 
+      {/* Overview: Upcoming (tasks + calendar) on the left, Notifications on the right. */}
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        {canSeeTasks || canSeeCalendar ? (
+          <UpcomingOverview
+            tasks={upcomingTasks}
+            events={upcomingEvents}
+            showTasks={canSeeTasks}
+            showCalendar={canSeeCalendar}
+          />
+        ) : null}
+        <NotificationsPanel className={canSeeTasks || canSeeCalendar ? undefined : "lg:col-span-2"} />
+      </div>
+
       {/* Your access — shows every item across all sections the signed-in user
           may open. Admins see everything. */}
-      <div className="mt-6">
+      <div className="mt-8">
         {hasAnyAccess ? (
           <DashboardAccessGrid
             username={session?.username ?? ""}

@@ -560,6 +560,19 @@ The portal writes only alert status (`updateBsrAlertStatus` in `lib/actions/tren
   applied 2026-10-24 with a backfill).
 - **`bsr_sync_runs`**: append-only run log, with `asins_failed` for per-ASIN call failures.
 
+### Notifications (`notifications`) and pings
+
+Backs the Dashboard's top section: **Upcoming** on the left (open Tasks I'm on, split into "Due soon" ≤7 days/overdue and "Tasks to do", plus my calendar for the next 7 days via `getUpcomingTasks`), **Notifications** on the right. DDL: `sql/notifications_migration.sql`, run by hand. RLS on with **no policies**: all access is the service client in `lib/actions/notifications.ts`, filtered to the caller.
+
+- **Writers** are the existing actions, through `notify()` in `lib/notify.ts` (a plain server module, deliberately not `"use server"`). It never notifies the actor, and a failed insert is logged and swallowed so it can't fail the save.
+  - Calendar (`lib/actions/calendar.ts`): create / copy (`cal_assigned`), `updateTask` (diffs before vs after; added → `cal_assigned`, removed → `cal_unassigned`, everyone else incl. the creator → `cal_updated` with `changes[]`), `updateOccurrence` / `resetOccurrence` (`cal_updated`, `scope: "occurrence"`), deletes (`cal_deleted`, scope `all|this|following`). Recipients = assignees + shares + creator.
+  - Tasks (`lib/actions/tasks.ts`): assigned/unassigned/updated/progress/done/ack/deleted. `setAssignees` returns `{ error, added, removed }`.
+- **`data` jsonb is structured, not text**: messages are rendered client-side in the reader's language by `components/notifications/notification-text.tsx`.
+- **Pings**: `pingCalendarTask(taskId, occurrenceDate, usernames|null)` and `pingTrackedTask(id, usernames|null)`, from the bell (`PingButton`) next to the pencil in the calendar day dialog / edit form and on Tasks rows. Not offered on Leave (`isPingableCalendarName`), International Calendar or Shared with me. Anyone who can see the event/task may ping. One ping per recipient per event-day per minute (`PING_COOLDOWN_MS`).
+- **Polling**: `GET /api/notifications` (`?count=1` for the sidebar Dashboard badge) every 30s while visible (`use-notifications.ts`), a route rather than a server action so polls don't queue behind page actions.
+- **Retention**: read notifications older than 60 days are deleted on each `listNotifications()`.
+- Links: `/others/calendar?date=YYYY-MM-DD` opens that day's list; `/others/tasks?task=<id>` opens that task.
+
 ### Staff profiles (Reporting & Responsibility)
 
 `/team/<username>` is the per-person drilldown opened by clicking a name on `/team`. It has two tabs: **Profile** (the default) and **Skills** (`?tab=skills`). `components/team/staff-drilldown.tsx` owns the header and the tabs. The Profile tab replaces the "Reporting & Responsibility" sheet of the same workbook. The DDL and a seed of Stewie's sheet are in `sql/staff_profiles_migration.sql`, which is run by hand **before** deploying (it also renames the `manager` role to `leader`).

@@ -1,5 +1,11 @@
 /** Local-time "YYYY-MM-DD" helpers — deliberately avoid toISOString() (UTC), which can shift the day. */
 
+/**
+ * Fixed locale for calendar labels. Formatting with the runtime default (`undefined`) makes the
+ * server (Node: en-US) and the browser (e.g. en-SG) render different text, which breaks hydration.
+ */
+export const CALENDAR_LOCALE = "en-SG";
+
 export function toDateKey(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -23,7 +29,7 @@ export function addDays(key: string, days: number): string {
 }
 
 export function monthLabel(year: number, month: number): string {
-  return new Date(year, month, 1).toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  return new Date(year, month, 1).toLocaleDateString(CALENDAR_LOCALE, { month: "long", year: "numeric" });
 }
 
 /** A 6-week (42-day) grid starting on the Monday on/before the 1st of the month. */
@@ -59,7 +65,7 @@ export function buildMonthView(anchor: string): { days: string[]; focusMonth: nu
 export function rangeLabel(startKey: string, endKey: string): string {
   const sameYear = startKey.slice(0, 4) === endKey.slice(0, 4);
   const fmt = (k: string, withYear: boolean) =>
-    fromDateKey(k).toLocaleDateString(undefined, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
+    fromDateKey(k).toLocaleDateString(CALENDAR_LOCALE, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
   return `${fmt(startKey, !sameYear)} – ${fmt(endKey, true)}`;
 }
 
@@ -86,7 +92,7 @@ export function addMonths(key: string, months: number): string {
 export function weekLabel(key: string): string {
   const week = buildWeek(key);
   const fmt = (k: string, withYear: boolean) =>
-    fromDateKey(k).toLocaleDateString(undefined, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
+    fromDateKey(k).toLocaleDateString(CALENDAR_LOCALE, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
   return `${fmt(week[0], false)} – ${fmt(week[6], true)}`;
 }
 
@@ -124,7 +130,7 @@ export function formatRelativeDay(key: string): string {
 }
 
 export function formatDayLabel(key: string): string {
-  return fromDateKey(key).toLocaleDateString(undefined, {
+  return fromDateKey(key).toLocaleDateString(CALENDAR_LOCALE, {
     weekday: "long",
     month: "long",
     day: "numeric",

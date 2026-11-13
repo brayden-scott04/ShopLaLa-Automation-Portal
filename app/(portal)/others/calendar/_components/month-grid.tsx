@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Flag } from "lucide-react";
 import { colorFor, isUninvolved, UNINVOLVED_CLASS } from "@/lib/calendar-constants";
-import { buildMonthView, diffDays, formatTime, formatTimeRange, fromDateKey, todayKey } from "@/lib/calendar-date-utils";
+import { buildMonthView, diffDays, formatTime, formatTimeRange, fromDateKey, todayKey, CALENDAR_LOCALE } from "@/lib/calendar-date-utils";
 import { occurrenceKey } from "@/lib/calendar-recurrence";
 import type { CalendarTask } from "@/lib/actions/calendar";
 
@@ -119,7 +119,7 @@ export function MonthGrid({
                 // In the rolling window the month changes mid-grid, so the 1st carries its month name.
                 const monthTag =
                   focusMonth === null && (dateKey.endsWith("-01") || dateKey === days[0])
-                    ? fromDateKey(dateKey).toLocaleDateString(undefined, { month: "short" })
+                    ? fromDateKey(dateKey).toLocaleDateString(CALENDAR_LOCALE, { month: "short" })
                     : null;
                 const isToday = dateKey === today;
                 const events = eventsByDate.get(dateKey) ?? [];

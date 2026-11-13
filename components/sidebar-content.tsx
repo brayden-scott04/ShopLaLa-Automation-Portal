@@ -26,6 +26,7 @@ import { CHAT_ENABLED } from "@/lib/features";
 import { UserMenu } from "@/components/user-menu";
 import { Separator } from "@/components/ui/separator";
 import { useT } from "@/lib/i18n/client";
+import { useUnreadCount } from "@/components/notifications/use-notifications";
 import { useLocalizedNav, useSubgroupLabel } from "@/lib/i18n/nav";
 import {
   type Role,
@@ -456,6 +457,7 @@ export function SidebarContent({
   const pathname = usePathname();
   const [folded, setFolded] = useFoldState(pathname);
   const [pins, togglePin] = usePins(username);
+  const unread = useUnreadCount();
 
   const allowedGroups = navGroups.map((group) => ({
     ...group,
@@ -523,8 +525,21 @@ export function SidebarContent({
             pathname === "/dashboard" && "bg-accent text-primary"
           )}
         >
-          <LayoutGrid className="size-4 shrink-0" />
-          {!collapsed && t("nav.dashboard")}
+          <span className="relative shrink-0">
+            <LayoutGrid className="size-4" />
+            {collapsed && unread > 0 && (
+              <span className="absolute -top-1 -right-1 size-2 rounded-full bg-primary" aria-hidden />
+            )}
+          </span>
+          {!collapsed && <span className="flex-1">{t("nav.dashboard")}</span>}
+          {!collapsed && unread > 0 && (
+            <span
+              className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] leading-none font-semibold text-primary-foreground"
+              title={t("notifications.unread", { count: unread })}
+            >
+              {unread > 99 ? "99+" : unread}
+            </span>
+          )}
         </Link>
 
         {CHAT_ENABLED && (

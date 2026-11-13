@@ -28,6 +28,7 @@ const I18N_ENFORCED = [
   "components/dashboard-access-grid.tsx",
   "components/ppc-top-up-chart.tsx",
   "components/core-values.tsx",
+  "components/notifications/**",
 ];
 
 const LATIN = "/[A-Za-z]/";
