@@ -2,11 +2,13 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import {
+  AlertTriangle,
   ArrowDown,
   ArrowUp,
   CheckCheck,
   ChevronUp,
   ChevronsUp,
+  Eye,
   ListChecks,
   Pencil,
   Plus,
@@ -39,6 +41,8 @@ import {
   updateTrackedTask,
   setTaskDone,
   setTaskAcknowledged,
+  setTaskUpdatesRead,
+  addTaskUpdate,
   deleteTrackedTask,
   type Task,
   type TaskProgressUpdate,
@@ -118,45 +122,63 @@ function updatesTooltip(task: Task): string | undefined {
 }
 
 /**
- * Assignees (other than the owner) get a tick box to say they've read the task; everyone else sees
- * how many have, with who/when on hover.
+ * Acknowledging the task itself (assignees only): a loud amber "Acknowledge task" button until they
+ * have, then a green chip. Below it, how many assignees have acknowledged, with who/when on hover.
+ * Reading updates is a separate button, in the Update column.
  */
 function AcknowledgedCell({
   task,
-  me,
   onToggle,
 }: {
   task: Task;
-  me: string;
   onToggle: (acknowledged: boolean) => void;
 }) {
   const acks = task.acknowledgements;
-  if (acks.length === 0) return <span className="text-muted-foreground">—</span>;
-
-  const mine = acks.find((a) => a.username === me);
   const done = acks.filter((a) => a.acknowledgedAt).length;
-  const all = done === acks.length;
+  const all = acks.length > 0 && done === acks.length;
   const detail = acks
-    .map((a) => `${a.username} - ${a.acknowledgedAt ? `read ${formatDateTime(a.acknowledgedAt)}` : "not yet"}`)
+    .map((a) => {
+      const ack = a.acknowledgedAt ? `acknowledged ${formatDateTime(a.acknowledgedAt)}` : "not acknowledged yet";
+      const updates = a.unreadUpdates > 0 ? `, ${a.unreadUpdates} unread update${a.unreadUpdates === 1 ? "" : "s"}` : "";
+      return `${a.username} - ${ack}${updates}`;
+    })
     .join("\n");
 
+  if (acks.length === 0) return <span className="text-muted-foreground">—</span>;
+
   return (
-    <div className="flex items-center gap-2" title={detail}>
-      {mine && (
-        <Checkbox
-          checked={mine.acknowledgedAt !== null}
-          onCheckedChange={(c) => onToggle(c === true)}
-          aria-label="Mark as read"
-        />
-      )}
+    <div className="flex flex-col items-start gap-1">
+      {task.canAcknowledge &&
+        (task.needsAck ? (
+          <button
+            type="button"
+            onClick={() => onToggle(true)}
+            title="Click once you've read this task."
+            className="inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-amber-500 px-2 py-1 text-xs font-semibold text-white shadow-sm ring-2 ring-amber-300 hover:bg-amber-600 dark:ring-amber-500/40"
+          >
+            <AlertTriangle className="size-3.5" aria-hidden />
+            Acknowledge task
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onToggle(false)}
+            title="You've acknowledged this task. Click to undo."
+            className="inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-800 hover:bg-green-200 dark:bg-green-500/20 dark:text-green-200"
+          >
+            <CheckCheck className="size-3.5" aria-hidden />
+            Acknowledged
+          </button>
+        ))}
       <span
+        title={detail}
         className={cn(
           "inline-flex items-center gap-1 whitespace-nowrap text-xs",
           all ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
         )}
       >
         {all && <CheckCheck className="size-3.5" aria-hidden />}
-        {done}/{acks.length} read
+        {done}/{acks.length} acknowledged
       </span>
     </div>
   );
@@ -185,6 +207,7 @@ export default function TasksPage() {
   const [scope, setScope] = usePersistedState<Scope>("tasks.scope", "all", isScope);
   const [showDone, setShowDone] = usePersistedState("tasks.showDone", false, isBoolean);
   const [search, setSearch] = useState("");
+  const [attentionOnly, setAttentionOnly] = useState(false);
   const [isPending, startTransition] = useTransition();
   const columns = useResizableColumns("tasks.columnWidths", COLUMNS.length);
 
@@ -219,10 +242,16 @@ export default function TasksPage() {
 
   const today = todayIso();
 
+  /** Open tasks where I still have to acknowledge, or have unread updates. */
+  const needsAttention = useMemo(() => tasks.filter((t) => !t.done && t.needsAttention).length, [tasks]);
+  // Once nothing is left to look at, the filter switches itself off so the list isn't stuck empty.
+  const onlyAttention = attentionOnly && needsAttention > 0;
+
   const visible = useMemo(() => {
     const query = search.trim().toLowerCase();
     const filtered = tasks.filter((t) => {
       if (!showDone && t.done) return false;
+      if (onlyAttention && !t.needsAttention) return false;
       // Matches the task name, its owner, or any assignee (case-insensitive).
       if (
         query &&
@@ -249,7 +278,7 @@ export default function TasksPage() {
       if (!bv) return -1;
       return av.localeCompare(bv) * dir || a.priority - b.priority;
     });
-  }, [tasks, scope, showDone, search, sortKey, sortDesc, me]);
+  }, [tasks, scope, showDone, onlyAttention, search, sortKey, sortDesc, me]);
 
   const stats = useMemo(() => {
     const open = tasks.filter((t) => !t.done);
@@ -279,6 +308,18 @@ export default function TasksPage() {
   function handleSave(input: TrackedTaskInput) {
     setFormError(null);
     startTransition(async () => {
+      // View-only assignees can't change the task; their Save just posts the update.
+      if (editing && !editing.canEdit) {
+        const posted = await addTaskUpdate(editing.id, input.update ?? "");
+        if (posted.error || !posted.data) {
+          setFormError(posted.error ?? "Failed to add update");
+          return;
+        }
+        const update = posted.data;
+        setTasks((prev) => prev.map((t) => (t.id === editing.id ? { ...t, updates: [update, ...t.updates] } : t)));
+        setFormOpen(false);
+        return;
+      }
       const result = editing ? await updateTrackedTask(editing.id, input) : await createTrackedTask(input);
       if (result.error) {
         setFormError(result.error);
@@ -296,30 +337,47 @@ export default function TasksPage() {
     });
   }
 
-  function handleUpdatePosted(taskId: string, update: TaskProgressUpdate) {
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, updates: [update, ...t.updates] } : t)));
+  function handleUpdateEdited(taskId: string, update: TaskProgressUpdate) {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, updates: t.updates.map((u) => (u.id === update.id ? update : u)) } : t))
+    );
+  }
+
+  /**
+   * Shows `optimistic` straight away, then swaps in the server's copy of the task (or rolls back on
+   * error). Used by both "Acknowledge task" and "Mark updates read".
+   */
+  function applyReadChange(task: Task, optimistic: Task | null, run: () => Promise<{ data: Task | null; error: string | null }>) {
+    const replace = (next: Task) => setTasks((prev) => prev.map((t) => (t.id === next.id ? next : t)));
+    const previous = tasks.find((t) => t.id === task.id) ?? task;
+    if (optimistic) replace(optimistic);
+    startTransition(async () => {
+      const result = await run();
+      if (result.error) {
+        setError(result.error);
+        replace(previous);
+      } else if (result.data) {
+        replace(result.data);
+      }
+    });
   }
 
   function handleToggleAcknowledged(task: Task, acknowledged: boolean) {
-    const setMine = (acknowledgedAt: string | null) =>
-      setTasks((prev) =>
-        prev.map((t) =>
-          t.id === task.id
-            ? { ...t, acknowledgements: t.acknowledgements.map((a) => (a.username === me ? { ...a, acknowledgedAt } : a)) }
-            : t
-        )
-      );
-    const previous = task.acknowledgements.find((a) => a.username === me)?.acknowledgedAt ?? null;
-    setMine(acknowledged ? new Date().toISOString() : null);
-    startTransition(async () => {
-      const result = await setTaskAcknowledged(task.id, acknowledged);
-      if (result.error) {
-        setError(result.error);
-        setMine(previous);
-      } else {
-        setMine(result.data);
-      }
-    });
+    const now = new Date().toISOString();
+    const optimistic = acknowledged
+      ? {
+          ...task,
+          needsAck: false,
+          needsAttention: task.unreadUpdateIds.length > 0,
+          acknowledgements: task.acknowledgements.map((a) => (a.username === me ? { ...a, acknowledgedAt: now } : a)),
+        }
+      : null;
+    applyReadChange(task, optimistic, () => setTaskAcknowledged(task.id, acknowledged));
+  }
+
+  function handleToggleUpdatesRead(task: Task, read: boolean) {
+    const optimistic = read ? { ...task, unreadUpdateIds: [], needsAttention: task.needsAck } : null;
+    applyReadChange(task, optimistic, () => setTaskUpdatesRead(task.id, read));
   }
 
   function handleToggleDone(task: Task, done: boolean) {
@@ -420,6 +478,19 @@ export default function TasksPage() {
 
         {error && <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
 
+        {needsAttention > 0 && (
+          <div className="flex flex-wrap items-center gap-3 rounded-xl border-2 border-amber-400 bg-amber-50 px-4 py-3 dark:border-amber-500/60 dark:bg-amber-500/10">
+            <AlertTriangle className="size-5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden />
+            <p className="min-w-0 flex-1 text-sm font-medium text-amber-900 dark:text-amber-100">
+              {needsAttention === 1 ? "1 task needs" : `${needsAttention} tasks need`} your attention: not yet
+              acknowledged, or new updates to read.
+            </p>
+            <Button size="sm" variant="outline" onClick={() => setAttentionOnly(!onlyAttention)}>
+              {onlyAttention ? "Show all tasks" : "Show only these"}
+            </Button>
+          </div>
+        )}
+
         {isLoading ? (
           <Skeleton className="h-64" />
         ) : visible.length === 0 ? (
@@ -466,9 +537,23 @@ export default function TasksPage() {
               <tbody>
                 {visible.map((t) => {
                   const overdue = !t.done && t.dueDate !== null && t.dueDate < today;
+                  const latest = t.updates[0];
+                  const latestIsNew = latest !== undefined && t.unreadUpdateIds.includes(latest.id);
                   return (
-                    <tr key={t.id} className={cn("border-b border-border last:border-0", t.done && "opacity-50")}>
-                      <td className="px-3 py-2">
+                    <tr
+                      key={t.id}
+                      className={cn(
+                        "border-b border-border last:border-0",
+                        t.done && "opacity-50",
+                        t.needsAttention && !t.done && "bg-amber-50/70 dark:bg-amber-500/5"
+                      )}
+                    >
+                      <td
+                        className={cn(
+                          "px-3 py-2",
+                          t.needsAttention && !t.done && "shadow-[inset_3px_0_0_var(--color-amber-500)]"
+                        )}
+                      >
                         <Checkbox
                           checked={t.done}
                           disabled={!t.canMarkDone}
@@ -482,17 +567,13 @@ export default function TasksPage() {
 
                       </td>
                       <td className={cn("px-3 py-2 font-medium", t.done && "line-through")}>
-                        {t.canEdit ? (
-                          <button
-                            type="button"
-                            onClick={() => openEdit(t)}
-                            className="text-left hover:underline focus-visible:underline focus-visible:outline-none"
-                          >
-                            {t.title}
-                          </button>
-                        ) : (
-                          t.title
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => openEdit(t)}
+                          className="text-left hover:underline focus-visible:underline focus-visible:outline-none"
+                        >
+                          {t.title}
+                        </button>
                       </td>
                       <td className="whitespace-nowrap px-3 py-2">{formatDate(t.date)}</td>
                       <td className={cn("whitespace-nowrap px-3 py-2", overdue && "font-medium text-red-600 dark:text-red-400")}>
@@ -501,7 +582,7 @@ export default function TasksPage() {
                       <td className="px-3 py-2">{t.owner}</td>
                       <td className="px-3 py-2">{t.assignees.length ? t.assignees.join(", ") : "—"}</td>
                       <td className="px-3 py-2">
-                        <AcknowledgedCell task={t} me={me} onToggle={(a) => handleToggleAcknowledged(t, a)} />
+                        <AcknowledgedCell task={t} onToggle={(a) => handleToggleAcknowledged(t, a)} />
                       </td>
                       <td
                         className={cn("truncate px-3 py-2 text-muted-foreground", !columns.widths && "max-w-xs")}
@@ -510,12 +591,31 @@ export default function TasksPage() {
                         {t.notes ?? "—"}
                       </td>
                       <td className={cn("px-3 py-2", !columns.widths && "max-w-xs")} title={updatesTooltip(t)}>
-                        {t.updates[0] ? (
+                        {latest ? (
                           <>
-                            <div className="truncate">{t.updates[0].body}</div>
-                            <div className="truncate text-xs text-muted-foreground">
-                              {t.updates[0].username} · {formatDateTime(t.updates[0].createdAt)}
+                            <div className={cn("truncate", latestIsNew && "font-semibold text-blue-700 dark:text-blue-300")}>
+                              {t.unreadUpdateIds.length > 0 && (
+                                <span className="mr-1.5 rounded bg-blue-600 px-1 py-px text-[10px] font-semibold uppercase text-white">
+                                  {t.unreadUpdateIds.length} new
+                                </span>
+                              )}
+                              {latest.body}
                             </div>
+                            <div className="truncate text-xs text-muted-foreground">
+                              {latest.username} · {formatDateTime(latest.createdAt)}
+                              {latest.editedAt && " · edited"}
+                            </div>
+                            {t.unreadUpdateIds.length > 0 && t.canReadUpdates && (
+                              <button
+                                type="button"
+                                onClick={() => handleToggleUpdatesRead(t, true)}
+                                title="Click once you've read the new updates."
+                                className="mt-1 inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700"
+                              >
+                                <CheckCheck className="size-3.5" aria-hidden />
+                                Mark updates read
+                              </button>
+                            )}
                           </>
                         ) : (
                           <span className="text-muted-foreground">—</span>
@@ -532,11 +632,15 @@ export default function TasksPage() {
                               onPing={(usernames) => pingTrackedTask(t.id, usernames)}
                             />
                           )}
-                          {t.canEdit && (
-                            <Button variant="ghost" size="icon-sm" onClick={() => openEdit(t)} aria-label="Edit task">
-                              <Pencil />
-                            </Button>
-                          )}
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={() => openEdit(t)}
+                            aria-label={t.canEdit ? "Edit task" : "View task"}
+                            title={t.canEdit ? undefined : "View only. You can still add updates."}
+                          >
+                            {t.canEdit ? <Pencil /> : <Eye />}
+                          </Button>
                           {t.canDelete && (
                             <Button
                               variant="ghost"
@@ -561,13 +665,16 @@ export default function TasksPage() {
       <TaskFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        task={editing}
+        // The live copy, so acknowledging or editing an update inside the dialog shows straight away.
+        task={editing ? (tasks.find((t) => t.id === editing.id) ?? editing) : null}
         currentUser={me}
         staff={staff}
         saving={isPending}
         error={formError}
         onSave={handleSave}
-        onUpdatePosted={handleUpdatePosted}
+        onUpdateEdited={handleUpdateEdited}
+        onAcknowledge={handleToggleAcknowledged}
+        onUpdatesRead={handleToggleUpdatesRead}
       />
 
       <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>

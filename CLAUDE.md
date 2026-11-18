@@ -460,8 +460,21 @@ Backs `/others/tasks` (Others → "Tasks"), which replaced the old Boards and Da
 - **`task_assignees`**: `(task_id, username)`, cascade on delete.
 
 A task is visible **only to its owner and assignees** — admins included, for privacy (no admin override), enforced in `lib/actions/tasks.ts`
-(not RLS — policies are permissive and writes use the service client). Owner and assignees can edit;
-only the owner can tick done (`canMarkDone`, enforced in `setTaskDone`) or delete. Actions are named `createTrackedTask` /
+(not RLS — policies are permissive and writes use the service client). **Seeing is not editing**: the owner
+always edits, assignees only if `task_assignees.can_edit` (set per person by the owner in the dialog's
+"Who can edit" row; only the owner changes it, and people a non-owner editor adds start view-only).
+View-only assignees can still post updates and acknowledge. Only the owner can tick done (`canMarkDone`,
+enforced in `setTaskDone`) or delete.
+
+- **Updates** (`task_updates`) are posted by the dialog's Save, not a separate button (`input.update` on
+  `updateTrackedTask`; view-only people go through `addTaskUpdate`). Authors can edit their own
+  (`editTaskUpdate`), which sets `edited_at`.
+- **Two separate read buttons.** "Acknowledge task" (amber, assignees only, `setTaskAcknowledged` →
+  `task_assignees.acknowledged_at`) is set once and isn't reset by updates. "Mark updates read" (blue,
+  owner and assignees, `setTaskUpdatesRead` → `task_assignees.updates_read_at` / `tasks.owner_read_at`):
+  any update by someone else posted or edited after that time is "new" (`unreadUpdateIds`, highlighted
+  blue). `needsAttention` = either outstanding, and drives the amber row tint and page banner.
+  DDL: `sql/task_editors_and_reads_migration.sql`. Actions are named `createTrackedTask` /
 `updateTrackedTask` / `deleteTrackedTask` because `lib/actions/calendar.ts` already exports
 `createTask` etc. through the `lib/actions/index.ts` barrel.
 

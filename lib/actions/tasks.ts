@@ -16,12 +16,29 @@ export interface Task {
   done: boolean;
   owner: string;
   assignees: string[];
+  /** Assignees allowed to edit the task's fields. The owner always can and isn't listed here. */
+  editors: string[];
   /** Progress log, newest first. */
   updates: TaskProgressUpdate[];
   /** One entry per assignee other than the owner (the owner never acknowledges their own task). */
   acknowledgements: TaskAcknowledgement[];
+  /** Updates by someone else, posted or edited since the caller last marked updates read. */
+  unreadUpdateIds: string[];
+  /** The caller is an assignee other than the owner, so has an "Acknowledge task" button. */
+  canAcknowledge: boolean;
+  /** The caller is an assignee who hasn't acknowledged the task yet. */
+  needsAck: boolean;
+  /** The caller (owner or assignee) can mark updates read. */
+  canReadUpdates: boolean;
+  /** needsAck, or there are unread updates: drives the row highlight and page banner. */
+  needsAttention: boolean;
   createdAt: string;
+  /** Owner and assignees can see the task. */
+  canView: boolean;
+  /** Owner, plus assignees the owner has given edit access. */
   canEdit: boolean;
+  /** Only the owner decides who can edit. */
+  canManageEditors: boolean;
   /** Only the owner ticks a task done. */
   canMarkDone: boolean;
   canDelete: boolean;
@@ -31,6 +48,10 @@ export interface TaskAcknowledgement {
   username: string;
   /** null = not acknowledged yet. */
   acknowledgedAt: string | null;
+  /** When they last marked updates read; null = never. */
+  updatesReadAt: string | null;
+  /** Updates by someone else they haven't marked read. */
+  unreadUpdates: number;
 }
 
 export interface TaskProgressUpdate {
@@ -38,6 +59,8 @@ export interface TaskProgressUpdate {
   username: string;
   body: string;
   createdAt: string;
+  /** Set once the author edits it. */
+  editedAt: string | null;
 }
 
 export interface TrackedTaskInput {
@@ -47,6 +70,10 @@ export interface TrackedTaskInput {
   dueDate: string | null;
   priority: number;
   assignees: string[];
+  /** Assignees with edit access. Only applied when the caller is the owner. */
+  editors: string[];
+  /** Optional progress update to post with the save (existing tasks only). */
+  update?: string;
 }
 
 type TaskRow = {
@@ -58,17 +85,18 @@ type TaskRow = {
   priority: number;
   done: boolean;
   owner_username: string;
+  owner_read_at: string | null;
   created_at: string;
 };
 
-const TASK_COLUMNS = "id, title, notes, task_date, due_date, priority, done, owner_username, created_at";
-const UPDATE_COLUMNS = "id, username, body, created_at";
-const ASSIGNEE_COLUMNS = "task_id, username, acknowledged_at";
+const TASK_COLUMNS = "id, title, notes, task_date, due_date, priority, done, owner_username, owner_read_at, created_at";
+const UPDATE_COLUMNS = "id, username, body, created_at, edited_at";
+const ASSIGNEE_COLUMNS = "task_id, username, acknowledged_at, updates_read_at, can_edit";
 
-type TaskUpdateRow = { id: string; username: string; body: string; created_at: string };
+type TaskUpdateRow = { id: string; username: string; body: string; created_at: string; edited_at: string | null };
 
 function toTaskUpdate(row: TaskUpdateRow): TaskProgressUpdate {
-  return { id: row.id, username: row.username, body: row.body, createdAt: row.created_at };
+  return { id: row.id, username: row.username, body: row.body, createdAt: row.created_at, editedAt: row.edited_at };
 }
 
 function validate(input: TrackedTaskInput): string | null {
@@ -83,7 +111,28 @@ function validate(input: TrackedTaskInput): string | null {
   return null;
 }
 
-type AssigneeRow = { task_id: string; username: string; acknowledged_at: string | null };
+function validateUpdateText(text: string): string | null {
+  if (!text) return "Update is empty";
+  if (text.length > MAX_TASK_UPDATE_LENGTH) return `Update must be ${MAX_TASK_UPDATE_LENGTH} characters or fewer`;
+  return null;
+}
+
+/**
+ * Updates by someone other than `who` posted or edited after `since` (all of them if `since` is null).
+ * Compared as dates, because Postgres and toISOString() format timestamps differently.
+ */
+function updatesNewTo(updates: TaskProgressUpdate[], who: string, since: string | null): TaskProgressUpdate[] {
+  const sinceMs = since === null ? -Infinity : Date.parse(since);
+  return updates.filter((u) => u.username !== who && Date.parse(u.editedAt ?? u.createdAt) > sinceMs);
+}
+
+type AssigneeRow = {
+  task_id: string;
+  username: string;
+  acknowledged_at: string | null;
+  updates_read_at: string | null;
+  can_edit: boolean;
+};
 
 function toTask(
   row: TaskRow,
@@ -93,6 +142,13 @@ function toTask(
 ): Task {
   const isOwner = row.owner_username === username;
   const assignees = links.map((l) => l.username);
+  const mine = links.find((l) => l.username === username);
+  const canAcknowledge = !isOwner && mine !== undefined;
+  const needsAck = !isOwner && mine !== undefined && mine.acknowledged_at === null;
+  const canReadUpdates = isOwner || mine !== undefined;
+  const unread = canReadUpdates
+    ? updatesNewTo(updates, username, isOwner ? row.owner_read_at : (mine?.updates_read_at ?? null))
+    : [];
   return {
     id: row.id,
     title: row.title,
@@ -103,13 +159,26 @@ function toTask(
     done: row.done,
     owner: row.owner_username,
     assignees,
+    editors: links.filter((l) => l.can_edit && l.username !== row.owner_username).map((l) => l.username),
     updates,
     acknowledgements: links
       .filter((l) => l.username !== row.owner_username)
-      .map((l) => ({ username: l.username, acknowledgedAt: l.acknowledged_at })),
+      .map((l) => ({
+        username: l.username,
+        acknowledgedAt: l.acknowledged_at,
+        updatesReadAt: l.updates_read_at,
+        unreadUpdates: updatesNewTo(updates, l.username, l.updates_read_at).length,
+      })),
+    unreadUpdateIds: unread.map((u) => u.id),
+    canAcknowledge,
+    needsAck,
+    canReadUpdates,
+    needsAttention: needsAck || unread.length > 0,
     createdAt: row.created_at,
-    // Visible only to owner + assignees — admins included, no override — so "can see" == "can edit".
-    canEdit: isOwner || assignees.includes(username),
+    // Visible only to owner + assignees — admins included, no override.
+    canView: isOwner || mine !== undefined,
+    canEdit: isOwner || mine?.can_edit === true,
+    canManageEditors: isOwner,
     canMarkDone: isOwner,
     canDelete: isOwner,
   };
@@ -120,11 +189,15 @@ type AssigneeDiff = { error: string | null; added: string[]; removed: string[] }
 /**
  * Replaces the assignee set, keeping only usernames that exist in `staff`. Only removed/added rows are
  * touched, so assignees who stay keep their acknowledgement. Reports who was added/removed.
+ *
+ * `editors` (owner only) sets who may edit. null leaves existing rows' access alone and adds new
+ * assignees as view-only, so a non-owner editor can't hand out edit access.
  */
-async function setAssignees(taskId: string, usernames: string[]): Promise<AssigneeDiff> {
+async function setAssignees(taskId: string, usernames: string[], editors: string[] | null): Promise<AssigneeDiff> {
   const fail = (error: string): AssigneeDiff => ({ error, added: [], removed: [] });
   const db = createServiceClient();
   const wanted = [...new Set(usernames.map((u) => u.toLowerCase()))];
+  const editorSet = editors === null ? null : new Set(editors.map((u) => u.toLowerCase()));
 
   const { data: valid, error: staffError } = wanted.length
     ? await db.from("staff").select("username").in("username", wanted)
@@ -134,10 +207,11 @@ async function setAssignees(taskId: string, usernames: string[]): Promise<Assign
 
   const { data: current, error: currentError } = await db
     .from("task_assignees")
-    .select("username")
+    .select("username, can_edit")
     .eq("task_id", taskId);
   if (currentError) return fail(currentError.message);
-  const existing = new Set((current ?? []).map((r) => r.username as string));
+  const currentRows = (current ?? []) as { username: string; can_edit: boolean }[];
+  const existing = new Set(currentRows.map((r) => r.username));
 
   const removed = [...existing].filter((u) => !next.has(u));
   if (removed.length) {
@@ -145,9 +219,27 @@ async function setAssignees(taskId: string, usernames: string[]): Promise<Assign
     if (error) return fail(error.message);
   }
 
+  if (editorSet) {
+    for (const value of [true, false]) {
+      const flip = currentRows
+        .filter((r) => next.has(r.username) && editorSet.has(r.username) === value && r.can_edit !== value)
+        .map((r) => r.username);
+      if (flip.length) {
+        const { error } = await db
+          .from("task_assignees")
+          .update({ can_edit: value })
+          .eq("task_id", taskId)
+          .in("username", flip);
+        if (error) return fail(error.message);
+      }
+    }
+  }
+
   const added = [...next].filter((u) => !existing.has(u));
   if (added.length) {
-    const { error } = await db.from("task_assignees").insert(added.map((username) => ({ task_id: taskId, username })));
+    const { error } = await db
+      .from("task_assignees")
+      .insert(added.map((username) => ({ task_id: taskId, username, can_edit: editorSet?.has(username) ?? false })));
     if (error) return fail(error.message);
   }
   return { error: null, added, removed };
@@ -175,18 +267,22 @@ function notifyTask(
 /** Loads one task from the caller's point of view; null if missing or not visible to them. */
 async function loadVisible(taskId: string, username: string): Promise<Task | null> {
   const db = createServiceClient();
-  const { data: row } = await db.from("tasks").select(TASK_COLUMNS).eq("id", taskId).maybeSingle();
+  const { data: row, error: rowError } = await db.from("tasks").select(TASK_COLUMNS).eq("id", taskId).maybeSingle();
+  // A failed query (e.g. a column whose migration hasn't run) would otherwise look like "not found".
+  if (rowError) console.error("loadVisible tasks:", rowError.message);
   if (!row) return null;
-  const { data: a } = await db.from("task_assignees").select(ASSIGNEE_COLUMNS).eq("task_id", taskId);
+  const { data: a, error: linkError } = await db.from("task_assignees").select(ASSIGNEE_COLUMNS).eq("task_id", taskId);
+  if (linkError) console.error("loadVisible task_assignees:", linkError.message);
   const links = (a ?? []) as AssigneeRow[];
-  const { data: u } = await db
+  const { data: u, error: updateError } = await db
     .from("task_updates")
     .select(UPDATE_COLUMNS)
     .eq("task_id", taskId)
     .order("created_at", { ascending: false });
+  if (updateError) console.error("loadVisible task_updates:", updateError.message);
   const updates = ((u ?? []) as TaskUpdateRow[]).map(toTaskUpdate);
   const task = toTask(row as TaskRow, links, updates, username);
-  return task.canEdit ? task : null;
+  return task.canView ? task : null;
 }
 
 export async function listTasks(): Promise<{ data: Task[] | null; error: string | null }> {
@@ -222,7 +318,7 @@ export async function listTasks(): Promise<{ data: Task[] | null; error: string 
 
   const tasks = (rows as TaskRow[])
     .map((r) => toTask(r, byTask.get(r.id) ?? [], updatesByTask.get(r.id) ?? [], session.username))
-    .filter((t) => t.canEdit);
+    .filter((t) => t.canView);
   return { data: tasks, error: null };
 }
 
@@ -247,7 +343,7 @@ export async function createTrackedTask(input: TrackedTaskInput): Promise<{ data
     .single();
   if (error || !row) return { data: null, error: error?.message ?? "Failed to create task" };
 
-  const assigned = await setAssignees(row.id, input.assignees);
+  const assigned = await setAssignees(row.id, input.assignees, input.editors);
   if (assigned.error) return { data: null, error: assigned.error };
 
   await notifyTask(
@@ -261,14 +357,23 @@ export async function createTrackedTask(input: TrackedTaskInput): Promise<{ data
   return { data: await loadVisible(row.id, session.username), error: null };
 }
 
-/** `data` is null on success when the editor removed their own access (task no longer visible). */
+/**
+ * Saves the task's fields and, if `input.update` has text, posts it as a progress update.
+ * `data` is null on success when the editor removed their own access (task no longer visible).
+ */
 export async function updateTrackedTask(id: string, input: TrackedTaskInput): Promise<{ data: Task | null; error: string | null }> {
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized" };
   const invalid = validate(input);
   if (invalid) return { data: null, error: invalid };
+  const updateText = input.update?.trim() ?? "";
+  if (updateText) {
+    const badUpdate = validateUpdateText(updateText);
+    if (badUpdate) return { data: null, error: badUpdate };
+  }
   const before = await loadVisible(id, session.username);
   if (!before) return { data: null, error: "Task not found" };
+  if (!before.canEdit) return { data: null, error: `Only ${before.owner} and the people they allow can edit this task` };
 
   const db = createServiceClient();
   const { error } = await db
@@ -284,7 +389,7 @@ export async function updateTrackedTask(id: string, input: TrackedTaskInput): Pr
     .eq("id", id);
   if (error) return { data: null, error: error.message };
 
-  const assigned = await setAssignees(id, input.assignees);
+  const assigned = await setAssignees(id, input.assignees, before.canManageEditors ? input.editors : null);
   if (assigned.error) return { data: null, error: assigned.error };
 
   const title = input.title.trim();
@@ -304,6 +409,11 @@ export async function updateTrackedTask(id: string, input: TrackedTaskInput): Pr
       ? notifyTask(session.username, after, "task_updated", { changes, dueDate: input.dueDate }, stayed)
       : Promise.resolve(0),
   ]);
+
+  if (updateText) {
+    const posted = await insertUpdate(session.username, { ...after, assignees: stayed }, updateText);
+    if (posted.error) return { data: null, error: posted.error };
+  }
 
   return { data: await loadVisible(id, session.username), error: null };
 }
@@ -341,52 +451,123 @@ export async function listTaskUpdates(taskId: string): Promise<{ data: TaskProgr
   return { data: (data as TaskUpdateRow[]).map(toTaskUpdate), error: null };
 }
 
-/** Append-only: updates are never edited or deleted, and don't touch the task's notes. */
-export async function addTaskUpdate(taskId: string, body: string): Promise<{ data: TaskProgressUpdate | null; error: string | null }> {
-  const session = await getSession();
-  if (!session) return { data: null, error: "Unauthorized" };
-  const text = body.trim();
-  if (!text) return { data: null, error: "Update is empty" };
-  if (text.length > MAX_TASK_UPDATE_LENGTH) return { data: null, error: `Update must be ${MAX_TASK_UPDATE_LENGTH} characters or fewer` };
-  const task = await loadVisible(taskId, session.username);
-  if (!task) return { data: null, error: "Task not found" };
-
+/** Inserts a progress update and notifies the people on the task. */
+async function insertUpdate(
+  actor: string,
+  task: { id: string; title: string; owner: string; assignees: string[] },
+  text: string
+): Promise<{ data: TaskProgressUpdate | null; error: string | null }> {
   const db = createServiceClient();
   const { data, error } = await db
     .from("task_updates")
-    .insert({ task_id: taskId, username: session.username, body: text })
+    .insert({ task_id: task.id, username: actor, body: text })
     .select(UPDATE_COLUMNS)
     .single();
   if (error || !data) return { data: null, error: error?.message ?? "Failed to add update" };
-  await notifyTask(session.username, task, "task_progress", {
+  await notifyTask(actor, task, "task_progress", {
     body: text.length > 200 ? `${text.slice(0, 199)}…` : text,
   });
   return { data: toTaskUpdate(data as TaskUpdateRow), error: null };
 }
 
-/** Ticks/unticks "Acknowledged" for the caller. Only assignees (other than the owner) can acknowledge. */
+/**
+ * Posts a progress update. Anyone who can see the task may post, including view-only assignees.
+ * Updates never touch the task's notes.
+ */
+export async function addTaskUpdate(taskId: string, body: string): Promise<{ data: TaskProgressUpdate | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  const text = body.trim();
+  const invalid = validateUpdateText(text);
+  if (invalid) return { data: null, error: invalid };
+  const task = await loadVisible(taskId, session.username);
+  if (!task) return { data: null, error: "Task not found" };
+  return insertUpdate(session.username, task, text);
+}
+
+/** Only the author can edit their update. Sets `edited_at`, so it shows as new to everyone else again. */
+export async function editTaskUpdate(
+  updateId: string,
+  body: string
+): Promise<{ data: TaskProgressUpdate | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  const text = body.trim();
+  const invalid = validateUpdateText(text);
+  if (invalid) return { data: null, error: invalid };
+
+  const db = createServiceClient();
+  const { data: existing } = await db
+    .from("task_updates")
+    .select("task_id, username")
+    .eq("id", updateId)
+    .maybeSingle();
+  if (!existing || !(await loadVisible(existing.task_id as string, session.username))) {
+    return { data: null, error: "Update not found" };
+  }
+  if (existing.username !== session.username) return { data: null, error: "You can only edit your own updates" };
+
+  const { data, error } = await db
+    .from("task_updates")
+    .update({ body: text, edited_at: new Date().toISOString() })
+    .eq("id", updateId)
+    .select(UPDATE_COLUMNS)
+    .single();
+  if (error || !data) return { data: null, error: error?.message ?? "Failed to edit update" };
+  return { data: toTaskUpdate(data as TaskUpdateRow), error: null };
+}
+
+/**
+ * Ticks/unticks "Acknowledge task" for the caller (they've seen the task itself) and returns the
+ * refreshed task. Only assignees other than the owner. Independent of reading updates.
+ */
 export async function setTaskAcknowledged(
   id: string,
   acknowledged: boolean
-): Promise<{ data: string | null; error: string | null }> {
+): Promise<{ data: Task | null; error: string | null }> {
   const session = await getSession();
   if (!session) return { data: null, error: "Unauthorized" };
   const task = await loadVisible(id, session.username);
   if (!task) return { data: null, error: "Task not found" };
-  if (!task.acknowledgements.some((a) => a.username === session.username)) {
-    return { data: null, error: "Only assignees can acknowledge this task" };
-  }
+  if (!task.canAcknowledge) return { data: null, error: "Only assignees can acknowledge this task" };
 
-  const acknowledgedAt = acknowledged ? new Date().toISOString() : null;
   const db = createServiceClient();
   const { error } = await db
     .from("task_assignees")
-    .update({ acknowledged_at: acknowledgedAt })
+    .update({ acknowledged_at: acknowledged ? new Date().toISOString() : null })
     .eq("task_id", id)
     .eq("username", session.username);
   if (error) return { data: null, error: error.message };
   if (acknowledged) await notifyTask(session.username, task, "task_ack", {}, [task.owner]);
-  return { data: acknowledgedAt, error: null };
+  return { data: await loadVisible(id, session.username), error: null };
+}
+
+/**
+ * Marks every current update read (or unread) for the caller and returns the refreshed task.
+ * Assignees store it on their assignment, the owner on the task. No notification.
+ */
+export async function setTaskUpdatesRead(
+  id: string,
+  read: boolean
+): Promise<{ data: Task | null; error: string | null }> {
+  const session = await getSession();
+  if (!session) return { data: null, error: "Unauthorized" };
+  const task = await loadVisible(id, session.username);
+  if (!task) return { data: null, error: "Task not found" };
+  if (!task.canReadUpdates) return { data: null, error: "Only people on this task can mark its updates read" };
+
+  const at = read ? new Date().toISOString() : null;
+  const db = createServiceClient();
+  const { error } =
+    task.owner === session.username
+      ? await db.from("tasks").update({ owner_read_at: at }).eq("id", id)
+      : await db
+          .from("task_assignees")
+          .update({ updates_read_at: at })
+          .eq("task_id", id)
+          .eq("username", session.username);
+  if (error) return { data: null, error: error.message };
+  return { data: await loadVisible(id, session.username), error: null };
 }
 
 export async function deleteTrackedTask(id: string): Promise<{ error: string | null }> {
