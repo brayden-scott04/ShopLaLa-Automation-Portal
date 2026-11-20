@@ -14,10 +14,12 @@ export const NOTIFICATION_KINDS = [
   "task_ack",
   "task_deleted",
   "task_ping",
+  "broadcast",
 ] as const;
 export type NotificationKind = (typeof NOTIFICATION_KINDS)[number];
 
-export type NotificationSource = "calendar_task" | "task";
+/** "broadcast": a message from a leader/admin; source_id groups one send's rows together. */
+export type NotificationSource = "calendar_task" | "task" | "broadcast";
 
 /**
  * One changed field. Values are raw ("YYYY-MM-DD", "HH:MM" or "HH:MM-HH:MM" for a time range,
@@ -43,7 +45,7 @@ export interface NotificationData {
   /** Calendar: "series" = the whole event, "occurrence" = that one day only. Delete: this | following | all. */
   scope?: "series" | "occurrence" | "this" | "following" | "all";
   changes?: NotificationChange[];
-  /** Progress update text (trimmed). */
+  /** Progress update text (trimmed), or a broadcast's message. */
   body?: string;
   done?: boolean;
   priority?: number;
@@ -68,6 +70,9 @@ export const NOTIFICATIONS_CHANGED_EVENT = "portal:notifications-changed";
 
 /** How often open pages poll for new notifications. */
 export const NOTIFICATIONS_POLL_MS = 30_000;
+
+/** Longest broadcast message leaders/admins can send. */
+export const MAX_BROADCAST_LENGTH = 2000;
 
 /** One ping per recipient per event (occurrence) per this window. */
 export const PING_COOLDOWN_MS = 60_000;

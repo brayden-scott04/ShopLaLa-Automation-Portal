@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { AlertTriangle, ArrowDownUp, Download, LayoutGrid, Rows3, Search, Upload, X } from "lucide-react";
+import { AlertTriangle, ArrowDown, ArrowDownUp, ArrowUp, Download, LayoutGrid, Rows3, Search, Upload, X } from "lucide-react";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,12 +27,16 @@ import {
   BULLET_TARGET_COUNT,
   LISTING_ALERT_SEVERITY,
   LISTING_SORTS,
+  LISTING_SORT_DEFAULT_DIR,
   LISTING_SORT_LABELS,
   LISTING_STATUS_LABELS,
+  LISTING_STATUS_ORDER,
   SCORE_BAND_LABELS,
   TITLE_TARGET,
+  bulletMax,
   imageTarget,
   limitsOf,
+  listedDate,
   scoreBand,
   scoreListing,
   type ListingAlert,
@@ -41,6 +45,7 @@ import {
   type ListingSort,
   type ListingSummary,
   type ScoreBand,
+  type SortDir,
 } from "@/lib/listing-score";
 import { ListingCard } from "@/components/listing-score/listing-card";
 import { ListingTable } from "@/components/listing-score/listing-table";
@@ -66,6 +71,7 @@ type Filter =
   | "shortTitle"
   | "highlight"
   | "bullets"
+  | "moreBullets"
   | "images"
   | "noAplus"
   | "noBrandStory"
@@ -101,6 +107,11 @@ const OPPORTUNITIES: { key: Filter; label: string; test: (r: Row) => boolean }[]
   },
   { key: "bullets", label: `Under ${BULLET_TARGET_COUNT} bullets`, test: (r) => r.listing.bullet_lengths.length < BULLET_TARGET_COUNT },
   {
+    key: "moreBullets",
+    label: "Room for more bullets",
+    test: (r) => r.listing.listing_status !== "not_listed" && r.listing.bullet_lengths.length < bulletMax(r.listing),
+  },
+  {
     key: "images",
     label: "Below expected images",
     test: (r) => r.listing.listing_status !== "not_listed" && imagesMissing(r) > 0,
@@ -115,6 +126,47 @@ const OPPORTUNITIES: { key: Filter; label: string; test: (r: Row) => boolean }[]
 
 const BANDS: ScoreBand[] = ["excellent", "good", "fair", "poor"];
 
+const boolRank = (v: boolean | null | undefined) => (v === true ? 1 : v === false ? 0 : null);
+
+/**
+ * The value each sort compares. null always sorts last, whichever the direction
+ * (unknown A+, video count not entered, not listed yet...). Ties fall back to
+ * Master List order.
+ */
+const SORT_VALUE: Record<ListingSort, (r: Row) => number | string | null> = {
+  master: (r) => r.masterPos,
+  sku: (r) => r.listing.sku,
+  status: (r) => LISTING_STATUS_ORDER[r.listing.listing_status],
+  score: (r) => r.score.total,
+  // Against the SKU's own target, so 7/9 (-2) sorts before 7/7 (0).
+  images: (r) => (r.listing.listing_status === "not_listed" ? null : r.listing.image_count - imageTarget(r.notes)),
+  submitted: (r) => r.listing.submitted_image_count,
+  videos: (r) => r.notes?.videos ?? null,
+  related: (r) => r.notes?.related_videos ?? null,
+  aplus: (r) => boolRank(r.listing.aplus),
+  brand_story: (r) => boolRank(r.listing.brand_story),
+  title: (r) => r.listing.title_len ?? 0,
+  highlight: (r) => ((r.listing.title_len ?? 0) > TITLE_TARGET ? -1 : (r.listing.highlight_len ?? 0)),
+  bullets: (r) => r.listing.bullet_lengths.length,
+  alerts: (r) => r.alerts.length,
+  launch: (r) => r.notes?.launch_date ?? null,
+  listed: (r) => r.listing.listed_at,
+};
+
+function compareRows(a: Row, b: Row, key: ListingSort, dir: SortDir): number {
+  const va = SORT_VALUE[key](a);
+  const vb = SORT_VALUE[key](b);
+  if (va !== vb) {
+    if (va === null) return 1;
+    if (vb === null) return -1;
+    const c = typeof va === "number" && typeof vb === "number" ? va - vb : String(va).localeCompare(String(vb));
+    if (c !== 0) return dir === "asc" ? c : -c;
+  }
+  const pa = a.masterPos ?? Number.MAX_SAFE_INTEGER;
+  const pb = b.masterPos ?? Number.MAX_SAFE_INTEGER;
+  return pa - pb || a.listing.sku.localeCompare(b.listing.sku);
+}
+
 export default function ListingScoreView() {
   const [overview, setOverview] = useState<ListingScoreOverview | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -124,6 +176,16 @@ export default function ListingScoreView() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [sortKey, setSortKey] = useState<ListingSort>("master");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+  /** Pick a sort field; picking the current one again flips the direction. */
+  function sortBy(key: ListingSort) {
+    if (key === sortKey) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else {
+      setSortKey(key);
+      setSortDir(LISTING_SORT_DEFAULT_DIR[key]);
+    }
+  }
   // Cards vs table is remembered per browser. Safe to read during render: the toolbar only
   // appears after the overview loads on the client, so the server HTML never depends on it.
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
@@ -220,27 +282,8 @@ export default function ListingScoreView() {
         (r.notes?.comment ?? "").toLowerCase().includes(q)
       );
     });
-    const score = (r: Row) => r.score.total ?? 1000; // unscored (not listed) last when worst-first
-    const pos = (r: Row) => r.masterPos ?? Number.MAX_SAFE_INTEGER; // off the Master List: last
-    return [...filtered].sort((a, b) => {
-      switch (sortKey) {
-        case "master":
-          return pos(a) - pos(b) || a.listing.sku.localeCompare(b.listing.sku);
-        case "images_missing":
-          return imagesMissing(b) - imagesMissing(a) || pos(a) - pos(b);
-        case "score_asc":
-          return score(a) - score(b) || a.listing.sku.localeCompare(b.listing.sku);
-        case "score_desc":
-          return (b.score.total ?? -1) - (a.score.total ?? -1) || a.listing.sku.localeCompare(b.listing.sku);
-        case "alerts":
-          return b.alerts.length - a.alerts.length || score(a) - score(b);
-        case "launch":
-          return (b.notes?.launch_date ?? "").localeCompare(a.notes?.launch_date ?? "") || a.listing.sku.localeCompare(b.listing.sku);
-        case "sku":
-          return a.listing.sku.localeCompare(b.listing.sku);
-      }
-    });
-  }, [rows, query, filter, sortKey]);
+    return [...filtered].sort((a, b) => compareRows(a, b, sortKey, sortDir));
+  }, [rows, query, filter, sortKey, sortDir]);
 
   const feed = useMemo(
     () =>
@@ -284,6 +327,8 @@ export default function ListingScoreView() {
         "Highlight limit": limits.highlight,
         "Highlight shown": (l.title_len ?? 0) > TITLE_TARGET ? "No (title 75+)" : "Yes",
         Bullets: l.bullet_lengths.length,
+        "Bullets allowed": bulletMax(l),
+        "Listing date": listedDate(l.listed_at) ?? "",
         "Open alerts": r.alerts.length,
         "Listing issues": l.error_issues,
         "Launch by": r.notes?.launch_by ?? "",
@@ -551,7 +596,11 @@ export default function ListingScoreView() {
                   <ArrowDownUp className="size-4 text-muted-foreground" />
                   <select
                     value={sortKey}
-                    onChange={(e) => setSortKey(e.target.value as ListingSort)}
+                    onChange={(e) => {
+                      const key = e.target.value as ListingSort;
+                      setSortKey(key);
+                      setSortDir(LISTING_SORT_DEFAULT_DIR[key]);
+                    }}
                     aria-label="Sort"
                     className="h-9 rounded-md border border-input bg-background px-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
                   >
@@ -561,6 +610,16 @@ export default function ListingScoreView() {
                       </option>
                     ))}
                   </select>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-9"
+                    onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+                    aria-label={sortDir === "asc" ? "Ascending, click for descending" : "Descending, click for ascending"}
+                    title={sortDir === "asc" ? "Ascending" : "Descending"}
+                  >
+                    {sortDir === "asc" ? <ArrowUp /> : <ArrowDown />}
+                  </Button>
                 </div>
                 <SegmentedControl
                   value={viewMode}
@@ -616,6 +675,9 @@ export default function ListingScoreView() {
                   masterPos: r.masterPos,
                 }))}
                 onOpen={setOpenSku}
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={sortBy}
               />
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">

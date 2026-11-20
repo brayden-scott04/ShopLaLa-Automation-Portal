@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BellRing,
@@ -12,6 +13,7 @@ import {
   ListChecks,
   ListPlus,
   ListX,
+  Megaphone,
   MessageSquare,
   UserMinus,
   type LucideIcon,
@@ -39,7 +41,11 @@ const ICONS: Record<NotificationKind, LucideIcon> = {
   task_ack: CheckCheck,
   task_deleted: ListX,
   task_ping: BellRing,
+  broadcast: Megaphone,
 };
+
+/** Broadcasts longer than this many characters start collapsed. */
+const BROADCAST_PREVIEW_CHARS = 280;
 
 export function NotificationsPanel({ className }: { className?: string }) {
   const t = useT();
@@ -47,6 +53,7 @@ export function NotificationsPanel({ className }: { className?: string }) {
   const { items, unread, error, update } = useNotifications();
   const text = useNotificationText();
   const relative = useRelativeTime();
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   function markRead(n: PortalNotification) {
     if (n.readAt) return;
@@ -58,6 +65,14 @@ export function NotificationsPanel({ className }: { className?: string }) {
   function open(n: PortalNotification) {
     markRead(n);
     if (n.link) router.push(n.link);
+    // A broadcast has nowhere to go: clicking it shows / hides the whole message.
+    else if (n.kind === "broadcast")
+      setExpanded((prev) => {
+        const next = new Set(prev);
+        if (next.has(n.id)) next.delete(n.id);
+        else next.add(n.id);
+        return next;
+      });
   }
 
   function markAll() {
@@ -103,6 +118,10 @@ export function NotificationsPanel({ className }: { className?: string }) {
             {items.map((n) => {
               const Icon = ICONS[n.kind] ?? ListChecks;
               const ping = isPingKind(n.kind);
+              const broadcast = n.kind === "broadcast";
+              const body = broadcast ? (n.data.body ?? "") : "";
+              const long = body.length > BROADCAST_PREVIEW_CHARS || body.split("\n").length > 4;
+              const isExpanded = expanded.has(n.id);
               const unreadItem = !n.readAt;
               const { headline, details } = text(n);
               return (
@@ -113,6 +132,7 @@ export function NotificationsPanel({ className }: { className?: string }) {
                     className={cn(
                       "flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-accent/60",
                       ping && "bg-amber-500/10 hover:bg-amber-500/15",
+                      broadcast && "bg-sky-500/10 hover:bg-sky-500/15",
                       !unreadItem && "opacity-70"
                     )}
                   >
@@ -120,6 +140,7 @@ export function NotificationsPanel({ className }: { className?: string }) {
                       className={cn(
                         "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground",
                         ping && "bg-amber-500/20 text-amber-700 dark:text-amber-400",
+                        broadcast && "bg-sky-500/20 text-sky-700 dark:text-sky-400",
                         n.kind === "cal_deleted" || n.kind === "task_deleted" ? "text-destructive" : ""
                       )}
                     >
@@ -131,7 +152,27 @@ export function NotificationsPanel({ className }: { className?: string }) {
                           {t("notifications.reminder")}
                         </span>
                       )}
+                      {broadcast && (
+                        <span className="mb-0.5 block text-[11px] font-bold tracking-wider text-sky-700 uppercase dark:text-sky-400">
+                          {t("notifications.broadcast")}
+                        </span>
+                      )}
                       <span className={cn("block text-sm text-foreground", ping && "font-semibold")}>{headline}</span>
+                      {broadcast && (
+                        <span
+                          className={cn(
+                            "mt-1 block text-sm whitespace-pre-wrap break-words text-foreground",
+                            long && !isExpanded && "line-clamp-4"
+                          )}
+                        >
+                          {body}
+                        </span>
+                      )}
+                      {broadcast && long && (
+                        <span className="mt-0.5 block text-xs font-medium text-primary">
+                          {isExpanded ? t("notifications.showLess") : t("notifications.showMore")}
+                        </span>
+                      )}
                       {details.filter(Boolean).map((line, i) => (
                         <span key={i} className="mt-0.5 block text-xs break-words text-muted-foreground">
                           {line}

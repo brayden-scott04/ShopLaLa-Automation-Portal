@@ -140,6 +140,9 @@ export function useNotificationText(): (n: PortalNotification) => NotificationTe
         return { headline: h(t("notifications.taskDeleted", vars)), details: [] };
       case "task_ping":
         return { headline: h(t("notifications.pingTask", { title: MARK })), details: [...due, t("notifications.pingFrom", { actor })] };
+      case "broadcast":
+        // The message itself is rendered by the panel (multi-line, expandable), not as a detail line.
+        return { headline: t("notifications.broadcastFrom", { actor }), details: [] };
       default:
         return { headline: title, details: [] };
     }

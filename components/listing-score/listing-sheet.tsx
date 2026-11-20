@@ -15,7 +15,9 @@ import {
   LISTING_STATUS_LABELS,
   MAX_COMMENT_LENGTH,
   TITLE_TARGET,
+  bulletMax,
   limitsOf,
+  listedDate,
   scoreBand,
   type ListingAlert,
   type ListingDetail,
@@ -195,6 +197,7 @@ export function ListingSheet({
                   )}
                   <span>{LISTING_STATUS_LABELS[summary.listing_status]}</span>
                   {detail?.product_type && <span>{detail.product_type}</span>}
+                  <span>Listed {listedDate(summary.listed_at) ?? "–"}</span>
                   <span>Checked {summary.checked_date}</span>
                 </SheetDescription>
                 <div className="flex flex-wrap gap-1.5 pt-1">
@@ -218,6 +221,9 @@ export function ListingSheet({
                   <div className="flex flex-col items-center gap-1">
                     <ScoreRing score={score.total} size={104} stroke={9} />
                     {band && <span className={cn("text-xs font-semibold", BAND_TEXT[band])}>{SCORE_BAND_LABELS[band]}</span>}
+                    <span className="text-[11px] text-muted-foreground" title="When Amazon created the listing">
+                      Listed {listedDate(summary.listed_at) ?? "–"}
+                    </span>
                   </div>
                   <div className="flex-1 space-y-2">
                     {score.parts.map((p) => (
@@ -360,7 +366,23 @@ export function ListingSheet({
                   {detail.mismatch.highlight && <MismatchNote label="We submitted a different highlight" value={detail.submitted?.highlight} />}
                 </Section>
 
-                <Section title={`Bullet points (${detail.bullets.length} of ${BULLET_TARGET_COUNT})`}>
+                <Section
+                  title={`Bullet points (${detail.bullets.length}/${bulletMax(detail)})`}
+                  aside={
+                    detail.bullets.length < bulletMax(detail) && (
+                      <span
+                        className={cn(
+                          "text-[11px]",
+                          detail.bullets.length < BULLET_TARGET_COUNT
+                            ? "text-red-600 dark:text-red-400"
+                            : "text-amber-700 dark:text-amber-400"
+                        )}
+                      >
+                        {bulletMax(detail) - detail.bullets.length} more allowed for {detail.product_type ?? "this product type"}
+                      </span>
+                    )
+                  }
+                >
                   <ol className="space-y-3">
                     {detail.bullets.map((b, i) => (
                       <li key={i} className="space-y-1">

@@ -18,8 +18,9 @@ export const TITLE_TARGET = 74;
 /** Gallery slots Amazon accepts: MAIN + PT01..PT08. */
 export const IMAGE_TARGET = 9;
 /**
- * Bullets shown on the detail page by default. The schema allows up to 10,
- * but the page shows 5 before "See more product details".
+ * Bullets the score expects. The product type schema can allow more (all of our
+ * types allow 10 today, read per SKU into limits.bullets), so the UI shows
+ * "5/10" to flag the spare room, but the score only asks for 5.
  */
 export const BULLET_TARGET_COUNT = 5;
 
@@ -70,6 +71,8 @@ export interface ListingSummary {
   checked_date: string;
   /** Images WE uploaded; null when we never submitted any. image_count is what Amazon displays. */
   submitted_image_count: number | null;
+  /** When Amazon created the listing (Listings Items createdDate); null until the worker has read it. */
+  listed_at: string | null;
 }
 
 export interface ListingImage {
@@ -86,7 +89,7 @@ export interface ListingIssue {
 }
 
 /** The full listing_score_listings row, for the detail sheet. */
-export interface ListingDetail extends Omit<ListingSummary, "title_len" | "highlight_len" | "bullet_lengths" | "image_count" | "main_thumb" | "error_issues" | "submitted_image_count"> {
+export interface ListingDetail extends Omit<ListingSummary, "title_len" | "highlight_len" | "bullet_lengths" | "image_count" | "main_thumb" | "error_issues" | "submitted_image_count" | "listed_at"> {
   product_type: string | null;
   highlight: string | null;
   bullets: string[];
@@ -120,26 +123,90 @@ export function imageTarget(notes: Pick<ListingNotes, "expected_images"> | null 
   return notes?.expected_images ?? IMAGE_TARGET;
 }
 
+/** Every field the grid can be sorted by (dropdown and clickable table headers). */
 export const LISTING_SORTS = [
   "master",
-  "score_asc",
-  "score_desc",
-  "images_missing",
+  "sku",
+  "status",
+  "score",
+  "images",
+  "submitted",
+  "videos",
+  "related",
+  "aplus",
+  "brand_story",
+  "title",
+  "highlight",
+  "bullets",
   "alerts",
   "launch",
-  "sku",
+  "listed",
 ] as const;
 export type ListingSort = (typeof LISTING_SORTS)[number];
+export type SortDir = "asc" | "desc";
 
 export const LISTING_SORT_LABELS: Record<ListingSort, string> = {
   master: "Master List order",
-  score_asc: "Lowest score first",
-  score_desc: "Highest score first",
-  images_missing: "Most images missing",
-  alerts: "Most alerts",
-  launch: "Newest launch",
-  sku: "SKU A–Z",
+  sku: "SKU",
+  status: "Status",
+  score: "Score",
+  images: "Images (vs expected)",
+  submitted: "Images submitted",
+  videos: "Videos",
+  related: "Related videos",
+  aplus: "A+ Content",
+  brand_story: "Brand Story",
+  title: "Title length",
+  highlight: "Highlight length",
+  bullets: "Bullet points",
+  alerts: "Alerts",
+  launch: "Launch date",
+  listed: "Listing date",
 };
+
+/**
+ * The direction a field sorts in when first picked: the one that puts what needs
+ * work (or what's newest) on top. Clicking the same field again flips it.
+ */
+export const LISTING_SORT_DEFAULT_DIR: Record<ListingSort, SortDir> = {
+  master: "asc",
+  sku: "asc",
+  status: "asc",
+  score: "asc",
+  images: "asc",
+  submitted: "asc",
+  videos: "asc",
+  related: "asc",
+  aplus: "asc",
+  brand_story: "asc",
+  title: "asc",
+  highlight: "asc",
+  bullets: "asc",
+  alerts: "desc",
+  launch: "desc",
+  listed: "desc",
+};
+
+/** Order for the Status sort: live first, gone last. */
+export const LISTING_STATUS_ORDER: Record<ListingStatus, number> = {
+  active: 0,
+  not_buyable: 1,
+  inactive: 2,
+  not_listed: 3,
+};
+
+/** Bullets Amazon lets this SKU's product type have (schema maxUniqueItems), never below the 5 we aim for. */
+export function bulletMax(l: Pick<ListingSummary, "limits">): number {
+  return Math.max(BULLET_TARGET_COUNT, limitsOf(l.limits).bullets);
+}
+
+/** "2024-03-02" (SGT) from listed_at, or null. */
+export function listedDate(listedAt: string | null | undefined): string | null {
+  if (!listedAt) return null;
+  const d = new Date(listedAt);
+  if (Number.isNaN(d.getTime())) return null;
+  return new Date(d.getTime() + 8 * 3600_000).toISOString().slice(0, 10);
+}
 
 /** Columns the bulk import understands (header text, matched case-insensitively). */
 export const BULK_NOTE_COLUMNS = ["Videos", "Related videos", "Expected images"] as const;

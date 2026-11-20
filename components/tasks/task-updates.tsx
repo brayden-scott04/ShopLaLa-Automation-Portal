@@ -9,6 +9,16 @@ import { cn } from "@/lib/utils";
 import { editTaskUpdate, type TaskProgressUpdate } from "@/lib/actions/tasks";
 import { MAX_TASK_UPDATE_LENGTH } from "@/lib/tasks-constants";
 
+/** "1,234 / 5,000" under a text box; shown once the text passes 80% of the limit. */
+export function CharCount({ length, max }: { length: number; max: number }) {
+  if (length < max * 0.8) return null;
+  return (
+    <p className={cn("text-right text-[11px] tabular-nums", length >= max ? "text-destructive" : "text-muted-foreground")}>
+      {length.toLocaleString()} / {max.toLocaleString()}
+    </p>
+  );
+}
+
 function formatWhen(iso: string): string {
   return new Date(iso).toLocaleString(undefined, {
     day: "numeric",
@@ -76,8 +86,10 @@ export function TaskUpdates({
         onChange={(e) => onDraftChange(e.target.value)}
         maxLength={MAX_TASK_UPDATE_LENGTH}
         placeholder="What's the latest on this task? It's posted when you click Save."
-        className="min-h-20"
+        // Drag the bottom-right corner to make it taller; it also grows with the text.
+        className="field-sizing-content min-h-24 max-h-[60vh] resize-y"
       />
+      <CharCount length={draft.length} max={MAX_TASK_UPDATE_LENGTH} />
 
       {error && <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
 
@@ -99,7 +111,7 @@ export function TaskUpdates({
       {updates.length === 0 ? (
         <p className="text-xs text-muted-foreground">No updates yet.</p>
       ) : (
-        <div className="max-h-[28rem] overflow-y-auto rounded-md border border-border">
+        <div className={cn("overflow-y-auto rounded-md border border-border", editingId === null && "max-h-[28rem]")}>
           <table className="w-full text-xs">
             <thead className="sticky top-0 z-10 border-b border-border bg-muted text-left">
               <tr>
@@ -142,9 +154,11 @@ export function TaskUpdates({
                             value={editText}
                             onChange={(e) => setEditText(e.target.value)}
                             maxLength={MAX_TASK_UPDATE_LENGTH}
-                            className="min-h-16 text-xs"
+                            // Sized to the whole update (up to 60% of the screen), and resizable.
+                            className="field-sizing-content min-h-40 max-h-[60vh] resize-y text-sm"
                             autoFocus
                           />
+                          <CharCount length={editText.length} max={MAX_TASK_UPDATE_LENGTH} />
                           <div className="flex justify-end gap-1">
                             <Button size="xs" variant="ghost" onClick={() => setEditingId(null)} disabled={isPending}>
                               <X /> Cancel

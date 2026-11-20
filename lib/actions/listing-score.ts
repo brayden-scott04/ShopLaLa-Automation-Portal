@@ -27,7 +27,7 @@ const COUNTRY = "US";
 const PAGE_SIZE = 1000; // PostgREST's default row cap
 
 const SUMMARY_COLUMNS =
-  "sku, asin, listing_status, title, title_len, highlight_len, bullet_lengths, image_count, main_thumb, aplus, brand_story, mismatch, limits, error_issues, checked_date, submitted_image_count";
+  "sku, asin, listing_status, title, title_len, highlight_len, bullet_lengths, image_count, main_thumb, aplus, brand_story, mismatch, limits, error_issues, checked_date, submitted_image_count, listed_at";
 const DETAIL_COLUMNS =
   "sku, asin, product_type, listing_status, title, highlight, bullets, images, issues, submitted, mismatch, aplus, brand_story, limits, checked_date, checked_at";
 const NOTES_COLUMNS =

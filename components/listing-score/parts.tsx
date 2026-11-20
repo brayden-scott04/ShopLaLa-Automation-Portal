@@ -77,19 +77,22 @@ export function ScoreRing({
 
 /**
  * "67 / 74" with a thin bar. `over` marks a value past the target that costs
- * points (a title of 75+ hiding the highlight).
+ * points (a title of 75+ hiding the highlight). `room` marks one that
+ * scores fine but leaves space Amazon allows (5 of 10 bullets), shown amber.
  */
 export function Meter({
   label,
   value,
   target,
   over,
+  room,
   suffix,
 }: {
   label: string;
   value: number;
   target: number;
   over?: boolean;
+  room?: boolean;
   suffix?: string;
 }) {
   const pct = target > 0 ? Math.min(100, (value / target) * 100) : 0;
@@ -101,7 +104,13 @@ export function Meter({
         <span
           className={cn(
             "shrink-0 font-medium tabular-nums",
-            over ? "text-red-600 dark:text-red-400" : full ? "text-emerald-600 dark:text-emerald-400" : "text-foreground"
+            over
+              ? "text-red-600 dark:text-red-400"
+              : full
+                ? "text-emerald-600 dark:text-emerald-400"
+                : room
+                  ? "text-amber-700 dark:text-amber-400"
+                  : "text-foreground"
           )}
         >
           {value}
@@ -110,7 +119,7 @@ export function Meter({
       </div>
       <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
         <div
-          className={cn("h-full rounded-full", over ? "bg-red-500" : full ? "bg-emerald-500" : "bg-primary/70")}
+          className={cn("h-full rounded-full", over ? "bg-red-500" : full ? "bg-emerald-500" : room ? "bg-amber-500" : "bg-primary/70")}
           style={{ width: `${over ? 100 : pct}%` }}
         />
       </div>

@@ -6,8 +6,10 @@ import {
   BULLET_TARGET_COUNT,
   LISTING_STATUS_LABELS,
   TITLE_TARGET,
+  bulletMax,
   imageTarget,
   limitsOf,
+  listedDate,
   type ListingNotes,
   type ListingScore,
   type ListingSummary,
@@ -70,7 +72,10 @@ export function ListingCard({
       <div className="flex flex-1 flex-col gap-3 p-3.5">
         <div className="min-w-0">
           <p className="truncate font-mono text-sm font-semibold">{l.sku}</p>
-          <p className="text-[11px] text-muted-foreground">{l.asin ?? "No ASIN"}</p>
+          <p className="text-[11px] text-muted-foreground">
+            {l.asin ?? "No ASIN"}
+            {listedDate(l.listed_at) && <span> · Listed {listedDate(l.listed_at)}</span>}
+          </p>
           <p className="mt-1.5 line-clamp-2 min-h-[2lh] text-xs leading-snug text-muted-foreground">
             {l.title ?? "—"}
           </p>
@@ -84,7 +89,12 @@ export function ListingCard({
             target={limits.highlight}
             over={titleOver && (l.highlight_len ?? 0) > 0}
           />
-          <Meter label="Bullets" value={l.bullet_lengths.length} target={BULLET_TARGET_COUNT} />
+          <Meter
+            label="Bullets"
+            value={l.bullet_lengths.length}
+            target={bulletMax(l)}
+            room={l.bullet_lengths.length >= BULLET_TARGET_COUNT && l.bullet_lengths.length < bulletMax(l)}
+          />
           <Meter label="Images" value={l.image_count} target={imageTarget(notes)} />
         </div>
 

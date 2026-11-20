@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { TaskUpdates } from "@/components/tasks/task-updates";
+import { CharCount, TaskUpdates } from "@/components/tasks/task-updates";
 import type { Task, TaskProgressUpdate, TrackedTaskInput } from "@/lib/actions/tasks";
 import {
   MAX_TASK_TITLE_LENGTH,
@@ -278,7 +278,10 @@ function TaskFormInner({
               onChange={(e) => setNotes(e.target.value)}
               maxLength={MAX_TASK_NOTES_LENGTH}
               disabled={!canEdit}
+              // Drag the bottom-right corner to make it taller; it also grows with the text.
+              className="field-sizing-content min-h-28 max-h-[70vh] resize-y"
             />
+            <CharCount length={notes.length} max={MAX_TASK_NOTES_LENGTH} />
           </div>
 
           {task && (

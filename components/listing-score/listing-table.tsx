@@ -1,17 +1,21 @@
 "use client";
 
-import { AlertTriangle, Check, Minus, X } from "lucide-react";
+import { AlertTriangle, ArrowDown, ArrowUp, Check, Minus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   BULLET_TARGET_COUNT,
   LISTING_STATUS_LABELS,
   TITLE_TARGET,
+  bulletMax,
   imageTarget,
   limitsOf,
+  listedDate,
   scoreBand,
   type ListingNotes,
   type ListingScore,
+  type ListingSort,
   type ListingSummary,
+  type SortDir,
 } from "@/lib/listing-score";
 import { AmazonImg, BAND_TEXT } from "./parts";
 
@@ -45,29 +49,112 @@ function Ratio({ value, target, bad }: { value: number; target: number; bad: boo
   );
 }
 
+/**
+ * "5/10": bullets used / bullets the product type allows. Red under the 5 the
+ * score needs, amber when there's room for more, green when every slot is used.
+ */
+export function BulletRatio({ count, max }: { count: number; max: number }) {
+  const tone =
+    count < BULLET_TARGET_COUNT
+      ? "text-red-600 dark:text-red-400"
+      : count < max
+        ? "text-amber-700 dark:text-amber-400"
+        : "text-emerald-600 dark:text-emerald-400";
+  return (
+    <span
+      className={cn("tabular-nums", tone)}
+      title={count < max ? `${max - count} more bullet${max - count === 1 ? "" : "s"} allowed for this product type` : undefined}
+    >
+      {count}
+      <span className="text-muted-foreground">/{max}</span>
+    </span>
+  );
+}
+
 const TH = "px-3 py-2 text-left text-[11px] font-semibold tracking-wide text-muted-foreground uppercase whitespace-nowrap";
 const TD = "px-3 py-2 whitespace-nowrap";
 
-export function ListingTable({ rows, onOpen }: { rows: ListingTableRow[]; onOpen: (sku: string) => void }) {
+type Align = "left" | "right" | "center";
+
+interface SortState {
+  key: ListingSort;
+  dir: SortDir;
+  onSort: (key: ListingSort) => void;
+}
+
+/** A clickable header: sorts by `field`, again to flip the direction. */
+function Th({
+  field,
+  sort,
+  align = "left",
+  title,
+  children,
+}: {
+  field: ListingSort;
+  sort: SortState;
+  align?: Align;
+  title?: string;
+  children: React.ReactNode;
+}) {
+  const active = sort.key === field;
+  const Arrow = sort.dir === "asc" ? ArrowUp : ArrowDown;
+  return (
+    <th
+      className={cn(TH, align === "right" && "text-right", align === "center" && "text-center")}
+      aria-sort={active ? (sort.dir === "asc" ? "ascending" : "descending") : "none"}
+    >
+      <button
+        type="button"
+        onClick={() => sort.onSort(field)}
+        title={title}
+        className={cn(
+          "inline-flex items-center gap-1 uppercase transition-colors hover:text-foreground",
+          align === "right" && "flex-row-reverse",
+          active && "text-foreground"
+        )}
+      >
+        {children}
+        <Arrow className={cn("size-3", active ? "opacity-100" : "opacity-0")} />
+      </button>
+    </th>
+  );
+}
+
+export function ListingTable({
+  rows,
+  onOpen,
+  sortKey,
+  sortDir,
+  onSort,
+}: {
+  rows: ListingTableRow[];
+  onOpen: (sku: string) => void;
+  sortKey: ListingSort;
+  sortDir: SortDir;
+  onSort: (key: ListingSort) => void;
+}) {
+  const sort: SortState = { key: sortKey, dir: sortDir, onSort };
+
   return (
     <div className="overflow-x-auto rounded-xl border bg-card">
       <table className="w-full text-sm">
         <thead className="sticky top-0 z-10 border-b bg-muted/60 backdrop-blur">
           <tr>
-            <th className={cn(TH, "text-right")}>#</th>
-            <th className={TH}>SKU</th>
-            <th className={TH}>Status</th>
-            <th className={cn(TH, "text-right")}>Score</th>
-            <th className={cn(TH, "text-right")} title="Amazon displays / expected for this SKU">Images</th>
-            <th className={cn(TH, "text-right")} title="Images we uploaded">Submitted</th>
-            <th className={cn(TH, "text-center")}>Videos</th>
-            <th className={cn(TH, "text-center")}>Related</th>
-            <th className={cn(TH, "text-center")}>A+</th>
-            <th className={cn(TH, "text-center")}>Brand Story</th>
-            <th className={cn(TH, "text-right")}>Title</th>
-            <th className={cn(TH, "text-right")}>Highlight</th>
-            <th className={cn(TH, "text-right")}>Bullets</th>
-            <th className={cn(TH, "text-center")}>Alerts</th>
+            <Th sort={sort} field="master" align="right" title="Master List order">#</Th>
+            <Th sort={sort} field="sku">SKU</Th>
+            <Th sort={sort} field="status">Status</Th>
+            <Th sort={sort} field="score" align="right">Score</Th>
+            <Th sort={sort} field="images" align="right" title="Amazon displays / expected for this SKU">Images</Th>
+            <Th sort={sort} field="submitted" align="right" title="Images we uploaded">Submitted</Th>
+            <Th sort={sort} field="videos" align="center">Videos</Th>
+            <Th sort={sort} field="related" align="center">Related</Th>
+            <Th sort={sort} field="aplus" align="center">A+</Th>
+            <Th sort={sort} field="brand_story" align="center">Brand Story</Th>
+            <Th sort={sort} field="title" align="right">Title</Th>
+            <Th sort={sort} field="highlight" align="right">Highlight</Th>
+            <Th sort={sort} field="bullets" align="right" title="Bullets used / bullets this product type allows">Bullets</Th>
+            <Th sort={sort} field="alerts" align="center">Alerts</Th>
+            <Th sort={sort} field="listed" align="right" title="When Amazon created the listing">Listed</Th>
           </tr>
         </thead>
         <tbody className="divide-y">
@@ -138,11 +225,7 @@ export function ListingTable({ rows, onOpen }: { rows: ListingTableRow[]; onOpen
                   )}
                 </td>
                 <td className={cn(TD, "text-right")}>
-                  <Ratio
-                    value={l.bullet_lengths.length}
-                    target={BULLET_TARGET_COUNT}
-                    bad={l.bullet_lengths.length < BULLET_TARGET_COUNT}
-                  />
+                  <BulletRatio count={l.bullet_lengths.length} max={bulletMax(l)} />
                 </td>
                 <td className={cn(TD, "text-center")}>
                   {alertCount > 0 ? (
@@ -153,6 +236,9 @@ export function ListingTable({ rows, onOpen }: { rows: ListingTableRow[]; onOpen
                   ) : (
                     <span className="text-muted-foreground">–</span>
                   )}
+                </td>
+                <td className={cn(TD, "text-right text-xs tabular-nums text-muted-foreground")}>
+                  {listedDate(l.listed_at) ?? "–"}
                 </td>
               </tr>
             );

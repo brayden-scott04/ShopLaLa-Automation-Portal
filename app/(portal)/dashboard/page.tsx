@@ -2,7 +2,7 @@ import Link from "next/link";
 import { NAV_GROUPS, ppcTopUp, calendar, tasks as tasksItem } from "@/lib/nav";
 import { getSession } from "@/lib/session";
 import { getMyPermissions } from "@/lib/permissions";
-import { filterItems, isAllowed } from "@/lib/roles";
+import { canManageProfiles, filterItems, isAllowed } from "@/lib/roles";
 import PpcTopUpCharts from "@/components/ppc-top-up-chart";
 import { DashboardAccessGrid } from "@/components/dashboard-access-grid";
 import { CoreValues } from "@/components/core-values";
@@ -11,6 +11,8 @@ import { listTasks } from "@/lib/actions/tasks";
 import { getUpcomingTasks } from "@/lib/actions/calendar";
 import { NotificationsPanel } from "@/components/notifications/notifications-panel";
 import { UpcomingOverview, type UpcomingEvent, type UpcomingTask } from "@/components/notifications/upcoming-overview";
+import { BroadcastButton, type BroadcastCandidate } from "@/components/notifications/broadcast-button";
+import { getStaffDirectory } from "@/lib/actions/staff";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -29,12 +31,19 @@ export default async function DashboardPage() {
   const canSeePpc = isAllowed(role, permissions, ppcTopUp.section, ppcTopUp.id);
   const canSeeTasks = isAllowed(role, permissions, tasksItem.section, tasksItem.id);
   const canSeeCalendar = isAllowed(role, permissions, calendar.section, calendar.id);
+  // Leaders and admins can broadcast a message to everyone's inbox (sendBroadcast re-checks the role).
+  const canBroadcast = canManageProfiles(role);
 
   // Left half of the overview: open tasks I'm on, and my calendar for the next 7 days.
-  const [taskResult, eventResult] = await Promise.all([
+  const [taskResult, eventResult, staffResult] = await Promise.all([
     canSeeTasks ? listTasks() : Promise.resolve({ data: [], error: null }),
     canSeeCalendar ? getUpcomingTasks() : Promise.resolve({ data: [], error: null }),
+    canBroadcast ? getStaffDirectory() : Promise.resolve({ data: [], error: null }),
   ]);
+  const broadcastCandidates: BroadcastCandidate[] = (staffResult.data ?? [])
+    .filter((s) => s.username !== session?.username)
+    .map((s) => ({ username: s.username, role: s.role }))
+    .sort((a, b) => a.username.localeCompare(b.username));
   const upcomingTasks: UpcomingTask[] = (taskResult.data ?? [])
     .filter((task) => !task.done)
     .map(({ id, title, date, dueDate, priority }) => ({ id, title, date, dueDate, priority }));
@@ -50,12 +59,17 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-6 md:p-8">
-      <h2 className="text-2xl font-semibold text-foreground">
-        {t("dashboard.welcome", { name: firstName })}
-      </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {t("dashboard.subtitle")}
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-2xl font-semibold text-foreground">
+            {t("dashboard.welcome", { name: firstName })}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t("dashboard.subtitle")}
+          </p>
+        </div>
+        {canBroadcast && <BroadcastButton candidates={broadcastCandidates} />}
+      </div>
 
       {/* Overview: Upcoming (tasks + calendar) on the left, Notifications on the right. */}
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
